@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Hermes · управление</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#1f1e1d;--card:#262624;--line:#3d3d3a;--tx:#faf9f5;--mut:#a8a59b;--dim:#7a776f;--acc:#d97757;--ok:#7cc68d;--bad:#ef7b7b;--blue:#8ab4f8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif;padding:14px 14px 90px}
+h1{font-size:20px;margin:2px 0 2px;display:flex;align-items:center;gap:8px}
+h1 .logo{width:26px;height:26px;border-radius:8px;background:var(--acc);display:grid;place-items:center;font-size:15px}
+.sub{color:var(--mut);font-size:13px;margin-bottom:14px}
+.tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:14px}
+.tab{flex:1;text-align:center;padding:7px 0;border-radius:9px;color:var(--mut);font-size:13px;font-weight:600;cursor:pointer}
+.tab.on{background:#30302e;color:var(--tx)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.ch{padding:11px 14px 4px;color:var(--mut);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-top:1px solid var(--line)}
+.ch+.row{border-top:0}
+.row .t{flex:1;min-width:0}
+.row .n{font-weight:500}
+.row .d{color:var(--mut);font-size:12.5px;margin-top:1px;overflow-wrap:anywhere}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--dim);flex:none}
+.dot.ok{background:var(--ok);box-shadow:0 0 0 3px rgba(124,198,141,.15)}
+.dot.bad{background:var(--bad)}.dot.wait{background:var(--blue)}
+.sw{position:relative;width:44px;height:26px;border-radius:13px;background:#3d3d3a;flex:none;cursor:pointer;transition:.2s}
+.sw:after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#faf9f5;transition:.2s}
+.sw.on{background:var(--acc)}.sw.on:after{left:21px}
+.seg{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.seg span{padding:5px 9px;border-radius:8px;border:1px solid var(--line);color:var(--mut);font-size:13px;cursor:pointer}
+.seg span.on{border-color:var(--acc);color:var(--tx);background:rgba(217,119,87,.14)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:999px;padding:3px 10px 3px 8px;color:var(--acc);background:rgba(217,119,87,.14)}
+.chip i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip.ok{color:var(--ok);background:rgba(124,198,141,.14)}.chip.bad{color:var(--bad);background:rgba(239,123,123,.14)}
+.big{padding:14px}
+.big .s{font-size:16px;font-weight:600;margin:8px 0 2px;overflow-wrap:anywhere}
+input{width:100%;background:#1f1e1d;border:1px solid var(--line);border-radius:9px;color:var(--tx);font:inherit;font-size:14px;padding:8px 10px;outline:none}
+input:focus{border-color:var(--acc)}
+.pr{display:grid;gap:6px;flex:1}
+.x{color:var(--dim);font-size:20px;cursor:pointer;padding:0 4px}
+.btn{display:block;width:calc(100% - 28px);margin:10px 14px 14px;padding:10px;border-radius:10px;border:1px dashed var(--line);background:none;color:var(--mut);font:inherit;font-size:14px;cursor:pointer}
+.btn.solid{border:0;background:#30302e;color:var(--tx)}
+.hint{color:var(--dim);font-size:12px;padding:0 4px 10px}
+.empty{padding:14px;color:var(--mut);font-size:13px}
+.r-ok{color:var(--ok)}.r-fail{color:var(--bad)}.r-wait{color:var(--blue)}
+.dirty{position:fixed;left:14px;right:14px;bottom:14px;background:var(--acc);color:#1f1e1d;font-weight:700;text-align:center;border-radius:12px;padding:13px;display:none;cursor:pointer}
+.page{display:none}.page.on{display:block}
+</style>
+</head>
+<body>
+<h1><span class="logo">⚡</span>Hermes</h1>
+<div class="sub" id="upd">Панель управления кликером Claude</div>
+<div class="tabs"><div class="tab on" data-p="st">Статус</div><div class="tab" data-p="set">Настройки</div><div class="tab" data-p="pr">Проекты</div></div>
+
+<div class="page on" id="p-st">
+  <div class="card big"><span class="chip" id="chip"><i></i><span id="chipt"></span></span>
+    <div class="s" id="sess"></div><div class="d" id="act" style="color:var(--mut);font-size:13px"></div></div>
+  <div class="card"><div class="ch">Задачи</div>
+    <div class="row"><span class="dot" id="d-c"></span><div class="t"><div class="n">Кликер</div><div class="d" id="i-c"></div></div><div class="sw" id="sw-c"></div></div>
+    <div class="row"><span class="dot" id="d-n"></span><div class="t"><div class="n">Уведомления</div><div class="d" id="i-n"></div></div><div class="sw" id="sw-n"></div></div>
+  </div>
+  <div class="card"><div class="ch">Последние ответы</div><div id="hist"></div></div>
+  <div class="card"><button class="btn solid" id="run">▶ Проверить Claude сейчас</button><button class="btn" id="ref" style="margin-top:0">↻ Обновить статус</button></div>
+</div>
+
+<div class="page" id="p-set">
+  <div class="card"><div class="ch">Проверка</div>
+    <div class="row"><div class="t"><div class="n">Интервал кликера</div><div class="d">как часто смотреть на Claude</div></div></div>
+    <div class="row" style="border-top:0;padding-top:0"><div class="seg" id="iv" style="justify-content:flex-start"></div></div>
+    <div class="row"><div class="t"><div class="n">Порог зависания</div><div class="d">без изменений на экране</div></div></div>
+    <div class="row" style="border-top:0;padding-top:0"><div class="seg" id="hang" style="justify-content:flex-start"></div></div>
+  </div>
+  <div class="card"><div class="ch">Присылать в Telegram</div>
+    <div class="row"><div class="t"><div class="n">Вопросы Claude</div><div class="d">карточки с вариантами ответа</div></div><div class="sw" data-k="question"></div></div>
+    <div class="row"><div class="t"><div class="n">Start нажат</div><div class="d">когда запущен следующий шаг</div></div><div class="sw" data-k="start"></div></div>
+    <div class="row"><div class="t"><div class="n">Зависание</div><div class="d">сессия не меняется дольше порога</div></div><div class="sw" data-k="hang"></div></div>
+    <div class="row"><div class="t"><div class="n">Сбои</div><div class="d">Claude не отвечает, клик не прошёл</div></div><div class="sw" data-k="fail"></div></div>
+  </div>
+  <div class="hint">Если выключить «Вопросы Claude», отвечать придётся в самом Claude.</div>
+</div>
+
+<div class="page" id="p-pr">
+  <div class="card"><div class="ch">Проекты Claude под наблюдением</div><div id="prs"></div>
+    <button class="btn" id="add">+ Подключить проект</button></div>
+  <div class="hint">Кликер нажимает Start, пересылает вопросы и следит за зависанием только в сессиях этих проектов. Название — как в Claude Desktop.</div>
+</div>
+
+<div class="dirty" id="save">Сохранить изменения</div>
+
+<script>
+var tg=window.Telegram&&Telegram.WebApp; if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#1f1e1d');tg.setBackgroundColor('#1f1e1d')}catch(e){}}
+function $(i){return document.getElementById(i)}
+function dec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(decodeURIComponent(escape(atob(s))))}
+var S={v:1,clicker:{on:false,iv:5},notifier:{on:false},session:'',action:'',fails:0,hang:20,notify:{start:true,question:true,hang:true,fail:true},projects:[],hist:[]};
+try{var m=location.hash.match(/s=([^&]+)/);if(m)S=dec(m[1])}catch(e){}
+var E=JSON.parse(JSON.stringify(S)); // edited copy
+function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
+function dirty(){var a=JSON.stringify(pick(E)),b=JSON.stringify(pick(S));$('save').style.display=a!=b?'block':'none';
+}
+function pick(x){return {clicker:x.clicker.on,notifier:x.notifier.on,interval:x.clicker.iv,hang:x.hang,notify:x.notify,projects:x.projects}}
+function seg(id,vals,cur,suf,cb){$(id).innerHTML=vals.map(function(v){return '<span data-v="'+v+'" class="'+(v==cur?'on':'')+'">'+v+suf+'</span>'}).join('');
+ Array.prototype.forEach.call($(id).children,function(el){el.onclick=function(){cb(+el.dataset.v);hap();draw()}})}
+function hap(){try{tg.HapticFeedback.selectionChanged()}catch(e){}}
+function draw(){
+ var st=S.session||'—',q=/needs input/i.test(st),f=S.fails>0;
+ $('chip').className='chip '+(f?'bad':q?'':'ok');$('chipt').textContent=f?'Сбой ×'+S.fails:q?'Needs your input':'Работает';
+ $('sess').textContent=st;$('act').textContent=S.action?('Последнее: '+S.action):'';
+ if(S.ts)$('upd').textContent='Статус на '+new Date(S.ts*1000).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
+ $('d-c').className='dot '+(E.clicker.on?(S.clicker.ok===false?'bad':'ok'):'');$('d-n').className='dot '+(E.notifier.on?'ok':'');
+ $('i-c').textContent=(E.clicker.on?'каждые '+E.clicker.iv+' мин':'на паузе')+(S.clicker.last?' · был '+S.clicker.last:'');
+ $('i-n').textContent=E.notifier.on?'каждые '+(S.notifier.iv||5)+' мин':'на паузе';
+ $('sw-c').className='sw'+(E.clicker.on?' on':'');$('sw-n').className='sw'+(E.notifier.on?' on':'');
+ $('hist').innerHTML=S.hist&&S.hist.length?S.hist.map(function(h){return '<div class="row"><span class="dot '+h.r+'"></span><div class="t"><div class="n">'+esc(h.a)+'</div><div class="d">'+esc(h.q)+'</div></div><div class="d r-'+h.r+'">'+esc(h.t)+'</div></div>'}).join(''):'<div class="empty">Ответов пока не было</div>';
+ seg('iv',[2,3,5,10,15,30],E.clicker.iv,' мин',function(v){E.clicker.iv=v});
+ seg('hang',[10,15,20,30,45,60],E.hang,' мин',function(v){E.hang=v});
+ document.querySelectorAll('.sw[data-k]').forEach(function(el){el.className='sw'+(E.notify[el.dataset.k]?' on':'')});
+ $('prs').innerHTML=E.projects.map(function(p,i){return '<div class="row"><div class="pr"><input data-i="'+i+'" data-f="name" placeholder="Название проекта" value="'+esc(p.name)+'"><input data-i="'+i+'" data-f="desc" placeholder="Пояснение (необязательно)" value="'+esc(p.desc||'')+'"></div><span class="x" data-del="'+i+'">×</span></div>'}).join('')||'<div class="empty">Нет проектов</div>';
+ document.querySelectorAll('#prs input').forEach(function(el){el.oninput=function(){E.projects[+el.dataset.i][el.dataset.f]=el.value;dirty()}});
+ document.querySelectorAll('#prs [data-del]').forEach(function(el){el.onclick=function(){E.projects.splice(+el.dataset.del,1);draw()}});
+ dirty()}
+document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){document.querySelectorAll('.tab,.page').forEach(function(x){x.classList.remove('on')});t.classList.add('on');$('p-'+t.dataset.p).classList.add('on');hap()}});
+$('sw-c').onclick=function(){E.clicker.on=!E.clicker.on;hap();draw()};
+$('sw-n').onclick=function(){E.notifier.on=!E.notifier.on;hap();draw()};
+document.querySelectorAll('.sw[data-k]').forEach(function(el){el.onclick=function(){E.notify[el.dataset.k]=!E.notify[el.dataset.k];hap();draw()}});
+$('add').onclick=function(){E.projects.push({name:'',desc:''});draw();var ins=document.querySelectorAll('#prs input[data-f=name]');if(ins.length)ins[ins.length-1].focus()};
+function send(o){var s=JSON.stringify(o);if(tg&&tg.sendData){try{tg.HapticFeedback.notificationOccurred('success')}catch(e){};tg.sendData(s)}else alert('Откройте панель кнопкой в чате с ботом.\n'+s)}
+$('save').onclick=function(){var p=pick(E);p.projects=p.projects.filter(function(x){return (x.name||'').trim()});p.v=1;send(p)};
+$('run').onclick=function(){send({v:1,a:'run'})};
+$('ref').onclick=function(){send({v:1,a:'refresh'})};
+draw();
+</script>
+</body>
+</html>
