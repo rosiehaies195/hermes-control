@@ -60,12 +60,16 @@ input:focus{border-color:var(--acc)}
 .qb.sk{background:none;color:var(--mut);border:1px solid var(--line)}.qb.sb{background:var(--tx);color:#1f1e1d;border:0}
 .qb:disabled{opacity:.4}
 .lk{flex:none;width:22px;text-align:center}
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.tags span{font-size:11px;color:var(--mut);background:#30302e;border-radius:6px;padding:1px 6px}
+.fi{cursor:pointer}.fi:active{background:#30302e}.arr{color:var(--dim);font-size:18px}
+.nw{display:flex;gap:8px;padding:3px 0;font-size:14px}.nw:before{content:"";flex:none;width:5px;height:5px;margin-top:9px;border-radius:50%;background:var(--acc)}
+.tabs{overflow-x:auto}.tab{white-space:nowrap;padding-left:6px;padding-right:6px}
 </style>
 </head>
 <body>
 <h1><span class="logo">⚡</span>Hermes</h1>
 <div class="sub" id="upd">Панель управления кликером Claude</div>
-<div class="tabs"><div class="tab on" data-p="st">Статус</div><div class="tab" data-p="q">Вопросы<span class="badge" id="qn"></span></div><div class="tab" data-p="set">Настройки</div><div class="tab" data-p="pr">Проекты</div></div>
+<div class="tabs"><div class="tab on" data-p="st">Статус</div><div class="tab" data-p="q">Вопросы<span class="badge" id="qn"></span></div><div class="tab" data-p="br">Мозг</div><div class="tab" data-p="set">Настройки</div><div class="tab" data-p="pr">Проекты</div></div>
 
 <div class="page on" id="p-st">
   <div class="card big"><span class="chip" id="chip"><i></i><span id="chipt"></span></span>
@@ -81,6 +85,14 @@ input:focus{border-color:var(--acc)}
 
 <div class="page" id="p-q"><div id="qs"></div>
   <div class="hint">Ответ уходит кликеру сразу: он откроет сессию в Claude, выберет вариант и нажмёт Submit.</div></div>
+
+<div class="page" id="p-br">
+  <div class="card big"><span class="chip ok"><i></i>Сейчас в фокусе</span><div id="bnow" style="margin-top:8px"></div></div>
+  <input id="bq" placeholder="🔍 Поиск по мозгу: название, тег, описание" style="margin-bottom:12px">
+  <div id="bsec"></div>
+  <div class="card"><div class="ch">Последние изменения</div><div id="blog"></div></div>
+  <div class="hint">Нажмите на файл — бот пришлёт его в чат. Репозиторий: rosiehaies195/hermes-brain (приватный).</div>
+</div>
 
 <div class="page" id="p-set">
   <div class="card"><div class="ch">Проверка</div>
@@ -111,7 +123,7 @@ var tg=window.Telegram&&Telegram.WebApp; if(tg){tg.ready();tg.expand();try{tg.se
 function $(i){return document.getElementById(i)}
 function dec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(decodeURIComponent(escape(atob(s))))}
 var S={v:1,clicker:{on:false,iv:5},notifier:{on:false},session:'',action:'',fails:0,hang:20,notify:{start:true,question:true,hang:true,fail:true},projects:[],hist:[]};
-try{var m=location.hash.match(/s=([^&]+)/);if(m)S=dec(m[1])}catch(e){}
+try{var m=location.hash.match(/[#&]s=([^&]+)/);if(m)S=dec(m[1])}catch(e){}
 var E=JSON.parse(JSON.stringify(S)); // edited copy
 function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
 function dirty(){var a=JSON.stringify(pick(E)),b=JSON.stringify(pick(S));$('save').style.display=a!=b?'block':'none';
@@ -162,6 +174,23 @@ function drawQ(){var P=S.pend||[];$('qn').textContent=P.length||'';
 function drawLog(){var L=S.log||[];$('log').innerHTML=L.length?L.map(function(e){return '<div class="row"><span class="lk">'+(LK[e.k]||'•')+'</span><div class="t"><div class="d" style="color:var(--tx);font-size:13px">'+esc(e.x)+'</div></div><div class="d">'+esc(e.t)+'</div></div>'}).join(''):'<div class="empty">Записей пока нет</div>'}
 drawQ();drawLog();
 if((S.pend||[]).length&&location.hash.indexOf('tab=q')>=0){document.querySelector('[data-p=q]').click()}
+
+var SI={Core:'⚙️',Projects:'📁',Systems:'🖥',Runbooks:'📘',Scripts:'🧩',Archive:'🗄'};
+function drawBrain(){var B=S.brain||{sec:[],now:[],log:[]},q=($('bq').value||'').toLowerCase();
+ $('bnow').innerHTML=(B.now||[]).map(function(x){return '<div class="nw"><span>'+esc(x)+'</span></div>'}).join('')||'<div class="d">—</div>';
+ $('bsec').innerHTML=(B.sec||[]).map(function(sec){var it=sec.i.filter(function(i){return !q||(i.n+' '+i.d+' '+i.g).toLowerCase().indexOf(q)>=0});
+  if(!it.length)return '';return '<div class="card"><div class="ch">'+(SI[sec.n]||'•')+' '+esc(sec.n)+' · '+it.length+'</div>'+it.map(function(i){
+  return '<div class="row fi" data-doc="'+esc(i.p)+'"><span class="dot '+(i.s=='active'?'ok':'')+'"></span><div class="t"><div class="n">'+esc(i.n)+'</div><div class="d">'+esc(i.d)+'</div>'+
+  (i.g?'<div class="tags">'+i.g.split(',').map(function(g){return '<span>'+esc(g.trim())+'</span>'}).join('')+'</div>':'')+'</div><div class="d">'+esc(i.u)+'</div><span class="arr">›</span></div>'}).join('')+'</div>'}).join('')||'<div class="card empty">Ничего не найдено</div>';
+ $('blog').innerHTML=(B.log||[]).map(function(l){return '<div class="row"><div class="t"><div class="d" style="color:var(--tx)">'+esc(l)+'</div></div></div>'}).join('')||'<div class="empty">—</div>';
+ document.querySelectorAll('[data-doc]').forEach(function(el){el.onclick=function(){hap();send({v:1,a:'doc',p:el.dataset.doc})}})}
+$('bq').oninput=drawBrain;
+function inflate(b64){var s=b64.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';var bin=atob(s),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+ if(window.DecompressionStream){return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text()}
+ return new Promise(function(res,rej){var sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako_inflate.min.js';sc.onload=function(){res(pako.inflateRaw(u,{to:'string'}))};sc.onerror=rej;document.head.appendChild(sc)})}
+function boot(){drawQ();drawLog();drawBrain();draw()}
+var mz=location.hash.match(/[#&]z=([^&]+)/);
+if(mz){inflate(mz[1]).then(function(t){S=JSON.parse(t);E=JSON.parse(JSON.stringify(S));boot();if((S.pend||[]).length&&location.hash.indexOf('tab=q')>=0)document.querySelector('[data-p=q]').click()},function(){$('upd').textContent='Не удалось распаковать статус — обновите Telegram'})}else boot();
 </script>
 </body>
 </html>
