@@ -47,12 +47,25 @@ input:focus{border-color:var(--acc)}
 .r-ok{color:var(--ok)}.r-fail{color:var(--bad)}.r-wait{color:var(--blue)}
 .dirty{position:fixed;left:14px;right:14px;bottom:14px;background:var(--acc);color:#1f1e1d;font-weight:700;text-align:center;border-radius:12px;padding:13px;display:none;cursor:pointer}
 .page{display:none}.page.on{display:block}
+.badge{display:inline-block;min-width:16px;margin-left:5px;padding:0 5px;border-radius:8px;background:var(--acc);color:#1f1e1d;font-size:11px;line-height:16px}
+.badge:empty{display:none}
+.qc{padding:14px}.qc .s{color:var(--mut);font-size:12px;margin:8px 0 4px}.qc .qq{font-weight:600;margin-bottom:10px;overflow-wrap:anywhere}
+.ops{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.op{display:flex;gap:10px;align-items:center;padding:10px 12px;border-top:1px solid var(--line);cursor:pointer}
+.op:first-child{border-top:0}.op.on{background:#30302e}
+.rd{flex:none;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--dim);position:relative}
+.on .rd{border-color:var(--acc)}.on .rd:after{content:"";position:absolute;left:3px;top:3px;width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.qf{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.qb{font:inherit;font-size:14px;font-weight:600;border-radius:9px;padding:8px 16px;cursor:pointer}
+.qb.sk{background:none;color:var(--mut);border:1px solid var(--line)}.qb.sb{background:var(--tx);color:#1f1e1d;border:0}
+.qb:disabled{opacity:.4}
+.lk{flex:none;width:22px;text-align:center}
 </style>
 </head>
 <body>
 <h1><span class="logo">⚡</span>Hermes</h1>
 <div class="sub" id="upd">Панель управления кликером Claude</div>
-<div class="tabs"><div class="tab on" data-p="st">Статус</div><div class="tab" data-p="set">Настройки</div><div class="tab" data-p="pr">Проекты</div></div>
+<div class="tabs"><div class="tab on" data-p="st">Статус</div><div class="tab" data-p="q">Вопросы<span class="badge" id="qn"></span></div><div class="tab" data-p="set">Настройки</div><div class="tab" data-p="pr">Проекты</div></div>
 
 <div class="page on" id="p-st">
   <div class="card big"><span class="chip" id="chip"><i></i><span id="chipt"></span></span>
@@ -62,8 +75,12 @@ input:focus{border-color:var(--acc)}
     <div class="row"><span class="dot" id="d-n"></span><div class="t"><div class="n">Уведомления</div><div class="d" id="i-n"></div></div><div class="sw" id="sw-n"></div></div>
   </div>
   <div class="card"><div class="ch">Последние ответы</div><div id="hist"></div></div>
+  <div class="card"><div class="ch">Журнал кликера</div><div id="log"></div></div>
   <div class="card"><button class="btn solid" id="run">▶ Проверить Claude сейчас</button><button class="btn" id="ref" style="margin-top:0">↻ Обновить статус</button></div>
 </div>
+
+<div class="page" id="p-q"><div id="qs"></div>
+  <div class="hint">Ответ уходит кликеру сразу: он откроет сессию в Claude, выберет вариант и нажмёт Submit.</div></div>
 
 <div class="page" id="p-set">
   <div class="card"><div class="ch">Проверка</div>
@@ -130,6 +147,21 @@ $('save').onclick=function(){var p=pick(E);p.projects=p.projects.filter(function
 $('run').onclick=function(){send({v:1,a:'run'})};
 $('ref').onclick=function(){send({v:1,a:'refresh'})};
 draw();
+var LK={status:'•',start:'▶',question:'❓',answer_ok:'✅',answer_fail:'⚠️',fail:'⛔',notify:'🔔',panel:'⚡'};
+var QS={};
+function drawQ(){var P=S.pend||[];$('qn').textContent=P.length||'';
+ $('qs').innerHTML=P.length?P.map(function(q){var c=QS[q.id]||{};
+  return '<div class="card qc"><span class="chip"><i></i>Needs your input</span><div class="s">'+esc(q.s)+'</div><div class="qq">'+esc(q.q)+'</div><div class="ops">'+
+  q.o.map(function(o,i){return '<div class="op'+(c.k===i?' on':'')+'" data-q="'+q.id+'" data-k="'+i+'"><span class="rd"></span><span>'+esc(o)+'</span></div>'}).join('')+
+  '<div class="op'+(c.k==='o'?' on':'')+'" data-q="'+q.id+'" data-k="o"><span class="rd"></span><span style="flex:1">Other'+(c.k==='o'?'<input data-ot="'+q.id+'" placeholder="Свой ответ" value="'+esc(c.t||'')+'" style="margin-top:6px">':'')+'</span></div></div>'+
+  '<div class="qf"><button class="qb sk" data-skip="'+q.id+'">Skip</button><button class="qb sb" data-sub="'+q.id+'"'+((c.k===undefined||(c.k==='o'&&!(c.t||'').trim()))?' disabled':'')+'>Submit</button></div></div>'}).join(''):'<div class="card empty">Ожидающих вопросов нет</div>';
+ document.querySelectorAll('.op[data-q]').forEach(function(el){el.onclick=function(ev){if(ev.target.tagName=='INPUT')return;var id=el.dataset.q,k=el.dataset.k=='o'?'o':+el.dataset.k;QS[id]=QS[id]||{};QS[id].k=k;hap();drawQ();if(k==='o'){var i=document.querySelector('[data-ot="'+id+'"]');if(i)i.focus()}}});
+ document.querySelectorAll('[data-ot]').forEach(function(el){el.oninput=function(){QS[el.dataset.ot].t=el.value;var b=document.querySelector('[data-sub="'+el.dataset.ot+'"]');b.disabled=!el.value.trim()}});
+ document.querySelectorAll('[data-sub]').forEach(function(el){el.onclick=function(){var c=QS[el.dataset.sub];send({v:1,a:'ans',q:el.dataset.sub,k:c.k,t:c.t||''})}});
+ document.querySelectorAll('[data-skip]').forEach(function(el){el.onclick=function(){send({v:1,a:'ans',q:el.dataset.skip,k:'skip'})}});}
+function drawLog(){var L=S.log||[];$('log').innerHTML=L.length?L.map(function(e){return '<div class="row"><span class="lk">'+(LK[e.k]||'•')+'</span><div class="t"><div class="d" style="color:var(--tx);font-size:13px">'+esc(e.x)+'</div></div><div class="d">'+esc(e.t)+'</div></div>'}).join(''):'<div class="empty">Записей пока нет</div>'}
+drawQ();drawLog();
+if((S.pend||[]).length&&location.hash.indexOf('tab=q')>=0){document.querySelector('[data-p=q]').click()}
 </script>
 </body>
 </html>
