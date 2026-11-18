@@ -525,7 +525,7 @@ function settings(){var N=[['question','Вопросы агентов','карт
  schedUI()+'<div class="sec"><div class="sh"><span>Шаблоны ответов</span><a data-a="addtpl">+ добавить</a></div><div class="grp">'+(E.tpl.map(function(t,i){return '<div class="row" style="padding:8px 8px 8px 14px;min-height:0"><div class="tplrow" style="flex:1"><input class="in" data-in="tpl:'+i+'" value="'+esc(t)+'" placeholder="Текст шаблона"></div><span class="x" data-a="deltpl" data-x="'+i+'">×</span></div>'}).join('')||'<div class="row" style="color:var(--mut)">Нет шаблонов</div>')+'</div><div class="hint" style="padding-left:2px">Чипы в «Другое» у вопроса и в «Написать Claude».</div></div>'+
  '<div class="sec"><div class="sh"><span>Бюджет токенов</span></div><div class="grp"><div class="row" style="display:block"><div class="d" style="margin-bottom:6px">В сутки</div>'+seg([4,6,8,12],E.budget,'bud',' млн')+
  '<div class="d" style="margin:12px 0 6px">Предупредить, когда прогноз дойдёт до</div>'+seg([70,80,90,0],E.warn,'warn','',['70%','80%','90%','не надо'])+'</div></div></div>'+
- '<div class="sec"><div class="sh"><span>Приложение</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Вибрация</div><div class="d">отклик на нажатия</div></div>'+sw(U.haptics,'hap')+'</div>'+'<div class="row"><div class="t"><div class="n">Подтверждать '+bioName()+'</div><div class="d">стоп, принудительный перезапуск, Allow'+(bioOK()||!U.bio?'':' · на этом устройстве нет — будет удержание')+'</div></div>'+sw(U.bio,'bio')+'</div>'+
+ '<div class="sec"><div class="sh"><span>Приложение</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Вибрация</div><div class="d">отклик на нажатия</div></div>'+sw(U.haptics,'hap')+'</div>'+'<div class="row"><div class="t"><div class="n">Подтверждать '+bioName()+'</div><div class="d">стоп, принудительный перезапуск, Allow'+(U.bio&&bioWhy()?' · '+esc(bioWhy())+', пока будет удержание':'')+'</div></div>'+sw(U.bio,'bio')+'</div>'+'<div class="row tap" data-a="biotest"><div class="t"><div class="n">Проверить '+bioName()+'</div><div class="d">'+(U.bioLast?'последняя попытка: '+esc(U.bioLast.step):'покажу системный запрос; итог уйдёт на ПК')+'</div></div><span class="chev">›</span></div>'+
  '<div class="row tap" data-a="full"><div class="t"><div class="n">Во весь экран</div><div class="d">без шапки Telegram</div></div><span class="chev">›</span></div>'+
  '<div class="row tap" data-a="homescreen"><div class="t"><div class="n">Добавить на домашний экран</div><div class="d">открывать Hermes как приложение</div></div><span class="chev">›</span></div></div></div>'+
  '<div class="sec"><div class="btn danger" data-a="stopsheet">■ Остановить всё</div></div>'}
@@ -550,7 +550,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=40;
+var VER=41;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">⬆ Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">⚠ ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -641,15 +641,38 @@ function atSheet(){U.at=U.at||{do:'start',t:'09:00'};sheet('<h3>Разовое �
  '<div class="d" style="margin:12px 0 6px">Когда</div>'+seg(['+60m','09:00','13:00','18:00','23:00'],U.at.t,'att','',['через 1 ч','09:00','13:00','18:00','23:00'])+
  '<div class="btn pri" data-a="atgo" style="margin-top:14px">Запланировать</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
-/* биометрия */
-var BM=null;
-function bioInit(){if(MOCK)return;try{BM=tg&&tg.BiometricManager;if(BM&&!BM.isInited)BM.init(function(){if(U.page=='sys'||U.tab=='set')render(true)})}catch(e){BM=null}}
+/* биометрия: Telegram BiometricManager (Bot API 7.2+). Каждая неудача уходит на ПК (bio_diag), чтобы видеть причину. */
+var BM=null,BMQ=[];
+function bmInfo(){var v=tg&&tg.version||'?';if(!BM)return {v:v,bm:0};return {v:v,bm:1,init:BM.isInited?1:0,av:BM.isBiometricAvailable?1:0,type:BM.biometricType||'',req:BM.isAccessRequested?1:0,gr:BM.isAccessGranted?1:0,plat:tg.platform||''}}
+function bioDiag(step,extra){if(MOCK||!API)return;var d=Object.assign({step:step},bmInfo(),extra||{});U.bioLast=d;
+ try{fetch(API.replace(/\/$/,'')+'/api',{method:'POST',headers:{'Content-Type':'application/json','X-Init-Data':tg?tg.initData:''},body:JSON.stringify({v:1,a:'bio_diag',d:d})})}catch(e){}}
+function once(fn,ms,onTimeout){var done=false,t=setTimeout(function(){if(done)return;done=true;onTimeout()},ms);return function(){if(done)return;done=true;clearTimeout(t);fn.apply(null,arguments)}}
+function bioInit(cb){if(MOCK){cb&&cb();return}
+ try{if(!(tg&&tg.isVersionAtLeast&&tg.isVersionAtLeast('7.2'))){BM=null;cb&&cb();return}BM=tg.BiometricManager}catch(e){BM=null}
+ if(!BM){cb&&cb();return}if(BM.isInited){cb&&cb();return}
+ if(cb)BMQ.push(cb);if(BMQ.length>1)return;
+ var flush=function(){var q=BMQ;BMQ=[];q.forEach(function(f){f()});if(U.tab=='set'||U.page=='sys')render(true)};
+ try{BM.init(once(flush,4000,function(){bioDiag('init_timeout');flush()}))}catch(e){bioDiag('init_throw',{e:String(e).slice(0,80)});flush()}}
 function bioOK(){if(!U.bio)return false;if(MOCK)return !!MOCK.bio;return !!(BM&&BM.isInited&&BM.isBiometricAvailable)}
 function bioName(){return !MOCK&&BM&&BM.biometricType=='finger'?'отпечаток':'Face ID'}
-function bioAuth(reason,fn){if(!bioOK()){fn();return}
- if(MOCK){U.bioFn=fn;sheet('<h3>'+bioName()+' · симуляция</h3><p>'+esc(reason)+'</p><div class="btn pri" data-a="biook">Подтвердить</div><div class="btn" data-a="unsheet">Отмена</div>');return}
- var go=function(){BM.authenticate({reason:reason},function(ok){if(ok)fn();else toast('Не подтверждено — ничего не сделал')})};
- if(!BM.isAccessGranted)BM.requestAccess({reason:'Подтверждать опасные действия в панели Hermes'},function(g){if(g)go();else{U.bio=false;LS.set('bio',false);toast('Доступ не дан — буду спрашивать удержанием')}});else go()}
+function bioWhy(){if(MOCK)return '';if(!tg||!inTG())return 'открыто не в Telegram';if(!(tg.isVersionAtLeast&&tg.isVersionAtLeast('7.2')))return 'Telegram '+(tg.version||'?')+' слишком старый, нужен 7.2+';
+ if(!BM||!BM.isInited)return 'проверяю…';if(!BM.isBiometricAvailable)return 'Telegram не видит Face ID на этом устройстве';
+ if(BM.isAccessRequested&&!BM.isAccessGranted)return 'доступ запрещён — включи в настройках бота';return ''}
+function bioAuth(reason,fn){
+ if(MOCK){if(!bioOK()){fn();return}U.bioFn=fn;sheet('<h3>'+bioName()+' · симуляция</h3><p>'+esc(reason)+'</p><div class="btn pri" data-a="biook">Подтвердить</div><div class="btn" data-a="unsheet">Отмена</div>');return}
+ bioInit(function(){
+  if(!bioOK()){bioDiag('unavailable');holdThen(reason,fn);return}
+  var fallback=function(why){bioDiag(why);toast('Face ID не ответил — подтверди удержанием');holdThen(reason,fn)};
+  var go=function(){try{BM.authenticate({reason:reason},once(function(ok){bioDiag(ok?'auth_ok':'auth_fail');if(ok)fn();else toast('Не подтверждено — ничего не сделал')},60000,function(){fallback('auth_timeout')}))}catch(e){bioDiag('auth_throw',{e:String(e).slice(0,80)});holdThen(reason,fn)}};
+  if(BM.isAccessGranted){go();return}
+  if(BM.isAccessRequested){bioDiag('denied');holdThen(reason,fn);toast('Доступ к Face ID запрещён — подтверди удержанием или <a data-a="bioset">открой настройки</a>');return}
+  try{BM.requestAccess({reason:'Подтверждать опасные действия в панели Hermes'},once(function(g){bioDiag(g?'access_ok':'access_no');if(g)go();else{holdThen(reason,fn);toast('Доступ не дан — подтверди удержанием или <a data-a="bioset">открой настройки</a>')}},60000,function(){fallback('access_timeout')}))}catch(e){bioDiag('req_throw',{e:String(e).slice(0,80)});holdThen(reason,fn)}
+ })}
+/* запасное подтверждение: удержание кнопки 1,2 с (то же, что «Стоп» без Face ID) */
+var HOLDFN=null;
+function holdThen(reason,fn){HOLDFN=fn;sheet('<h3>Подтверди удержанием</h3><p>'+esc(reason)+'</p><div class="btn hold" id="hold" data-fn="1"><i></i><span>Удерживай 1 секунду</span></div><div class="btn" data-a="unsheet">Отмена</div>')}
+function bioTest(){bioInit(function(){var w=bioWhy();if(w){bioDiag('test_unavailable');toast(esc(w));render(true);return}
+ bioAuth('Проверка Face ID в панели Hermes',function(){toast('<b>✓</b> '+bioName()+' работает');render(true)})})}
 
 /* открыть на вопросе (из уведомления) */
 function openQ(id){var q=S.pend.filter(function(z){return z.id==id})[0];if(!q){toast('Этот вопрос уже закрыт');return}
@@ -760,6 +783,8 @@ document.addEventListener('click',function(ev){
  case 'stopbio':unsheet();bioAuth('Остановить кликер, уведомления и автоответ',function(){send({a:'stop'})});return;
  case 'biook':unsheet();var bf=U.bioFn;U.bioFn=null;if(bf)bf();return;
  case 'bio':U.bio=!U.bio;LS.set('bio',U.bio);break;
+ case 'biotest':bioTest();return;
+ case 'bioset':try{BM.openSettings()}catch(e){toast('Настройки: профиль бота → ⋯ → Биометрия')}return;
  default:if(a.indexOf('nt:')==0){var k=a.slice(3);E.notify[k]=!E.notify[k]}
  }
  render(true)});
@@ -777,7 +802,7 @@ document.addEventListener('input',function(ev){var k=ev.target.dataset.in;if(!k)
  if(m[0]=='tpl')E.tpl[+m[1]]=ev.target.value;else if(m[0]=='rm'||m[0]=='rk')E.auto.rules[+m[1]][m[0]=='rm'?'m':'k']=ev.target.value;else E.projects[+m[1]][m[0]=='pn'?'name':'desc']=ev.target.value;
  if(had!=dirty())keepFocus(k)});
 /* стоп удержанием */
-var HT;function holdStart(ev){var b=ev.target.closest('#hold');if(!b)return;ev.preventDefault();b.classList.add('go');haptic('sel');HT=setTimeout(function(){b.classList.remove('go');unsheet();haptic('warning');send({a:'stop'})},1200)}
+var HT;function holdStart(ev){var b=ev.target.closest('#hold');if(!b)return;ev.preventDefault();b.classList.add('go');haptic('sel');HT=setTimeout(function(){b.classList.remove('go');unsheet();haptic('warning');if(b.dataset.fn&&HOLDFN){var f=HOLDFN;HOLDFN=null;f()}else send({a:'stop'})},1200)}
 function holdEnd(){clearTimeout(HT);var b=$('hold');if(b&&b.classList.contains('go')){b.classList.remove('go');toast('Держи кнопку 1 секунду')}}
 document.addEventListener('pointerdown',holdStart);document.addEventListener('pointerup',holdEnd);document.addEventListener('pointercancel',holdEnd);document.addEventListener('pointerleave',holdEnd);
 /* потянуть вниз = обновить */
