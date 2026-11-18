@@ -262,7 +262,7 @@ var DEF={quiet:{on:false,from:'23:00',to:'08:00',q:true,fail:true},auto:{on:fals
 var S={v:1,ts:0,clicker:{on:false,iv:5},notifier:{on:false},session:'',action:'',fails:0,hang:20,notify:{start:true,question:true,hang:true,fail:true},projects:[],hist:[],log:[],pend:[],brain:{sec:[],now:[],log:[]},budget:6,pause:0,stopped:false,cancel:[],tl:null,tok:null,steps:[],away:null};
 var E,LOADING=true,U={tab:'home',page:null,qsel:{},bq:'',bfull:false,grep:null,seg:-1,step:-1,jt:'sess',jf:'all',jq:'',haptics:LS.get('hap',true),col:LS.get('col',{}),say:{t:'',ag:'claude'},nowEd:null};
 function norm(){S.quiet=Object.assign({},DEF.quiet,S.quiet||{});S.auto=Object.assign({},DEF.auto,S.auto||{});
- ['pend','hist','log','steps','cancel','projects','sess','health'].forEach(function(k){S[k]=S[k]||[]});S.brain=S.brain||{sec:[],now:[],log:[]};S.budget=S.budget||6;
+ ['pend','hist','log','steps','cancel','projects','sess','health','cj','hs'].forEach(function(k){S[k]=S[k]||[]});S.brain=S.brain||{sec:[],now:[],log:[]};S.budget=S.budget||6;
  S.clicker=S.clicker||{on:false,iv:5};S.notifier=S.notifier||{on:false};S.tpl=S.tpl||DEF.tpl.slice();S.warn=S.warn==null?80:S.warn;
  S.agents=S.agents||[{id:'claude',on:true},{id:'codex',on:false}];
  E={clicker:{on:S.clicker.on,iv:S.clicker.iv},notifier:{on:S.notifier.on},hang:S.hang,notify:Object.assign({},S.notify),projects:JSON.parse(JSON.stringify(S.projects)),quiet:Object.assign({},S.quiet),auto:Object.assign({},S.auto),budget:S.budget,tpl:S.tpl.slice(),warn:S.warn}}
@@ -457,8 +457,19 @@ function agentPage(id){var on=agOn(id),a=S.agents.filter(function(x){return x.id
 /* ---------- система ---------- */
 function sysPage(){var H=S.health,bad=hBad();
  return '<div class="back" data-a="back">‹ Назад</div><div class="ph"><div class="logo" data-st="'+(bad.length?'bad':'ok')+'"></div><div><h2>Система</h2><div class="d">'+(bad.length?bad.length+' из '+H.length+' требуют внимания':'Все '+H.length+' компонентов в норме')+'</div></div></div>'+
- '<div class="sec"><div class="grp">'+H.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+(x.ts?' · '+ago(x.ts):'')+'</div></div>'+(x.busy?'<div class="btn sm dis" style="min-height:36px;padding:0 10px">…</div>':'')+(x.ff?'<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--bad,#e5484d)" data-a="fixforce" data-x="'+x.k+'">Принудительно</div>':'')+(x.fix?'<div class="btn sm" style="min-height:36px;padding:0 10px'+(x.ok?';color:var(--mut)':'')+'" data-a="fix" data-x="'+x.k+'">'+esc(x.fl||'Перезапустить')+'</div>':'')+'</div>'}).join('')+'</div></div>'+
+ '<div class="sec"><div class="grp">'+H.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+(x.ts?' · '+ago(x.ts):'')+'</div></div>'+(x.busy?'<div class="btn sm dis" style="min-height:36px;padding:0 10px">…</div>':'')+(x.ff?'<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--bad,#e5484d)" data-a="fixforce" data-x="'+x.k+'">Принудительно</div>':'')+(x.fix?'<div class="btn sm" style="min-height:36px;padding:0 10px'+(x.ok?';color:var(--mut)':'')+'" data-a="fix" data-x="'+x.k+'">'+esc(x.fl||'Перезапустить')+'</div>':'')+'</div>'}).join('')+'</div></div>'+cronBlock()+hsBlock()+
  '<div class="hint">Gateway перезапускается мягко: если идёт ход Hermes, перезапуска не будет, появится «Принудительно». Пока gateway встаёт (~30 с), бот и Webapp молчат, итог придёт в Telegram. Если gateway не отвечает 5 мин, сервер панели перезапустит его сам (не больше 2 раз в час).</div>'}
+
+/* ---------- этап C: cron и сессии Hermes ---------- */
+function hmT(ts){if(!ts)return '—';var d=new Date(ts*1000);return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+function cronBlock(){if(!S.cj.length)return '';
+ return '<div class="sec"><div class="sh"><span>Задачи cron</span></div><div class="grp">'+S.cj.map(function(j){
+  return '<div class="row"><span class="dot '+(!j.on?'':(j.ok?'ok':'bad'))+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(j.n)+'</div><div class="d">'+esc(j.s)+(j.on?' · след. '+hmT(j.nx):' · на паузе')+(j.last?' · был '+ago(j.last):'')+(j.on&&!j.ok&&j.last?' · сбой':'')+'</div></div>'+
+  '<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--mut)" data-a="cronrun" data-x="'+j.id+'">Запустить</div>'+
+  '<div class="btn sm" style="min-height:36px;padding:0 10px" data-a="cronpr" data-x="'+j.id+'">'+(j.on?'Пауза':'Включить')+'</div></div>'}).join('')+'</div></div>'}
+function hsBlock(){if(!S.hs.length)return '';
+ return '<div class="sec"><div class="sh"><span>Последние сессии Hermes</span></div><div class="grp">'+S.hs.map(function(h){
+  return '<div class="row"><div class="t"><div class="n" style="font-size:14.5px">'+esc(h.n)+'</div><div class="d">'+esc(h.m)+' · '+esc(h.src)+' · '+h.msg+' сообщ. · '+(h.tok>=1000?(h.tok/1000).toFixed(1)+' млн':h.tok+' тыс.')+' ток. · '+ago(h.t)+'</div></div></div>'}).join('')+'</div></div>'}
 
 /* ---------- настройки ---------- */
 function settings(){var N=[['question','Вопросы агентов','карточки с вариантами'],['start','Start нажат','запущен следующий шаг'],['hang','Зависание','сессия не меняется дольше порога'],['fail','Сбои','агент не отвечает, клик не прошёл']];
@@ -553,6 +564,8 @@ document.addEventListener('click',function(ev){
  case 'refresh':refresh();return;
  case 'restore':send({a:'restore'});return;
  case 'fix':if(x)send({a:'fix',k:x});return;
+ case 'cronrun':if(x)send({a:'cron',k:'run',id:x});return;
+ case 'cronpr':if(x){var cj=S.cj.filter(function(j){return j.id==x})[0];send({a:'cron',k:cj&&cj.on?'pause':'resume',id:x})}return;
  case 'fixforce':forceSheet(x);return;
  case 'fixforce_go':unsheet();send({a:'fix',k:x,f:1});return;
  case 'hermes':haptic('sel');if(MOCK){toast('→ '+esc(S.wa));return}location.href=S.wa;return;
