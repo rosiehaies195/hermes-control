@@ -372,7 +372,11 @@ function feed(){return '<div class="sec"><div class="sh col'+(U.col.feed?' shut'
 function colSec(k,t,body){return '<div class="sec"><div class="sh col'+(U.col[k]?' shut':'')+'" data-a="col" data-x="'+k+'"><span>'+t+'</span></div>'+(U.col[k]?'':'<div class="grp">'+body+'</div>')+'</div>'}
 function sw(on,a){return '<div class="sw'+(on?' on':'')+'" data-a="'+a+'" role="switch" aria-checked="'+!!on+'"></div>'}
 function seg(vals,cur,a,suf,lbl){return '<div class="seg">'+vals.map(function(v,i){return '<span data-a="'+a+'" data-x="'+v+'" class="'+(v==cur?'on':'')+'">'+(lbl?lbl[i]:v+(suf||''))+'</span>'}).join('')+'</div>'}
-function home(){return hd()+alerts()+awayCard()+nowCard()+colSec('strip','Сессия · 12 ч',strip())+colSec('path','Дорожка шагов',pathView())+autoGrp()+tokens()+feed()}
+function hermesCard(){if(!S.wa)return '';var g=S.health.filter(function(h){return h.k=='gateway'})[0]||{ok:1};
+ return '<div class="sec"><div class="grp"><div class="row"><div class="logo" data-st="'+(g.ok?'ok':'bad')+'" style="width:34px;height:34px"></div><div class="t"><div class="n">Hermes</div><div class="d">'+(g.ok?'сессии, модели, файлы · нужен Tailscale':esc(g.d||'gateway не отвечает'))+'</div></div>'+
+ (g.ok?'<div class="btn sm" style="min-height:40px;padding:0 14px" data-a="hermes">Открыть</div>':'<div class="btn sm" style="min-height:40px;padding:0 12px" data-a="'+(g.busy?'':'fix')+'" data-x="gateway">'+(g.busy?'…':'Перезапустить')+'</div>')+'</div>'+
+ (g.ok?'<div class="row tap" data-a="hermes_ext" style="min-height:40px;padding:8px 14px"><div class="t"><div class="d">Открыть в Safari</div></div><span class="chev">›</span></div>':'')+'</div></div>'}
+function home(){return hd()+alerts()+awayCard()+nowCard()+hermesCard()+colSec('strip','Сессия · 12 ч',strip())+colSec('path','Дорожка шагов',pathView())+autoGrp()+tokens()+feed()}
 
 /* ---------- вопросы ---------- */
 function qcard(q){var c=U.qsel[q.id]||{},dis=c.k===undefined||(c.k==='o'&&!(c.t||'').trim()),ag=q.ag||'claude';
@@ -453,8 +457,8 @@ function agentPage(id){var on=agOn(id),a=S.agents.filter(function(x){return x.id
 /* ---------- система ---------- */
 function sysPage(){var H=S.health,bad=hBad();
  return '<div class="back" data-a="back">‹ Назад</div><div class="ph"><div class="logo" data-st="'+(bad.length?'bad':'ok')+'"></div><div><h2>Система</h2><div class="d">'+(bad.length?bad.length+' из '+H.length+' требуют внимания':'Все '+H.length+' компонентов в норме')+'</div></div></div>'+
- '<div class="sec"><div class="grp">'+H.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+(x.ts?' · '+ago(x.ts):'')+'</div></div>'+(x.fix?'<div class="btn sm" style="min-height:36px;padding:0 10px'+(x.ok?';color:var(--mut)':'')+'" data-a="fix" data-x="'+x.k+'">'+esc(x.fl||'Перезапустить')+'</div>':'')+'</div>'}).join('')+'</div></div>'+
- '<div class="hint">Перезапуск доступен только там, где это безопасно. Gateway отсюда не перезапускается: он обрывает текущий чат.</div>'}
+ '<div class="sec"><div class="grp">'+H.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+(x.ts?' · '+ago(x.ts):'')+'</div></div>'+(x.busy?'<div class="btn sm dis" style="min-height:36px;padding:0 10px">…</div>':'')+(x.ff?'<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--bad,#e5484d)" data-a="fixforce" data-x="'+x.k+'">Принудительно</div>':'')+(x.fix?'<div class="btn sm" style="min-height:36px;padding:0 10px'+(x.ok?';color:var(--mut)':'')+'" data-a="fix" data-x="'+x.k+'">'+esc(x.fl||'Перезапустить')+'</div>':'')+'</div>'}).join('')+'</div></div>'+
+ '<div class="hint">Gateway перезапускается мягко: если идёт ход Hermes, перезапуска не будет, появится «Принудительно». Пока gateway встаёт (~30 с), бот и Webapp молчат, итог придёт в Telegram. Если gateway не отвечает 5 мин, сервер панели перезапустит его сам (не больше 2 раз в час).</div>'}
 
 /* ---------- настройки ---------- */
 function settings(){var N=[['question','Вопросы агентов','карточки с вариантами'],['start','Start нажат','запущен следующий шаг'],['hang','Зависание','сессия не меняется дольше порога'],['fail','Сбои','агент не отвечает, клик не прошёл']];
@@ -479,6 +483,7 @@ function sheet(h){$('sheet').innerHTML='<div class="gr"></div>'+h;$('sheet').cla
 function unsheet(){$('sheet').classList.remove('on');$('veil').classList.remove('on')}
 function pauseSheet(){var n=nowS();sheet('<h3>Пауза кликера</h3><p>Никаких Start и кликов в Claude. Вопросы продолжат приходить, по окончании кликер включится сам.</p>'+
  [['+30m','30 минут',n+1800],['+60m','1 час',n+3600],['+180m','3 часа',n+10800],['09:00','до 09:00',0],['tomorrow','до завтра 09:00',0]].map(function(o){return '<div class="opt" data-a="pause" data-x="'+o[0]+'">'+o[1]+'<span>'+(o[2]?'до '+hm(o[2]):'')+'</span></div>'}).join('')+'<div class="btn" data-a="unsheet">Отмена</div>')}
+function forceSheet(k){sheet('<h3>Перезапустить принудительно?</h3><p>Сейчас идёт ход Hermes (чат или задача). Он оборвётся, сессия останется, продолжишь её сообщением.</p><div class="btn" style="color:var(--bad,#e5484d)" data-a="fixforce_go" data-x="'+k+'">Оборвать и перезапустить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 function stopSheet(){sheet('<h3>Остановить всё?</h3><p>Выключу кликер, уведомления и автоответ. Claude продолжит текущий шаг сам, но без Start и ответов из Telegram.</p><div class="btn hold" id="hold"><i></i><span>Удерживай, чтобы остановить</span></div><div class="btn" data-a="unsheet">Отмена</div>')}
 function startSheet(){var ss=sessState(),wk=ss.st=='Working';
  sheet('<h3>Нажать Start сейчас?</h3><p>Кликер найдёт карточку следующего шага в проектной сессии и нажмёт Start, не дожидаясь тика.</p>'+
@@ -547,7 +552,11 @@ document.addEventListener('click',function(ev){
  case 'run':send({a:'run'});return;
  case 'refresh':refresh();return;
  case 'restore':send({a:'restore'});return;
- case 'fix':send({a:'fix',k:x});return;
+ case 'fix':if(x)send({a:'fix',k:x});return;
+ case 'fixforce':forceSheet(x);return;
+ case 'fixforce_go':unsheet();send({a:'fix',k:x,f:1});return;
+ case 'hermes':haptic('sel');if(MOCK){toast('→ '+esc(S.wa));return}location.href=S.wa;return;
+ case 'hermes_ext':if(MOCK){toast('openLink '+esc(S.wa));return}try{tg.openLink(S.wa,{try_browser:'safari'})}catch(e){window.open(S.wa,'_blank')}return;
  case 'undo':if(U.undo){var u=U.undo;U.undo=null;$('toast').classList.remove('on');send(u,false)}return;
  case 'pausesheet':pauseSheet();return;
  case 'stopsheet':stopSheet();return;
