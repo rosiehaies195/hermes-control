@@ -145,6 +145,15 @@ input.in:focus{border-color:var(--gold)}
 .qb.sb{background:var(--cl-tx);color:var(--cl-s);border:0}
 .qb:disabled{opacity:.35;cursor:default}
 .qcard .auto{font-family:Inter,sans-serif;color:var(--cl-mut)}.qcard .auto a{color:var(--cl-tx)}
+.reader{padding:6px 18px 10px;font-size:14.5px;overflow-wrap:anywhere}
+.reader h1{font-size:20px;margin:12px 0 6px}.reader h2,.reader h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin:18px 0 6px}
+.reader ul{padding-left:18px;margin:4px 0}.reader li{margin:3px 0}.reader li::marker{color:var(--gold)}.reader p{margin:6px 0}
+.reader code{font:12.5px "JetBrains Mono",monospace;background:var(--s2);border-radius:4px;padding:1px 4px}
+.reader pre{font:12px "JetBrains Mono",monospace;background:var(--s2);border-radius:8px;padding:8px;overflow-x:auto}
+.reader .fm{font:11.5px "JetBrains Mono",monospace;color:var(--dim);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.snap{display:block;width:100%;border-radius:10px;margin-bottom:12px;border:1px solid var(--cl-line);cursor:zoom-in;min-height:60px;background:var(--cl-line)}
+.viewer{position:fixed;inset:0;z-index:70;background:#000;display:none;overflow:auto}.viewer.on{display:block}
+.viewer img{width:200%;max-width:none;display:block}.viewer span{position:fixed;top:12px;right:12px;width:44px;height:44px;border-radius:22px;background:#000a;color:#fff;display:grid;place-items:center;font-size:20px;cursor:pointer}
 .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
 .tags span{font:11px "JetBrains Mono",monospace;color:var(--mut);background:var(--s2);border-radius:6px;padding:1px 6px}
 .now ul{margin:0;padding:12px 14px 12px 30px}.now li{margin-bottom:6px;font-size:14px}.now li::marker{color:var(--gold)}
@@ -174,6 +183,7 @@ input.in:focus{border-color:var(--gold)}
 <div class="toast" id="toast"></div>
 <div class="veil" id="veil"></div>
 <div class="sheet" id="sheet"></div>
+<div class="viewer" id="viewer"><img id="vimg" alt=""><span data-a="unview">×</span></div>
 <script>
 /* Hermes control v2. Data: #z=<deflate-raw base64url JSON> from tv_panel.py (or GET {api}/api/state when the hash has api=).
    Actions: Telegram.WebApp.sendData (or POST {api}/api with X-Init-Data). Payload contract: runbooks/miniapp-panel.md in hermes-brain. */
@@ -204,9 +214,13 @@ function haptic(k){if(!U.haptics)return;try{k=='sel'?tg.HapticFeedback.selection
 function inTG(){return !!(tg&&tg.platform&&tg.platform!='unknown')}
 function send(o){o=Object.assign({v:1},o);haptic('success');
  if(API){fetch(API.replace(/\/$/,'')+'/api',{method:'POST',headers:{'Content-Type':'application/json','X-Init-Data':tg?tg.initData:''},body:JSON.stringify(o)})
-  .then(function(r){if(!r.ok)throw r;return r.json()}).then(function(r){toast('<b>✓</b> '+esc(r.text||'Готово'));if(r.state){S=r.state;norm();render(true)}})
+  .then(function(r){if(!r.ok)throw r;return r.json()}).then(function(r){toast('<b>✓</b> '+esc(r.text||'Готово'));if(r.state){S=r.state;norm();if(o.a=='ans')U.qsel={};render(true)}})
   .catch(function(){toast('Сервер недоступен — отправляю через бота');sd(o)});return}
  sd(o)}
+function api(path,opt){opt=opt||{};opt.headers=Object.assign({'X-Init-Data':tg?tg.initData:''},opt.headers||{});return fetch(API.replace(/\/$/,'')+path,opt).then(function(r){if(!r.ok)throw r;return r})}
+var SNAP={};
+function loadSnap(){if(!API||SNAP.busy||(SNAP.t&&Date.now()-SNAP.t<60000))return;SNAP.busy=1;api('/api/snap').then(function(r){return r.blob()}).then(function(b){if(SNAP.url)URL.revokeObjectURL(SNAP.url);SNAP={url:URL.createObjectURL(b),t:Date.now()};render(true)}).catch(function(){SNAP={t:Date.now(),none:1}})}
+function poll(){if(!API||document.hidden||$('sheet').classList.contains('on')||dirty()||document.activeElement&&document.activeElement.tagName=='INPUT')return;api('/api/state').then(function(r){return r.json()}).then(function(d){var a=JSON.stringify(S);S=d;norm();if(JSON.stringify(S)!=a)render(true)}).catch(function(){})}
 function sd(o){var s=JSON.stringify(o);window.__sent=(window.__sent||[]).concat([s]);if(inTG())tg.sendData(s);else toast('<b>sendData</b> (вне Telegram): '+esc(s.slice(0,140)))}
 
 /* ---------- статус ---------- */
@@ -274,7 +288,7 @@ function home(){return hd()+alerts()+awayCard()+agentsList()+'<div class="sec"><
 
 /* ---------- вопросы ---------- */
 function qcard(q){var c=U.qsel[q.id]||{},dis=c.k===undefined||(c.k==='o'&&!(c.t||'').trim()),ag=q.ag||'claude';
- return '<div class="qcard '+(ag=='codex'?'codex':'')+'"><div class="qh">'+LG(ag,'lg')+(ag=='codex'?'Codex':'Claude')+' спрашивает<span class="t">'+(q.ts?ago(q.ts):'')+'</span></div><div class="qs">'+esc(q.s)+'</div><div class="qq">'+esc(q.q)+'</div><div class="ops">'+
+ return '<div class="qcard '+(ag=='codex'?'codex':'')+'"><div class="qh">'+LG(ag,'lg')+(ag=='codex'?'Codex':'Claude')+' спрашивает<span class="t">'+(q.ts?ago(q.ts):'')+'</span></div><div class="qs">'+esc(q.s)+'</div>'+(API&&ag=='claude'&&SNAP.url?'<img class="snap" src="'+SNAP.url+'" data-a="view" alt="Окно Claude">':'')+'<div class="qq">'+esc(q.q)+'</div><div class="ops">'+
  q.o.map(function(o,i){return '<div class="op'+(c.k===i?' on':'')+'" data-a="qsel" data-q="'+q.id+'" data-x="'+i+'"><span class="rd"></span><span>'+esc(o)+'</span></div>'}).join('')+
  '<div class="op'+(c.k==='o'?' on':'')+'" data-a="qsel" data-q="'+q.id+'" data-x="o"><span class="rd"></span><span style="flex:1">Другое'+(c.k==='o'?'<input class="in" data-in="other" data-q="'+q.id+'" placeholder="Свой ответ" value="'+esc(c.t||'')+'">':'')+'</span></div></div>'+autoLine(q)+
  '<div class="qf"><button class="qb sk" data-a="qskip" data-q="'+q.id+'">Пропустить</button><button class="qb sb" data-a="qsub" data-q="'+q.id+'"'+(dis?' disabled':'')+'>Ответить</button></div></div>'}
@@ -289,7 +303,7 @@ function brain(){var B=S.brain;return hd()+'<div class="sec" style="margin-top:4
  '<div class="sec"><input class="in" data-in="bq" placeholder="Поиск: название, тег, описание" value="'+esc(U.bq)+'"></div>'+
  ((B.sec||[]).map(function(s){var it=s.i.filter(match);if(!it.length)return '';return '<div class="sec"><div class="sh">'+esc(s.n)+' · '+it.length+'</div><div class="grp">'+it.map(function(i){return '<div class="row tap" data-a="doc" data-x="'+esc(i.p)+'"><div class="t"><div class="n" style="font-size:14.5px">'+esc(i.n)+'</div><div class="d">'+esc(i.d)+'</div>'+(i.g?'<div class="tags">'+i.g.split(',').map(function(g){return '<span>'+esc(g.trim())+'</span>'}).join('')+'</div>':'')+'</div><span class="mono" style="font-size:11.5px;color:var(--dim)">'+esc(i.u)+'</span><span class="chev">›</span></div>'}).join('')+'</div></div>'}).join('')||'<div class="empty">Ничего не найдено</div>')+
  '<div class="sec"><div class="sh">Последние изменения</div><div class="grp">'+(B.log||[]).map(function(l){return '<div class="row" style="min-height:0"><div class="t mono" style="font-size:12px;color:var(--mut)">'+esc(l)+'</div></div>'}).join('')+'</div></div>'+
- '<div class="hint">Нажмите на файл — бот пришлёт его в чат.</div>'}
+ '<div class="hint">'+(API?'Файл откроется здесь же; «Прислать в чат» — бот пришлёт его.':'Нажмите на файл — бот пришлёт его в чат.')+'</div>'}
 
 /* ---------- агент ---------- */
 function agentPage(id){var h='<div class="back" data-a="back">‹ Пульт</div><div style="display:flex;gap:14px;align-items:center;padding:12px 16px 0"><span class="ag '+(id=='claude'?id:'soon')+'" style="width:56px;height:56px;border-radius:14px">'+LG(id)+'</span><div><h2 style="margin:0;font-size:22px">'+(id=='claude'?'Claude':'Codex')+'</h2><div style="color:var(--mut);font-size:13px">'+(id=='claude'?'Claude Desktop · кликер + хуки':'OpenAI Codex CLI')+'</div></div></div>';
@@ -300,6 +314,16 @@ function agentPage(id){var h='<div class="back" data-a="back">‹ Пульт</di
  '<div class="sec"><div class="sh">Проекты под наблюдением <a data-a="addp">+ добавить</a></div><div class="grp">'+(E.projects.map(function(p,i){return '<div class="row"><div style="flex:1;display:grid;gap:6px"><input class="in" data-in="pn:'+i+'" placeholder="Название проекта (как в Claude)" value="'+esc(p.name)+'"><input class="in" data-in="pd:'+i+'" placeholder="Пояснение" value="'+esc(p.desc||'')+'"></div><span data-a="delp" data-x="'+i+'" style="cursor:pointer;color:var(--dim);font-size:22px;padding:10px">×</span></div>'}).join('')||'<div class="row" style="color:var(--mut)">Нет проектов</div>')+'</div></div>'+
  '<div class="sec"><div class="sh">Проверять каждые</div>'+seg([2,3,5,10,15,30],E.clicker.iv,'iv',' мин')+'</div>'+
  '<div class="sec"><div class="sh">Считать зависанием через</div>'+seg([10,15,20,30,45,60],E.hang,'hang',' мин')+'</div>'}
+
+/* ---------- чтение файла мозга (live) ---------- */
+function md(src){var body=src,fm='',m=src.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);if(m){fm=m[1];body=src.slice(m[0].length)}
+ var h='',ul=false,pre=false,q=U.bq;
+ function inl(t){t=esc(t).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');if(q)t=t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');return t}
+ body.split(/\r?\n/).forEach(function(l){if(/^```/.test(l)){h+=pre?'</pre>':'<pre>';pre=!pre;return}if(pre){h+=esc(l)+'\n';return}
+  if(/^\s*[-*] |^\d+\. /.test(l)){if(!ul){h+='<ul>';ul=true}h+='<li>'+inl(l.replace(/^\s*(?:[-*]|\d+\.)\s+/,''))+'</li>';return}if(ul){h+='</ul>';ul=false}
+  var hm2=l.match(/^(#{1,3})\s+(.*)/);if(hm2)h+='<h'+hm2[1].length+'>'+inl(hm2[2])+'</h'+hm2[1].length+'>';else if(/^\|/.test(l))h+='<pre>'+esc(l)+'</pre>';else if(l.trim())h+='<p>'+inl(l)+'</p>'});
+ if(ul)h+='</ul>';if(pre)h+='</pre>';return (fm?'<div class="fm">'+esc(fm).replace(/\n/g,'<br>')+'</div>':'')+h}
+function reader(p){return '<div class="back" data-a="back">‹ Мозг</div><div class="reader">'+(U.doc?md(U.doc.md||''):'<div class="empty">Загружаю '+esc(p)+'…</div>')+'</div><div class="acts"><div class="btn" data-a="docchat" data-x="'+esc(p)+'">Прислать в чат</div></div>'}
 
 /* ---------- настройки ---------- */
 function settings(){var N=[['question','Вопросы агентов','карточки с вариантами'],['start','Start нажат','запущен следующий шаг'],['hang','Зависание','сессия не меняется дольше порога'],['fail','Сбои','агент не отвечает, клик не прошёл']];
@@ -325,7 +349,7 @@ function stopSheet(){sheet('<h3>Остановить всё?</h3><p>Выключ
 
 /* ---------- рендер ---------- */
 function render(keep){var top=window.scrollY,h;
- if(U.page)h=agentPage(U.page);else h=U.tab=='home'?home():U.tab=='q'?questions():U.tab=='br'?brain():settings();
+ if(U.page&&U.page.indexOf('doc:')==0)h=reader(U.page.slice(4));else if(U.page)h=agentPage(U.page);else h=U.tab=='home'?home():U.tab=='q'?questions():U.tab=='br'?brain():settings();
  if(dirty())h+='<div class="savebar"><div class="btn pri" data-a="save">Сохранить изменения</div></div>';
  $('scr').innerHTML=h;window.scrollTo(0,keep?top:0);
  var P=$('path');if(P&&U.step<0)P.scrollLeft=P.scrollWidth;
@@ -340,8 +364,11 @@ document.addEventListener('click',function(ev){
  switch(a){
  case 'tab':U.tab=x;U.page=null;U.seg=-1;render();return;
  case 'agent':U.page=x;render();return;
- case 'back':U.page=null;render();return;
- case 'doc':send({a:'doc',p:x});return;
+ case 'back':var wasDoc=U.page&&U.page.indexOf('doc:')==0;U.page=null;if(wasDoc)U.tab='br';render();return;
+ case 'doc':if(API){U.page='doc:'+x;U.doc=null;render();api('/api/doc?p='+encodeURIComponent(x)).then(function(r){return r.json()}).then(function(d){U.doc=d;render(true)}).catch(function(){U.doc={md:'Не удалось загрузить файл.'};render(true)})}else send({a:'doc',p:x});return;
+ case 'docchat':send({a:'doc',p:x});return;
+ case 'view':$('vimg').src=SNAP.url;$('viewer').classList.add('on');return;
+ case 'unview':$('viewer').classList.remove('on');return;
  case 'noaway':LS.set('awayHide',S.away.since);break;
  case 'seg':U.seg=U.seg==+x?-1:+x;break;
  case 'step':U.step=U.step==+x?-1:+x;break;
@@ -390,8 +417,8 @@ function inflate(b64){var s=b64.replace(/-/g,'+').replace(/_/g,'/');while(s.leng
  if(window.DecompressionStream)return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
  return new Promise(function(res,rej){var sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako_inflate.min.js';sc.onload=function(){res(pako.inflateRaw(u,{to:'string'}))};sc.onerror=rej;document.head.appendChild(sc)})}
 function dec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(decodeURIComponent(escape(atob(s))))}
-function boot(){norm();if(S.pend.length&&HP.get('tab')=='q')U.tab='q';render()}
-if(tg){try{tg.ready();tg.expand()}catch(e){}theme();try{tg.onEvent('themeChanged',function(){theme();render(true)});tg.BackButton.onClick(function(){U.page=null;render()})}catch(e){}}else theme();
+function boot(){norm();if(S.pend.length&&HP.get('tab')=='q')U.tab='q';render();if(API){setInterval(poll,15000);document.addEventListener('visibilitychange',poll);setInterval(function(){if(S.pend.length)loadSnap()},5000);if(S.pend.length)loadSnap()}}
+if(tg){try{tg.ready();tg.expand()}catch(e){}theme();try{tg.onEvent('themeChanged',function(){theme();render(true)});tg.BackButton.onClick(function(){var wasDoc=U.page&&U.page.indexOf('doc:')==0;U.page=null;if(wasDoc)U.tab='br';render()})}catch(e){}}else theme();
 var z=HP.get('z'),s0=HP.get('s');
 function fromHash(){if(z)return inflate(z).then(function(t){S=JSON.parse(t);boot()},function(){boot();toast('Не удалось распаковать статус — обновите Telegram')});if(s0)try{S=dec(s0)}catch(e){}boot()}
 if(API)fetch(API.replace(/\/$/,'')+'/api/state',{headers:{'X-Init-Data':tg?tg.initData:''}}).then(function(r){if(!r.ok)throw r;return r.json()}).then(function(d){S=d;boot()}).catch(function(){API=null;fromHash()});
