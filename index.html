@@ -225,6 +225,43 @@ mark{background:color-mix(in srgb,var(--gold) 35%,transparent);color:inherit;bor
 .tgt{font-size:12.5px;color:var(--mut);background:var(--s2);border-radius:10px;padding:9px 11px;margin-bottom:10px;display:flex;gap:8px;align-items:center}
 .tplrow{display:flex;gap:8px;align-items:center}.tplrow .in{flex:1}
 .x{cursor:pointer;color:var(--dim);font-size:22px;padding:8px 10px;line-height:1}
+/* ---------- v4 ---------- */
+.hero{margin:6px 16px 0;padding:16px;border-radius:20px;background:var(--s1);border:1px solid var(--line)}
+.hero[data-c=ok]{border-color:color-mix(in srgb,var(--ok) 30%,var(--line));background:linear-gradient(165deg,color-mix(in srgb,var(--ok) 7%,var(--s1)),var(--s1) 55%)}
+.hero[data-c=wait]{border-color:color-mix(in srgb,var(--claude) 60%,transparent);background:linear-gradient(165deg,color-mix(in srgb,var(--claude) 15%,var(--s1)),var(--s1) 60%)}
+.hero[data-c=bad]{border-color:color-mix(in srgb,var(--bad) 60%,transparent);background:linear-gradient(165deg,color-mix(in srgb,var(--bad) 14%,var(--s1)),var(--s1) 60%)}
+.hero[data-c=pause]{border-style:dashed}
+.hero .hk{display:flex;align-items:center;gap:8px;font:600 12px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+.hero[data-c=ok] .hk{color:var(--ok)}.hero[data-c=wait] .hk{color:var(--claude)}.hero[data-c=bad] .hk{color:var(--bad)}
+.hero .hk .ag{width:24px;height:24px;border-radius:7px}
+.hero .hk .tm{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500;color:var(--dim)}
+.hero .ht{font:700 21px/1.25 Inter,sans-serif;letter-spacing:-.01em;margin:10px 0 4px;overflow-wrap:anywhere}
+.hero .hs{color:var(--mut);font-size:13.5px;line-height:1.4}
+.hero .hb{margin-top:14px}
+.hero .hb .ring{width:100%}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.qa div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:58px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-size:11.5px;color:var(--mut);cursor:pointer}
+.qa div i{font-style:normal;font-size:18px;color:var(--tx);line-height:1}
+.qa div:active{background:var(--s2)}.qa div.dis{opacity:.35;pointer-events:none}
+.sh .sum{margin-left:8px;text-transform:none;letter-spacing:0;font:500 11.5px "JetBrains Mono",monospace;color:var(--dim)}
+.sh .sum.over{color:var(--warn)}
+.prog{height:8px;border-radius:4px;background:var(--s2);overflow:hidden}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),var(--gold));border-radius:4px}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:13px;cursor:pointer}
+.trow span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trow b{flex:none;font-weight:500;color:var(--mut)}
+.qn{flex:none;width:24px;height:24px;border-radius:7px;background:var(--s2);display:grid;place-items:center;font-size:12px;color:var(--mut)}
+.qn.sent{background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok)}
+.msgs{padding:4px 16px 0}
+.msg{padding:10px 12px;border-radius:14px;margin-top:8px;font-size:14px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.u{background:var(--s2);margin-left:42px;border-bottom-right-radius:4px}
+.msg.c{background:var(--cl-s);color:var(--cl-tx);border:1px solid var(--cl-line);margin-right:18px;border-bottom-left-radius:4px;font-family:ui-serif,Georgia,serif;font-size:14.5px}
+.msg.t{background:transparent;border:1px dashed var(--line);color:var(--mut);font:12px "JetBrains Mono",monospace;padding:7px 10px;margin-right:18px}
+.msg .mt{display:block;font:11px Inter,sans-serif;color:var(--dim);margin-bottom:3px}
+.rule{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin-top:6px}.rule>span{color:var(--dim)}.rule .x{padding:6px}
+.seg.days{flex-wrap:nowrap}.seg.days span{min-width:0;flex:1;padding:0}
+.qcard.flash{animation:flash 1.2s ease 2}@keyframes flash{50%{box-shadow:0 0 0 3px var(--gold)}}
+.mstep{display:flex;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);font-size:13.5px}.mstep:first-child{border-top:0}
+.mstep .c{font:600 12px "JetBrains Mono",monospace;width:52px;flex:none;color:var(--mut)}.mstep.cur .c{color:var(--gold)}
+.mstep .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mstep .v{font:12px "JetBrains Mono",monospace;color:var(--dim);flex:none;text-align:right}
 </style>
 </head>
 <body>
@@ -257,17 +294,17 @@ function dur(min){min=Math.round(min);return min<60?min+' мин':Math.floor(min
 function fmt(s){s=Math.round(s);return Math.floor(s/60)+':'+('0'+s%60).slice(-2)}
 function hl(t,q){t=esc(t);if(!q)return t;return t.replace(new RegExp('('+esc(q).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>')}
 var LS={get:function(k,d){try{var v=localStorage.getItem('hc_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:function(k,v){try{localStorage.setItem('hc_'+k,JSON.stringify(v))}catch(e){}}};
-var DEF={quiet:{on:false,from:'23:00',to:'08:00',q:true,fail:true},auto:{on:false,min:15,rule:'rec'},
+var DEF={quiet:{on:false,from:'23:00',to:'08:00',q:true,fail:true},auto:{on:false,min:15,rule:'rec',rules:[],deny:[]},sched:{on:false,days:[1,2,3,4,5,6,7],from:'09:00',to:'23:00'},
  tpl:['Продолжай по плану','Сделай как рекомендуешь','Подожди, посмотрю сам','Проверь CI и сделай gh run rerun']};
 var S={v:1,ts:0,clicker:{on:false,iv:5},notifier:{on:false},session:'',action:'',fails:0,hang:20,notify:{start:true,question:true,hang:true,fail:true},projects:[],hist:[],log:[],pend:[],brain:{sec:[],now:[],log:[]},budget:6,pause:0,stopped:false,cancel:[],tl:null,tok:null,steps:[],away:null};
-var E,LOADING=true,U={tab:'home',page:null,qsel:{},bq:'',bfull:false,grep:null,seg:-1,step:-1,jt:'sess',jf:'all',jq:'',haptics:LS.get('hap',true),col:LS.get('col',{}),say:{t:'',ag:'claude'},nowEd:null};
-function norm(){S.quiet=Object.assign({},DEF.quiet,S.quiet||{});S.auto=Object.assign({},DEF.auto,S.auto||{});
- ['pend','hist','log','steps','cancel','projects','sess','health','cj','hs'].forEach(function(k){S[k]=S[k]||[]});S.brain=S.brain||{sec:[],now:[],log:[]};S.budget=S.budget||6;
+var E,LOADING=true,U={tab:'home',page:null,qsel:{},bq:'',bfull:false,grep:null,seg:-1,step:-1,jt:'sess',jf:'all',jq:'',haptics:LS.get('hap',true),col:LS.get('col4',{strip:true,path:true,tok:true,auto:true}),say:{t:'',ag:'claude'},nowEd:null,qadd:'',bio:LS.get('bio',true),denyRaw:null};
+function norm(){S.sched=Object.assign({},DEF.sched,S.sched||{});S.quiet=Object.assign({},DEF.quiet,S.quiet||{});S.auto=Object.assign({},DEF.auto,S.auto||{});S.auto.rules=S.auto.rules||[];S.auto.deny=S.auto.deny||[];
+ ['pend','hist','log','steps','cancel','projects','sess','health','cj','hs','queue','at'].forEach(function(k){S[k]=S[k]||[]});S.brain=S.brain||{sec:[],now:[],log:[]};S.budget=S.budget||6;
  S.clicker=S.clicker||{on:false,iv:5};S.notifier=S.notifier||{on:false};S.tpl=S.tpl||DEF.tpl.slice();S.warn=S.warn==null?80:S.warn;
  S.agents=S.agents||[{id:'claude',on:true},{id:'codex',on:false}];
- E={clicker:{on:S.clicker.on,iv:S.clicker.iv},notifier:{on:S.notifier.on},hang:S.hang,notify:Object.assign({},S.notify),projects:JSON.parse(JSON.stringify(S.projects)),quiet:Object.assign({},S.quiet),auto:Object.assign({},S.auto),budget:S.budget,tpl:S.tpl.slice(),warn:S.warn}}
+ E={clicker:{on:S.clicker.on,iv:S.clicker.iv},notifier:{on:S.notifier.on},hang:S.hang,notify:Object.assign({},S.notify),projects:JSON.parse(JSON.stringify(S.projects)),quiet:Object.assign({},S.quiet),auto:JSON.parse(JSON.stringify(S.auto)),sched:JSON.parse(JSON.stringify(S.sched)),budget:S.budget,tpl:S.tpl.slice(),warn:S.warn}}
 norm();
-function SET(x){return {clicker:x.clicker.on,notifier:x.notifier.on,interval:x.clicker.iv,hang:x.hang,notify:x.notify,projects:x.projects,quiet:x.quiet,auto:x.auto,budget:x.budget,tpl:x.tpl,warn:x.warn}}
+function SET(x){return {clicker:x.clicker.on,notifier:x.notifier.on,interval:x.clicker.iv,hang:x.hang,notify:x.notify,projects:x.projects,quiet:x.quiet,auto:x.auto,budget:x.budget,tpl:x.tpl,warn:x.warn,sched:x.sched}}
 function dirty(){return JSON.stringify(SET(E))!=JSON.stringify(SET(S))}
 function agOn(id){return S.agents.some(function(a){return a.id==id&&a.on})}
 
@@ -280,14 +317,14 @@ var UNDO={pause:{a:'resume'},stop:{a:'resume'}};
 function send(o,quiet){o=Object.assign({v:1},o);haptic('success');var undo=UNDO[o.a]||null;
  if(API){var p=MOCK?MOCK.post(o):fetch(API.replace(/\/$/,'')+'/api',{method:'POST',headers:{'Content-Type':'application/json','X-Init-Data':tg?tg.initData:''},body:JSON.stringify(o)}).then(function(r){if(!r.ok)throw r;return r.json()});
   if(MOCK)MOCK.log(o,'POST /api');
-  p.then(function(r){if(!quiet)toast('<b>✓</b> '+esc(r.text||'Готово'),undo);if(r.state){S=r.state;norm();if(o.a=='ans')U.qsel={};render(true)}})
+  p.then(function(r){if(!quiet)toast('<b>✓</b> '+esc(r.text||'Готово'),undo);if(r.state){var keepE=dirty()?E:null;S=r.state;norm();if(keepE)E=keepE;if(o.a=='ans')U.qsel={};render(true)}})
   .catch(function(){if(MENU&&!HP.get('z'))toast('Сервер на ПК недоступен. Открой панель кнопкой «Панель» внизу чата — она работает через бота.');else{toast('Сервер недоступен — отправляю через бота');sd(o)}});return}
  sd(o)}
 function api(path){if(MOCK)return MOCK.api(path);return fetch(API.replace(/\/$/,'')+path,{headers:{'X-Init-Data':tg?tg.initData:''}}).then(function(r){if(!r.ok)throw r;return r})}
 var SNAP={};
 function loadSnap(){if(!API||SNAP.busy||(SNAP.t&&Date.now()-SNAP.t<60000))return;SNAP.busy=1;api('/api/snap').then(function(r){return r.blob()}).then(function(b){if(SNAP.url)URL.revokeObjectURL(SNAP.url);SNAP={url:URL.createObjectURL(b),t:Date.now()};render(true)}).catch(function(){SNAP={t:Date.now(),none:1}})}
 function busy(){return $('sheet').classList.contains('on')||dirty()||document.activeElement&&/INPUT|TEXTAREA/.test(document.activeElement.tagName)}
-function poll(force){if(!API||(!force&&(document.hidden||busy())))return Promise.resolve();return api('/api/state').then(function(r){return r.json()}).then(function(d){var a=JSON.stringify(S);S=d;norm();U.offline=0;if(force||JSON.stringify(S)!=a)render(true)}).catch(function(){U.offline=1;render(true)})}
+function poll(force){if(!API||(!force&&(document.hidden||busy())))return Promise.resolve();return api('/api/state').then(function(r){return r.json()}).then(function(d){var a=JSON.stringify(S);S=d;norm();U.offline=0;U.cached=0;if(!MOCK)LS.set('last',S);if(U.page=='chat')loadChat();if(force||JSON.stringify(S)!=a)render(true)}).catch(function(){U.offline=1;render(true)})}
 function sd(o){var s=JSON.stringify(o);window.__sent=(window.__sent||[]).concat([s]);if(MOCK){MOCK.log(o,'sendData');toast('<b>sendData</b> → бот. Панель закроется, бот ответит в чате.')}else if(inTG())tg.sendData(s);else toast('<b>sendData</b> (вне Telegram): '+esc(s.slice(0,140)))}
 function refresh(){if(API){var b=document.querySelector('[data-a=refresh]');if(b)b.classList.add('spin');poll(true).then(function(){toast('<b>✓</b> Обновлено')})}else send({a:'refresh'})}
 
@@ -305,8 +342,8 @@ function status(){
  if(!S.clicker.on)return {c:'',t:'Кликер выключен',lg:'pause'};
  return {c:'ok',t:'Работает',lg:'ok'}}
 function hd(){var st=status(),hb=hBad().length;
- var fr=API?(U.offline?'<span class="live off">НЕТ СВЯЗИ</span>':'<span class="live">LIVE</span>'):(S.ts?'<span style="color:'+(stale()?'var(--warn)':'inherit')+'">данные '+ago(S.ts)+'</span>':'');
- return '<div class="hd"><div class="logo" data-st="'+st.lg+'"></div><div><h1>Hermes</h1><div class="st"><span class="dot '+(st.c=='ok'?'live':st.c)+'"></span>'+st.t.toLowerCase()+' · '+fr+'</div></div><div class="r">'+
+ var fr=U.cached&&!API?'<span style="color:var(--warn)">кэш · '+ago(S.ts)+'</span>':API?(U.offline?'<span class="live off">НЕТ СВЯЗИ</span>':'<span class="live">LIVE</span>'):(S.ts?'<span style="color:'+(stale()?'var(--warn)':'inherit')+'">данные '+ago(S.ts)+'</span>':'');
+ return '<div class="hd"><div class="logo" data-st="'+st.lg+'"></div><div><h1>Hermes</h1><div class="st"><span class="dot '+(st.c=='ok'?'live':st.c)+'"></span>'+st.t.toLowerCase()+(fr?' · '+fr:'')+'</div></div><div class="r">'+
  (S.health.length?'<div class="ib" data-a="sys" title="Система">⛭<span class="hdot'+(hb?' bad':'')+'"></span></div>':'')+'<div class="ib" data-a="refresh" title="Обновить">↻</div></div></div>'}
 function skeleton(){return '<div class="hd"><div class="logo"></div><div style="flex:1"><div class="sk" style="height:18px;width:110px"></div><div class="sk" style="height:12px;width:170px;margin-top:8px"></div></div></div>'+
  [92,150,64,120].map(function(h){return '<div class="sec"><div class="sk" style="height:'+h+'px;border-radius:16px"></div></div>'}).join('')}
@@ -356,31 +393,35 @@ function pathView(){var P=S.steps;if(!P.length)return '<div class="pinfo" style=
  return '<div class="path" id="path">'+h+'</div><div class="pinfo">'+(U.step<0?'Сейчас: ':hm(s.t)+' · ')+esc(s.x)+'</div>'}
 function ringBtn(){var nx=S.clicker.nx||0,left=Math.max(0,nx-nowS()),tot=(E.clicker.iv||10)*60,C=2*Math.PI*10,act=S.clicker.on&&!S.stopped&&!paused();
  return '<div class="btn pri ring" data-a="run"><svg viewBox="0 0 26 26"><circle class="bg" cx="13" cy="13" r="10"/><circle class="fg" id="ringfg" cx="13" cy="13" r="10" stroke-dasharray="'+C+'" stroke-dashoffset="'+(act?C*(1-Math.min(1,left/tot)):C)+'"/></svg><div>Проверить сейчас<small id="ringlbl">'+(!act?'кликер не активен':nx?(left>0?'авто через '+fmt(left):'авто — сейчас'):'по расписанию')+'</small></div></div>'}
-function autoGrp(){return '<div class="sec"><div class="sh"><span>Автоматика</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Кликер</div><div class="d mono">'+(E.clicker.on?'каждые '+E.clicker.iv+' мин'+(S.clicker.last?' · был '+S.clicker.last:''):paused()?'пауза до '+hm(S.pause):'выключен')+'</div></div>'+sw(E.clicker.on,'swc')+'</div>'+
+function autoGrp(){return colSec('auto','Автоматика','<div class="row"><div class="t"><div class="n">Кликер</div><div class="d mono">'+(E.clicker.on?'каждые '+E.clicker.iv+' мин'+(S.clicker.last?' · был '+S.clicker.last:''):paused()?'пауза до '+hm(S.pause):'выключен')+'</div></div>'+sw(E.clicker.on,'swc')+'</div>'+
  '<div class="row"><div class="t"><div class="n">Уведомления</div><div class="d mono">'+(E.notifier.on?'каждые 5 мин'+(E.quiet.on?' · тихо '+E.quiet.from+'–'+E.quiet.to:''):'выключены')+'</div></div>'+sw(E.notifier.on,'swn')+'</div>'+
- '<div class="row tap" data-a="pausesheet"><div class="t"><div class="n">Пауза на время</div><div class="d">'+(paused()?'до '+hm(S.pause):'ТВ или ПК заняты — не трогать Claude')+'</div></div><span class="chev">›</span></div></div></div><div class="acts">'+ringBtn()+'</div>'}
+ '<div class="row tap" data-a="agent" data-x="claude"><div class="t"><div class="n">Claude</div><div class="d">проекты, интервал, порог зависания</div></div><span class="chev">›</span></div>',
+ (E.clicker.on?'кликер '+E.clicker.iv+' мин':'кликер выкл')+(E.notifier.on?'':' · без уведомлений'))}
 function forecast(){var H=S.tok.h,sum=H.reduce(function(a,b){return a+b},0),last=H.slice(-3),rate=last.reduce(function(a,b){return a+b},0)/last.length,day=rate*24,B=S.budget*1000;
  return {sum:sum,rate:rate,day:day,over:day>B,pct:Math.min(100,sum/B*100),ppct:Math.min(100,day/B*100)}}
 function tokens(){if(!S.tok||!S.tok.h)return '';var H=S.tok.h,lim=S.budget*1000/24,F=forecast(),sum=F.sum,top=Math.max(Math.max.apply(null,H),lim*1.15);
- return '<div class="sec"><div class="sh col'+(U.col.tok?' shut':'')+'" data-a="col" data-x="tok"><span>Токены · 24 ч</span><a data-a="tab" data-x="set">бюджет '+S.budget+' млн</a></div>'+(U.col.tok?'':'<div class="grp tok"><div class="top"><b>'+(sum/1000).toFixed(1)+' млн</b><span class="w'+(sum>S.budget*1000?'':' okk')+'">'+(sum>S.budget*1000?'выше бюджета':'в пределах бюджета')+'</span></div>'+
+ var T=S.sess.filter(function(s){return s.tok}).slice().sort(function(a,b){return b.tok-a.tok}).slice(0,3);
+ var body='<div class="grp tok"><div class="top"><b>'+(sum/1000).toFixed(1)+' млн</b><span class="w'+(sum>S.budget*1000?'':' okk')+'">'+(sum>S.budget*1000?'выше бюджета':'в пределах бюджета')+'</span></div>'+
  '<div class="bars">'+H.map(function(v){return '<i class="'+(v>lim?'over':'')+'" style="height:'+(v/top*100)+'%"></i>'}).join('')+'<div class="lim" style="bottom:'+(lim/top*100)+'%"><span>'+Math.round(lim)+'k/ч</span></div></div>'+
  '<div class="fc'+(F.over?' over':'')+'"><span>'+(F.over?'⚠ ':'')+'Темп '+Math.round(F.rate)+'k/ч → <b class="mono">'+(F.day/1000).toFixed(1)+' млн</b>/сутки</span></div>'+
- '<div style="font-size:12.5px;color:var(--mut);margin-top:8px">'+S.tok.runs+' прогонов, тихих '+S.tok.sil+' ('+Math.round(S.tok.sil/Math.max(1,S.tok.runs)*100)+'%)'+(S.warn?' · предупрежу на '+S.warn+'%':'')+'</div></div>')+'</div>'}
+ '<div style="font-size:12.5px;color:var(--mut);margin-top:8px">'+S.tok.runs+' прогонов, тихих '+S.tok.sil+' ('+Math.round(S.tok.sil/Math.max(1,S.tok.runs)*100)+'%)'+(S.warn?' · предупрежу на '+S.warn+'%':'')+'</div>'+
+ (T.length?'<div style="margin:14px 0 2px;font:600 11.5px Inter;color:var(--mut);text-transform:uppercase;letter-spacing:.06em">Дорогие шаги</div>'+T.map(function(s){return '<div class="trow" data-a="sess" data-x="'+s.id+'"><span>'+esc(s.n)+'</span><b class="mono">'+(s.tok/1000).toFixed(1)+' млн</b></div>'}).join(''):'')+'</div>';
+ return '<div class="sec"><div class="sh col'+(U.col.tok?' shut':'')+'" data-a="col" data-x="tok"><span>Токены · 24 ч</span><span class="sum'+(F.over?' over':'')+'">'+(sum/1000).toFixed(1)+' / '+S.budget+' млн'+(F.over?' · прогноз выше':'')+'</span></div>'+(U.col.tok?'':body)+'</div>'}
 var LK={status:'•',start:'▶',question:'?',answer_ok:'✓',answer_fail:'!',fail:'✕',notify:'↗',panel:'⚡',pause:'⏸',stop:'■',auto:'⟳',say:'✎',fix:'⛭'};
 function evRow(e,q){return '<div class="row"><span class="tm">'+esc(e.t)+'</span><span class="k" style="'+(e.k=='fail'||e.k=='stop'||e.k=='answer_fail'?'color:var(--bad)':e.k=='question'?'color:var(--claude)':'')+'">'+(LK[e.k]||'•')+'</span><span class="x">'+hl(e.x,q)+'</span></div>'}
 function feed(){return '<div class="sec"><div class="sh col'+(U.col.feed?' shut':'')+'" data-a="col" data-x="feed"><span>Лента</span><a data-a="journal" data-x="ev">весь журнал ›</a></div>'+(U.col.feed?'':'<div class="grp feed">'+(S.log.length?S.log.slice(0,5).map(function(e){return evRow(e)}).join(''):'<div class="row" style="color:var(--mut)">Записей пока нет</div>')+'</div>')+'</div>'}
-function colSec(k,t,body){return '<div class="sec"><div class="sh col'+(U.col[k]?' shut':'')+'" data-a="col" data-x="'+k+'"><span>'+t+'</span></div>'+(U.col[k]?'':'<div class="grp">'+body+'</div>')+'</div>'}
+function colSec(k,t,body,sum){return '<div class="sec"><div class="sh col'+(U.col[k]?' shut':'')+'" data-a="col" data-x="'+k+'"><span>'+t+'</span>'+(sum?'<span class="sum">'+esc(sum)+'</span>':'')+'</div>'+(U.col[k]?'':'<div class="grp">'+body+'</div>')+'</div>'}
 function sw(on,a){return '<div class="sw'+(on?' on':'')+'" data-a="'+a+'" role="switch" aria-checked="'+!!on+'"></div>'}
 function seg(vals,cur,a,suf,lbl){return '<div class="seg">'+vals.map(function(v,i){return '<span data-a="'+a+'" data-x="'+v+'" class="'+(v==cur?'on':'')+'">'+(lbl?lbl[i]:v+(suf||''))+'</span>'}).join('')+'</div>'}
 function hermesCard(){if(!S.wa)return '';var g=S.health.filter(function(h){return h.k=='gateway'})[0]||{ok:1};
  return '<div class="sec"><div class="grp"><div class="row"><div class="logo" data-st="'+(g.ok?'ok':'bad')+'" style="width:34px;height:34px"></div><div class="t"><div class="n">Hermes</div><div class="d">'+(g.ok?'сессии, модели, файлы · нужен Tailscale':esc(g.d||'gateway не отвечает'))+'</div></div>'+
  (g.ok?'<div class="btn sm" style="min-height:40px;padding:0 14px" data-a="hermes">Открыть</div>':'<div class="btn sm" style="min-height:40px;padding:0 12px" data-a="'+(g.busy?'':'fix')+'" data-x="gateway">'+(g.busy?'…':'Перезапустить')+'</div>')+'</div>'+
  (g.ok?'<div class="row tap" data-a="hermes_ext" style="min-height:40px;padding:8px 14px"><div class="t"><div class="d">Открыть в Safari</div></div><span class="chev">›</span></div>':'')+'</div></div>'}
-function home(){return hd()+alerts()+awayCard()+nowCard()+hermesCard()+colSec('strip','Сессия · 12 ч',strip())+colSec('path','Дорожка шагов',pathView())+autoGrp()+tokens()+feed()}
+function home(){return hd()+updBanner()+netBanner()+hero()+S.pend.slice(1).map(qAlert).join('')+digestCard()+projCard()+queueCard()+colSec('strip','Сессия · 12 ч',strip(),stripSum())+colSec('path','Дорожка шагов',pathView(),pathSum())+tokens()+autoGrp()+feed()+hermesCard()}
 
 /* ---------- вопросы ---------- */
 function qcard(q){var c=U.qsel[q.id]||{},dis=c.k===undefined||(c.k==='o'&&!(c.t||'').trim()),ag=q.ag||'claude';
- var h='<div class="qcard '+(ag=='codex'?'codex':'')+'"><div class="qh">'+LG(ag,'lg')+AN(ag)+(q.perm?' просит разрешение':' спрашивает')+'<span class="t">'+(q.ts?ago(q.ts):'')+'</span></div><div class="qs">'+esc(q.s)+'</div>'+(API&&ag=='claude'&&SNAP.url?'<img class="snap" src="'+SNAP.url+'" data-a="view" alt="Окно Claude">':'')+'<div class="qq">'+esc(q.q)+'</div>';
+ var h='<div id="q-'+q.id+'" class="qcard '+(U.flash==q.id?'flash ':'')+(ag=='codex'?'codex':'')+'"><div class="qh">'+LG(ag,'lg')+AN(ag)+(q.perm?' просит разрешение':' спрашивает')+'<span class="t">'+(q.ts?ago(q.ts):'')+'</span></div><div class="qs">'+esc(q.s)+'</div>'+(API&&ag=='claude'&&SNAP.url?'<img class="snap" src="'+SNAP.url+'" data-a="view" alt="Окно Claude">':'')+'<div class="qq">'+esc(q.q)+'</div>';
  if(q.perm)return h+(q.cmd?'<div class="perm">$ '+esc(q.cmd)+'</div>':'')+'<div style="font:12.5px Inter;color:var(--cl-mut)">Разрешения никогда не закрываются автоответом.</div><div class="qf"><button class="qb dn" data-a="quick" data-q="'+q.id+'" data-x="1">'+esc(q.o[1])+'</button><button class="qb al" data-a="quick" data-q="'+q.id+'" data-x="0">'+esc(q.o[0])+'</button></div></div>';
  return h+'<div class="ops">'+
  q.o.map(function(o,i){return '<div class="op'+(c.k===i?' on':'')+'" data-a="qsel" data-q="'+q.id+'" data-x="'+i+'"><span class="rd"></span><span>'+esc(o)+(i===q.rec?' <small>рекомендует '+AN(ag)+'</small>':'')+(q.od&&q.od[i]?'<small>'+esc(q.od[i])+'</small>':'')+'</span></div>'}).join('')+
@@ -456,9 +497,9 @@ function agentPage(id){var on=agOn(id),a=S.agents.filter(function(x){return x.id
 
 /* ---------- система ---------- */
 function sysPage(){var H=S.health,bad=hBad();
- return '<div class="back" data-a="back">‹ Назад</div><div class="ph"><div class="logo" data-st="'+(bad.length?'bad':'ok')+'"></div><div><h2>Система</h2><div class="d">'+(bad.length?bad.length+' из '+H.length+' требуют внимания':'Все '+H.length+' компонентов в норме')+'</div></div></div>'+
+ return '<div class="back" data-a="back">‹ Назад</div><div class="ph"><div class="logo" data-st="'+(bad.length?'bad':'ok')+'"></div><div><h2>Система</h2><div class="d">'+(bad.length?bad.length+' из '+H.length+' требуют внимания':'Все '+H.length+' компонентов в норме')+'</div></div></div>'+stBlock()+
  '<div class="sec"><div class="grp">'+H.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+(x.ts?' · '+ago(x.ts):'')+'</div></div>'+(x.busy?'<div class="btn sm dis" style="min-height:36px;padding:0 10px">…</div>':'')+(x.ff?'<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--bad,#e5484d)" data-a="fixforce" data-x="'+x.k+'">Принудительно</div>':'')+(x.fix?'<div class="btn sm" style="min-height:36px;padding:0 10px'+(x.ok?';color:var(--mut)':'')+'" data-a="fix" data-x="'+x.k+'">'+esc(x.fl||'Перезапустить')+'</div>':'')+'</div>'}).join('')+'</div></div>'+cronBlock()+hsBlock()+
- '<div class="hint">Gateway перезапускается мягко: если идёт ход Hermes, перезапуска не будет, появится «Принудительно». Пока gateway встаёт (~30 с), бот и Webapp молчат, итог придёт в Telegram. Если gateway не отвечает 5 мин, сервер панели перезапустит его сам (не больше 2 раз в час).<br>Версия страницы: C1 (cron + сессии Hermes)</div>'}
+ '<div class="hint">Gateway перезапускается мягко: если идёт ход Hermes, перезапуска не будет, появится «Принудительно». Пока gateway встаёт (~30 с), бот и Webapp молчат, итог придёт в Telegram. Если gateway не отвечает 5 мин, сервер панели перезапустит его сам (не больше 2 раз в час).<br>Версия страницы: v4 ('+VER+')</div>'}
 
 /* ---------- этап C: cron и сессии Hermes ---------- */
 function hmT(ts){if(!ts)return '—';var d=new Date(ts*1000);return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
@@ -480,11 +521,11 @@ function settings(){var N=[['question','Вопросы агентов','карт
  '<div class="row"><div class="t"><div class="n">Вопросы пробиваются</div><div class="d">иначе Claude будет ждать до утра</div></div>'+sw(E.quiet.q,'qq')+'</div><div class="row"><div class="t"><div class="n">Сбои пробиваются</div></div>'+sw(E.quiet.fail,'qf')+'</div>':'')+'</div></div>'+
  '<div class="sec"><div class="sh"><span>Автоответ</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Отвечать сам, если я молчу</div><div class="d">карточка покажет таймер и «Отменить»</div></div>'+sw(E.auto.on,'aon')+'</div>'+
  (E.auto.on?'<div class="row" style="display:block"><div class="d" style="margin-bottom:6px">Через</div>'+seg([5,10,15,30,60],E.auto.min,'amin',' мин')+'<div class="d" style="margin:10px 0 6px">Что выбирать</div><div class="seg"><span data-a="arule" data-x="rec" class="'+(E.auto.rule=='rec'?'on':'')+'">только Recommended</span><span data-a="arule" data-x="first" class="'+(E.auto.rule=='first'?'on':'')+'">иначе первый</span></div>'+
- '<div class="d" style="margin-top:10px">Разрешения (Allow/Deny) и approvals Codex автоответом не закрываются никогда. Проверка — раз в 5 минут.</div></div>':'')+'</div></div>'+
- '<div class="sec"><div class="sh"><span>Шаблоны ответов</span><a data-a="addtpl">+ добавить</a></div><div class="grp">'+(E.tpl.map(function(t,i){return '<div class="row" style="padding:8px 8px 8px 14px;min-height:0"><div class="tplrow" style="flex:1"><input class="in" data-in="tpl:'+i+'" value="'+esc(t)+'" placeholder="Текст шаблона"></div><span class="x" data-a="deltpl" data-x="'+i+'">×</span></div>'}).join('')||'<div class="row" style="color:var(--mut)">Нет шаблонов</div>')+'</div><div class="hint" style="padding-left:2px">Чипы в «Другое» у вопроса и в «Написать Claude».</div></div>'+
+ rulesUI()+'<div class="d" style="margin-top:10px">Разрешения (Allow/Deny) и approvals Codex автоответом не закрываются никогда. Проверка — раз в 5 минут.</div></div>':'')+'</div></div>'+
+ schedUI()+'<div class="sec"><div class="sh"><span>Шаблоны ответов</span><a data-a="addtpl">+ добавить</a></div><div class="grp">'+(E.tpl.map(function(t,i){return '<div class="row" style="padding:8px 8px 8px 14px;min-height:0"><div class="tplrow" style="flex:1"><input class="in" data-in="tpl:'+i+'" value="'+esc(t)+'" placeholder="Текст шаблона"></div><span class="x" data-a="deltpl" data-x="'+i+'">×</span></div>'}).join('')||'<div class="row" style="color:var(--mut)">Нет шаблонов</div>')+'</div><div class="hint" style="padding-left:2px">Чипы в «Другое» у вопроса и в «Написать Claude».</div></div>'+
  '<div class="sec"><div class="sh"><span>Бюджет токенов</span></div><div class="grp"><div class="row" style="display:block"><div class="d" style="margin-bottom:6px">В сутки</div>'+seg([4,6,8,12],E.budget,'bud',' млн')+
  '<div class="d" style="margin:12px 0 6px">Предупредить, когда прогноз дойдёт до</div>'+seg([70,80,90,0],E.warn,'warn','',['70%','80%','90%','не надо'])+'</div></div></div>'+
- '<div class="sec"><div class="sh"><span>Приложение</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Вибрация</div><div class="d">отклик на нажатия</div></div>'+sw(U.haptics,'hap')+'</div>'+
+ '<div class="sec"><div class="sh"><span>Приложение</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Вибрация</div><div class="d">отклик на нажатия</div></div>'+sw(U.haptics,'hap')+'</div>'+'<div class="row"><div class="t"><div class="n">Подтверждать '+bioName()+'</div><div class="d">стоп, принудительный перезапуск, Allow'+(bioOK()||!U.bio?'':' · на этом устройстве нет — будет удержание')+'</div></div>'+sw(U.bio,'bio')+'</div>'+
  '<div class="row tap" data-a="full"><div class="t"><div class="n">Во весь экран</div><div class="d">без шапки Telegram</div></div><span class="chev">›</span></div>'+
  '<div class="row tap" data-a="homescreen"><div class="t"><div class="n">Добавить на домашний экран</div><div class="d">открывать Hermes как приложение</div></div><span class="chev">›</span></div></div></div>'+
  '<div class="sec"><div class="btn danger" data-a="stopsheet">■ Остановить всё</div></div>'}
@@ -495,7 +536,7 @@ function unsheet(){$('sheet').classList.remove('on');$('veil').classList.remove(
 function pauseSheet(){var n=nowS();sheet('<h3>Пауза кликера</h3><p>Никаких Start и кликов в Claude. Вопросы продолжат приходить, по окончании кликер включится сам.</p>'+
  [['+30m','30 минут',n+1800],['+60m','1 час',n+3600],['+180m','3 часа',n+10800],['09:00','до 09:00',0],['tomorrow','до завтра 09:00',0]].map(function(o){return '<div class="opt" data-a="pause" data-x="'+o[0]+'">'+o[1]+'<span>'+(o[2]?'до '+hm(o[2]):'')+'</span></div>'}).join('')+'<div class="btn" data-a="unsheet">Отмена</div>')}
 function forceSheet(k){sheet('<h3>Перезапустить принудительно?</h3><p>Сейчас идёт ход Hermes (чат или задача). Он оборвётся, сессия останется, продолжишь её сообщением.</p><div class="btn" style="color:var(--bad,#e5484d)" data-a="fixforce_go" data-x="'+k+'">Оборвать и перезапустить</div><div class="btn" data-a="unsheet">Отмена</div>')}
-function stopSheet(){sheet('<h3>Остановить всё?</h3><p>Выключу кликер, уведомления и автоответ. Claude продолжит текущий шаг сам, но без Start и ответов из Telegram.</p><div class="btn hold" id="hold"><i></i><span>Удерживай, чтобы остановить</span></div><div class="btn" data-a="unsheet">Отмена</div>')}
+function stopSheet(){sheet('<h3>Остановить всё?</h3><p>Выключу кликер, уведомления и автоответ. Claude продолжит текущий шаг сам, но без Start и ответов из Telegram.</p>'+(bioOK()?'<div class="btn danger" data-a="stopbio">■ Остановить · '+bioName()+'</div>':'<div class="btn hold" id="hold"><i></i><span>Удерживай, чтобы остановить</span></div>')+'<div class="btn" data-a="unsheet">Отмена</div>')}
 function startSheet(){var ss=sessState(),wk=ss.st=='Working';
  sheet('<h3>Нажать Start сейчас?</h3><p>Кликер найдёт карточку следующего шага в проектной сессии и нажмёт Start, не дожидаясь тика.</p>'+
  '<div class="tgt">'+LG('claude','lg')+'<span>Сейчас: <b>'+esc(ss.name)+'</b> · '+esc(ss.st||'—')+'</span></div>'+
@@ -508,12 +549,118 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<p style="margin:12px 0 0;font-size:12.5px">Отправлю, когда ты не трогаешь ПК хотя бы 2 минуты, иначе введу текст посреди твоей работы. Придёт подтверждение.</p>'+
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
+/* ---------- v4: главный экран ---------- */
+var VER=40;
+function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">⬆ Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
+function netBanner(){
+ if(U.cached&&!API)return '<div class="alert warn"><div class="k">⚠ ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
+ if(U.offline&&API)return '<div class="alert warn"><div class="k">⚠ Нет связи с ПК · данные '+(S.ts?ago(S.ts):'')+'</div><div class="q">Повторяю каждые 15 с. Если ПК выключен — действия не дойдут.</div></div>';
+ if(stale())return '<div class="alert warn tap" data-a="refresh"><div class="k">⏱ Данные '+ago(S.ts)+'<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Кнопка «Панель» хранит снимок на момент отправки. Live-версия — кнопка меню «Hermes».</div></div>';
+ return ''}
+function qChips(q){return q.perm?'<div class="chips"><span data-a="quick" data-q="'+q.id+'" data-x="0" style="border-color:var(--ok)">✓ '+esc(q.o[0])+'</span><span data-a="quick" data-q="'+q.id+'" data-x="1" style="border-color:var(--bad)">✕ '+esc(q.o[1])+'</span></div>':
+ '<div class="chips">'+q.o.map(function(o,i){return '<span class="'+(i===q.rec?'rec':'')+'" data-a="quick" data-q="'+q.id+'" data-x="'+i+'">'+esc(o)+'</span>'}).join('')+'</div>'}
+function qAlert(q){var ag=q.ag||'claude';return '<div class="alert '+(ag=='codex'?'codex':'')+'"><div class="k">'+LG(ag,'lg')+' '+AN(ag)+(q.perm?' просит разрешение':' спрашивает')+'<span class="tm">'+(q.ts?ago(q.ts):'')+'</span></div><div class="q">'+esc(q.q)+'</div>'+qChips(q)+autoLine(q)+'</div>'}
+function hero(){var ss=sessState(),cur=S.steps.length?S.steps[S.steps.length-1]:null,q=S.pend[0],bad=hBad(),f=S.log.filter(function(e){return e.k=='fail'})[0],c,k,t,s,b='',ag=q?(q.ag||'claude'):'claude',tm='';
+ if(S.stopped){c='bad';k='Стоп';t='Всё остановлено';s='Кликер, уведомления и автоответ выключены. Claude доделает текущий шаг сам.';b='<div class="btn pri" data-a="resume">Запустить снова</div>'}
+ else if(q){c='wait';k='Нужен ты';t=esc(q.q);tm=q.ts?ago(q.ts):'';s=AN(ag)+(q.perm?' просит разрешение':' спрашивает')+(q.s?' · '+q.s:'')+(S.pend.length>1?' · ещё '+(S.pend.length-1)+' ниже':'');
+  b=qChips(q)+autoLine(q)+'<div class="btn" data-a="openq" data-q="'+q.id+'" style="margin-top:10px">'+(q.perm?'Подробнее':'Свой ответ или пропустить')+'</div>'}
+ else if(S.fails){c='bad';k='Сломалось';t='Сбой ×'+S.fails+(f?' · '+esc(f.t):'');s=f?f.x:'Кликер не смог выполнить действие';b='<div class="btn pri" data-a="heal">Развернуть Claude и проверить</div><div class="chips g sm" style="margin-top:8px"><span data-a="sys">Система ›</span><span data-a="journal" data-x="ev">Журнал ›</span></div>'}
+ else if(bad.length){c='bad';k='Сломалось';t=esc(bad.map(function(x){return x.n}).join(', '));s=bad[0].d||'';var fx=bad.filter(function(x){return x.fix})[0];b=fx?'<div class="btn pri" data-a="fix" data-x="'+fx.k+'">'+esc(fx.fl||'Перезапустить')+' · '+esc(fx.n)+'</div>':'<div class="btn pri" data-a="sys">Открыть «Систему»</div>'}
+ else if(paused()){c='pause';k='Пауза';t='До '+hm(S.pause);s='Кликер не трогает Claude. Вопросы и сбои приходят.';b='<div class="btn pri" data-a="resume">Снять паузу</div>'}
+ else if(!S.clicker.on){c='pause';k='Выключено';t='Кликер выключен';s='Start и ответы из Telegram сами не нажимаются.';b='<div class="btn pri" data-a="clickon">Включить кликер</div>'}
+ else{c='ok';k='Всё идёт';t=esc(ss.name);s=(ss.st=='Working'?'Claude работает':ss.st=='Idle'?'Claude простаивает':ss.st||'—')+(cur?' · шаг '+cur.c+' идёт '+dur((nowS()-cur.t)/60):'')+(S.queue.length?' · в очереди '+S.queue.filter(function(x){return x.st!='sent'}).length:'');b=ringBtn()}
+ return '<div class="hero" data-c="'+c+'"><div class="hk"><span class="ag '+ag+'">'+LG(ag)+'</span>'+k+(tm?'<span class="tm">'+tm+'</span>':'')+'</div><div class="ht">'+t+'</div><div class="hs">'+esc(s)+'</div><div class="hb">'+b+'</div>'+qaRow()+'</div>'}
+function qaRow(){var off=S.stopped,P=paused();
+ return '<div class="qa">'+[['startsheet','▶','Start',off],['saysheet','✎','Написать',off],['chat','☷','Чат',0],[P?'resume':'pausesheet',P?'▶︎':'⏸',P?'Снять паузу':'Пауза',off]].map(function(a){return '<div data-a="'+a[0]+'" data-x="claude" class="'+(a[3]?'dis':'')+'"><i>'+a[1]+'</i>'+a[2]+'</div>'}).join('')+'</div>'}
+function stripSum(){var G=segs();if(!G.length)return '';var w=G.filter(function(g){return g.s=='W'}).reduce(function(a,g){return a+g.e-g.b},0);return 'работал '+(w/60).toFixed(1)+' ч'}
+function pathSum(){var P=S.steps;return P.length?'сейчас '+P[P.length-1].c:''}
+
+/* утренняя сводка */
+function digestCard(){var D=S.dig;if(!D||LS.get('digHide',0)>=D.until)return awayCard();
+ return '<div class="away"><div class="k">☀ Пока ты спал · '+hm(D.since)+'–'+hm(D.until)+'<span data-a="nodig">×</span></div><div class="nums"><div><b>'+D.steps.length+'</b>шагов</div><div><b>'+D.q+'</b>вопросов</div><div><b>'+D.auto+'</b>автоответов</div><div><b>'+D.fails+'</b>сбоев</div><div><b>'+(D.tok/1000).toFixed(1)+'</b>млн ток.</div></div>'+
+ (D.steps.length?'<div style="margin-top:8px">'+D.steps.slice(0,4).map(function(s){return '<div class="trow" style="cursor:default"><span>'+esc(s.n)+'</span><b class="mono">'+esc(s.r||'')+'</b></div>'}).join('')+'</div>':'')+'</div>'}
+
+/* очередь задач */
+function queueCard(){var Q=S.queue;
+ return '<div class="sec"><div class="sh"><span>Очередь задач'+(Q.length?' · '+Q.length:'')+'</span><a data-a="qaddsheet">+ добавить</a></div><div class="grp">'+(Q.length?Q.map(function(x,i){var sent=x.st=='sent';
+  return '<div class="row" style="padding:10px 6px 10px 14px"><span class="qn mono'+(sent?' sent':'')+'">'+(sent?'✓':i+1)+'</span><div class="t"><div style="font-size:14px;line-height:1.35">'+esc(x.t)+'</div><div class="d">'+(sent?'отправлена '+ago(x.sent||x.ts):'ждёт · добавлена '+ago(x.ts))+'</div></div>'+
+  (!sent&&i>0&&Q[i-1].st!='sent'?'<span class="x" style="font-size:17px" data-a="qup" data-x="'+x.i+'">↑</span>':'')+(sent?'':'<span class="x" data-a="qdel" data-x="'+x.i+'">×</span>')+'</div>'}).join(''):
+  '<div class="row tap" data-a="qaddsheet"><div class="t"><div class="d">Пусто. Добавь задачи — подам Claude по одной, когда он закончит шаг и освободится.</div></div><span class="chev">+</span></div>')+'</div></div>'}
+function queueSheet(){sheet('<h3>Задача в очередь</h3><p>Подам в проектную сессию Claude, когда он простаивает 5 мин, нет вопросов и ты не трогаешь ПК 2 мин. О каждой подаче придёт уведомление.</p>'+
+ '<div class="tgt">'+LG('claude','lg')+'<span>Сейчас в очереди: <b>'+S.queue.filter(function(x){return x.st!='sent'}).length+'</b></span></div>'+
+ '<textarea class="in" data-in="qadd" rows="4" placeholder="Например: после WD2b сделай ревью долгов вехи WD">'+esc(U.qadd)+'</textarea>'+
+ '<div class="chips sm" style="margin-top:8px">'+S.tpl.map(function(t,i){return '<span data-a="qtpl" data-x="'+i+'" style="border-color:var(--line)">'+esc(t)+'</span>'}).join('')+'</div>'+
+ '<div class="btn pri'+(U.qadd.trim()?'':' dis')+'" data-a="qadd" id="qaddbtn" style="margin-top:12px">В очередь</div><div class="btn" data-a="unsheet">Отмена</div>')}
+
+/* проект */
+function projCard(){var P=S.proj;if(!P||!P.total)return '';var pct=Math.min(100,P.done/Math.max(1,P.total)*100),fin=P.done>=P.total;
+ return '<div class="sec"><div class="grp"><div class="row tap" data-a="proj" style="display:block"><div style="display:flex;align-items:center;gap:10px"><div class="t"><div class="n">'+esc(P.n)+' · '+esc(P.ms)+'</div><div class="d">'+(fin?'веха закрыта: '+P.total+' из '+P.total+' · ждёт плана следующей':P.done+' из '+P.total+' задач · дальше '+esc(P.cur||'—')+(P.eta?' · финиш ≈ '+(P.eta-nowS()>86400?dayName(P.eta).toLowerCase()+' ':'')+hm(P.eta):''))+'</div></div><span class="chev">›</span></div>'+
+ '<div class="prog" style="margin-top:10px"><i style="width:'+pct+'%"></i></div></div></div></div>'}
+function projPage(){var P=S.proj||{},D=U.projD,T=P.tasks||[];
+ var code=function(n){return (n.match(/^[A-Za-z][\w\-]*/)||[''])[0]};
+ var byC={};S.sess.forEach(function(s){byC[s.c]=s});
+ var h='<div class="back" data-a="back">‹ Пульт</div><div class="ph"><span class="ag claude" style="width:52px;height:52px;border-radius:14px">'+LG('claude')+'</span><div style="min-width:0"><h2>'+esc(P.t||P.ms||'Проект')+'</h2><div class="d">'+esc(P.n||'')+' · '+(P.done||0)+' из '+(P.total||0)+' задач</div></div></div>'+
+ '<div class="sec"><div class="grp"><div class="stats"><div><b>'+(P.done||0)+'/'+(P.total||0)+'</b>готово</div><div><b>'+(P.avg?dur(P.avg).replace(' мин','м').replace(' ч','ч'):'—')+'</b>ср. шаг</div><div><b>'+(P.tok?(P.tok/1000).toFixed(1):'—')+'</b>млн ток.</div><div><b>'+(D?D.commits.length:'—')+'</b>коммитов</div></div>'+
+ '<div style="padding:12px 14px"><div class="prog"><i style="width:'+Math.min(100,(P.done||0)/Math.max(1,P.total||1)*100)+'%"></i></div><div class="d" style="margin-top:8px;font-size:12.5px;color:var(--mut)">'+(P.done>=P.total?'Все задачи вехи готовы. Следующая веха появится, когда Claude её спланирует.':P.eta?'Финиш вехи ≈ '+dayName(P.eta).toLowerCase()+' '+hm(P.eta)+' по средней длине шага.':'')+' Задачи — из таблицы прогресса вехи в репозитории.</div></div></div></div>'+
+ '<div class="sec"><div class="sh"><span>Задачи вехи</span></div><div class="grp">'+(T.length?T.map(function(t){var c=code(t.n),s=byC[c],cur=!t.d&&s&&!s.e;
+  return '<div class="mstep'+(s?' tap':'')+(cur?' cur':'')+'"'+(s?' data-a="sess" data-x="'+s.id+'"':'')+'><span class="c">'+(t.d?'✓ ':'')+esc(c)+'</span><span class="n">'+esc(t.n.slice(c.length).trim()||t.n)+'</span><span class="v">'+(t.d?(s&&s.e?dur((s.e-s.b)/60):'готово'):cur?'идёт':'—')+(s&&s.tok?'<br>'+(s.tok/1000).toFixed(1)+' млн':'')+'</span></div>'}).join(''):'<div class="row" style="color:var(--mut)">Таблица прогресса не найдена</div>')+'</div></div>';
+ h+='<div class="sec"><div class="sh"><span>Коммиты за сутки'+(D&&D.br?' · '+esc(D.br):'')+'</span></div><div class="grp feed">'+(D?(D.commits.length?D.commits.map(function(c){return '<div class="row" style="align-items:flex-start"><span class="tm mono">'+hm(c.ts)+'</span><div class="t"><div style="font-size:13.5px">'+esc(c.t)+'</div><div class="d mono">'+esc(c.h)+' · '+c.f+' файл.'+(c.pr?' · '+esc(c.pr):'')+'</div></div></div>'}).join(''):'<div class="row" style="color:var(--mut)">Коммитов за сутки нет</div>'):API?'<div class="row"><div class="sk" style="height:80px;flex:1"></div></div>':'<div class="row" style="color:var(--mut)">Коммиты — в live-режиме (кнопка меню «Hermes»).</div>')+'</div></div>';
+ return h}
+
+/* чат Claude текстом */
+function loadChat(t){if(!API)return;api('/api/chat?n=30').then(function(r){return r.json()}).then(function(d){U.chat=d;if(U.page=='chat')render(true);if(t)toast('<b>✓</b> Обновлено')}).catch(function(){U.chat={m:[],err:1};if(U.page=='chat')render(true)})}
+function chatPage(){var ss=sessState(),C=U.chat;
+ var h='<div class="back" data-a="back">‹ Пульт</div><div class="ph"><span class="ag claude" style="width:52px;height:52px;border-radius:14px">'+LG('claude')+'</span><div style="min-width:0"><h2>Чат Claude</h2><div class="d">'+esc(ss.name)+(ss.st?' · '+esc(ss.st):'')+'</div></div></div>';
+ if(!API)return h+'<div class="empty">Текст чата читается с ПК — открой панель кнопкой меню «Hermes» (live).</div>';
+ if(!C)return h+'<div class="sec"><div class="sk" style="height:70px;border-radius:14px"></div><div class="sk" style="height:110px;border-radius:14px;margin-top:8px"></div></div>';
+ if(C.err||!C.m.length)return h+'<div class="empty">Не удалось прочитать окно Claude. Снимок окна — в карточке вопроса.</div><div class="acts"><div class="btn" data-a="chatref">Обновить</div></div>';
+ return h+'<div class="msgs">'+C.m.map(function(m){return '<div class="msg '+m.r+'">'+(m.r=='t'?'':'<span class="mt">'+(m.r=='u'?'Ты':'Claude')+'</span>')+esc(m.t)+'</div>'}).join('')+'</div>'+
+ '<div class="hint">Последние '+C.m.length+' сообщений текущей сессии, прочитано из окна '+(C.ts?ago(C.ts):'')+'. Без модели и токенов.</div>'+
+ '<div class="acts"><div class="btn" data-a="chatref">↻ Обновить</div><div class="btn pri" data-a="saysheet" data-x="claude">✎ Написать</div></div>'}
+
+/* самопроверка */
+function stBlock(){var T=S.st||{},I=T.items||[],ok=I.filter(function(x){return x.ok}).length;
+ return '<div class="sec"><div class="sh"><span>Самопроверка'+(I.length?' · '+ok+'/'+I.length:'')+'</span>'+(T.ts&&!T.run?'<span class="sum">'+ago(T.ts)+'</span>':'')+'</div><div class="grp">'+
+ (I.length&&!T.run?I.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+'</div></div></div>'}).join(''):
+ '<div class="row"><div class="t"><div class="d">'+(T.run?'Проверяю… (до минуты)':'Проверю API и туннель, подпись initData, бота, cron-задачи, окно Claude, хук вопросов и push мозга. По Claude не кликаю.')+'</div></div></div>')+
+ '</div><div class="btn'+(T.run?' dis':'')+'" data-a="selftest" style="margin-top:10px">'+(T.run?'Проверяю…':'✓ Проверить всё')+'</div></div>'}
+
+/* правила автоответа и расписание */
+function rulesUI(){return '<div class="d" style="margin:14px 0 2px">Свои правила — сильнее Recommended</div>'+E.auto.rules.map(function(r,i){return '<div class="rule"><input class="in" data-in="rm:'+i+'" placeholder="если в вопросе есть…" value="'+esc(r.m)+'"><span>→</span><input class="in" data-in="rk:'+i+'" placeholder="№ варианта или текст" value="'+esc(r.k)+'"><span class="x" data-a="delrule" data-x="'+i+'">×</span></div>'}).join('')+
+ '<div class="chips g sm" style="margin-top:8px"><span data-a="addrule">+ правило</span></div>'+
+ '<div class="d" style="margin:14px 0 6px">Никогда не отвечать самому, если в вопросе есть</div><input class="in" data-in="deny" placeholder="через запятую: удалить, force, prod" value="'+esc(U.denyRaw!=null?U.denyRaw:E.auto.deny.join(', '))+'">'}
+var DN=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],ATN={start:'Start',pause:'Пауза на 2 ч',resume:'Снять паузу',stop:'Стоп'};
+function daysSum(d){if(d.length==7)return 'каждый день';if(d.join()=='1,2,3,4,5')return 'будни';return d.map(function(i){return DN[i-1]}).join(' ')}
+function schedUI(){var X=E.sched;
+ return '<div class="sec"><div class="sh"><span>Расписание</span><a data-a="atsheet">+ разово</a></div><div class="grp"><div class="row"><div class="t"><div class="n">Работать только в окне</div><div class="d mono">'+(X.on?X.from+'–'+X.to+' · '+daysSum(X.days):'круглосуточно')+'</div></div>'+sw(X.on,'son')+'</div>'+
+ (X.on?'<div class="row" style="display:block"><div class="seg days">'+DN.map(function(d,i){return '<span data-a="sday" data-x="'+(i+1)+'" class="'+(X.days.indexOf(i+1)>=0?'on':'')+'">'+d+'</span>'}).join('')+'</div>'+
+ '<div class="d" style="margin:10px 0 6px">С</div>'+seg(['07:00','08:00','09:00','10:00'],X.from,'sfrom')+'<div class="d" style="margin:10px 0 6px">До</div>'+seg(['20:00','22:00','23:00','00:00'],X.to,'sto')+
+ '<div class="d" style="margin-top:10px">Вне окна кликер на паузе: Start не нажимается, очередь ждёт. Вопросы и сбои приходят как обычно.</div></div>':'')+
+ S.at.map(function(x,i){return '<div class="row"><span class="dot wait"></span><div class="t"><div class="n" style="font-size:14px">'+ATN[x.do]+' в '+esc(x.t)+'</div><div class="d">разово'+(x.ts?' · '+dayName(x.ts).toLowerCase():'')+'</div></div><span class="x" data-a="atdel" data-x="'+i+'">×</span></div>'}).join('')+'</div></div>'}
+function atSheet(){U.at=U.at||{do:'start',t:'09:00'};sheet('<h3>Разовое действие</h3><p>Выполню один раз в указанное время — например, Start утром или пауза перед фильмом.</p><div class="d" style="margin-bottom:6px">Что</div>'+seg(['start','pause','resume','stop'],U.at.do,'atdo','',['Start','Пауза 2 ч','Снять паузу','Стоп'])+
+ '<div class="d" style="margin:12px 0 6px">Когда</div>'+seg(['+60m','09:00','13:00','18:00','23:00'],U.at.t,'att','',['через 1 ч','09:00','13:00','18:00','23:00'])+
+ '<div class="btn pri" data-a="atgo" style="margin-top:14px">Запланировать</div><div class="btn" data-a="unsheet">Отмена</div>')}
+
+/* биометрия */
+var BM=null;
+function bioInit(){if(MOCK)return;try{BM=tg&&tg.BiometricManager;if(BM&&!BM.isInited)BM.init(function(){if(U.page=='sys'||U.tab=='set')render(true)})}catch(e){BM=null}}
+function bioOK(){if(!U.bio)return false;if(MOCK)return !!MOCK.bio;return !!(BM&&BM.isInited&&BM.isBiometricAvailable)}
+function bioName(){return !MOCK&&BM&&BM.biometricType=='finger'?'отпечаток':'Face ID'}
+function bioAuth(reason,fn){if(!bioOK()){fn();return}
+ if(MOCK){U.bioFn=fn;sheet('<h3>'+bioName()+' · симуляция</h3><p>'+esc(reason)+'</p><div class="btn pri" data-a="biook">Подтвердить</div><div class="btn" data-a="unsheet">Отмена</div>');return}
+ var go=function(){BM.authenticate({reason:reason},function(ok){if(ok)fn();else toast('Не подтверждено — ничего не сделал')})};
+ if(!BM.isAccessGranted)BM.requestAccess({reason:'Подтверждать опасные действия в панели Hermes'},function(g){if(g)go();else{U.bio=false;LS.set('bio',false);toast('Доступ не дан — буду спрашивать удержанием')}});else go()}
+
+/* открыть на вопросе (из уведомления) */
+function openQ(id){var q=S.pend.filter(function(z){return z.id==id})[0];if(!q){toast('Этот вопрос уже закрыт');return}
+ U.tab='q';U.page=null;U.qsel[id]=U.qsel[id]||{};U.flash=id;render();setTimeout(function(){var e=$('q-'+id);if(e)e.scrollIntoView({block:'center',behavior:'smooth'})},80);setTimeout(function(){U.flash=null},3500)}
+
 /* ---------- рендер ---------- */
 function render(keep){var top=window.scrollY,h;
  if(LOADING)h=skeleton();
  else if(U.page=='sys')h=sysPage();else if(U.page=='nowedit')h=nowEdit();
  else if(U.page&&U.page.indexOf('doc:')==0)h=reader(U.page.slice(4));else if(U.page&&U.page.indexOf('sess:')==0)h=sessPage(U.page.slice(5));
- else if(U.page)h=agentPage(U.page);else h=U.tab=='home'?home():U.tab=='q'?questions():U.tab=='j'?journal():U.tab=='br'?brain():settings();
+ else if(U.page=='chat')h=chatPage();else if(U.page=='proj')h=projPage();else if(U.page)h=agentPage(U.page);else h=U.tab=='home'?home():U.tab=='q'?questions():U.tab=='j'?journal():U.tab=='br'?brain():settings();
  if(dirty())h+='<div class="savebar"><div class="btn pri" data-a="save">Сохранить изменения</div></div>';
  $('scr').innerHTML=h;window.scrollTo(0,keep?top:0);
  var P=$('path');if(P&&U.step<0)P.scrollLeft=P.scrollWidth;
@@ -532,7 +679,7 @@ document.addEventListener('click',function(ev){
  case 'agent':U.page=x;render();return;
  case 'sys':U.page='sys';render();return;
  case 'back':back();return;
- case 'col':if(ev.target.closest('a'))return;U.col[x]=!U.col[x];LS.set('col',U.col);break;
+ case 'col':if(ev.target.closest('a'))return;U.col[x]=!U.col[x];LS.set('col4',U.col);break;
  case 'journal':ev.stopPropagation();U.tab='j';U.jt=x;U.page=null;render();return;
  case 'jt':U.jt=x;break;case 'jf':U.jf=x;break;
  case 'sess':U.page='sess:'+x;U.sev=null;render();if(API)api('/api/sess?id='+encodeURIComponent(x)).then(function(r){return r.json()}).then(function(d){U.sev={id:x,ev:d.ev||[]};render(true)}).catch(function(){U.sev={id:x,ev:[]};render(true)});return;
@@ -559,7 +706,7 @@ document.addEventListener('click',function(ev){
  case 'hap':U.haptics=!U.haptics;LS.set('hap',U.haptics);break;
  case 'full':try{tg.isFullscreen?tg.exitFullscreen():tg.requestFullscreen()}catch(e){toast('Нужен свежий Telegram')}return;
  case 'homescreen':try{tg.addToHomeScreen()}catch(e){toast('Нужен свежий Telegram')}return;
- case 'save':var p=SET(E);p.projects=p.projects.filter(function(z){return (z.name||'').trim()});p.tpl=p.tpl.map(function(t){return t.trim()}).filter(Boolean);send(p);return;
+ case 'save':var p=SET(E);p.auto=JSON.parse(JSON.stringify(p.auto));p.auto.rules=p.auto.rules.filter(function(r){return (r.m||'').trim()&&(''+r.k).trim()}).map(function(r){return {m:r.m.trim(),k:(''+r.k).trim()}});U.denyRaw=null;p.projects=p.projects.filter(function(z){return (z.name||'').trim()});p.tpl=p.tpl.map(function(t){return t.trim()}).filter(Boolean);send(p);return;
  case 'run':send({a:'run'});return;
  case 'refresh':refresh();return;
  case 'restore':send({a:'restore'});return;
@@ -567,7 +714,7 @@ document.addEventListener('click',function(ev){
  case 'cronrun':if(x)send({a:'cron',k:'run',id:x});return;
  case 'cronpr':if(x){var cj=S.cj.filter(function(j){return j.id==x})[0];send({a:'cron',k:cj&&cj.on?'pause':'resume',id:x})}return;
  case 'fixforce':forceSheet(x);return;
- case 'fixforce_go':unsheet();send({a:'fix',k:x,f:1});return;
+ case 'fixforce_go':unsheet();bioAuth('Оборвать ход Hermes и перезапустить '+x,function(){send({a:'fix',k:x,f:1})});return;
  case 'hermes':haptic('sel');if(MOCK){toast('→ '+esc(S.wa));return}location.href=S.wa;return;
  case 'hermes_ext':if(MOCK){toast('openLink '+esc(S.wa));return}try{tg.openLink(S.wa,{try_browser:'safari'})}catch(e){window.open(S.wa,'_blank')}return;
  case 'undo':if(U.undo){var u=U.undo;U.undo=null;$('toast').classList.remove('on');send(u,false)}return;
@@ -582,12 +729,37 @@ document.addEventListener('click',function(ev){
  case 'pause':unsheet();send({a:'pause',until:x});return;
  case 'resume':send({a:'resume'});return;
  case 'autocancel':send({a:'auto_cancel',q:x});return;
- case 'quick':send({a:'ans',q:qid,k:+x,t:''});return;
+ case 'quick':var qq=S.pend.filter(function(z){return z.id==qid})[0];if(qq&&qq.perm&&+x==0){bioAuth('Разрешить: '+(qq.cmd||qq.q),function(){send({a:'ans',q:qid,k:0,t:''})});return}send({a:'ans',q:qid,k:+x,t:''});return;
  case 'openq':U.tab='q';U.page=null;var oq=S.pend.filter(function(z){return z.id==qid})[0];U.qsel[qid]=oq&&oq.perm?{}:{k:'o'};render();var i=q$('[data-in=other][data-q="'+qid+'"]');if(i)i.focus();return;
  case 'qsel':U.qsel[qid]=U.qsel[qid]||{};U.qsel[qid].k=x=='o'?'o':+x;render(true);if(x=='o'){var j=q$('[data-in=other][data-q="'+qid+'"]');if(j)j.focus()}return;
  case 'tplpick':U.qsel[qid].t=S.tpl[+x];render(true);var j2=q$('[data-in=other][data-q="'+qid+'"]');if(j2)j2.focus();return;
  case 'qskip':send({a:'ans',q:qid,k:'skip'});return;
  case 'qsub':var c=U.qsel[qid];if(!c||c.k===undefined||(c.k==='o'&&!(c.t||'').trim()))return;send({a:'ans',q:qid,k:c.k,t:c.t||''});return;
+ case 'upd':var nu=/[?&]v=/.test(location.search)?location.href.replace(/([?&])v=[^&#]*/,'$1v=c'+S.pv):location.href.replace(/(#|$)/,(location.search?'&':'?')+'v=c'+S.pv+'$1');if(MOCK){toast('→ перезагрузка с ?v=c'+S.pv);return}location.replace(nu);return;
+ case 'heal':send({a:'heal'});return;
+ case 'clickon':send(Object.assign(SET(S),{clicker:true}));return;
+ case 'chat':U.page='chat';U.chat=null;render();loadChat();return;
+ case 'chatref':loadChat(1);return;
+ case 'proj':U.page='proj';U.projD=null;render();if(API)api('/api/proj').then(function(r){return r.json()}).then(function(d){U.projD=d;if(U.page=='proj')render(true)}).catch(function(){U.projD={commits:[]};render(true)});return;
+ case 'qaddsheet':queueSheet();setTimeout(function(){var t=q$('[data-in=qadd]');if(t)t.focus()},260);return;
+ case 'qtpl':U.qadd=S.tpl[+x];var qa=q$('[data-in=qadd]');qa.value=U.qadd;qa.focus();$('qaddbtn').classList.remove('dis');return;
+ case 'qadd':if(!U.qadd.trim())return;unsheet();send({a:'queue_add',ag:'claude',t:U.qadd.trim()});U.qadd='';return;
+ case 'qdel':send({a:'queue_del',i:+x});return;
+ case 'qup':send({a:'queue_move',i:+x,d:-1});return;
+ case 'nodig':LS.set('digHide',S.dig.until);break;
+ case 'selftest':S.st=Object.assign({},S.st,{run:1});render(true);send({a:'selftest'},true);if(API){var sn=0,si=setInterval(function(){poll(true);if(++sn>15||(S.st&&!S.st.run))clearInterval(si)},MOCK?1500:4000)}return;
+ case 'addrule':E.auto.rules.push({m:'',k:''});break;
+ case 'delrule':E.auto.rules.splice(+x,1);break;
+ case 'son':E.sched.on=!E.sched.on;break;
+ case 'sday':var dd=+x,di=E.sched.days.indexOf(dd);if(di>=0)E.sched.days.splice(di,1);else E.sched.days.push(dd);E.sched.days.sort();break;
+ case 'sfrom':E.sched.from=x;break;case 'sto':E.sched.to=x;break;
+ case 'atsheet':atSheet();return;
+ case 'atdo':U.at.do=x;atSheet();return;case 'att':U.at.t=x;atSheet();return;
+ case 'atgo':unsheet();send({a:'at',t:U.at.t,do:U.at.do});return;
+ case 'atdel':send({a:'at_del',i:+x});return;
+ case 'stopbio':unsheet();bioAuth('Остановить кликер, уведомления и автоответ',function(){send({a:'stop'})});return;
+ case 'biook':unsheet();var bf=U.bioFn;U.bioFn=null;if(bf)bf();return;
+ case 'bio':U.bio=!U.bio;LS.set('bio',U.bio);break;
  default:if(a.indexOf('nt:')==0){var k=a.slice(3);E.notify[k]=!E.notify[k]}
  }
  render(true)});
@@ -599,8 +771,10 @@ document.addEventListener('input',function(ev){var k=ev.target.dataset.in;if(!k)
  if(k=='say'){U.say.t=ev.target.value;$('saybtn').classList.toggle('dis',!U.say.t.trim());return}
  if(k=='nowed'){U.nowEd=ev.target.value;var b=q$('[data-a=nowsave]');if(b)b.classList.toggle('dis',U.nowEd.trim()==(S.brain.now||[]).join('\n').trim());return}
  if(k=='other'){var id=ev.target.dataset.q;U.qsel[id].t=ev.target.value;var b2=q$('[data-a=qsub][data-q="'+id+'"]');if(b2)b2.disabled=!ev.target.value.trim();return}
+ if(k=='qadd'){U.qadd=ev.target.value;$('qaddbtn').classList.toggle('dis',!U.qadd.trim());return}
+ if(k=='deny'){var h0=!!q$('[data-a=save]');U.denyRaw=ev.target.value;E.auto.deny=U.denyRaw.split(',').map(function(s){return s.trim()}).filter(Boolean);if(h0!=dirty())keepFocus('deny');return}
  var m=k.split(':'),had=!!q$('[data-a=save]');
- if(m[0]=='tpl')E.tpl[+m[1]]=ev.target.value;else E.projects[+m[1]][m[0]=='pn'?'name':'desc']=ev.target.value;
+ if(m[0]=='tpl')E.tpl[+m[1]]=ev.target.value;else if(m[0]=='rm'||m[0]=='rk')E.auto.rules[+m[1]][m[0]=='rm'?'m':'k']=ev.target.value;else E.projects[+m[1]][m[0]=='pn'?'name':'desc']=ev.target.value;
  if(had!=dirty())keepFocus(k)});
 /* стоп удержанием */
 var HT;function holdStart(ev){var b=ev.target.closest('#hold');if(!b)return;ev.preventDefault();b.classList.add('go');haptic('sel');HT=setTimeout(function(){b.classList.remove('go');unsheet();haptic('warning');send({a:'stop'})},1200)}
@@ -621,13 +795,14 @@ function inflate(b64){var s=b64.replace(/-/g,'+').replace(/_/g,'/');while(s.leng
  if(window.DecompressionStream)return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
  return new Promise(function(res,rej){var sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako_inflate.min.js';sc.onload=function(){res(pako.inflateRaw(u,{to:'string'}))};sc.onerror=rej;document.head.appendChild(sc)})}
 function dec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(decodeURIComponent(escape(atob(s))))}
-function boot(){LOADING=false;norm();if(S.pend.length&&HP.get('tab')=='q')U.tab='q';render();if(API){setInterval(poll,15000);document.addEventListener('visibilitychange',function(){poll()});setInterval(function(){if(S.pend.length)loadSnap()},5000);if(S.pend.length)loadSnap();setTimeout(function(){poll(true)},1200)}}
+function boot(){LOADING=false;norm();if(!MOCK&&!U.cached)LS.set('last',S);bioInit();if(S.pend.length&&HP.get('tab')=='q')U.tab='q';render();if(HP.get('q'))openQ(HP.get('q'));if(API){setInterval(poll,15000);document.addEventListener('visibilitychange',function(){poll()});setInterval(function(){if(S.pend.length)loadSnap()},5000);if(S.pend.length)loadSnap();setTimeout(function(){poll(true)},1200)}}
 if(tg){try{tg.ready();tg.expand()}catch(e){}theme();try{tg.onEvent('themeChanged',function(){theme();render(true)});tg.BackButton.onClick(back)}catch(e){}}else theme();
 render();
 var z=HP.get('z'),s0=HP.get('s');
-function fromHash(){if(!z&&MENU){boot();toast('Сервер на ПК недоступен — открой «Панель» внизу чата');return}if(z)return inflate(z).then(function(t){S=JSON.parse(t);boot()},function(){boot();toast('Не удалось распаковать статус — обновите Telegram')});if(s0)try{S=dec(s0)}catch(e){}boot()}
+var CACHE=MOCK?null:LS.get('last',null);
+function fromHash(){if(!z&&MENU){if(CACHE){S=CACHE;U.cached=1}boot();toast('Сервер на ПК недоступен — открой «Панель» внизу чата');return}if(z)return inflate(z).then(function(t){S=JSON.parse(t);boot()},function(){boot();toast('Не удалось распаковать статус — обновите Telegram')});if(s0)try{S=dec(s0)}catch(e){}boot()}
 if(MOCK){setTimeout(function(){S=MOCK.state();boot()},MOCK.delay||350)}
-else if(API)api('/api/state').then(function(r){return r.json()}).then(function(d){S=d;boot()}).catch(function(){API=null;fromHash()});
+else if(API){if(CACHE){S=CACHE;U.cached=1;LOADING=false;norm();render()}api('/api/state').then(function(r){return r.json()}).then(function(d){S=d;U.cached=0;boot()}).catch(function(){API=null;fromHash()})}
 else fromHash();
 </script>
 </body>
