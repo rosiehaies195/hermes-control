@@ -262,6 +262,8 @@ mark{background:color-mix(in srgb,var(--gold) 35%,transparent);color:inherit;bor
 .mstep{display:flex;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);font-size:13.5px}.mstep:first-child{border-top:0}
 .mstep .c{font:600 12px "JetBrains Mono",monospace;width:52px;flex:none;color:var(--mut)}.mstep.cur .c{color:var(--gold)}
 .mstep .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mstep .v{font:12px "JetBrains Mono",monospace;color:var(--dim);flex:none;text-align:right}
+#lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center}
+#lock.on{display:flex}#lock h2{margin:8px 0 0;font-size:21px}#lock p{color:var(--mut);font-size:14px;margin:0 0 12px;max-width:300px}
 </style>
 </head>
 <body>
@@ -297,7 +299,7 @@ var LS={get:function(k,d){try{var v=localStorage.getItem('hc_'+k);return v==null
 var DEF={quiet:{on:false,from:'23:00',to:'08:00',q:true,fail:true},auto:{on:false,min:15,rule:'rec',rules:[],deny:[]},sched:{on:false,days:[1,2,3,4,5,6,7],from:'09:00',to:'23:00'},
  tpl:['Продолжай по плану','Сделай как рекомендуешь','Подожди, посмотрю сам','Проверь CI и сделай gh run rerun']};
 var S={v:1,ts:0,clicker:{on:false,iv:5},notifier:{on:false},session:'',action:'',fails:0,hang:20,notify:{start:true,question:true,hang:true,fail:true},projects:[],hist:[],log:[],pend:[],brain:{sec:[],now:[],log:[]},budget:6,pause:0,stopped:false,cancel:[],tl:null,tok:null,steps:[],away:null};
-var E,LOADING=true,U={tab:'home',page:null,qsel:{},bq:'',bfull:false,grep:null,seg:-1,step:-1,jt:'sess',jf:'all',jq:'',haptics:LS.get('hap',true),col:LS.get('col4',{strip:true,path:true,tok:true,auto:true}),say:{t:'',ag:'claude'},nowEd:null,qadd:'',bio:LS.get('bio',true),denyRaw:null};
+var E,LOADING=true,U={tab:'home',page:null,qsel:{},bq:'',bfull:false,grep:null,seg:-1,step:-1,jt:'sess',jf:'all',jq:'',haptics:LS.get('hap',true),col:LS.get('col4',{strip:true,path:true,tok:true,auto:true}),say:{t:'',ag:'claude'},nowEd:null,qadd:'',bio:LS.get('bio',true),biolock:LS.get('biolock',true),denyRaw:null};
 function norm(){S.sched=Object.assign({},DEF.sched,S.sched||{});S.quiet=Object.assign({},DEF.quiet,S.quiet||{});S.auto=Object.assign({},DEF.auto,S.auto||{});S.auto.rules=S.auto.rules||[];S.auto.deny=S.auto.deny||[];
  ['pend','hist','log','steps','cancel','projects','sess','health','cj','hs','queue','at'].forEach(function(k){S[k]=S[k]||[]});S.brain=S.brain||{sec:[],now:[],log:[]};S.budget=S.budget||6;
  S.clicker=S.clicker||{on:false,iv:5};S.notifier=S.notifier||{on:false};S.tpl=S.tpl||DEF.tpl.slice();S.warn=S.warn==null?80:S.warn;
@@ -525,7 +527,7 @@ function settings(){var N=[['question','Вопросы агентов','карт
  schedUI()+'<div class="sec"><div class="sh"><span>Шаблоны ответов</span><a data-a="addtpl">+ добавить</a></div><div class="grp">'+(E.tpl.map(function(t,i){return '<div class="row" style="padding:8px 8px 8px 14px;min-height:0"><div class="tplrow" style="flex:1"><input class="in" data-in="tpl:'+i+'" value="'+esc(t)+'" placeholder="Текст шаблона"></div><span class="x" data-a="deltpl" data-x="'+i+'">×</span></div>'}).join('')||'<div class="row" style="color:var(--mut)">Нет шаблонов</div>')+'</div><div class="hint" style="padding-left:2px">Чипы в «Другое» у вопроса и в «Написать Claude».</div></div>'+
  '<div class="sec"><div class="sh"><span>Бюджет токенов</span></div><div class="grp"><div class="row" style="display:block"><div class="d" style="margin-bottom:6px">В сутки</div>'+seg([4,6,8,12],E.budget,'bud',' млн')+
  '<div class="d" style="margin:12px 0 6px">Предупредить, когда прогноз дойдёт до</div>'+seg([70,80,90,0],E.warn,'warn','',['70%','80%','90%','не надо'])+'</div></div></div>'+
- '<div class="sec"><div class="sh"><span>Приложение</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Вибрация</div><div class="d">отклик на нажатия</div></div>'+sw(U.haptics,'hap')+'</div>'+'<div class="row"><div class="t"><div class="n">Подтверждать '+bioName()+'</div><div class="d">стоп, принудительный перезапуск, Allow'+(U.bio&&bioWhy()?' · '+esc(bioWhy())+', пока будет удержание':'')+'</div></div>'+sw(U.bio,'bio')+'</div>'+'<div class="row tap" data-a="biotest"><div class="t"><div class="n">Проверить '+bioName()+'</div><div class="d">'+(U.bioLast?'последняя попытка: '+esc(U.bioLast.step):'покажу системный запрос; итог уйдёт на ПК')+'</div></div><span class="chev">›</span></div>'+
+ '<div class="sec"><div class="sh"><span>Приложение</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Вибрация</div><div class="d">отклик на нажатия</div></div>'+sw(U.haptics,'hap')+'</div>'+'<div class="row"><div class="t"><div class="n">Подтверждать '+bioName()+'</div><div class="d">стоп, принудительный перезапуск, Allow'+(U.bio&&bioWhy()?' · '+esc(bioWhy())+', пока будет удержание':'')+'</div></div>'+sw(U.bio,'bio')+'</div>'+'<div class="row"><div class="t"><div class="n">Вход по '+bioName()+'</div><div class="d">при открытии панели и после 5 мин в фоне</div></div>'+sw(U.biolock,'biolock')+'</div>'+'<div class="row tap" data-a="biotest"><div class="t"><div class="n">Проверить '+bioName()+'</div><div class="d">'+(U.bioLast?'последняя попытка: '+esc(U.bioLast.step):'покажу системный запрос; итог уйдёт на ПК')+'</div></div><span class="chev">›</span></div>'+
  '<div class="row tap" data-a="full"><div class="t"><div class="n">Во весь экран</div><div class="d">без шапки Telegram</div></div><span class="chev">›</span></div>'+
  '<div class="row tap" data-a="homescreen"><div class="t"><div class="n">Добавить на домашний экран</div><div class="d">открывать Hermes как приложение</div></div><span class="chev">›</span></div></div></div>'+
  '<div class="sec"><div class="btn danger" data-a="stopsheet">■ Остановить всё</div></div>'}
@@ -550,7 +552,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=41;
+var VER=42;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">⬆ Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">⚠ ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -674,6 +676,24 @@ function holdThen(reason,fn){HOLDFN=fn;sheet('<h3>Подтверди удерж�
 function bioTest(){bioInit(function(){var w=bioWhy();if(w){bioDiag('test_unavailable');toast(esc(w));render(true);return}
  bioAuth('Проверка Face ID в панели Hermes',function(){toast('<b>✓</b> '+bioName()+' работает');render(true)})})}
 
+/* вход по Face ID: экран блокировки при открытии и после 5 мин в фоне */
+var LOCK={on:false,busy:false,hid:0};
+function lockWanted(){return !MOCK&&inTG()&&U.biolock}
+function lockShow(msg){var el=$('lock');if(!el){el=document.createElement('div');el.id='lock';document.body.appendChild(el)}
+ el.innerHTML='<div class="logo" data-st="pause" style="width:72px;height:72px;border-radius:18px"></div><h2>Hermes заблокирован</h2><p>'+(msg||'Подтверди '+bioName()+', чтобы открыть панель')+'</p><div class="btn pri" data-a="unlock" style="min-width:220px">Открыть по '+bioName()+'</div>';
+ el.classList.add('on');LOCK.on=true}
+function lockHide(){var el=$('lock');if(el)el.classList.remove('on');LOCK.on=false}
+function lockCheck(){if(!lockWanted()||LOCK.busy)return;
+ bioInit(function(){
+  if(!(BM&&BM.isInited&&BM.isBiometricAvailable)){lockHide();bioDiag('lock_unavailable');return}   // нечем проверить — не запираем
+  if(BM.isAccessRequested&&!BM.isAccessGranted){lockShow('Доступ к '+bioName()+' запрещён — <a data-a="bioset" style="color:var(--gold)">открой настройки</a> или выключи вход по '+bioName()+' там же');bioDiag('lock_denied');return}
+  lockShow();LOCK.busy=true;
+  var ask=function(){try{BM.authenticate({reason:'Вход в панель Hermes'},once(function(ok){LOCK.busy=false;bioDiag(ok?'lock_ok':'lock_fail');if(ok){lockHide();LS.set('lockok',1);haptic('success')}else lockShow('Не подтверждено. Нажми, чтобы попробовать ещё раз')},60000,function(){LOCK.busy=false;bioDiag('lock_timeout');lockShow('Face ID не ответил. Нажми, чтобы попробовать ещё раз')}))}catch(e){LOCK.busy=false;bioDiag('lock_throw',{e:String(e).slice(0,80)});lockShow('Ошибка '+bioName()+'. Нажми, чтобы попробовать ещё раз')}};
+  if(BM.isAccessGranted){ask();return}
+  try{BM.requestAccess({reason:'Вход в панель Hermes и подтверждение опасных действий'},once(function(g){if(g)ask();else{LOCK.busy=false;bioDiag('lock_access_no');lockShow('Доступ не дан — <a data-a="bioset" style="color:var(--gold)">открой настройки</a>')}},60000,function(){LOCK.busy=false;lockShow('Нажми, чтобы попробовать ещё раз')}))}catch(e){LOCK.busy=false;lockHide()}
+ })}
+document.addEventListener('visibilitychange',function(){if(document.hidden){LOCK.hid=Date.now();return}if(LOCK.hid&&Date.now()-LOCK.hid>5*60000)lockCheck()});
+
 /* открыть на вопросе (из уведомления) */
 function openQ(id){var q=S.pend.filter(function(z){return z.id==id})[0];if(!q){toast('Этот вопрос уже закрыт');return}
  U.tab='q';U.page=null;U.qsel[id]=U.qsel[id]||{};U.flash=id;render();setTimeout(function(){var e=$('q-'+id);if(e)e.scrollIntoView({block:'center',behavior:'smooth'})},80);setTimeout(function(){U.flash=null},3500)}
@@ -784,6 +804,8 @@ document.addEventListener('click',function(ev){
  case 'biook':unsheet();var bf=U.bioFn;U.bioFn=null;if(bf)bf();return;
  case 'bio':U.bio=!U.bio;LS.set('bio',U.bio);break;
  case 'biotest':bioTest();return;
+ case 'unlock':lockCheck();return;
+ case 'biolock':U.biolock=!U.biolock;LS.set('biolock',U.biolock);break;
  case 'bioset':try{BM.openSettings()}catch(e){toast('Настройки: профиль бота → ⋯ → Биометрия')}return;
  default:if(a.indexOf('nt:')==0){var k=a.slice(3);E.notify[k]=!E.notify[k]}
  }
@@ -820,9 +842,9 @@ function inflate(b64){var s=b64.replace(/-/g,'+').replace(/_/g,'/');while(s.leng
  if(window.DecompressionStream)return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
  return new Promise(function(res,rej){var sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako_inflate.min.js';sc.onload=function(){res(pako.inflateRaw(u,{to:'string'}))};sc.onerror=rej;document.head.appendChild(sc)})}
 function dec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(decodeURIComponent(escape(atob(s))))}
-function boot(){LOADING=false;norm();if(!MOCK&&!U.cached)LS.set('last',S);bioInit();if(S.pend.length&&HP.get('tab')=='q')U.tab='q';render();if(HP.get('q'))openQ(HP.get('q'));if(API){setInterval(poll,15000);document.addEventListener('visibilitychange',function(){poll()});setInterval(function(){if(S.pend.length)loadSnap()},5000);if(S.pend.length)loadSnap();setTimeout(function(){poll(true)},1200)}}
+function boot(){LOADING=false;norm();if(!MOCK&&!U.cached)LS.set('last',S);bioInit();if(S.pend.length&&HP.get('tab')=='q')U.tab='q';render();lockCheck();if(HP.get('q'))openQ(HP.get('q'));if(API){setInterval(poll,15000);document.addEventListener('visibilitychange',function(){poll()});setInterval(function(){if(S.pend.length)loadSnap()},5000);if(S.pend.length)loadSnap();setTimeout(function(){poll(true)},1200)}}
 if(tg){try{tg.ready();tg.expand()}catch(e){}theme();try{tg.onEvent('themeChanged',function(){theme();render(true)});tg.BackButton.onClick(back)}catch(e){}}else theme();
-render();
+render();if(lockWanted()&&LS.get('lockok',0))lockShow();
 var z=HP.get('z'),s0=HP.get('s');
 var CACHE=MOCK?null:LS.get('last',null);
 function fromHash(){if(!z&&MENU){if(CACHE){S=CACHE;U.cached=1}boot();toast('Сервер на ПК недоступен — открой «Панель» внизу чата');return}if(z)return inflate(z).then(function(t){S=JSON.parse(t);boot()},function(){boot();toast('Не удалось распаковать статус — обновите Telegram')});if(s0)try{S=dec(s0)}catch(e){}boot()}
