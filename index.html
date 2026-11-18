@@ -189,6 +189,9 @@ input.in:focus{border-color:var(--gold)}
    Actions: Telegram.WebApp.sendData (or POST {api}/api with X-Init-Data). Payload contract: runbooks/miniapp-panel.md in hermes-brain. */
 var tg=window.Telegram&&Telegram.WebApp;
 var HP=new URLSearchParams(location.hash.slice(1)),API=HP.get('api');
+/* keyboard-button launches have no initData (no live auth) -> stay on sendData; menu-button launches have it */
+if(API&&tg&&tg.platform&&tg.platform!='unknown'&&!tg.initData)API=null;
+var MENU=!!(tg&&tg.initData);
 function $(i){return document.getElementById(i)}
 function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
 function LG(id,c){return '<img class="'+(c||'')+'" src="'+(id=='codex'?'codex':'claude')+'.svg" alt="'+id+'">'}
@@ -215,7 +218,7 @@ function inTG(){return !!(tg&&tg.platform&&tg.platform!='unknown')}
 function send(o){o=Object.assign({v:1},o);haptic('success');
  if(API){fetch(API.replace(/\/$/,'')+'/api',{method:'POST',headers:{'Content-Type':'application/json','X-Init-Data':tg?tg.initData:''},body:JSON.stringify(o)})
   .then(function(r){if(!r.ok)throw r;return r.json()}).then(function(r){toast('<b>✓</b> '+esc(r.text||'Готово'));if(r.state){S=r.state;norm();if(o.a=='ans')U.qsel={};render(true)}})
-  .catch(function(){toast('Сервер недоступен — отправляю через бота');sd(o)});return}
+  .catch(function(){if(MENU&&!HP.get('z'))toast('Сервер на ПК недоступен. Открой панель кнопкой «Панель» внизу чата — она работает через бота.');else{toast('Сервер недоступен — отправляю через бота');sd(o)}});return}
  sd(o)}
 function api(path,opt){opt=opt||{};opt.headers=Object.assign({'X-Init-Data':tg?tg.initData:''},opt.headers||{});return fetch(API.replace(/\/$/,'')+path,opt).then(function(r){if(!r.ok)throw r;return r})}
 var SNAP={};
@@ -420,7 +423,7 @@ function dec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';
 function boot(){norm();if(S.pend.length&&HP.get('tab')=='q')U.tab='q';render();if(API){setInterval(poll,15000);document.addEventListener('visibilitychange',poll);setInterval(function(){if(S.pend.length)loadSnap()},5000);if(S.pend.length)loadSnap()}}
 if(tg){try{tg.ready();tg.expand()}catch(e){}theme();try{tg.onEvent('themeChanged',function(){theme();render(true)});tg.BackButton.onClick(function(){var wasDoc=U.page&&U.page.indexOf('doc:')==0;U.page=null;if(wasDoc)U.tab='br';render()})}catch(e){}}else theme();
 var z=HP.get('z'),s0=HP.get('s');
-function fromHash(){if(z)return inflate(z).then(function(t){S=JSON.parse(t);boot()},function(){boot();toast('Не удалось распаковать статус — обновите Telegram')});if(s0)try{S=dec(s0)}catch(e){}boot()}
+function fromHash(){if(!z&&MENU){boot();toast('Сервер на ПК недоступен — открой «Панель» внизу чата');return}if(z)return inflate(z).then(function(t){S=JSON.parse(t);boot()},function(){boot();toast('Не удалось распаковать статус — обновите Telegram')});if(s0)try{S=dec(s0)}catch(e){}boot()}
 if(API)fetch(API.replace(/\/$/,'')+'/api/state',{headers:{'X-Init-Data':tg?tg.initData:''}}).then(function(r){if(!r.ok)throw r;return r.json()}).then(function(d){S=d;boot()}).catch(function(){API=null;fromHash()});
 else fromHash();
 </script>
