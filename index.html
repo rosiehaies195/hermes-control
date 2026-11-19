@@ -777,7 +777,7 @@ function events(){loadLog();var LOG=U.flog||S.log,f=JF.filter(function(x){return
 function match(i){var q=U.bq.toLowerCase();return !q||(i.n+' '+i.d+' '+i.g).toLowerCase().indexOf(q)>=0}
 function brainT(){var B=S.brain;
  var h=hd()+modeBar()+'<div class="sec" style="margin-top:4px"><div class="sh"><span>В фокусе</span><a data-a="nowedit">'+IC('pencil')+' изменить</a></div><div class="grp now"><ul>'+((B.now||[]).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')||'<li>—</li>')+'</ul></div></div>'+
- '<div class="sec"><input class="in" data-in="bq" placeholder="Поиск: название, тег, описание" value="'+esc(U.bq)+'"><div class="chips g sm" style="margin-top:8px"><span data-a="bfull" data-x="0" class="'+(!U.bfull?'on':'')+'">по индексу</span><span data-a="bfull" data-x="1" class="'+(U.bfull?'on':'')+(API?'':'" style="opacity:.5')+'">в тексте файлов</span></div></div>';
+ '<div class="sec"><input class="in" data-in="bq" placeholder="Поиск: название, тег, описание" value="'+esc(U.bq)+'"><div class="chips g sm" style="margin-top:8px"><span data-a="bfull" data-x="0" class="'+(!U.bfull?'on':'')+'">по индексу</span><span data-a="bfull" data-x="1" class="'+(U.bfull?'on':'')+(API?'':'" style="opacity:.5')+'">везде: файлы, журнал, чаты</span></div></div>';
  if(U.bfull&&U.bq){return h+grepView()}
  return h+((B.sec||[]).map(function(s){var it=s.i.filter(match);if(!it.length)return '';return '<div class="sec"><div class="sh"><span>'+esc(s.n)+' · '+it.length+'</span></div><div class="grp">'+it.map(function(i){return '<div class="row tap" data-a="doc" data-x="'+esc(i.p)+'"><div class="t"><div class="n" style="font-size:14.5px">'+hl(i.n,U.bq)+'</div><div class="d">'+hl(i.d,U.bq)+'</div>'+(i.g?'<div class="tags">'+i.g.split(',').map(function(g){return '<span>'+esc(g.trim())+'</span>'}).join('')+'</div>':'')+'</div><span class="mono" style="font-size:11.5px;color:var(--dim)">'+esc(i.u)+'</span><span class="chev">›</span></div>'}).join('')+'</div></div>'}).join('')||'<div class="empty">Ничего не найдено'+(API?'. <a style="color:var(--gold);cursor:pointer" data-a="bfull" data-x="1">Искать в тексте ›</a>':'')+'</div>')+
  '<div class="sec"><div class="sh col'+(U.col.blog?' shut':'')+'" data-a="col" data-x="blog"><span>Последние изменения</span></div>'+(U.col.blog?'':'<div class="grp">'+(B.log||[]).map(function(l){return '<div class="row" style="min-height:0"><div class="t mono" style="font-size:12px;color:var(--mut)">'+esc(l)+'</div></div>'}).join('')+'</div>')+'</div>'+
@@ -867,7 +867,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=65;
+var VER=66;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1586,8 +1586,24 @@ document.addEventListener('keydown',function(e){if(e.target.id=='hcin'&&e.key=='
 document.addEventListener('change',function(e){if(e.target.id!='hcfile')return;var fs=[].slice.call(e.target.files||[]).slice(0,4-st.imgs.length);e.target.value='';
  fs.reduce(function(p,f){return p.then(function(){return readImg(f).then(function(u){st.imgs.push(u)})})},Promise.resolve()).then(paint).catch(function(){toast('Не удалось прочитать фото')})});
 function readImg(file){return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var M=1280,s=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*s));c.height=Math.max(1,Math.round(im.height*s));c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.82))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(file)})}
-return {pretty:pretty,st:st,shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint}
+return {open:openSess,pretty:pretty,st:st,shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint}
 })();
+
+/* v6.6: поиск везде — файлы мозга, журнал панели, чаты Hermes. Переопределяет grep()/grepView() из v5 (последнее объявление выигрывает). */
+function grep(){if(!API||!U.bq)return;var q=U.bq;clearTimeout(GT);GT=setTimeout(function(){api('/api/grep?q='+encodeURIComponent(q)).then(function(r){return r.json()}).then(function(d){U.grep={q:q,r:d.r||[],log:d.log||[],hs:d.hs||[]};if(U.bfull)render(true);var i=q$('[data-in=bq]');if(i){i.focus();i.setSelectionRange(q.length,q.length)}}).catch(function(){U.grep={q:q,r:[],log:[],hs:[],err:1};if(U.bfull)render(true)})},300)}
+function grepView(){if(!API)return '<div class="empty">Поиск по тексту работает в live-режиме (кнопка меню «Hermes»).</div>';
+ var G=U.grep;if(!G||G.q!=U.bq)return '<div class="sec"><div class="sk" style="height:140px;border-radius:16px"></div></div>';
+ if(G.err)return '<div class="empty">Не удалось выполнить поиск. Проверь связь с ПК.</div>';
+ var L=G.log||[],H=G.hs||[];
+ if(!G.r.length&&!L.length&&!H.length)return '<div class="empty">«'+esc(G.q)+'» нигде не встречается: ни в файлах мозга, ни в журнале, ни в чатах Hermes</div>';
+ var h='';
+ if(H.length)h+='<div class="sec"><div class="sh"><span>Чаты Hermes</span><span class="sum">'+H.length+'</span></div><div class="grp">'+H.map(function(r){return '<div class="row tap" data-a="sfhc" data-x="'+esc(r.id)+'"><div class="t"><div class="n" style="font-size:14px">'+esc(r.n)+' <span class="pill">'+esc(r.src)+'</span></div>'+(r.s?'<div class="snip">…'+hl(r.s,G.q)+'…</div>':'')+'<div class="d">'+ago(r.t)+'</div></div><span class="chev">›</span></div>'}).join('')+'</div></div>';
+ if(G.r.length)h+='<div class="sec"><div class="sh"><span>Файлы мозга</span><span class="sum">'+G.r.length+'</span></div><div class="grp">'+G.r.map(function(r){return '<div class="row tap" data-a="doc" data-x="'+esc(r.p)+'"><div class="t"><div class="n" style="font-size:14px">'+esc(r.p)+' <span class="pill">'+r.n+'</span></div>'+r.s.map(function(s){return '<div class="snip">…'+hl(s,G.q)+'…</div>'}).join('')+'</div><span class="chev">›</span></div>'}).join('')+'</div></div>';
+ if(L.length)h+='<div class="sec"><div class="sh"><span>Журнал панели</span><span class="sum">'+L.length+'</span></div><div class="grp">'+L.map(function(r){return '<div class="row"><span class="tm mono">'+esc(r.t)+'</span><div class="t"><div class="snip" style="margin:0">'+hl(r.s,G.q)+'</div><div class="d">'+esc(r.k)+' · '+ago(r.ts)+'</div></div></div>'}).join('')+'</div></div>';
+ return h}
+document.addEventListener('click',function(ev){var el=ev.target.closest('[data-a=sfhc]');if(!el||!window.HC)return;ev.stopPropagation();U.tab='hc';U.page='hcchat';HC.open(el.dataset.x);render()},true);
+/* простой режим: поиск сразу везде (в техническом — по чипам) */
+document.addEventListener('input',function(ev){if(ev.target.dataset&&ev.target.dataset.in=='bq'&&API&&PL())U.bfull=true},true);
 
 </script>
 </body>
