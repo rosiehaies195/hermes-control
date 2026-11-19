@@ -441,6 +441,89 @@ html[data-theme=light] .plc{border-color:var(--soft2)}
 .hero .hs:empty{display:none}
 .pmbar .seg span{padding:0 8px}
 .pll li{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+/* v6: вкладка «Чат» */
+body.hcm{overflow:hidden;padding-bottom:0}
+body.hcm #scr{padding:0}
+body.hcm.hckb .nav{display:none}
+#hcroot{position:fixed;left:0;right:0;top:0;bottom:calc(68px + env(safe-area-inset-bottom));display:flex;flex-direction:column;background:var(--bg);padding-top:calc(env(safe-area-inset-top) + var(--tg-content-safe-area-inset-top,0px))}
+body.hckb #hcroot{bottom:0}
+.hchd{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);flex:none}
+.hct0{flex:1;font:600 15px var(--font,inherit);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hct0.tap{cursor:pointer}
+.hcbtn{min-width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--s1);color:var(--tx);cursor:pointer;font-weight:600;font-size:13px;padding:0 10px;user-select:none}
+.hcbtn.pri{background:var(--gold);color:var(--on-gold);border:0}
+.hcbtn .ic{width:18px;height:18px}
+.hcfil{display:flex;gap:6px;padding:10px 12px 4px;flex:none}
+.hcfil span{padding:6px 12px;border-radius:999px;border:1px solid var(--line);font-size:12.5px;color:var(--mut);cursor:pointer}
+.hcfil span.on{background:var(--gold);color:var(--on-gold);border-color:transparent;font-weight:600}
+.hclist{flex:1;overflow:auto;padding:8px 12px 16px;-webkit-overflow-scrolling:touch}
+.hcsess{padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--s1);margin-bottom:8px;cursor:pointer}
+.hcsess:active{background:var(--s2)}
+.hcst{display:flex;gap:8px;align-items:baseline}
+.hcst b{flex:1;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hcst span{font-size:11.5px;color:var(--dim);flex:none}
+.hcsm{font-size:12px;color:var(--mut);margin-top:3px;display:flex;align-items:center;gap:4px}
+.hcsm .ic{width:12px;height:12px}
+.hcempty{padding:40px 16px;text-align:center;color:var(--mut);font-size:14px;line-height:1.6}
+.hcerr{margin:10px 12px;padding:10px 12px;border:1px solid var(--bad);color:var(--bad);border-radius:8px;font-size:13px;word-break:break-word}
+.hcmsgs{flex:1;overflow:auto;padding:12px 12px 8px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.hcrow{display:flex;margin-bottom:10px}
+.hcrow.u{justify-content:flex-end}
+.hcb{max-width:92%;border-radius:12px;padding:9px 12px;font-size:14.5px;line-height:1.5;word-break:break-word;overflow-wrap:anywhere}
+.hcb.u{background:var(--gold);color:var(--on-gold);border-bottom-right-radius:4px}
+.hcb.u code{background:#0003}
+.hcb.a{background:var(--s1);border:1px solid var(--line);border-bottom-left-radius:4px;max-width:100%;min-width:0}
+.hcb ul,.hcb ol{margin:4px 0;padding-left:20px}
+.hcb code{font:12.5px 'JetBrains Mono',ui-monospace,Menlo,monospace;background:var(--s2);padding:1px 5px;border-radius:4px}
+.hcpre{margin:6px 0;padding:8px 10px;background:var(--s2);border:1px solid var(--line);border-radius:6px;overflow:auto;max-width:100%;font:12px/1.45 'JetBrains Mono',ui-monospace,Menlo,monospace;white-space:pre;-webkit-overflow-scrolling:touch}
+.hcpre code{background:none;padding:0;font:inherit}
+.hcb a{color:var(--gold);text-decoration:underline;cursor:pointer}
+.hch{font-weight:700;margin:6px 0 2px}
+.hcsp{height:6px}
+.hct2{min-width:0}
+.hctool{margin:6px 0;border:1px solid var(--line);border-radius:8px;background:var(--bg);overflow:hidden}
+.hct{display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:12.5px;cursor:pointer;min-width:0}
+.hct i{flex:none;display:flex;width:16px}
+.hct i .ic{width:15px;height:15px}
+.hct b{flex:none;font:600 12px 'JetBrains Mono',ui-monospace,monospace}
+.hct span{flex:1;min-width:0;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:12px 'JetBrains Mono',ui-monospace,monospace}
+.hctool.ok i{color:var(--ok)}.hctool.err i{color:var(--bad)}.hctool.run i{color:var(--gold)}
+.hctb{padding:0 10px 8px}
+.hcl{font:600 10px var(--font,inherit);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.hcspin{width:13px;height:13px;border:2px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:hcs .8s linear infinite;display:block}
+@keyframes hcs{to{transform:rotate(360deg)}}
+.hcdots{display:flex;gap:4px;padding:6px 2px}
+.hcdots i{width:6px;height:6px;border-radius:50%;background:var(--dim);animation:hcd 1.2s infinite}
+.hcdots i:nth-child(2){animation-delay:.2s}.hcdots i:nth-child(3){animation-delay:.4s}
+@keyframes hcd{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.hcmore{text-align:center;color:var(--gold);font-size:12.5px;padding:6px;cursor:pointer}
+.hcim{font-size:12px;opacity:.85;display:flex;gap:4px;align-items:center;margin-bottom:3px}.hcim .ic{width:14px;height:14px}
+.hcpend{margin:8px 0 12px;border:1px solid var(--warn);border-radius:10px;padding:10px 12px;background:var(--s1)}
+.hcpk{font-weight:700;font-size:13px;color:var(--warn);display:flex;gap:6px;align-items:center}.hcpk .ic{width:16px;height:16px}
+.hcpq{margin:6px 0;font-size:14px;word-break:break-word}
+.hcpa{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.hcpa .btn{flex:1;min-width:92px;min-height:44px}
+.hcpa input{flex:1 1 100%;min-height:44px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--tx);padding:0 10px;font:inherit}
+.btn.bad{color:var(--bad);border-color:var(--bad)}
+.hcthumbs{display:flex;gap:8px;padding:0 12px;flex:none;overflow-x:auto}
+.hcthumbs:empty{display:none}
+.hcth{position:relative;width:56px;height:56px;flex:none;margin:6px 0}
+.hcth img{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.hcth span{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--bad);color:#fff;display:flex;align-items:center;justify-content:center}.hcth span .ic{width:12px;height:12px}
+.hccomp{display:flex;align-items:flex-end;gap:8px;padding:8px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);flex:none;background:var(--bg)}
+body:not(.hckb) .hccomp{padding-bottom:10px}
+.hccomp textarea{flex:1;min-height:40px;max-height:140px;resize:none;border-radius:10px;border:1px solid var(--line);background:var(--s1);color:var(--tx);padding:9px 12px;font:15px/1.4 inherit;font-family:inherit;outline:none;box-sizing:border-box}
+.hccomp textarea:focus{border-color:var(--gold)}
+.hcsendb{width:40px;height:40px;border-radius:10px;background:var(--gold);color:var(--on-gold);display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.hcsendb.stop{background:var(--bad);color:#fff}
+.hcsendb .ic{width:20px;height:20px}
+.hcro{padding:12px 14px calc(12px);border-top:1px solid var(--line);color:var(--mut);font-size:13px;display:flex;gap:8px;align-items:flex-start;flex:none}.hcro .ic{width:16px;height:16px;flex:none;margin-top:2px}
+.hcsh{padding:4px 0 8px;font-size:15px}
+.hcinp{width:100%;box-sizing:border-box;min-height:46px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--tx);padding:0 12px;font:15px inherit;font-family:inherit;margin-bottom:4px}
+.hint2{color:var(--mut);font-size:13.5px;padding:2px 0 8px;line-height:1.5}
+
+.nav div{font-size:9px!important;letter-spacing:.06em!important}
+
 </style>
 </head>
 <body>
@@ -453,6 +536,7 @@ html[data-theme=light] .plc{border-color:var(--soft2)}
 <div class="viewer" id="viewer"><img id="vimg" alt=""><span data-a="unview">×</span></div>
 <script>/* иконки Lucide 0.577 (как в Hermes Desktop) */
 var ICP={"activity": "<path d=\"M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2\"/>", "arrow-up": "<path d=\"m5 12 7-7 7 7\"/> <path d=\"M12 19V5\"/>", "book-open": "<path d=\"M12 7v14\"/> <path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\"/>", "bot": "<path d=\"M12 8V4H8\"/> <rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/> <path d=\"M2 14h2\"/> <path d=\"M20 14h2\"/> <path d=\"M15 13v2\"/> <path d=\"M9 13v2\"/>", "brain": "<path d=\"M12 18V5\"/> <path d=\"M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4\"/> <path d=\"M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5\"/> <path d=\"M17.997 5.125a4 4 0 0 1 2.526 5.77\"/> <path d=\"M18 18a4 4 0 0 0 2-7.464\"/> <path d=\"M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517\"/> <path d=\"M6 18a4 4 0 0 1-2-7.464\"/> <path d=\"M6.003 5.125a4 4 0 0 0-2.526 5.77\"/>", "check": "<path d=\"M20 6 9 17l-5-5\"/>", "chevron-right": "<path d=\"m9 18 6-6-6-6\"/>", "circle-dot": "<circle cx=\"12\" cy=\"12\" r=\"10\"/> <circle cx=\"12\" cy=\"12\" r=\"1\"/>", "clock": "<circle cx=\"12\" cy=\"12\" r=\"10\"/> <path d=\"M12 6v6l4 2\"/>", "coins": "<path d=\"M13.744 17.736a6 6 0 1 1-7.48-7.48\"/> <path d=\"M15 6h1v4\"/> <path d=\"m6.134 14.768.866-.5 2 3.464\"/> <circle cx=\"16\" cy=\"8\" r=\"6\"/>", "github": "<path d=\"M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4\"/> <path d=\"M9 18c-4.51 2-5-2-7-2\"/>", "hand": "<path d=\"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2\"/> <path d=\"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2\"/> <path d=\"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8\"/> <path d=\"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\"/>", "house": "<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/> <path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>", "info": "<circle cx=\"12\" cy=\"12\" r=\"10\"/> <path d=\"M12 16v-4\"/> <path d=\"M12 8h.01\"/>", "list-todo": "<path d=\"M13 5h8\"/> <path d=\"M13 12h8\"/> <path d=\"M13 19h8\"/> <path d=\"m3 17 2 2 4-4\"/> <rect x=\"3\" y=\"4\" width=\"6\" height=\"6\" rx=\"1\"/>", "map-pin": "<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/> <circle cx=\"12\" cy=\"10\" r=\"3\"/>", "message-circle-question": "<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/> <path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/> <path d=\"M12 17h.01\"/>", "message-square-text": "<path d=\"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z\"/> <path d=\"M7 11h10\"/> <path d=\"M7 15h6\"/> <path d=\"M7 7h8\"/>", "monitor": "<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/> <line x1=\"8\" x2=\"16\" y1=\"21\" y2=\"21\"/> <line x1=\"12\" x2=\"12\" y1=\"17\" y2=\"21\"/>", "moon": "<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>", "pause": "<rect x=\"14\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/> <rect x=\"5\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/>", "pencil": "<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/> <path d=\"m15 5 4 4\"/>", "play": "<path d=\"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z\"/>", "refresh-cw": "<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/> <path d=\"M21 3v5h-5\"/> <path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/> <path d=\"M8 16H3v5\"/>", "rotate-cw": "<path d=\"M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8\"/> <path d=\"M21 3v5h-5\"/>", "scroll-text": "<path d=\"M15 12h-5\"/> <path d=\"M15 8h-5\"/> <path d=\"M19 17V5a2 2 0 0 0-2-2H4\"/> <path d=\"M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3\"/>", "send": "<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"/> <path d=\"m21.854 2.147-10.94 10.939\"/>", "settings": "<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/> <circle cx=\"12\" cy=\"12\" r=\"3\"/>", "shield-check": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/> <path d=\"m9 12 2 2 4-4\"/>", "smartphone": "<rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\"/> <path d=\"M12 18h.01\"/>", "sparkles": "<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/> <path d=\"M20 2v4\"/> <path d=\"M22 4h-4\"/> <circle cx=\"4\" cy=\"20\" r=\"2\"/>", "square": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/>", "target": "<circle cx=\"12\" cy=\"12\" r=\"10\"/> <circle cx=\"12\" cy=\"12\" r=\"6\"/> <circle cx=\"12\" cy=\"12\" r=\"2\"/>", "terminal": "<path d=\"M12 19h8\"/> <path d=\"m4 17 6-6-6-6\"/>", "timer": "<line x1=\"10\" x2=\"14\" y1=\"2\" y2=\"2\"/> <line x1=\"12\" x2=\"15\" y1=\"14\" y2=\"11\"/> <circle cx=\"12\" cy=\"14\" r=\"8\"/>", "triangle-alert": "<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/> <path d=\"M12 9v4\"/> <path d=\"M12 17h.01\"/>", "wrench": "<path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z\"/>", "x": "<path d=\"M18 6 6 18\"/> <path d=\"m6 6 12 12\"/>", "zap": "<path d=\"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z\"/>"};
+ICP["refresh-cw"]="<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>";ICP["plus"]="<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>";ICP["paperclip"]="<path d=\"m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551\"/>";ICP["trash-2"]="<path d=\"M10 11v6\"/><path d=\"M14 11v6\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M3 6h18\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/>";ICP["git-branch"]="<path d=\"M15 6a9 9 0 0 0-9 9V3\"/><circle cx=\"18\" cy=\"6\" r=\"3\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/>";ICP["chevron-left"]="<path d=\"m15 18-6-6 6-6\"/>";ICP["ellipsis"]="<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>";ICP["eye"]="<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>";ICP["image"]="<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/>";
 function IC(n,c){return '<svg class="ic'+(c?' '+c:'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICP[n]||'')+'</svg>'}
 
 /* Hermes control v3 (prototype). Data: #z=<deflate-raw base64url JSON> from tv_panel.py, or GET {api}/api/state when the hash has api=.
@@ -595,7 +679,7 @@ function feed(){return '<div class="sec"><div class="sh col'+(U.col.feed?' shut'
 function colSec(k,t,body,sum){return '<div class="sec"><div class="sh col'+(U.col[k]?' shut':'')+'" data-a="col" data-x="'+k+'"><span>'+t+'</span>'+(sum?'<span class="sum">'+esc(sum)+'</span>':'')+'</div>'+(U.col[k]?'':'<div class="grp">'+body+'</div>')+'</div>'}
 function sw(on,a){return '<div class="sw'+(on?' on':'')+'" data-a="'+a+'" role="switch" aria-checked="'+!!on+'"></div>'}
 function seg(vals,cur,a,suf,lbl){return '<div class="seg">'+vals.map(function(v,i){return '<span data-a="'+a+'" data-x="'+v+'" class="'+(v==cur?'on':'')+'">'+(lbl?lbl[i]:v+(suf||''))+'</span>'}).join('')+'</div>'}
-function hermesCard(){if(!S.wa)return '';var g=S.health.filter(function(h){return h.k=='gateway'})[0]||{ok:1};
+function hermesCard(){return '';var g=S.health.filter(function(h){return h.k=='gateway'})[0]||{ok:1};
  return '<div class="sec"><div class="grp"><div class="row"><div class="logo" data-st="'+(g.ok?'ok':'bad')+'" style="width:34px;height:34px"></div><div class="t"><div class="n">Hermes</div><div class="d">'+(g.ok?'в браузере':esc(g.d||'gateway не отвечает'))+'</div></div>'+
  (g.ok?'<div class="btn sm" style="min-height:40px;padding:0 14px" data-a="hermes">Открыть</div>':'<div class="btn sm" style="min-height:40px;padding:0 12px" data-a="'+(g.busy?'':'fix')+'" data-x="gateway">'+(g.busy?'…':'Перезапустить')+'</div>')+'</div>'+
  (g.ok?'<div class="row tap" data-a="hermes_ext" style="min-height:40px;padding:8px 14px"><div class="t"><div class="d">Открыть в Safari</div></div><span class="chev">›</span></div>':'')+'</div></div>'}
@@ -681,7 +765,7 @@ function agentPage(id){var on=agOn(id),a=S.agents.filter(function(x){return x.id
 function sysPageT(){var H=S.health,bad=hBad();
  return '<div class="back" data-a="back">‹ Назад</div><div class="ph"><div class="logo" data-st="'+(bad.length?'bad':'ok')+'"></div><div><h2>Система</h2><div class="d">'+(bad.length?bad.length+' из '+H.length+' требуют внимания':'Все '+H.length+' компонентов в норме')+'</div></div></div>'+modeBar()+stBlock()+
  '<div class="sec"><div class="grp">'+H.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+(x.ts?' · '+ago(x.ts):'')+'</div></div>'+(x.busy?'<div class="btn sm dis" style="min-height:36px;padding:0 10px">…</div>':'')+(x.ff?'<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--bad,#e5484d)" data-a="fixforce" data-x="'+x.k+'">Принудительно</div>':'')+(x.fix?'<div class="btn sm" style="min-height:36px;padding:0 10px'+(x.ok?';color:var(--mut)':'')+'" data-a="fix" data-x="'+x.k+'">'+esc(x.fl||'Перезапустить')+'</div>':'')+'</div>'}).join('')+'</div></div>'+cronBlock()+hsBlock()+
- '<div class="hint">Gateway перезапускается мягко: если идёт ход Hermes, перезапуска не будет, появится «Принудительно». Пока gateway встаёт (~30 с), бот и Webapp молчат, итог придёт в Telegram. Если gateway не отвечает 5 мин, сервер панели перезапустит его сам (не больше 2 раз в час).<br>Версия страницы: v5 ('+VER+')</div>'}
+ '<div class="hint">Gateway перезапускается мягко: если идёт ход Hermes, перезапуска не будет, появится «Принудительно». Пока gateway встаёт (~30 с), бот и Webapp молчат, итог придёт в Telegram. Если gateway не отвечает 5 мин, сервер панели перезапустит его сам (не больше 2 раз в час).<br>Версия страницы: v6 ('+VER+')</div>'}
 
 /* ---------- этап C: cron и сессии Hermes ---------- */
 function hmT(ts){if(!ts)return '—';var d=new Date(ts*1000);return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
@@ -732,7 +816,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=51;
+var VER=60;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -753,7 +837,7 @@ function hero(){var ss=sessState(),cur=S.steps.length?S.steps[S.steps.length-1]:
  else{c='ok';k='Всё идёт';t=esc(ss.name);s=(ss.st=='Working'?'Claude работает':ss.st=='Idle'?'Claude простаивает':ss.st||'—')+(cur?' · шаг '+cur.c+' идёт '+dur((nowS()-cur.t)/60):'')+(S.queue.length?' · в очереди '+S.queue.filter(function(x){return x.st!='sent'}).length:'');b=ringBtn()}
  return '<div class="hero" data-c="'+c+'">'+pet(c)+'<div class="hk"><span class="ag '+ag+'">'+LG(ag)+'</span>'+k+(tm?'<span class="tm">'+tm+'</span>':'')+'</div><div class="ht">'+t+'</div><div class="hs">'+esc(s)+'</div><div class="hb">'+b+'</div>'+qaRow()+'</div>'}
 function qaRow(){var off=S.stopped,P=paused();
- return '<div class="qa">'+[['startsheet',''+IC('play')+'','Start',off],['saysheet',''+IC('pencil')+'','Написать',off],['chat',''+IC('message-square-text')+'','Чат',0],[P?'resume':'pausesheet',P?IC('play'):IC('pause'),P?'Снять паузу':'Пауза',off]].map(function(a){return '<div data-a="'+a[0]+'" data-x="claude" class="'+(a[3]?'dis':'')+'"><i>'+a[1]+'</i>'+a[2]+'</div>'}).join('')+'</div>'}
+ return '<div class="qa">'+[['startsheet',''+IC('play')+'','Start',off],['saysheet',''+IC('pencil')+'','Написать',off],['chat',''+IC('message-square-text')+'','Claude',0],[P?'resume':'pausesheet',P?IC('play'):IC('pause'),P?'Снять паузу':'Пауза',off]].map(function(a){return '<div data-a="'+a[0]+'" data-x="claude" class="'+(a[3]?'dis':'')+'"><i>'+a[1]+'</i>'+a[2]+'</div>'}).join('')+'</div>'}
 function stripSum(){var G=segs();if(!G.length)return '';var w=G.filter(function(g){return g.s=='W'}).reduce(function(a,g){return a+g.e-g.b},0);return 'работал '+(w/60).toFixed(1)+' ч'}
 function pathSum(){var P=S.steps;return P.length?'сейчас '+P[P.length-1].c:''}
 
@@ -880,17 +964,19 @@ function openQ(id){var q=S.pend.filter(function(z){return z.id==id})[0];if(!q){t
 
 /* ---------- рендер ---------- */
 function render(keep){var top=window.scrollY,h;
+ if(keep&&!LOADING&&window.HC&&HC.mounted()&&(U.tab=='hc'&&!U.page||U.page=='hcchat'))return;
  if(LOADING)h=skeleton();
+ else if(window.HC&&U.tab=='hc'&&(!U.page||U.page=='hcchat'))h=HC.shell();
  else if(U.page=='sys')h=sysPage();else if(U.page=='nowedit')h=nowEdit();
  else if(U.page&&U.page.indexOf('doc:')==0)h=reader(U.page.slice(4));else if(U.page&&U.page.indexOf('sess:')==0)h=sessPage(U.page.slice(5));
  else if(U.page=='glos')h=glosPage();else if(U.page=='chat')h=chatPage();else if(U.page=='proj')h=projPage();else if(U.page)h=agentPage(U.page);else h=U.tab=='home'?home():U.tab=='q'?questions():U.tab=='j'?journal():U.tab=='br'?brain():settings();
  if(dirty())h+='<div class="savebar"><div class="btn pri" data-a="save">Сохранить изменения</div></div>';
- $('scr').innerHTML=h;window.scrollTo(0,keep?top:0);
+ $('scr').innerHTML=h;window.scrollTo(0,keep?top:0);if(window.HC)HC.after();
  var P=$('path');if(P&&U.step<0)P.scrollLeft=P.scrollWidth;
- $('nav').innerHTML=[['home',IC('house'),'Пульт'],['q',IC('message-circle-question'),'Вопросы'],['j',IC('scroll-text'),'Журнал'],['br',IC('brain'),'Мозг'],['set',IC('settings'),'Настройки']].map(function(t){return '<div class="'+(U.tab==t[0]?'on':'')+'" data-a="tab" data-x="'+t[0]+'"><i>'+t[1]+'</i>'+t[2]+(t[0]=='q'&&S.pend.length?'<span class="badge">'+S.pend.length+'</span>':'')+(t[0]=='set'&&hBad().length?'<span class="badge" style="background:var(--bad)">!</span>':'')+'</div>'}).join('');
+ $('nav').innerHTML=[['home',IC('house'),'Пульт'],['q',IC('message-circle-question'),'Вопросы'],['hc',IC('message-square-text'),'Чат'],['j',IC('scroll-text'),'Журнал'],['br',IC('brain'),'Мозг'],['set',IC('settings'),'Настройки']].map(function(t){return '<div class="'+(U.tab==t[0]?'on':'')+'" data-a="tab" data-x="'+t[0]+'"><i>'+t[1]+'</i>'+t[2]+(t[0]=='q'&&S.pend.length?'<span class="badge">'+S.pend.length+'</span>':'')+(t[0]=='set'&&hBad().length?'<span class="badge" style="background:var(--bad)">!</span>':'')+'</div>'}).join('');
  try{if(inTG())U.page?tg.BackButton.show():tg.BackButton.hide()}catch(e){}}
 function theme(){var dark=MOCK?MOCK.theme!='light':(!inTG()||tg.colorScheme!='light');document.documentElement.dataset.theme=dark?'dark':'light';if(!inTG())return;try{var c=dark?'#07070d':'#f6f4ee';tg.setHeaderColor(c);tg.setBackgroundColor(c);if(tg.setBottomBarColor)tg.setBottomBarColor(c)}catch(e){}}
-function back(){var p=U.page||'';U.page=null;if(p.indexOf('doc:')==0||p=='nowedit')U.tab='br';if(p.indexOf('sess:')==0)U.tab='j';render()}
+function back(){if(U.page=='hcchat'&&window.HC){HC.leave();return}var p=U.page||'';U.page=null;if(p.indexOf('doc:')==0||p=='nowedit')U.tab='br';if(p.indexOf('sess:')==0)U.tab='j';render()}
 function q$(s){return document.querySelector(s)}
 
 /* ---------- действия ---------- */
@@ -898,7 +984,7 @@ document.addEventListener('click',function(ev){
  if(ev.target.id=='veil'){unsheet();return}
  var el=ev.target.closest('[data-a]');if(!el||/INPUT|TEXTAREA/.test(ev.target.tagName))return;var a=el.dataset.a,x=el.dataset.x,qid=el.dataset.q;haptic('sel');
  switch(a){
- case 'tab':U.tab=x;U.page=null;U.seg=-1;render();return;
+ case 'tab':if(window.HC&&U.tab=='hc'&&x=='hc'&&HC.st.view=='chat'){HC.leave();return}U.tab=x;U.page=(window.HC&&x=='hc'&&HC.st.view=='chat')?'hcchat':null;U.seg=-1;render();return;
  case 'agent':U.page=x;render();return;
  case 'sys':U.page='sys';render();return;
  case 'back':back();return;
@@ -1194,6 +1280,208 @@ function fromHash(){if(!z&&MENU){if(CACHE){S=CACHE;U.cached=1}boot();toast('Се
 if(MOCK){setTimeout(function(){S=MOCK.state();boot()},MOCK.delay||350)}
 else if(API){if(CACHE){S=CACHE;U.cached=1;LOADING=false;norm();render()}api('/api/state').then(function(r){return r.json()}).then(function(d){S=d;U.cached=0;boot()}).catch(function(e){DIAG=(e&&e.status?'сервер ответил '+e.status:'нет связи: '+((e&&e.message)||e));API=null;fromHash()})}
 else fromHash();
+</script>
+<script>
+/* Вкладка «Чат»: свой чат с Hermes через tv_server (/api/hc/*) -> API-сервер Hermes. v6.
+   Состояние живёт в HC.st; отрисовка идёт мимо общего render(): стрим не должен стирать поле ввода. */
+var HC=(function(){
+var st={view:'list',sessions:null,all:LS.get('hcall',false),sid:null,title:'',rw:true,src:'',msgs:[],lim:120,busy:false,run:null,pend:[],draft:'',imgs:[],err:'',lerr:'',loadingMsgs:false,cur:null,watch:0,ac:null};
+var rafId=0;
+function root(){return document.getElementById('hcroot')}
+function mounted(){return !!root()}
+function live(){return !!API&&API!='mock'}
+function hq(path,o){o=o||{};var h={'X-Init-Data':tg?tg.initData:''};if(o.body!==undefined)h['Content-Type']='application/json';
+ return fetch(API.replace(/\/$/,'')+'/api/hc'+path,{method:o.method||'GET',headers:h,body:o.body!==undefined?JSON.stringify(o.body):undefined,signal:o.signal})}
+function J(path,o){return hq(path,o).then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){var e=new Error(j.text||(r.status==401?'Подпись устарела: закрой и снова открой панель из меню бота.':j.error||('HTTP '+r.status)));e.status=r.status;throw e});return r.json()})}
+function E(s){return esc(s)}
+function ago(ts){if(!ts)return '';var d=new Date(ts*1000),n=new Date(),p=function(x){return (x<10?'0':'')+x},t=p(d.getHours())+':'+p(d.getMinutes());
+ var dd=Math.floor((new Date(n.getFullYear(),n.getMonth(),n.getDate())-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
+ return dd<=0?t:dd==1?'вчера '+t:dd<7?['вс','пн','вт','ср','чт','пт','сб'][d.getDay()]+' '+t:p(d.getDate())+'.'+p(d.getMonth()+1)}
+var SRC={api_server:'Панель',telegram:'Telegram',gui:'Desktop',cli:'Терминал',cron:'Cron'};
+
+/* ---------- markdown (минимальный, всё экранируется) ---------- */
+function inl(t){return t.replace(/`([^`\n]+)`/g,'<code>$1</code>').replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>')
+ .replace(/\[([^\]\n]+)\]\((https?:\/\/[^)\s]+)\)/g,function(m,a,u){return '<a data-hc="link" data-u="'+u.replace(/"/g,'%22')+'">'+a+'</a>'})}
+function blocks(t){var lines=E(t).split('\n'),out=[],ul=null,tbl=[];
+ function flush(){if(ul){out.push('<'+ul.t+'>'+ul.i.join('')+'</'+ul.t+'>');ul=null}if(tbl.length){out.push('<pre class="hcpre">'+tbl.join('\n')+'</pre>');tbl=[]}}
+ lines.forEach(function(l){var m;
+  if(/^\s*\|/.test(l)){if(ul){flush()}tbl.push(l);return}else if(tbl.length)flush();
+  if((m=/^\s*[-*•]\s+(.*)$/.exec(l))){if(!ul||ul.t!='ul'){flush();ul={t:'ul',i:[]}}ul.i.push('<li>'+inl(m[1])+'</li>');return}
+  if((m=/^\s*\d+[.)]\s+(.*)$/.exec(l))){if(!ul||ul.t!='ol'){flush();ul={t:'ol',i:[]}}ul.i.push('<li>'+inl(m[1])+'</li>');return}
+  flush();
+  if((m=/^#{1,4}\s+(.*)$/.exec(l))){out.push('<div class="hch">'+inl(m[1])+'</div>');return}
+  if(!l.trim()){out.push('<div class="hcsp"></div>');return}
+  out.push('<div>'+inl(l)+'</div>')});
+ flush();return out.join('')}
+function md(src){src=String(src||'');var parts=[],re=/```([\w+.-]*)[ \t]*\n([\s\S]*?)```/g,last=0,m;
+ while((m=re.exec(src))){parts.push(blocks(src.slice(last,m.index)));parts.push('<pre class="hcpre"><code>'+E(m[2].replace(/\n$/,''))+'</code></pre>');last=re.lastIndex}
+ var rest=src.slice(last),o=rest.indexOf('```');
+ if(o>=0){parts.push(blocks(rest.slice(0,o)));parts.push('<pre class="hcpre"><code>'+E(rest.slice(o+3).replace(/^[\w+.-]*\n?/,''))+'</code></pre>')}else parts.push(blocks(rest));
+ return parts.join('')}
+
+/* ---------- история -> блоки ---------- */
+function argPreview(a){if(!a)return '';try{var j=typeof a=='string'?JSON.parse(a):a;var k=['command','cmd','path','file_path','query','url','pattern','prompt','text'];for(var i=0;i<k.length;i++)if(j[k[i]])return String(j[k[i]]);var v=Object.keys(j)[0];return v?String(j[v]):''}catch(e){return String(a)}}
+function resErr(s){try{var j=JSON.parse(s);if(j&&typeof j=='object'){if(j.error)return true;if(j.exit_code!=null&&j.exit_code!==0)return true}}catch(e){}return false}
+function fromHistory(m){var out=[],a=null;
+ m.forEach(function(x){
+  if(x.r=='user'){a=null;var c=x.c||'',im=0;c=c.replace(/\n*\[Image attached at:[^\]]*\]/g,function(){im++;return ''}).replace(/\n*\[screenshot\]/g,'').trim();if(c||im)out.push({k:'u',t:c,im:im});return}
+  if(x.r=='assistant'){if(!a){a={k:'a',parts:[]};out.push(a)}if((x.c||'').trim())a.parts.push({p:'t',t:x.c});(x.tc||[]).forEach(function(c){a.parts.push({p:'tool',id:c.id,n:c.n||'tool',a:c.a||'',st:'ok',res:''})});return}
+  if(x.r=='tool'){for(var i=out.length-1;i>=0;i--){if(out[i].k!='a')continue;var f=out[i].parts.filter(function(p){return p.p=='tool'&&p.id==x.tid})[0];if(f){f.res=x.c||'';f.st=resErr(x.c)?'err':'ok';break}}}
+ });
+ return out.filter(function(b){return b.k!='a'||b.parts.length})}
+
+/* ---------- отрисовка ---------- */
+function shell(){return '<div id="hcroot"></div>'}
+function toolHtml(t,bi,pi){var cls=t.st=='run'?'run':t.st=='err'?'err':'ok',ic=t.st=='run'?'<span class="hcspin"></span>':t.st=='err'?IC('x'):IC('check');
+ var line=argPreview(t.a);if(line.length>90)line=line.slice(0,90)+'…';
+ return '<div class="hctool '+cls+(t.open?' open':'')+'"><div class="hct" data-hc="tool" data-b="'+bi+'" data-p="'+pi+'"><i>'+ic+'</i><b>'+E(t.n)+'</b><span>'+E(line)+'</span></div>'+
+  (t.open?'<div class="hctb">'+(t.a?'<div class="hcl">запрос</div><pre class="hcpre">'+E(typeof t.a=='string'?t.a:JSON.stringify(t.a)).slice(0,3000)+'</pre>':'')+(t.res?'<div class="hcl">результат</div><pre class="hcpre">'+E(String(t.res).slice(0,3000))+'</pre>':'')+'</div>':'')+'</div>'}
+function msgsHtml(){var h='',from=Math.max(0,st.msgs.length-st.lim);
+ if(from>0)h+='<div class="hcmore" data-hc="older">Показать более ранние ('+from+')</div>';
+ for(var i=from;i<st.msgs.length;i++){var b=st.msgs[i];
+  if(b.k=='u'){h+='<div class="hcrow u"><div class="hcb u">'+(b.im?'<div class="hcim">'+IC('image')+' '+b.im+' фото</div>':'')+(b.t?md(b.t):'')+'</div></div>';continue}
+  var inner='';b.parts.forEach(function(p,pi){inner+=p.p=='t'?'<div class="hct2">'+md(p.t)+'</div>':toolHtml(p,i,pi)});
+  if(b.live&&!b.parts.length)inner='<div class="hcdots"><i></i><i></i><i></i></div>';
+  else if(b.live&&b.parts[b.parts.length-1].p=='tool'&&b.parts[b.parts.length-1].st!='run')inner+='<div class="hcdots"><i></i><i></i><i></i></div>';
+  h+='<div class="hcrow a"><div class="hcb a">'+inner+'</div></div>'}
+ st.pend.forEach(function(p,i){h+=pendHtml(p,i)});
+ if(st.err)h+='<div class="hcerr">'+E(st.err)+'</div>';
+ return h}
+function pendHtml(p,i){
+ if(p.kind=='clarify')return '<div class="hcpend"><div class="hcpk">'+IC('message-circle-question')+' Hermes спрашивает</div><div class="hcpq">'+E(p.text)+'</div><div class="hcpa"><input id="hcclar" placeholder="Ответ"><div class="btn pri" data-hc="clarify" data-i="'+i+'">Ответить</div></div></div>';
+ return '<div class="hcpend"><div class="hcpk">'+IC('shield-check')+' Нужно разрешение</div>'+(p.desc?'<div class="hcpq">'+E(p.desc)+'</div>':'')+(p.text?'<pre class="hcpre">'+E(p.text)+'</pre>':'')+
+  '<div class="hcpa"><div class="btn pri" data-hc="appr" data-c="once" data-i="'+i+'">Разрешить</div><div class="btn" data-hc="appr" data-c="session" data-i="'+i+'">На сессию</div><div class="btn bad" data-hc="appr" data-c="deny" data-i="'+i+'">Отклонить</div></div></div>'}
+function paint(){if(!mounted())return;if(st.view=='list'){paintList();return}
+ var m=document.getElementById('hcmsgs');if(!m){paintChat();return}
+ var near=m.scrollHeight-m.scrollTop-m.clientHeight<140;m.innerHTML=msgsHtml();if(near||st.stick)m.scrollTop=m.scrollHeight;st.stick=false;
+ var s=document.getElementById('hcsend');if(s){s.className='hcsendb'+(st.busy?' stop':'');s.innerHTML=st.busy?IC('square'):IC('arrow-up')}
+ var th=document.getElementById('hcthumbs');if(th)th.innerHTML=thumbsHtml()}
+function schedule(){if(rafId)return;rafId=requestAnimationFrame(function(){rafId=0;paint()})}
+function thumbsHtml(){return st.imgs.map(function(u,i){return '<div class="hcth"><img src="'+u+'"><span data-hc="rmimg" data-i="'+i+'">'+IC('x')+'</span></div>'}).join('')}
+function paintList(){var r=root();if(!r)return;
+ var h='<div class="hchd"><div class="hct0">Чат Hermes</div><div class="hcbtn" data-hc="refresh">'+IC('refresh-cw')+'</div><div class="hcbtn pri" data-hc="new">'+IC('plus')+' Новый</div></div>';
+ h+='<div class="hcfil"><span class="'+(!st.all?'on':'')+'" data-hc="all" data-v="0">Из панели</span><span class="'+(st.all?'on':'')+'" data-hc="all" data-v="1">Все сессии</span></div><div class="hclist">';
+ if(!live())h+='<div class="hcempty">Чат работает в live-режиме.<br>Открой панель кнопкой меню «Hermes» рядом с полем ввода.</div>';
+ else if(st.lerr)h+='<div class="hcerr">'+E(st.lerr)+'</div>';
+ else if(!st.sessions)h+='<div class="hcempty">Загружаю…</div>';
+ else if(!st.sessions.length)h+='<div class="hcempty">Чатов пока нет.<br>Нажми «Новый» и напиши Hermes.</div>';
+ else h+=st.sessions.map(function(s){return '<div class="hcsess" data-hc="open" data-id="'+E(s.id)+'"><div class="hcst"><b>'+E(s.t)+'</b><span>'+E(ago(s.ts))+'</span></div><div class="hcsm">'+(s.rw?'':IC('eye')+' ')+E(SRC[s.src]||s.src||'')+' · '+s.n+' сообщ.'+(s.rw?'':' · только чтение')+'</div></div>'}).join('');
+ r.innerHTML=h+'</div>'}
+function paintChat(){var r=root();if(!r)return;
+ r.innerHTML='<div class="hchd"><div class="hcbtn" data-hc="back">'+IC('chevron-left')+'</div><div class="hct0 tap" data-hc="menu">'+E(st.title||'Новый чат')+'</div><div class="hcbtn" data-hc="menu">'+IC('ellipsis')+'</div></div>'+
+ '<div id="hcmsgs" class="hcmsgs"></div>'+
+ (st.rw?'<div id="hcthumbs" class="hcthumbs"></div><div class="hccomp"><label class="hcbtn" for="hcfile">'+IC('paperclip')+'</label><input id="hcfile" type="file" accept="image/*" multiple hidden>'+
+  '<textarea id="hcin" rows="1" placeholder="Сообщение Hermes"></textarea><div id="hcsend" class="hcsendb" data-hc="send"></div></div>':'<div class="hcro">'+IC('eye')+' Сессия создана в '+E(SRC[st.src]||st.src||'другом месте')+': здесь она только для чтения. Создай новый чат, чтобы писать.</div>');
+ var ta=document.getElementById('hcin');if(ta){ta.value=st.draft;grow(ta)}
+ st.stick=true;paint()}
+function grow(t){t.style.height='auto';t.style.height=Math.min(140,t.scrollHeight)+'px'}
+function after(){document.body.classList.toggle('hcm',U.tab=='hc');if(U.tab!='hc'){document.body.classList.remove('hckb');return}
+ if(!mounted())return;if(st.view=='chat')U.page='hcchat';
+ try{if(inTG())st.view=='chat'?tg.BackButton.show():tg.BackButton.hide()}catch(e){}
+ st.view=='chat'?paintChat():paintList();if(st.view=='list'&&live()&&!st.sessions&&!st.lerr)loadList()}
+
+/* ---------- данные ---------- */
+function loadList(){st.lerr='';return J('/sessions?limit=60'+(st.all?'&all=1':'')).then(function(d){st.sessions=d.s;paint()}).catch(function(e){st.lerr=e.message||'Ошибка';paint()})}
+function openSess(id,fresh){var s=(st.sessions||[]).filter(function(x){return x.id==id})[0]||{id:id,t:'',rw:true,src:'api_server'};
+ if(st.sid!=id){st.msgs=[];st.pend=[];st.busy=false;st.run=null;st.err='';st.draft='';st.imgs=[];st.lim=120}
+ st.sid=id;st.title=s.t;st.rw=s.rw;st.src=s.src;st.view='chat';U.page='hcchat';LS.set('hcsid',id);st.stick=true;
+ render();
+ if(fresh)return;st.loadingMsgs=true;
+ return J('/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id||st.busy)return;st.msgs=fromHistory(d.m);st.loadingMsgs=false;st.stick=true;paint()}).catch(function(e){st.loadingMsgs=false;st.err=e.message;paint()})}
+function reload(){if(!st.sid)return Promise.resolve();var id=st.sid;return J('/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id)return;st.msgs=fromHistory(d.m);paint()})}
+function leave(){st.view='list';U.page=null;st.sessions=null;render();loadList()}
+function newChat(){if(!live()){toast('Чат — в live-режиме');return}
+ J('/sessions',{method:'POST',body:{}}).then(function(d){st.sessions=null;st.msgs=[];openSess(d.s.id,true);st.sessions=[d.s];st.title='Новый чат';paint();setTimeout(function(){var t=document.getElementById('hcin');if(t)t.focus()},120)}).catch(function(e){toast(E(e.message))})}
+
+/* ---------- ход со стримом ---------- */
+function ctl(d,n){var id=d.request_id||d.prompt_id||d.id;if(!id)return null;
+ var kind=/clarify/.test(n||'')||d.kind=='clarify'||d.type=='clarify'||d.question?'clarify':'approval';
+ var cmd=d.command||d.preview||(d.args&&argPreview(d.args))||'';
+ return {id:String(id),gen:d.execution_generation,kind:kind,text:kind=='clarify'?(d.question||d.prompt||d.text||d.message||''):cmd,desc:kind=='approval'?(d.description||d.reason||d.message||(d.tool_name||d.tool||'')):''}}
+function addPend(p){if(!p)return;if(!st.pend.some(function(x){return x.id==p.id}))st.pend.push(p)}
+function lastA(){return st.cur}
+function onEv(n,d){var a=lastA();if(!a)return;
+ if(d&&d.run_id&&!st.run){st.run=d.run_id}
+ switch(n){
+ case 'assistant.delta':{var l=a.parts[a.parts.length-1];if(l&&l.p=='t')l.t+=d.delta||'';else a.parts.push({p:'t',t:d.delta||''});break}
+ case 'assistant.commentary':if(d.text&&!d.already_streamed){var l2=a.parts[a.parts.length-1];if(l2&&l2.p=='t')l2.t+=(l2.t?'\n\n':'')+d.text;else a.parts.push({p:'t',t:d.text})}break;
+ case 'tool.started':a.parts.push({p:'tool',id:'',n:d.tool_name||d.tool||'tool',a:d.args||d.preview||'',st:'run',res:''});break;
+ case 'tool.completed':case 'tool.failed':{var t=null;for(var i=a.parts.length-1;i>=0;i--){if(a.parts[i].p=='tool'&&a.parts[i].st=='run'&&a.parts[i].n==(d.tool_name||d.tool||a.parts[i].n)){t=a.parts[i];break}}
+  if(!t){t={p:'tool',id:'',n:d.tool_name||'tool',a:'',st:'run',res:''};a.parts.push(t)}
+  t.st=(n=='tool.failed'||d.error)?'err':'ok';if(d.preview)t.res=d.preview;break}
+ case 'run.failed':st.err=(d.error&&(d.error.message||d.error))||d.message||'Ход завершился ошибкой';break;
+ case 'run.cancelled':st.err='Остановлено';break;
+ default:if(/approval|clarify/.test(n)&&/request|required|pending/.test(n))addPend(ctl(d,n))}
+ schedule()}
+function sse(resp,cb){if(!resp.body||!resp.body.getReader)return resp.text().then(function(t){var ev='';t.split('\n').forEach(function(l){l=l.replace(/\r$/,'');if(l.indexOf('event:')==0)ev=l.slice(6).trim();else if(l.indexOf('data:')==0){try{cb(ev,JSON.parse(l.slice(5)))}catch(e){}}})});
+ var rd=resp.body.getReader(),dec=new TextDecoder(),buf='',ev='';
+ function pump(){return rd.read().then(function(r){if(r.done)return;buf+=dec.decode(r.value,{stream:true});var lines=buf.split('\n');buf=lines.pop();
+  lines.forEach(function(l){l=l.replace(/\r$/,'');if(l.indexOf('event:')==0)ev=l.slice(6).trim();else if(l.indexOf('data:')==0){var d;try{d=JSON.parse(l.slice(5))}catch(e){return}cb(ev,d)}else if(l==='')ev=''});return pump()})}
+ return pump()}
+function send(){if(st.busy){stop();return}
+ var t=(st.draft||'').trim();if(!t&&!st.imgs.length)return;if(!st.sid||!st.rw||!live())return;
+ var imgs=st.imgs.slice(),sid=st.sid;st.msgs.push({k:'u',t:t,im:imgs.length});var a={k:'a',parts:[],live:true};st.msgs.push(a);st.cur=a;
+ st.busy=true;st.run=null;st.err='';st.draft='';st.imgs=[];st.stick=true;var ta=document.getElementById('hcin');if(ta){ta.value='';grow(ta)}paint();
+ var done=false,term=false;st.ac=window.AbortController?new AbortController():null;
+ function fin(){if(done)return;done=true;a.live=false;st.busy=false;st.cur=null;st.ac=null;paint()}
+ hq('/sessions/'+encodeURIComponent(sid)+'/chat',{method:'POST',body:{input:t,images:imgs},signal:st.ac?st.ac.signal:undefined}).then(function(r){
+   if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){throw new Error(j.text||(r.status==401?'Подпись устарела: закрой и снова открой панель из меню бота.':j.error||('HTTP '+r.status)))});
+   return sse(r,function(n,d){if(n=='run.completed'||n=='run.failed'||n=='run.cancelled'||n=='done')term=true;onEv(n,d)})
+ }).then(function(){if(term||!st.run){fin();if(!term&&!st.err&&!a.parts.length)st.err='Пустой ответ';paint();return}watchRun(st.run,a,fin)}).catch(function(e){
+   if(e&&e.name=='AbortError'){fin();return}
+   if(st.run){watchRun(st.run,a,fin)}else{st.err=e.message||'Нет связи';fin()}})}
+function watchRun(rid,a,fin){var t0=Date.now(),n=0;st.watch=1;st.err=st.err||'';
+ (function tick(){if(st.run!=rid){return}J('/runs/'+rid).then(function(d){
+   st.pend=(d.pending_controls||[]).map(function(c){return ctl(c,c.kind||c.type||'')}).filter(Boolean);
+   var s=d.status;if(s=='running'||s=='waiting_for_approval'||s=='stopping'||s=='started'||s=='queued'){schedule();if(Date.now()-t0<3600e3)return setTimeout(tick,2500);}
+   st.pend=[];st.watch=0;return reload().then(function(){fin();st.run=null})
+  }).catch(function(e){if(e.status==404||++n>5){st.watch=0;reload().then(function(){fin();st.run=null},function(){fin();st.run=null})}else setTimeout(tick,3000)})})()}
+function stop(){if(!st.run){if(st.ac)st.ac.abort();return}J('/runs/'+st.run+'/stop',{method:'POST',body:{}}).then(function(){toast('Останавливаю…')}).catch(function(e){toast(E(e.message))})}
+function respond(i,choice,answer){var p=st.pend[i];if(!p||!st.run)return;
+ var path='/runs/'+st.run+(p.kind=='clarify'?'/clarify':'/approval'),body={request_id:p.id};if(p.gen!=null)body.execution_generation=p.gen;if(p.kind=='clarify')body.answer=answer||'';else body.choice=choice;
+ J(path,{method:'POST',body:body}).then(function(){st.pend.splice(i,1);paint();haptic('success')}).catch(function(e){if(e.status==409){st.pend.splice(i,1);paint();toast('Запрос уже неактуален')}else toast(E(e.message))})}
+
+/* ---------- меню сессии ---------- */
+function menu(){if(!st.sid)return;var h='<div class="hcsh"><b>'+E(st.title||'Новый чат')+'</b></div>';
+ if(st.rw)h+='<div class="btn" data-hc="rename">'+IC('pencil')+' Переименовать</div><div class="btn" data-hc="fork">'+IC('git-branch')+' Ветка: продолжить с копией</div><div class="btn bad" data-hc="del">'+IC('trash-2')+' Удалить</div>';
+ else h+='<div class="hint2">Эта сессия из «'+E(SRC[st.src]||st.src)+'»: можно только читать.</div>';
+ sheet(h+'<div class="btn" data-hc="close">Закрыть</div>')}
+function renameUI(){sheet('<div class="hcsh"><b>Название чата</b></div><input id="hcren" class="hcinp" maxlength="120" value="'+E(st.title).replace(/"/g,'&quot;')+'"><div class="btn pri" data-hc="rensave">Сохранить</div><div class="btn" data-hc="close">Отмена</div>');setTimeout(function(){var i=document.getElementById('hcren');if(i){i.focus();i.select()}},150)}
+function delUI(){sheet('<div class="hcsh"><b>Удалить чат?</b></div><div class="hint2">«'+E(st.title)+'» и вся его история будут удалены с ПК. Это нельзя отменить.</div><div class="btn bad" data-hc="delyes">Удалить</div><div class="btn" data-hc="close">Отмена</div>')}
+
+/* ---------- события ---------- */
+document.addEventListener('click',function(ev){var el=ev.target.closest('[data-hc]');if(!el)return;var a=el.dataset.hc;
+ switch(a){
+ case 'open':openSess(el.dataset.id);break;
+ case 'new':newChat();break;
+ case 'refresh':st.sessions=null;paint();loadList();break;
+ case 'all':st.all=el.dataset.v=='1';LS.set('hcall',st.all);st.sessions=null;paint();loadList();break;
+ case 'back':leave();break;
+ case 'menu':menu();break;
+ case 'close':unsheet();break;
+ case 'send':send();break;
+ case 'tool':{var t=st.msgs[+el.dataset.b];t=t&&t.parts[+el.dataset.p];if(t){t.open=!t.open;var m=document.getElementById('hcmsgs'),y=m.scrollTop;paint();m.scrollTop=y}break}
+ case 'older':st.lim+=200;paint();break;
+ case 'rmimg':st.imgs.splice(+el.dataset.i,1);paint();break;
+ case 'appr':respond(+el.dataset.i,el.dataset.c);break;
+ case 'clarify':{var inp=document.getElementById('hcclar');respond(+el.dataset.i,'',inp?inp.value:'')}break;
+ case 'link':try{tg.openLink(el.dataset.u)}catch(e){window.open(el.dataset.u,'_blank')}break;
+ case 'rename':unsheet();setTimeout(renameUI,260);break;
+ case 'rensave':{var v=(document.getElementById('hcren').value||'').trim();if(!v)return;J('/sessions/'+encodeURIComponent(st.sid),{method:'PATCH',body:{title:v}}).then(function(){st.title=v;unsheet();paintChat();toast('Переименовано')}).catch(function(e){toast(E(e.message))});break}
+ case 'fork':unsheet();J('/sessions/'+encodeURIComponent(st.sid)+'/fork',{method:'POST',body:{}}).then(function(d){st.sessions=[d.s];st.msgs=[];openSess(d.s.id);toast('Создана ветка')}).catch(function(e){toast(E(e.message))});break;
+ case 'del':unsheet();setTimeout(delUI,260);break;
+ case 'delyes':{var id=st.sid;J('/sessions/'+encodeURIComponent(id),{method:'DELETE'}).then(function(){unsheet();st.sid=null;st.msgs=[];leave();toast('Удалено')}).catch(function(e){toast(E(e.message))});break}
+ }});
+document.addEventListener('input',function(e){if(e.target.id=='hcin'){st.draft=e.target.value;grow(e.target)}});
+document.addEventListener('focusin',function(e){if(e.target.id=='hcin')document.body.classList.add('hckb')});
+document.addEventListener('focusout',function(e){if(e.target.id=='hcin')setTimeout(function(){if(document.activeElement&&document.activeElement.id=='hcin')return;document.body.classList.remove('hckb')},250)});
+document.addEventListener('keydown',function(e){if(e.target.id=='hcin'&&e.key=='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();send()}if(e.target.id=='hcren'&&e.key=='Enter'){e.preventDefault();var b=document.querySelector('[data-hc=rensave]');if(b)b.click()}});
+document.addEventListener('change',function(e){if(e.target.id!='hcfile')return;var fs=[].slice.call(e.target.files||[]).slice(0,4-st.imgs.length);e.target.value='';
+ fs.reduce(function(p,f){return p.then(function(){return readImg(f).then(function(u){st.imgs.push(u)})})},Promise.resolve()).then(paint).catch(function(){toast('Не удалось прочитать фото')})});
+function readImg(file){return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var M=1280,s=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*s));c.height=Math.max(1,Math.round(im.height*s));c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.82))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(file)})}
+return {st:st,shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint}
+})();
+
 </script>
 </body>
 </html>
