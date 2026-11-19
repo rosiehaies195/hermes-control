@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Hermes</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--gold:#FFD700;--amber:#FFBF00;--claude:#D97757;--codex:#7A9DFF;--ok:#7cc68d;--bad:#ef7b7b;--warn:#e7b85a;--on-gold:#07070d;
@@ -264,17 +264,197 @@ mark{background:color-mix(in srgb,var(--gold) 35%,transparent);color:inherit;bor
 .mstep .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mstep .v{font:12px "JetBrains Mono",monospace;color:var(--dim);flex:none;text-align:right}
 #lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center}
 #lock.on{display:flex}#lock h2{margin:8px 0 0;font-size:21px}#lock p{color:var(--mut);font-size:14px;margin:0 0 12px;max-width:300px}
+
+/* v5 */
+.pmbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:2px}
+.pml{font-size:12px;color:var(--dim)}
+.pmbar .seg{flex-wrap:nowrap;gap:0;border:1px solid var(--line);border-radius:20px;padding:2px}
+.pmbar .seg span{min-width:0;min-height:30px;border:0;border-radius:18px;padding:0 12px;font-size:12.5px}
+.feed .x{color:var(--tx)}
+.tl{font:11.5px "JetBrains Mono",ui-monospace,monospace;color:var(--dim);margin-top:4px;overflow-wrap:anywhere}
+.mt{display:inline-block;font-size:11.5px;color:var(--gold);margin-top:5px;cursor:pointer;padding:2px 0}
+.pill.warn{color:var(--warn)}
+.chain{display:flex;flex-direction:column}
+.cn{display:flex;gap:12px;align-items:center;background:var(--s1);border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:14px;padding:10px 12px}
+.cn.warn{border-left-color:var(--warn)}.cn.bad{border-left-color:var(--bad)}
+.cn .ci{font-size:22px;width:28px;text-align:center}.cn .t{flex:1;min-width:0}.cn .n{font-weight:600;font-size:14.5px}.cn .d{color:var(--mut);font-size:12.5px}
+.cn .cs{font-size:11.5px;white-space:nowrap;color:var(--ok)}.cn.warn .cs{color:var(--warn)}.cn.bad .cs{color:var(--bad)}
+.ca{text-align:center;font-size:11.5px;color:var(--dim);padding:3px 0}
+.ci2{font-size:20px;width:26px;text-align:center;flex:none}
+.pll{margin:4px 0 0;padding-left:16px;color:var(--mut);font-size:12.5px}.pll li{margin:2px 0}
+.plc{background:color-mix(in srgb,var(--gold) 7%,var(--s1));border:1px solid color-mix(in srgb,var(--gold) 30%,var(--line));border-radius:16px;padding:14px 16px}
+.plh{font:600 11px Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--gold)}
+.plt{font-weight:700;font-size:17px;margin:4px 0 6px}
+.plc ul{margin:0;padding-left:18px}.plc li{margin:5px 0;font-size:14px;line-height:1.45}
+.gq{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;border:1px solid var(--line);font-size:11px;color:var(--gold);cursor:pointer;vertical-align:1px;margin-left:4px}
+
+/* ================= v5 skin: «как Hermes Desktop» ================= */
+:root{--gold:#4a84fe;--amber:#79a6ff;--on-gold:#0b0f17;--ok:#3fb950;--bad:#f85149;--warn:#d29922;--live:#00b5ab;
+ --bg:#0d1015;--bar:#010409;--s1:#0f141c;--s2:#161b22;--line:#1f2630;--line2:#30363d;--tx:#e6edf3;--mut:#8b949e;--dim:#5d6672;
+ --soft:#0f1621;--soft2:#17243a;--glow:rgba(74,132,254,.35);
+ --font:"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,sans-serif;
+ --grid:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%234a84fe'%3E%3Crect x='0' y='0' width='2' height='2'/%3E%3Crect x='4' y='0' width='2' height='2'/%3E%3Crect x='8' y='0' width='2' height='2'/%3E%3Crect x='0' y='4' width='2' height='2'/%3E%3Crect x='4' y='4' width='2' height='2'/%3E%3Crect x='8' y='4' width='2' height='2'/%3E%3Crect x='0' y='8' width='2' height='2'/%3E%3Crect x='4' y='8' width='2' height='2'/%3E%3Crect x='8' y='8' width='2' height='2'/%3E%3C/svg%3E")}
+html[data-theme=light]{--gold:#0053fd;--amber:#3b78ff;--on-gold:#fff;--ok:#1a7f37;--bad:#cf222e;--warn:#9a6700;--live:#0f8f87;
+ --bg:#f6f8fa;--bar:#ffffff;--s1:#ffffff;--s2:#eef2f7;--line:#d8dee6;--line2:#c6ced8;--tx:#1f2328;--mut:#59636e;--dim:#8a93a0;--soft:#eef4ff;--soft2:#dae7fd;--glow:rgba(0,83,253,.18)}
+body{font:15px/1.45 var(--font);-webkit-font-smoothing:antialiased}
+.hd h1,.hero .ht,.hero .hk,.sh,.live,.alert .k,.away .k,.feed .day,.qb,.qcard .qh,.qcard .qs,.qcard .ops,.msg .mt,.plh{font-family:var(--font)}
+.ic{width:1.15em;height:1.15em;flex:none;vertical-align:-.2em;stroke-width:1.8}
+/* шапка — как заголовок окна Desktop */
+.hd{background:var(--bar);border-bottom:1px solid var(--line);padding:12px 16px 11px}
+.hd h1{font-size:15px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.hd .st{font:12px "JetBrains Mono",monospace;color:var(--mut)}
+.logo{border-color:#2a3550;transition:box-shadow .4s,filter .4s}
+.logo[data-st=ok]{animation:glowOk 3.2s ease-in-out infinite}
+.logo[data-st=pause]{filter:none;animation:glowP 3.2s ease-in-out infinite}
+@keyframes glowOk{0%,100%{box-shadow:0 0 0 1px #4a84fe77,0 0 16px -2px #4a84fe99}50%{box-shadow:0 0 0 2px #4a84fecc,0 0 26px 3px #4a84fecc}}
+@keyframes glowP{0%,100%{box-shadow:0 0 0 1px #d2992277,0 0 14px -2px #d2992288}50%{box-shadow:0 0 0 2px #d29922bb,0 0 22px 2px #d29922aa}}
+@media (prefers-reduced-motion:reduce){.logo[data-st=ok]{box-shadow:0 0 0 1px #4a84fe99,0 0 20px #4a84fe99}.logo[data-st=pause]{box-shadow:0 0 0 1px #d2992299,0 0 18px #d2992288}}
+@keyframes glowW{50%{box-shadow:0 0 0 2px #D97757,0 0 22px 2px #D9775799}}
+.ib{width:36px;height:36px;border-radius:6px;border:1px solid var(--line2);background:var(--s2);color:var(--mut)}
+.ib .ic{width:17px;height:17px}.ib .hdot{top:5px;right:5px;width:7px;height:7px;box-shadow:0 0 0 2px var(--s2)}
+.live{color:var(--live);border-color:color-mix(in srgb,var(--live) 45%,transparent);border-radius:4px;letter-spacing:.12em}
+.dot.live{background:var(--live);box-shadow:0 0 8px var(--live);animation:none}
+.dot.ok{background:var(--live)}
+/* подписи разделов: ▦ ПОДПИСЬ ───── */
+.sec{margin-top:22px}
+.sh{font:600 11px var(--font);text-transform:uppercase;letter-spacing:.16em;color:var(--gold);margin:0 2px 9px;gap:10px;min-height:20px}
+.sh>span:first-child{display:flex;align-items:center;gap:9px;flex:1;min-width:0;white-space:nowrap}
+.sh>span:first-child:before{content:"";width:10px;height:10px;flex:none;background:var(--grid);opacity:.9}
+.sh>span:first-child:after{content:"";flex:1;height:1px;background:var(--line);min-width:12px}
+.sh a{color:var(--gold);letter-spacing:.04em;font-size:12px}
+.sh .sum{font:500 11px "JetBrains Mono",monospace;color:var(--dim);letter-spacing:0}
+.sh.col:before{display:none}
+.sh.col:after{content:"";width:6px;height:6px;flex:none;border:solid var(--dim);border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin:0 3px 3px 0;transition:.2s}
+.sh.col.shut:after{transform:rotate(-45deg);margin:0 4px 0 0}
+/* карточки */
+.grp{background:var(--s1);border:1px solid var(--line);border-radius:6px}
+.row{border-top-color:var(--line)}.row .n{font-weight:600;font-size:14.5px}.row .d{color:var(--mut)}
+.tap:active{background:linear-gradient(90deg,var(--soft2),transparent)}
+.chev{font-size:0;width:7px;height:7px;border:solid var(--dim);border-width:0 1.5px 1.5px 0;transform:rotate(-45deg);flex:none;margin-right:4px}
+.pill,.tags span{font:500 11px "JetBrains Mono",monospace;background:var(--s2);border:1px solid var(--line2);border-radius:4px;padding:2px 6px;color:var(--mut)}
+.pill.ok{color:var(--live)}
+/* кнопки и переключатели */
+.btn{border-radius:6px;background:var(--s2);border-color:var(--line2);font-weight:600}
+.btn.pri{background:var(--gold);color:var(--on-gold);border:0;box-shadow:0 0 0 1px #79a6ff55 inset,0 8px 22px -12px var(--glow)}
+.btn.danger{background:transparent}
+.sw{border-radius:6px;background:var(--s2);border-color:var(--line2)}.sw:after{border-radius:4px;background:var(--mut)}
+.sw.on{background:var(--gold);border-color:var(--gold)}.sw.on:after{background:#fff}
+.seg span{border-radius:6px;border-color:var(--line2);background:var(--s1)}
+.seg span.on{border-color:var(--gold);color:var(--tx);background:var(--soft2)}
+.chips.g span{border-radius:6px}.chips.g span.on{border-color:var(--gold);background:var(--soft2)}
+input.in,textarea.in{border-radius:6px;background:var(--bar);border-color:var(--line2)}
+.in:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow)}
+mark{background:color-mix(in srgb,var(--gold) 30%,transparent)}
+/* вкладки как SESSIONS / BOTS */
+.seg.full{gap:0;border-bottom:1px solid var(--line);flex-wrap:nowrap}
+.seg.full span{border:0;border-radius:0;background:none;min-height:40px;font:600 12px var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);border-bottom:2px solid transparent;margin-bottom:-1px}
+.seg.full span.on{color:var(--tx);border-bottom-color:var(--gold);background:none}
+/* переключатель «просто / технически» — как клавиши Ctrl N */
+.pmbar .seg{flex-wrap:nowrap;gap:4px;border:0;padding:0}
+.pmbar .seg span{min-height:28px;border:1px solid var(--line2);background:var(--s2);border-radius:4px;padding:0 9px;font:500 11.5px "JetBrains Mono",monospace;color:var(--mut)}
+.pmbar .seg span.on{color:var(--on-gold);background:var(--gold);border-color:var(--gold)}
+.pml{font:600 10.5px var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+/* нижняя навигация */
+.nav{background:var(--bar);border-top:1px solid var(--line)}
+.nav div{font:600 9.5px var(--font);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);gap:5px}
+.nav div i{font-size:0}.nav div i .ic{width:21px;height:21px}
+.nav div.on{color:var(--gold)}
+.nav div.on:before{content:"";position:absolute;top:-1px;left:22%;right:22%;height:2px;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.badge{background:var(--claude);border-radius:4px}
+/* главная карточка */
+.hero{position:relative;overflow:hidden;border-radius:8px;background:var(--soft);border:1px solid #22314a;padding:16px 16px 14px;isolation:isolate}
+html[data-theme=light] .hero{border-color:var(--soft2)}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle,color-mix(in srgb,var(--gold) 30%,transparent) 1px,transparent 1.3px) 0 0/14px 14px;-webkit-mask-image:radial-gradient(120% 90% at 100% 0,#000,transparent 65%);mask-image:radial-gradient(120% 90% at 100% 0,#000,transparent 65%);opacity:.55}
+.hero:after{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;background:linear-gradient(100deg,transparent 60%,rgba(255,255,255,.05));pointer-events:none}
+.hero[data-c=ok],.hero[data-c=wait],.hero[data-c=bad],.hero[data-c=stop],.hero[data-c=pause]{background:var(--soft)}
+.hero[data-c=wait]{border-color:color-mix(in srgb,var(--claude) 55%,transparent)}
+.hero[data-c=bad]{border-color:color-mix(in srgb,var(--bad) 55%,transparent)}
+.hero[data-c=stop],.hero[data-c=pause]{border-color:color-mix(in srgb,var(--warn) 40%,#22314a);border-style:solid}
+.hero .hk{font:600 11px var(--font);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);padding-right:96px}
+.hero[data-c=wait] .hk{color:var(--claude)}.hero[data-c=bad] .hk{color:var(--bad)}.hero[data-c=stop] .hk,.hero[data-c=pause] .hk{color:var(--warn)}
+.hero .hk .ag{width:22px;height:22px;border-radius:5px}
+.hero .ht{font-size:21px;font-weight:700;letter-spacing:-.01em;padding-right:84px}
+.hero .hs{padding-right:80px}
+.hero .hb{position:relative;z-index:1}
+.pet{position:absolute;right:6px;top:10px;width:90px;height:92px;background:url(hermes-pet.webp) 0 0/720px 92px no-repeat;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));animation:petbob 3.2s ease-in-out infinite}
+.pet[data-f="1"]{background-position:-90px 0}.pet[data-f="2"]{background-position:-180px 0}.pet[data-f="3"]{background-position:-270px 0}.pet[data-f="4"]{background-position:-360px 0}
+.pet[data-f="5"]{background-position:-450px 0}.pet[data-f="6"]{background-position:-540px 0}.pet[data-f="7"]{background-position:-630px 0}
+.pet.idle{animation:petbob 3.2s ease-in-out infinite,petidle 4.8s steps(1) infinite}
+@keyframes petbob{50%{transform:translateY(-4px)}}
+@keyframes petidle{0%{background-position:0 0}45%{background-position:-90px 0}55%{background-position:0 0}85%{background-position:-540px 0}95%{background-position:0 0}}
+.empty .pet{position:relative;right:auto;top:auto;margin:0 auto 6px;animation:petbob 3.2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.pet{animation:none!important}}
+.qa{gap:6px}
+.qa div{border-radius:6px;background:var(--bar);border-color:var(--line2);font:600 9.5px var(--font);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);gap:6px;min-height:60px}
+.qa div i{font-size:0;color:var(--gold)}.qa div i .ic{width:20px;height:20px}
+.ring .fg{stroke:var(--on-gold)}
+/* баннеры */
+.alert{border-radius:6px}.alert .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.away{border-radius:6px;border-color:#22314a;background:var(--soft)}.away .k{color:var(--gold);letter-spacing:.14em;text-transform:uppercase;font-size:11px}
+/* графики */
+.tok .bars i{background:color-mix(in srgb,var(--gold) 70%,transparent);border-radius:1px 1px 0 0}.tok .bars i.over{background:var(--warn)}
+.tok .top .w{color:var(--warn)}.fc{border-radius:6px}.fc.over{color:var(--warn)}
+.fc .g i{background:var(--gold)}.fc .g i.p{background:repeating-linear-gradient(90deg,var(--amber) 0 4px,transparent 4px 7px)}
+.prog{border-radius:2px}.prog i{background:linear-gradient(90deg,#2f6cf0,#79a6ff);border-radius:2px;box-shadow:0 0 10px var(--glow)}
+.strip .bar{border-radius:3px}.strip .bar i.W,.mini i.W{background:var(--live)}
+.path .st:before{background:color-mix(in srgb,var(--gold) 50%,transparent)}
+.path .st i{background:var(--gold);border-color:var(--gold);border-radius:3px}
+.path .st.cur i{border-color:var(--live);box-shadow:0 0 0 4px color-mix(in srgb,var(--live) 25%,transparent)}
+.path .ms{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 40%,transparent);border-radius:4px}
+/* журнал */
+.feed .k{color:var(--gold);font-size:0;width:20px;padding-top:1px}.feed .k .ic{width:15px;height:15px}
+.feed .tm{color:var(--dim)}
+.feed .day{font:600 10.5px var(--font);letter-spacing:.14em;background:var(--bar);color:var(--dim)}
+/* мозг */
+.reader h2,.reader h3{color:var(--gold);letter-spacing:.14em}
+.reader li::marker,.now li::marker{color:var(--gold)}
+.reader code,.reader pre{border-radius:4px}
+.back{color:var(--gold);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.ph h2{font-size:20px;letter-spacing:-.01em}
+.ci2{width:30px;height:30px;border-radius:6px;display:grid;place-items:center;background:var(--soft2);color:var(--gold);font-size:0}.ci2 .ic{width:16px;height:16px}
+.plc{border-radius:8px;background:var(--soft);border-color:#22314a}
+html[data-theme=light] .plc{border-color:var(--soft2)}
+.plh{color:var(--gold);letter-spacing:.16em;font-size:10.5px}
+/* схема «как всё работает» */
+.cn{border:1px solid var(--line);border-left:2px solid var(--live);border-radius:6px;background:var(--s1)}
+.cn.warn{border-left-color:var(--warn)}.cn.bad{border-left-color:var(--bad)}
+.cn .ci{width:34px;height:34px;border-radius:6px;display:grid;place-items:center;background:var(--soft2);color:var(--gold);font-size:0}.cn .ci .ic{width:18px;height:18px}
+.cn .cs{display:flex;align-items:center;gap:6px;font:500 11px "JetBrains Mono",monospace;color:var(--live);white-space:normal;text-align:right;max-width:100px;line-height:1.2}
+.cn .cs:before{content:"";width:7px;height:7px;flex:none;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+.cn.warn .cs{color:var(--warn)}.cn.bad .cs{color:var(--bad)}
+.ca{height:20px;padding:0;display:flex;align-items:center;gap:10px;margin-left:27px;color:var(--dim);font:11px "JetBrains Mono",monospace}
+.ca:before{content:"";width:0;height:100%;border-left:1.5px dashed var(--line2)}
+/* шторка, тост */
+.sheet{border-radius:10px 10px 0 0;background:var(--s1);border-top:1px solid var(--line2)}
+.toast{background:var(--bar);color:var(--tx);border:1px solid var(--line2);border-radius:6px}
+.toast b,.toast a{color:var(--gold)}
+.ptr span{color:var(--gold);border-radius:6px}
+.qcard.flash{animation:flash5 1.2s ease 2}@keyframes flash5{50%{box-shadow:0 0 0 3px var(--gold)}}
+.gq{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 40%,var(--line));border-radius:4px}
+.mt{color:var(--gold)}
+.tl{color:var(--dim)}
+
+.hero[data-c=ok]{border-color:color-mix(in srgb,var(--live) 35%,#22314a)}.hero[data-c=ok] .hk{color:var(--live)}
+
+/* меньше слов: справочные абзацы убраны, подробности — тапом */
+.hint{display:none}
+.hero .hs:empty{display:none}
+.pmbar .seg span{padding:0 8px}
+.pll li{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 </style>
 </head>
 <body>
-<div class="ptr" id="ptr"><span>↻</span></div>
+<div class="ptr" id="ptr"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></span></div>
 <div id="scr"></div>
 <div class="nav" id="nav"></div>
 <div class="toast" id="toast"></div>
 <div class="veil" id="veil"></div>
 <div class="sheet" id="sheet"></div>
 <div class="viewer" id="viewer"><img id="vimg" alt=""><span data-a="unview">×</span></div>
-<script>
+<script>/* иконки Lucide 0.577 (как в Hermes Desktop) */
+var ICP={"activity": "<path d=\"M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2\"/>", "arrow-up": "<path d=\"m5 12 7-7 7 7\"/> <path d=\"M12 19V5\"/>", "book-open": "<path d=\"M12 7v14\"/> <path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\"/>", "bot": "<path d=\"M12 8V4H8\"/> <rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/> <path d=\"M2 14h2\"/> <path d=\"M20 14h2\"/> <path d=\"M15 13v2\"/> <path d=\"M9 13v2\"/>", "brain": "<path d=\"M12 18V5\"/> <path d=\"M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4\"/> <path d=\"M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5\"/> <path d=\"M17.997 5.125a4 4 0 0 1 2.526 5.77\"/> <path d=\"M18 18a4 4 0 0 0 2-7.464\"/> <path d=\"M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517\"/> <path d=\"M6 18a4 4 0 0 1-2-7.464\"/> <path d=\"M6.003 5.125a4 4 0 0 0-2.526 5.77\"/>", "check": "<path d=\"M20 6 9 17l-5-5\"/>", "chevron-right": "<path d=\"m9 18 6-6-6-6\"/>", "circle-dot": "<circle cx=\"12\" cy=\"12\" r=\"10\"/> <circle cx=\"12\" cy=\"12\" r=\"1\"/>", "clock": "<circle cx=\"12\" cy=\"12\" r=\"10\"/> <path d=\"M12 6v6l4 2\"/>", "coins": "<path d=\"M13.744 17.736a6 6 0 1 1-7.48-7.48\"/> <path d=\"M15 6h1v4\"/> <path d=\"m6.134 14.768.866-.5 2 3.464\"/> <circle cx=\"16\" cy=\"8\" r=\"6\"/>", "github": "<path d=\"M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4\"/> <path d=\"M9 18c-4.51 2-5-2-7-2\"/>", "hand": "<path d=\"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2\"/> <path d=\"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2\"/> <path d=\"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8\"/> <path d=\"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\"/>", "house": "<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/> <path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>", "info": "<circle cx=\"12\" cy=\"12\" r=\"10\"/> <path d=\"M12 16v-4\"/> <path d=\"M12 8h.01\"/>", "list-todo": "<path d=\"M13 5h8\"/> <path d=\"M13 12h8\"/> <path d=\"M13 19h8\"/> <path d=\"m3 17 2 2 4-4\"/> <rect x=\"3\" y=\"4\" width=\"6\" height=\"6\" rx=\"1\"/>", "map-pin": "<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/> <circle cx=\"12\" cy=\"10\" r=\"3\"/>", "message-circle-question": "<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/> <path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/> <path d=\"M12 17h.01\"/>", "message-square-text": "<path d=\"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z\"/> <path d=\"M7 11h10\"/> <path d=\"M7 15h6\"/> <path d=\"M7 7h8\"/>", "monitor": "<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/> <line x1=\"8\" x2=\"16\" y1=\"21\" y2=\"21\"/> <line x1=\"12\" x2=\"12\" y1=\"17\" y2=\"21\"/>", "moon": "<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>", "pause": "<rect x=\"14\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/> <rect x=\"5\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/>", "pencil": "<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/> <path d=\"m15 5 4 4\"/>", "play": "<path d=\"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z\"/>", "refresh-cw": "<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/> <path d=\"M21 3v5h-5\"/> <path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/> <path d=\"M8 16H3v5\"/>", "rotate-cw": "<path d=\"M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8\"/> <path d=\"M21 3v5h-5\"/>", "scroll-text": "<path d=\"M15 12h-5\"/> <path d=\"M15 8h-5\"/> <path d=\"M19 17V5a2 2 0 0 0-2-2H4\"/> <path d=\"M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3\"/>", "send": "<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"/> <path d=\"m21.854 2.147-10.94 10.939\"/>", "settings": "<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/> <circle cx=\"12\" cy=\"12\" r=\"3\"/>", "shield-check": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/> <path d=\"m9 12 2 2 4-4\"/>", "smartphone": "<rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\"/> <path d=\"M12 18h.01\"/>", "sparkles": "<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/> <path d=\"M20 2v4\"/> <path d=\"M22 4h-4\"/> <circle cx=\"4\" cy=\"20\" r=\"2\"/>", "square": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/>", "target": "<circle cx=\"12\" cy=\"12\" r=\"10\"/> <circle cx=\"12\" cy=\"12\" r=\"6\"/> <circle cx=\"12\" cy=\"12\" r=\"2\"/>", "terminal": "<path d=\"M12 19h8\"/> <path d=\"m4 17 6-6-6-6\"/>", "timer": "<line x1=\"10\" x2=\"14\" y1=\"2\" y2=\"2\"/> <line x1=\"12\" x2=\"15\" y1=\"14\" y2=\"11\"/> <circle cx=\"12\" cy=\"14\" r=\"8\"/>", "triangle-alert": "<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/> <path d=\"M12 9v4\"/> <path d=\"M12 17h.01\"/>", "wrench": "<path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z\"/>", "x": "<path d=\"M18 6 6 18\"/> <path d=\"m6 6 12 12\"/>", "zap": "<path d=\"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z\"/>"};
+function IC(n,c){return '<svg class="ic'+(c?' '+c:'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICP[n]||'')+'</svg>'}
+
 /* Hermes control v3 (prototype). Data: #z=<deflate-raw base64url JSON> from tv_panel.py, or GET {api}/api/state when the hash has api=.
    Actions: Telegram.WebApp.sendData or POST {api}/api with X-Init-Data. Contract: hermes-brain runbooks/miniapp-panel.md (v1, v2, v3).
    In the prototype stand (prototypes/v3.html) the parent window provides window.parent.__mock {state(), live, api(path), post(obj), log(obj,via)}. */
@@ -319,7 +499,7 @@ var UNDO={pause:{a:'resume'},stop:{a:'resume'}};
 function send(o,quiet){o=Object.assign({v:1},o);haptic('success');var undo=UNDO[o.a]||null;
  if(API){var p=MOCK?MOCK.post(o):fetch(API.replace(/\/$/,'')+'/api',{method:'POST',headers:{'Content-Type':'application/json','X-Init-Data':tg?tg.initData:''},body:JSON.stringify(o)}).then(function(r){if(!r.ok)throw r;return r.json()});
   if(MOCK)MOCK.log(o,'POST /api');
-  p.then(function(r){if(!quiet)toast('<b>✓</b> '+esc(r.text||'Готово'),undo);if(r.state){var keepE=dirty()?E:null;S=r.state;norm();if(keepE)E=keepE;if(o.a=='ans')U.qsel={};render(true)}})
+  p.then(function(r){if(!quiet)toast('<b>'+IC('check')+'</b> '+esc(r.text||'Готово'),undo);if(r.state){var keepE=dirty()?E:null;S=r.state;norm();if(keepE)E=keepE;if(o.a=='ans')U.qsel={};render(true)}})
   .catch(function(){if(MENU&&!HP.get('z'))toast('Сервер на ПК недоступен. Открой панель кнопкой «Панель» внизу чата — она работает через бота.');else{toast('Сервер недоступен — отправляю через бота');sd(o)}});return}
  sd(o)}
 function api(path){if(MOCK)return MOCK.api(path);var ac=window.AbortController?new AbortController():null,tm=ac?setTimeout(function(){ac.abort()},10000):0;return fetch(API.replace(/\/$/,'')+path,{headers:{'X-Init-Data':tg?tg.initData:''},signal:ac?ac.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw r;return r},function(e){clearTimeout(tm);throw e})}
@@ -328,7 +508,7 @@ function loadSnap(){if(!API||SNAP.busy||(SNAP.t&&Date.now()-SNAP.t<60000))return
 function busy(){return $('sheet').classList.contains('on')||dirty()||document.activeElement&&/INPUT|TEXTAREA/.test(document.activeElement.tagName)}
 function poll(force){if(!API||(!force&&(document.hidden||busy())))return Promise.resolve();return api('/api/state').then(function(r){return r.json()}).then(function(d){var a=JSON.stringify(S);S=d;norm();U.offline=0;U.cached=0;if(!MOCK)LS.set('last',S);if(U.page=='chat')loadChat();if(force||JSON.stringify(S)!=a)render(true)}).catch(function(){U.offline=1;render(true)})}
 function sd(o){var s=JSON.stringify(o);window.__sent=(window.__sent||[]).concat([s]);if(MOCK){MOCK.log(o,'sendData');toast('<b>sendData</b> → бот. Панель закроется, бот ответит в чате.')}else if(inTG())tg.sendData(s);else toast('<b>sendData</b> (вне Telegram): '+esc(s.slice(0,140)))}
-function refresh(){if(API){var b=document.querySelector('[data-a=refresh]');if(b)b.classList.add('spin');poll(true).then(function(){toast('<b>✓</b> Обновлено')})}else send({a:'refresh'})}
+function refresh(){if(API){var b=document.querySelector('[data-a=refresh]');if(b)b.classList.add('spin');poll(true).then(function(){toast('<b>'+IC('check')+'</b> Обновлено')})}else send({a:'refresh'})}
 
 /* ---------- статус ---------- */
 function paused(){return S.pause>nowS()}
@@ -337,7 +517,7 @@ function age(){return S.ts?(nowS()-S.ts)/60:0}
 function stale(){return !API&&age()>10}
 function hBad(){return S.health.filter(function(h){return !h.ok})}
 function status(){
- if(S.stopped)return {c:'bad',t:'Всё остановлено',lg:'bad'};
+ if(S.stopped)return {c:'warn',t:'Всё остановлено',lg:'pause'};
  if(paused())return {c:'',t:'Пауза до '+hm(S.pause),lg:'pause'};
  if(S.fails)return {c:'bad',t:'Сбой ×'+S.fails,lg:'bad'};
  if(S.pend.length)return {c:'wait',t:'Ждёт ответа',lg:'wait'};
@@ -346,7 +526,7 @@ function status(){
 function hd(){var st=status(),hb=hBad().length;
  var fr=DIAG?'<span style="color:var(--warn)">'+DIAG+(U.cached?' · кэш '+ago(S.ts):'')+'</span>':U.cached?'<span style="color:var(--warn)">кэш · '+ago(S.ts)+'</span>':API?(U.offline?'<span class="live off">НЕТ СВЯЗИ</span>':'<span class="live">LIVE</span>'):(S.ts?'<span style="color:'+(stale()?'var(--warn)':'inherit')+'">данные '+ago(S.ts)+'</span>':'');
  return '<div class="hd"><div class="logo" data-st="'+st.lg+'"></div><div><h1>Hermes</h1><div class="st"><span class="dot '+(st.c=='ok'?'live':st.c)+'"></span>'+st.t.toLowerCase()+(fr?' · '+fr:'')+'</div></div><div class="r">'+
- (S.health.length?'<div class="ib" data-a="sys" title="Система">⛭<span class="hdot'+(hb?' bad':'')+'"></span></div>':'')+'<div class="ib" data-a="refresh" title="Обновить">↻</div></div></div>'}
+ (S.health.length?'<div class="ib" data-a="sys" title="Система">'+IC('activity')+'<span class="hdot'+(hb?' bad':'')+'"></span></div>':'')+'<div class="ib" data-a="refresh" title="Обновить">'+IC('refresh-cw')+'</div></div></div>'}
 function skeleton(){return '<div class="hd"><div class="logo"></div><div style="flex:1"><div class="sk" style="height:18px;width:110px"></div><div class="sk" style="height:12px;width:170px;margin-top:8px"></div></div></div>'+
  [92,150,64,120].map(function(h){return '<div class="sec"><div class="sk" style="height:'+h+'px;border-radius:16px"></div></div>'}).join('')}
 
@@ -358,23 +538,23 @@ function autoLine(q){
  var lbl=q.rec>=0?q.o[q.rec]:q.o[0],left=Math.max(0,deadline(q)-nowS()),tot=S.auto.min*60;
  return '<div class="auto" data-auto="'+q.id+'"><span>Автоответ «'+esc(lbl.length>22?lbl.slice(0,21)+'…':lbl)+'» <b class="mono">'+(left>0?'через '+fmt(left):'в ближайшие 5 мин')+'</b></span><span class="bar"><i style="width:'+(100-left/tot*100)+'%"></i></span><a data-a="autocancel" data-x="'+q.id+'">Отменить</a></div>'}
 function alerts(){var h='';
- if(U.offline&&API)h+='<div class="alert warn"><div class="k">⚠ Нет связи с ПК · показаны данные '+(S.ts?ago(S.ts):'')+'</div><div class="q">Повторяю каждые 15 с. Если ПК выключен — действия не дойдут.</div></div>';
- else if(stale())h+='<div class="alert warn tap" data-a="refresh"><div class="k">⏱ Данные '+ago(S.ts)+'<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Кнопка «Панель» хранит снимок на момент отправки. Live-версия — кнопка меню «Hermes».</div></div>';
- if(S.stopped)h+='<div class="alert bad"><div class="k">■ Всё остановлено</div><div class="q">Кликер, уведомления и автоответ выключены. Claude продолжит текущий шаг сам, но без Start и ответов из Telegram.</div><div class="btn pri" data-a="resume" style="min-height:44px">Запустить снова</div></div>';
- else if(paused())h+='<div class="alert pause"><div class="k">⏸ Пауза до '+hm(S.pause)+'</div><div class="q">Кликер не трогает Claude. Вопросы по-прежнему приходят.</div><div class="btn" data-a="resume" style="min-height:44px">Снять паузу</div></div>';
+ if(U.offline&&API)h+='<div class="alert warn"><div class="k">'+IC('triangle-alert')+' Нет связи с ПК · показаны данные '+(S.ts?ago(S.ts):'')+'</div><div class="q">Повторяю каждые 15 с. Если ПК выключен — действия не дойдут.</div></div>';
+ else if(stale())h+='<div class="alert warn tap" data-a="refresh"><div class="k">'+IC('clock')+' Данные '+ago(S.ts)+'<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Кнопка «Панель» хранит снимок на момент отправки. Live-версия — кнопка меню «Hermes».</div></div>';
+ if(S.stopped)h+='<div class="alert bad"><div class="k">'+IC('square')+' Всё остановлено</div><div class="q">Кликер, уведомления и автоответ выключены. Claude продолжит текущий шаг сам, но без Start и ответов из Telegram.</div><div class="btn pri" data-a="resume" style="min-height:44px">Запустить снова</div></div>';
+ else if(paused())h+='<div class="alert pause"><div class="k">'+IC('pause')+' Пауза до '+hm(S.pause)+'</div><div class="q">Кликер не трогает Claude. Вопросы по-прежнему приходят.</div><div class="btn" data-a="resume" style="min-height:44px">Снять паузу</div></div>';
  S.pend.forEach(function(q){var ag=q.ag||'claude';
   h+='<div class="alert '+(ag=='codex'?'codex':'')+'"><div class="k">'+LG(ag,'lg')+' '+AN(ag)+(q.perm?' просит разрешение':' спрашивает')+'<span class="tm">'+(q.ts?ago(q.ts):'')+'</span></div><div class="q">'+esc(q.q)+'</div>'+
-  (q.perm?'<div class="chips"><span data-a="quick" data-q="'+q.id+'" data-x="0" style="border-color:var(--ok)">✓ '+esc(q.o[0])+'</span><span data-a="quick" data-q="'+q.id+'" data-x="1" style="border-color:var(--bad)">✕ '+esc(q.o[1])+'</span><span class="more" data-a="openq" data-q="'+q.id+'">Подробнее…</span></div>':
+  (q.perm?'<div class="chips"><span data-a="quick" data-q="'+q.id+'" data-x="0" style="border-color:var(--ok)">'+IC('check')+' '+esc(q.o[0])+'</span><span data-a="quick" data-q="'+q.id+'" data-x="1" style="border-color:var(--bad)">'+IC('x')+' '+esc(q.o[1])+'</span><span class="more" data-a="openq" data-q="'+q.id+'">Подробнее…</span></div>':
   '<div class="chips">'+q.o.map(function(o,i){return '<span class="'+(i===q.rec?'rec':'')+'" data-a="quick" data-q="'+q.id+'" data-x="'+i+'">'+esc(o)+'</span>'}).join('')+'<span class="more" data-a="openq" data-q="'+q.id+'">Другое…</span></div>')+autoLine(q)+'</div>'});
- if(S.fails&&!S.stopped){var f=S.log.filter(function(e){return e.k=='fail'})[0];h+='<div class="alert bad"><div class="k">✕ Сбой ×'+S.fails+(f?' · '+f.t:'')+'</div><div class="q">'+esc(f?f.x:'Кликер не смог выполнить действие')+'</div><div class="chips"><span data-a="run">Проверить сейчас</span><span data-a="restore">Развернуть окно Claude</span><span data-a="sys">Система ›</span></div></div>'}
- else if(hBad().length&&!S.stopped){var b=hBad();h+='<div class="alert bad tap" data-a="sys"><div class="k">✕ Система: '+b.map(function(x){return esc(x.n)}).join(', ')+'<span class="tm">открыть ›</span></div><div class="q" style="font-size:13px;color:var(--mut);margin:4px 0 0">'+esc(b[0].d)+'</div></div>'}
+ if(S.fails&&!S.stopped){var f=S.log.filter(function(e){return e.k=='fail'})[0];h+='<div class="alert bad"><div class="k">'+IC('x')+' Сбой ×'+S.fails+(f?' · '+f.t:'')+'</div><div class="q">'+esc(f?f.x:'Кликер не смог выполнить действие')+'</div><div class="chips"><span data-a="run">Проверить сейчас</span><span data-a="restore">Развернуть окно Claude</span><span data-a="sys">Система ›</span></div></div>'}
+ else if(hBad().length&&!S.stopped){var b=hBad();h+='<div class="alert bad tap" data-a="sys"><div class="k">'+IC('x')+' Система: '+b.map(function(x){return esc(x.n)}).join(', ')+'<span class="tm">открыть ›</span></div><div class="q" style="font-size:13px;color:var(--mut);margin:4px 0 0">'+esc(b[0].d)+'</div></div>'}
  return h}
 function awayCard(){var A=S.away;if(!A||LS.get('awayHide',0)>=A.since)return '';if(!(A.steps+A.ans+A.fails+A.q))return '';
  return '<div class="away"><div class="k">Пока тебя не было · с '+hm(A.since)+'<span data-a="noaway">×</span></div><div class="nums"><div><b>'+A.steps+'</b>шагов</div><div><b>'+A.q+'</b>вопросов</div><div><b>'+A.ans+'</b>ответов</div><div><b>'+A.fails+'</b>сбоев</div></div></div>'}
 function nowCard(){var ss=sessState(),st=status(),idle=ss.st=='Idle'||!ss.st,act=!S.stopped;
  var cur=S.steps.length?S.steps[S.steps.length-1]:null;
  return '<div class="sec"><div class="sh"><span>Сейчас</span></div><div class="grp"><div class="now-c"><div class="top"><span class="ag claude">'+LG('claude')+'</span><div style="flex:1;min-width:0"><div class="nm">'+esc(ss.name)+'</div><div class="sub">'+(ss.st?ss.st+' · ':'')+(cur?'шаг '+esc(cur.c)+' с '+hm(cur.t):'')+'</div></div><span class="pill '+st.c+'">'+(ss.st=='Working'?'работает':ss.st=='Idle'?'простой':ss.st?'ждёт':'—')+'</span></div>'+
- '<div class="acts2"><div class="btn sm'+(act?'':' dis')+'" data-a="startsheet">▶ Start сейчас</div><div class="btn sm'+(act?'':' dis')+'" data-a="saysheet" data-x="claude">✎ Написать</div></div></div>'+
+ '<div class="acts2"><div class="btn sm'+(act?'':' dis')+'" data-a="startsheet">'+IC('play')+' Start сейчас</div><div class="btn sm'+(act?'':' dis')+'" data-a="saysheet" data-x="claude">'+IC('pencil')+' Написать</div></div></div>'+
  agentsRows()+'</div></div>'}
 function agentsRows(){return S.agents.filter(function(a){return a.id!='claude'}).map(function(a){var q=S.pend.filter(function(x){return (x.ag||'claude')==a.id}).length;
   return '<div class="row tap" data-a="agent" data-x="'+a.id+'"><span class="ag '+(a.on?a.id:'soon')+'">'+LG(a.id)+'</span><div class="t"><div class="n">'+AN(a.id)+'</div><div class="d">'+(a.on?esc(a.sess||'—'):'подключим следующим')+'</div></div>'+(a.on?(q?'<span class="pill wait">ждёт ответа</span>':'<span class="pill ok">'+esc(a.st||'работает')+'</span>'):'<span class="pill">скоро</span>')+'<span class="chev">›</span></div>'}).join('')+
@@ -405,18 +585,18 @@ function tokens(){if(!S.tok||!S.tok.h)return '';var H=S.tok.h,lim=S.budget*1000/
  var T=S.sess.filter(function(s){return s.tok}).slice().sort(function(a,b){return b.tok-a.tok}).slice(0,3);
  var body='<div class="grp tok"><div class="top"><b>'+(sum/1000).toFixed(1)+' млн</b><span class="w'+(sum>S.budget*1000?'':' okk')+'">'+(sum>S.budget*1000?'выше бюджета':'в пределах бюджета')+'</span></div>'+
  '<div class="bars">'+H.map(function(v){return '<i class="'+(v>lim?'over':'')+'" style="height:'+(v/top*100)+'%"></i>'}).join('')+'<div class="lim" style="bottom:'+(lim/top*100)+'%"><span>'+Math.round(lim)+'k/ч</span></div></div>'+
- '<div class="fc'+(F.over?' over':'')+'"><span>'+(F.over?'⚠ ':'')+'Темп '+Math.round(F.rate)+'k/ч → <b class="mono">'+(F.day/1000).toFixed(1)+' млн</b>/сутки</span></div>'+
+ '<div class="fc'+(F.over?' over':'')+'"><span>'+(F.over?''+IC('triangle-alert')+' ':'')+'Темп '+Math.round(F.rate)+'k/ч → <b class="mono">'+(F.day/1000).toFixed(1)+' млн</b>/сутки</span></div>'+
  '<div style="font-size:12.5px;color:var(--mut);margin-top:8px">'+S.tok.runs+' прогонов, тихих '+S.tok.sil+' ('+Math.round(S.tok.sil/Math.max(1,S.tok.runs)*100)+'%)'+(S.warn?' · предупрежу на '+S.warn+'%':'')+'</div>'+
  (T.length?'<div style="margin:14px 0 2px;font:600 11.5px Inter;color:var(--mut);text-transform:uppercase;letter-spacing:.06em">Дорогие шаги</div>'+T.map(function(s){return '<div class="trow" data-a="sess" data-x="'+s.id+'"><span>'+esc(s.n)+'</span><b class="mono">'+(s.tok/1000).toFixed(1)+' млн</b></div>'}).join(''):'')+'</div>';
  return '<div class="sec"><div class="sh col'+(U.col.tok?' shut':'')+'" data-a="col" data-x="tok"><span>Токены · 24 ч</span><span class="sum'+(F.over?' over':'')+'">'+(sum/1000).toFixed(1)+' / '+S.budget+' млн'+(F.over?' · прогноз выше':'')+'</span></div>'+(U.col.tok?'':body)+'</div>'}
-var LK={status:'•',start:'▶',question:'?',answer_ok:'✓',answer_fail:'!',fail:'✕',notify:'↗',panel:'⚡',pause:'⏸',stop:'■',auto:'⟳',say:'✎',fix:'⛭'};
-function evRow(e,q){return '<div class="row"><span class="tm">'+esc(e.t)+'</span><span class="k" style="'+(e.k=='fail'||e.k=='stop'||e.k=='answer_fail'?'color:var(--bad)':e.k=='question'?'color:var(--claude)':'')+'">'+(LK[e.k]||'•')+'</span><span class="x">'+hl(e.x,q)+'</span></div>'}
+var LK={status:IC('circle-dot'),start:IC('play'),question:IC('message-circle-question'),answer_ok:IC('check'),answer_fail:IC('triangle-alert'),fail:IC('x'),notify:IC('send'),panel:IC('zap'),pause:IC('pause'),stop:IC('square'),auto:IC('rotate-cw'),say:IC('pencil'),fix:IC('wrench')};
+function evRowT(e,q){return '<div class="row"><span class="tm">'+esc(e.t)+'</span><span class="k" style="'+(e.k=='fail'||e.k=='stop'||e.k=='answer_fail'?'color:var(--bad)':e.k=='question'?'color:var(--claude)':'')+'">'+(LK[e.k]||IC('circle-dot'))+'</span><span class="x">'+hl(e.x,q)+'</span></div>'}
 function feed(){return '<div class="sec"><div class="sh col'+(U.col.feed?' shut':'')+'" data-a="col" data-x="feed"><span>Лента</span><a data-a="journal" data-x="ev">весь журнал ›</a></div>'+(U.col.feed?'':'<div class="grp feed">'+(S.log.length?S.log.slice(0,5).map(function(e){return evRow(e)}).join(''):'<div class="row" style="color:var(--mut)">Записей пока нет</div>')+'</div>')+'</div>'}
 function colSec(k,t,body,sum){return '<div class="sec"><div class="sh col'+(U.col[k]?' shut':'')+'" data-a="col" data-x="'+k+'"><span>'+t+'</span>'+(sum?'<span class="sum">'+esc(sum)+'</span>':'')+'</div>'+(U.col[k]?'':'<div class="grp">'+body+'</div>')+'</div>'}
 function sw(on,a){return '<div class="sw'+(on?' on':'')+'" data-a="'+a+'" role="switch" aria-checked="'+!!on+'"></div>'}
 function seg(vals,cur,a,suf,lbl){return '<div class="seg">'+vals.map(function(v,i){return '<span data-a="'+a+'" data-x="'+v+'" class="'+(v==cur?'on':'')+'">'+(lbl?lbl[i]:v+(suf||''))+'</span>'}).join('')+'</div>'}
 function hermesCard(){if(!S.wa)return '';var g=S.health.filter(function(h){return h.k=='gateway'})[0]||{ok:1};
- return '<div class="sec"><div class="grp"><div class="row"><div class="logo" data-st="'+(g.ok?'ok':'bad')+'" style="width:34px;height:34px"></div><div class="t"><div class="n">Hermes</div><div class="d">'+(g.ok?'сессии, модели, файлы · нужен Tailscale':esc(g.d||'gateway не отвечает'))+'</div></div>'+
+ return '<div class="sec"><div class="grp"><div class="row"><div class="logo" data-st="'+(g.ok?'ok':'bad')+'" style="width:34px;height:34px"></div><div class="t"><div class="n">Hermes</div><div class="d">'+(g.ok?'в браузере':esc(g.d||'gateway не отвечает'))+'</div></div>'+
  (g.ok?'<div class="btn sm" style="min-height:40px;padding:0 14px" data-a="hermes">Открыть</div>':'<div class="btn sm" style="min-height:40px;padding:0 12px" data-a="'+(g.busy?'':'fix')+'" data-x="gateway">'+(g.busy?'…':'Перезапустить')+'</div>')+'</div>'+
  (g.ok?'<div class="row tap" data-a="hermes_ext" style="min-height:40px;padding:8px 14px"><div class="t"><div class="d">Открыть в Safari</div></div><span class="chev">›</span></div>':'')+'</div></div>'}
 function home(){return hd()+updBanner()+netBanner()+hero()+S.pend.slice(1).map(qAlert).join('')+digestCard()+projCard()+queueCard()+colSec('strip','Сессия · 12 ч',strip(),stripSum())+colSec('path','Дорожка шагов',pathView(),pathSum())+tokens()+autoGrp()+feed()+hermesCard()}
@@ -431,19 +611,19 @@ function qcard(q){var c=U.qsel[q.id]||{},dis=c.k===undefined||(c.k==='o'&&!(c.t|
  '<div class="qf"><button class="qb sk" data-a="qskip" data-q="'+q.id+'">Пропустить</button><button class="qb sb" data-a="qsub" data-q="'+q.id+'"'+(dis?' disabled':'')+'>Ответить</button></div></div>'}
 function questions(){var h=hd();
  h+=S.pend.length?'<div class="sec" style="margin-top:4px">'+S.pend.map(qcard).join('')+'</div><div class="hint">Ответ уходит агенту: хук отвечает сразу, иначе кликер откроет сессию, выберет вариант и нажмёт Submit.</div>':
-  '<div class="empty"><div class="logo" data-st="ok"></div><div style="font-weight:600;color:var(--tx)">Вопросов нет</div><div style="font-size:13px;margin-top:4px">Когда агент спросит, карточка придёт в Telegram и появится здесь.</div></div>';
+  '<div class="empty"><div class="pet" data-f="7"></div><div style="font-weight:600;color:var(--tx)">Вопросов нет</div><div style="font-size:13px;margin-top:4px">Hermes пришлёт, когда Claude спросит.</div></div>';
  return h+'<div class="sec"><div class="sh"><span>Последние ответы</span></div><div class="grp">'+(S.hist.length?S.hist.map(function(x){return '<div class="row"><span class="dot '+(x.r=='ok'?'ok':x.r=='fail'?'bad':'wait')+'"></span><div class="t"><div class="n" style="font-size:14px">'+esc(x.a)+(x.auto?' <span class="pill">авто</span>':'')+'</div><div class="d">'+esc(x.q||'вопрос не сохранился')+'</div></div><span class="mono" style="font-size:12px;color:var(--dim)">'+esc(x.t)+'</span></div>'}).join(''):'<div class="row" style="color:var(--mut)">Ответов пока не было</div>')+'</div></div>'}
 
 /* ---------- журнал: сессии и события ---------- */
 var JF=[['all','Все',null],['q','Вопросы',['question','answer_ok','answer_fail','auto']],['fail','Сбои',['fail','answer_fail']],['start','Шаги',['start','status']],['auto','Автоответы',['auto']],['me','Мои',['panel','pause','stop','say','fix']]];
-function journal(){var h=hd()+'<div class="sec" style="margin-top:4px"><div class="seg full">'+[['sess','Сессии'],['ev','События']].map(function(t){return '<span data-a="jt" data-x="'+t[0]+'" class="'+(U.jt==t[0]?'on':'')+'">'+t[1]+'</span>'}).join('')+'</div></div>';
+function journalT(){var h=hd()+modeBar()+'<div class="sec" style="margin-top:4px"><div class="seg full">'+[['sess','Сессии'],['ev','События']].map(function(t){return '<span data-a="jt" data-x="'+t[0]+'" class="'+(U.jt==t[0]?'on':'')+'">'+t[1]+'</span>'}).join('')+'</div></div>';
  return h+(U.jt=='sess'?sessList():events())}
-function sessList(){if(!S.sess.length)return '<div class="empty">Сессий пока нет</div>';var day='',h='';
+function sessListT(){if(!S.sess.length)return '<div class="empty">Сессий пока нет</div>';var day='',h='';
  S.sess.slice().reverse().forEach(function(s,i){var d=dayName(s.b);if(d!=day){if(day)h+='</div></div>';h+='<div class="sec"><div class="sh"><span>'+d+'</span></div><div class="grp">';day=d}
   var min=((s.e||nowS())-s.b)/60;
   h+='<div class="row tap" data-a="sess" data-x="'+s.id+'" style="display:block"><div style="display:flex;gap:10px;align-items:flex-start"><div class="t"><div class="n" style="font-size:14.5px;line-height:1.3">'+esc(s.n)+'</div><div class="d mono">'+hm(s.b)+'–'+(s.e?hm(s.e):'сейчас')+' · '+dur(min)+'</div></div>'+(s.e?'':'<span class="pill ok">идёт</span>')+'<span class="chev">›</span></div>'+
   (s.seg?'<div class="mini">'+segs({start:s.b,seg:s.seg},s.e||nowS()).map(function(g){return '<i class="'+g.s+'" style="flex:'+(g.e-g.b)+'"></i>'}).join('')+'</div>':'')+
-  '<div class="tags" style="margin-top:8px">'+(s.q?'<span>? '+s.q+' вопр.</span>':'')+(s.f?'<span style="color:var(--bad)">✕ '+s.f+' сбой</span>':'')+(s.tok?'<span>'+(s.tok/1000).toFixed(1)+' млн ток.</span>':'')+(s.pr?'<span>PR '+esc(s.pr)+'</span>':'')+'</div></div>'});
+  '<div class="tags" style="margin-top:8px">'+(s.q?'<span>? '+s.q+' вопр.</span>':'')+(s.f?'<span style="color:var(--bad)">'+IC('x')+' '+s.f+' сбой</span>':'')+(s.tok?'<span>'+(s.tok/1000).toFixed(1)+' млн ток.</span>':'')+(s.pr?'<span>PR '+esc(s.pr)+'</span>':'')+'</div></div>'});
  return h+'</div></div><div class="hint">Сессия = один шаг в Claude от Start до следующего Start.</div>'}
 function sessPage(id){var s=S.sess.filter(function(x){return x.id==id})[0];if(!s)return '<div class="back" data-a="back">‹ Журнал</div><div class="empty">Сессия не найдена</div>';
  var min=((s.e||nowS())-s.b)/60,ev=U.sev&&U.sev.id==id?U.sev.ev:null;
@@ -460,8 +640,8 @@ function events(){loadLog();var LOG=U.flog||S.log,f=JF.filter(function(x){return
 
 /* ---------- мозг ---------- */
 function match(i){var q=U.bq.toLowerCase();return !q||(i.n+' '+i.d+' '+i.g).toLowerCase().indexOf(q)>=0}
-function brain(){var B=S.brain;
- var h=hd()+'<div class="sec" style="margin-top:4px"><div class="sh"><span>В фокусе</span><a data-a="nowedit">✎ изменить</a></div><div class="grp now"><ul>'+((B.now||[]).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')||'<li>—</li>')+'</ul></div></div>'+
+function brainT(){var B=S.brain;
+ var h=hd()+modeBar()+'<div class="sec" style="margin-top:4px"><div class="sh"><span>В фокусе</span><a data-a="nowedit">'+IC('pencil')+' изменить</a></div><div class="grp now"><ul>'+((B.now||[]).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')||'<li>—</li>')+'</ul></div></div>'+
  '<div class="sec"><input class="in" data-in="bq" placeholder="Поиск: название, тег, описание" value="'+esc(U.bq)+'"><div class="chips g sm" style="margin-top:8px"><span data-a="bfull" data-x="0" class="'+(!U.bfull?'on':'')+'">по индексу</span><span data-a="bfull" data-x="1" class="'+(U.bfull?'on':'')+(API?'':'" style="opacity:.5')+'">в тексте файлов</span></div></div>';
  if(U.bfull&&U.bq){return h+grepView()}
  return h+((B.sec||[]).map(function(s){var it=s.i.filter(match);if(!it.length)return '';return '<div class="sec"><div class="sh"><span>'+esc(s.n)+' · '+it.length+'</span></div><div class="grp">'+it.map(function(i){return '<div class="row tap" data-a="doc" data-x="'+esc(i.p)+'"><div class="t"><div class="n" style="font-size:14.5px">'+hl(i.n,U.bq)+'</div><div class="d">'+hl(i.d,U.bq)+'</div>'+(i.g?'<div class="tags">'+i.g.split(',').map(function(g){return '<span>'+esc(g.trim())+'</span>'}).join('')+'</div>':'')+'</div><span class="mono" style="font-size:11.5px;color:var(--dim)">'+esc(i.u)+'</span><span class="chev">›</span></div>'}).join('')+'</div></div>'}).join('')||'<div class="empty">Ничего не найдено'+(API?'. <a style="color:var(--gold);cursor:pointer" data-a="bfull" data-x="1">Искать в тексте ›</a>':'')+'</div>')+
@@ -482,30 +662,30 @@ function md(src){var body=src,fm='',m=src.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\
   if(/^\s*[-*] |^\d+\. /.test(l)){if(!ul){h+='<ul>';ul=true}h+='<li>'+inl(l.replace(/^\s*(?:[-*]|\d+\.)\s+/,''))+'</li>';return}if(ul){h+='</ul>';ul=false}
   var hm2=l.match(/^(#{1,3})\s+(.*)/);if(hm2)h+='<h'+hm2[1].length+'>'+inl(hm2[2])+'</h'+hm2[1].length+'>';else if(/^\|/.test(l))h+='<pre>'+esc(l)+'</pre>';else if(l.trim())h+='<p>'+inl(l)+'</p>'});
  if(ul)h+='</ul>';if(pre)h+='</pre>';return (fm?'<div class="fm">'+esc(fm).replace(/\n/g,'<br>')+'</div>':'')+h}
-function reader(p){return '<div class="back" data-a="back">‹ Мозг</div><div class="reader">'+(U.doc?md(U.doc.md||''):'<div class="sk" style="height:18px;width:60%;margin:14px 0"></div><div class="sk" style="height:220px"></div>')+'</div><div class="acts"><div class="btn" data-a="docchat" data-x="'+esc(p)+'">Прислать в чат</div></div>'}
+function readerT(p){return '<div class="back" data-a="back">‹ Мозг</div>'+modeBar()+'<div class="reader">'+(U.doc?md(U.doc.md||''):'<div class="sk" style="height:18px;width:60%;margin:14px 0"></div><div class="sk" style="height:220px"></div>')+'</div><div class="acts"><div class="btn" data-a="docchat" data-x="'+esc(p)+'">Прислать в чат</div></div>'}
 
 /* ---------- агент ---------- */
 function agentPage(id){var on=agOn(id),a=S.agents.filter(function(x){return x.id==id})[0]||{};
  var h='<div class="back" data-a="back">‹ Пульт</div><div class="ph"><span class="ag '+(on?id:'soon')+'" style="width:56px;height:56px;border-radius:14px">'+LG(id)+'</span><div><h2>'+AN(id)+'</h2><div class="d">'+(id=='claude'?'Claude Desktop · кликер + хуки':'OpenAI Codex CLI · хуки')+'</div></div></div>';
  if(!on)return h+'<div class="sec"><div class="grp"><div class="row"><div class="t"><div class="n">Ещё не подключён</div><div class="d">Будет то же, что у Claude: старт шагов, вопросы с логотипом Codex, общие правила автоответа, зависания.</div></div></div></div></div>';
- if(id!='claude')return h+'<div class="sec"><div class="sh"><span>Сейчас</span></div><div class="grp"><div class="row"><div class="t"><div class="n">'+esc(a.sess||'—')+'</div><div class="d">'+esc(a.st||'')+'</div></div></div></div></div><div class="acts"><div class="btn" data-a="saysheet" data-x="'+id+'">✎ Написать '+AN(id)+'</div></div><div class="hint">Approvals Codex автоответом не закрываются.</div>';
+ if(id!='claude')return h+'<div class="sec"><div class="sh"><span>Сейчас</span></div><div class="grp"><div class="row"><div class="t"><div class="n">'+esc(a.sess||'—')+'</div><div class="d">'+esc(a.st||'')+'</div></div></div></div></div><div class="acts"><div class="btn" data-a="saysheet" data-x="'+id+'">'+IC('pencil')+' Написать '+AN(id)+'</div></div><div class="hint">Approvals Codex автоответом не закрываются.</div>';
  var ss=sessState(),st=status();
  return h+'<div class="sec"><div class="sh"><span>Сейчас</span></div><div class="grp"><div class="row"><div class="t"><div class="n">'+esc(ss.name)+'</div><div class="d">'+esc(ss.st||'')+(S.action?' · '+esc(S.action):'')+'</div></div><span class="pill '+st.c+'">'+st.t+'</span></div></div></div>'+
- '<div class="acts"><div class="btn" data-a="startsheet">▶ Start сейчас</div><div class="btn" data-a="saysheet" data-x="claude">✎ Написать</div></div>'+
+ '<div class="acts"><div class="btn" data-a="startsheet">'+IC('play')+' Start сейчас</div><div class="btn" data-a="saysheet" data-x="claude">'+IC('pencil')+' Написать</div></div>'+
  '<div class="sec"><div class="sh"><span>Сессия · 12 ч</span></div><div class="grp">'+strip()+'</div></div>'+
  '<div class="sec"><div class="sh"><span>Проекты под наблюдением</span><a data-a="addp">+ добавить</a></div><div class="grp">'+(E.projects.map(function(p,i){return '<div class="row"><div style="flex:1;display:grid;gap:6px"><input class="in" data-in="pn:'+i+'" placeholder="Название проекта (как в Claude)" value="'+esc(p.name)+'"><input class="in" data-in="pd:'+i+'" placeholder="Пояснение" value="'+esc(p.desc||'')+'"></div><span class="x" data-a="delp" data-x="'+i+'">×</span></div>'}).join('')||'<div class="row" style="color:var(--mut)">Нет проектов</div>')+'</div></div>'+
  '<div class="sec"><div class="sh"><span>Проверять каждые</span></div>'+seg([2,3,5,10,15,30],E.clicker.iv,'iv',' мин')+'</div>'+
  '<div class="sec"><div class="sh"><span>Считать зависанием через</span></div>'+seg([10,15,20,30,45,60],E.hang,'hang',' мин')+'</div>'}
 
 /* ---------- система ---------- */
-function sysPage(){var H=S.health,bad=hBad();
- return '<div class="back" data-a="back">‹ Назад</div><div class="ph"><div class="logo" data-st="'+(bad.length?'bad':'ok')+'"></div><div><h2>Система</h2><div class="d">'+(bad.length?bad.length+' из '+H.length+' требуют внимания':'Все '+H.length+' компонентов в норме')+'</div></div></div>'+stBlock()+
+function sysPageT(){var H=S.health,bad=hBad();
+ return '<div class="back" data-a="back">‹ Назад</div><div class="ph"><div class="logo" data-st="'+(bad.length?'bad':'ok')+'"></div><div><h2>Система</h2><div class="d">'+(bad.length?bad.length+' из '+H.length+' требуют внимания':'Все '+H.length+' компонентов в норме')+'</div></div></div>'+modeBar()+stBlock()+
  '<div class="sec"><div class="grp">'+H.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+(x.ts?' · '+ago(x.ts):'')+'</div></div>'+(x.busy?'<div class="btn sm dis" style="min-height:36px;padding:0 10px">…</div>':'')+(x.ff?'<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--bad,#e5484d)" data-a="fixforce" data-x="'+x.k+'">Принудительно</div>':'')+(x.fix?'<div class="btn sm" style="min-height:36px;padding:0 10px'+(x.ok?';color:var(--mut)':'')+'" data-a="fix" data-x="'+x.k+'">'+esc(x.fl||'Перезапустить')+'</div>':'')+'</div>'}).join('')+'</div></div>'+cronBlock()+hsBlock()+
- '<div class="hint">Gateway перезапускается мягко: если идёт ход Hermes, перезапуска не будет, появится «Принудительно». Пока gateway встаёт (~30 с), бот и Webapp молчат, итог придёт в Telegram. Если gateway не отвечает 5 мин, сервер панели перезапустит его сам (не больше 2 раз в час).<br>Версия страницы: v4 ('+VER+')</div>'}
+ '<div class="hint">Gateway перезапускается мягко: если идёт ход Hermes, перезапуска не будет, появится «Принудительно». Пока gateway встаёт (~30 с), бот и Webapp молчат, итог придёт в Telegram. Если gateway не отвечает 5 мин, сервер панели перезапустит его сам (не больше 2 раз в час).<br>Версия страницы: v5 ('+VER+')</div>'}
 
 /* ---------- этап C: cron и сессии Hermes ---------- */
 function hmT(ts){if(!ts)return '—';var d=new Date(ts*1000);return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
-function cronBlock(){if(!S.cj.length)return '';
+function cronBlockT(){if(!S.cj.length)return '';
  return '<div class="sec"><div class="sh"><span>Задачи cron</span></div><div class="grp">'+S.cj.map(function(j){
   return '<div class="row"><span class="dot '+(!j.on?'':(j.ok?'ok':'bad'))+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(j.n)+'</div><div class="d">'+esc(j.s)+(j.on?' · след. '+hmT(j.nx):' · на паузе')+(j.last?' · был '+ago(j.last):'')+(j.on&&!j.ok&&j.last?' · сбой':'')+'</div></div>'+
   '<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--mut)" data-a="cronrun" data-x="'+j.id+'">Запустить</div>'+
@@ -515,8 +695,8 @@ function hsBlock(){if(!S.hs.length)return '';
   return '<div class="row"><div class="t"><div class="n" style="font-size:14.5px">'+esc(h.n)+'</div><div class="d">'+esc(h.m)+' · '+esc(h.src)+' · '+h.msg+' сообщ. · '+(h.tok>=1000?(h.tok/1000).toFixed(1)+' млн':h.tok+' тыс.')+' ток. · '+ago(h.t)+'</div></div></div>'}).join('')+'</div></div>'}
 
 /* ---------- настройки ---------- */
-function settings(){var N=[['question','Вопросы агентов','карточки с вариантами'],['start','Start нажат','запущен следующий шаг'],['hang','Зависание','сессия не меняется дольше порога'],['fail','Сбои','агент не отвечает, клик не прошёл']];
- return hd()+(S.health.length?'<div class="sec" style="margin-top:4px"><div class="grp"><div class="row tap" data-a="sys"><span class="dot '+(hBad().length?'bad':'ok')+'"></span><div class="t"><div class="n">Система</div><div class="d">'+(hBad().length?hBad().length+' проблем':'всё в норме')+' · cron, сервер, туннель, мозг</div></div><span class="chev">›</span></div></div></div>':'')+
+function settingsT(){var N=[['question','Вопросы агентов','карточки с вариантами'],['start','Start нажат','запущен следующий шаг'],['hang','Зависание','сессия не меняется дольше порога'],['fail','Сбои','агент не отвечает, клик не прошёл']];
+ return hd()+modeBar()+(S.health.length?'<div class="sec" style="margin-top:4px"><div class="grp"><div class="row tap" data-a="sys"><span class="dot '+(hBad().length?'bad':'ok')+'"></span><div class="t"><div class="n">Система</div><div class="d">'+(hBad().length?hBad().length+' проблем':'всё в норме')+' · cron, сервер, туннель, мозг</div></div><span class="chev">›</span></div></div></div>':'')+
  '<div class="sec"><div class="sh"><span>Присылать в Telegram</span></div><div class="grp">'+N.map(function(n){return '<div class="row"><div class="t"><div class="n">'+n[1]+'</div><div class="d">'+n[2]+'</div></div>'+sw(E.notify[n[0]],'nt:'+n[0])+'</div>'}).join('')+'</div></div>'+
  '<div class="sec"><div class="sh"><span>Тихие часы</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Ночью копить, потом сводка</div><div class="d mono">'+E.quiet.from+' – '+E.quiet.to+'</div></div>'+sw(E.quiet.on,'qon')+'</div>'+
  (E.quiet.on?'<div class="row" style="display:block"><div class="d" style="margin-bottom:6px">Начало</div>'+seg(['22:00','23:00','00:00','01:00'],E.quiet.from,'qfrom')+'<div class="d" style="margin:10px 0 6px">Конец</div>'+seg(['07:00','08:00','09:00','10:00'],E.quiet.to,'qto')+'</div>'+
@@ -530,7 +710,7 @@ function settings(){var N=[['question','Вопросы агентов','карт
  '<div class="sec"><div class="sh"><span>Приложение</span></div><div class="grp"><div class="row"><div class="t"><div class="n">Вибрация</div><div class="d">отклик на нажатия</div></div>'+sw(U.haptics,'hap')+'</div>'+'<div class="row"><div class="t"><div class="n">Подтверждать '+bioName()+'</div><div class="d">стоп, принудительный перезапуск, Allow'+(U.bio&&bioWhy()?' · '+esc(bioWhy())+', пока будет удержание':'')+'</div></div>'+sw(U.bio,'bio')+'</div>'+'<div class="row"><div class="t"><div class="n">Вход по '+bioName()+'</div><div class="d">при открытии панели и после 5 мин в фоне</div></div>'+sw(U.biolock,'biolock')+'</div>'+'<div class="row tap" data-a="biotest"><div class="t"><div class="n">Проверить '+bioName()+'</div><div class="d">'+(U.bioLast?'последняя попытка: '+esc(U.bioLast.step):'покажу системный запрос; итог уйдёт на ПК')+'</div></div><span class="chev">›</span></div>'+
  '<div class="row tap" data-a="full"><div class="t"><div class="n">Во весь экран</div><div class="d">без шапки Telegram</div></div><span class="chev">›</span></div>'+
  '<div class="row tap" data-a="homescreen"><div class="t"><div class="n">Добавить на домашний экран</div><div class="d">открывать Hermes как приложение</div></div><span class="chev">›</span></div></div></div>'+
- '<div class="sec"><div class="btn danger" data-a="stopsheet">■ Остановить всё</div></div>'}
+ '<div class="sec"><div class="btn danger" data-a="stopsheet">'+IC('square')+' Остановить всё</div></div>'}
 
 /* ---------- шторки ---------- */
 function sheet(h){$('sheet').innerHTML='<div class="gr"></div>'+h;$('sheet').classList.add('on');$('veil').classList.add('on')}
@@ -538,12 +718,12 @@ function unsheet(){$('sheet').classList.remove('on');$('veil').classList.remove(
 function pauseSheet(){var n=nowS();sheet('<h3>Пауза кликера</h3><p>Никаких Start и кликов в Claude. Вопросы продолжат приходить, по окончании кликер включится сам.</p>'+
  [['+30m','30 минут',n+1800],['+60m','1 час',n+3600],['+180m','3 часа',n+10800],['09:00','до 09:00',0],['tomorrow','до завтра 09:00',0]].map(function(o){return '<div class="opt" data-a="pause" data-x="'+o[0]+'">'+o[1]+'<span>'+(o[2]?'до '+hm(o[2]):'')+'</span></div>'}).join('')+'<div class="btn" data-a="unsheet">Отмена</div>')}
 function forceSheet(k){sheet('<h3>Перезапустить принудительно?</h3><p>Сейчас идёт ход Hermes (чат или задача). Он оборвётся, сессия останется, продолжишь её сообщением.</p><div class="btn" style="color:var(--bad,#e5484d)" data-a="fixforce_go" data-x="'+k+'">Оборвать и перезапустить</div><div class="btn" data-a="unsheet">Отмена</div>')}
-function stopSheet(){sheet('<h3>Остановить всё?</h3><p>Выключу кликер, уведомления и автоответ. Claude продолжит текущий шаг сам, но без Start и ответов из Telegram.</p>'+(bioOK()?'<div class="btn danger" data-a="stopbio">■ Остановить · '+bioName()+'</div>':'<div class="btn hold" id="hold"><i></i><span>Удерживай, чтобы остановить</span></div>')+'<div class="btn" data-a="unsheet">Отмена</div>')}
+function stopSheet(){sheet('<h3>Остановить всё?</h3><p>Выключу кликер, уведомления и автоответ. Claude продолжит текущий шаг сам, но без Start и ответов из Telegram.</p>'+(bioOK()?'<div class="btn danger" data-a="stopbio">'+IC('square')+' Остановить · '+bioName()+'</div>':'<div class="btn hold" id="hold"><i></i><span>Удерживай, чтобы остановить</span></div>')+'<div class="btn" data-a="unsheet">Отмена</div>')}
 function startSheet(){var ss=sessState(),wk=ss.st=='Working';
  sheet('<h3>Нажать Start сейчас?</h3><p>Кликер найдёт карточку следующего шага в проектной сессии и нажмёт Start, не дожидаясь тика.</p>'+
  '<div class="tgt">'+LG('claude','lg')+'<span>Сейчас: <b>'+esc(ss.name)+'</b> · '+esc(ss.st||'—')+'</span></div>'+
  (wk?'<p style="color:var(--warn)">Claude ещё работает над шагом. Start появится, когда шаг закончится — тогда нажму сразу.</p>':'')+
- '<div class="btn pri" data-a="start">'+(wk?'Нажать, как только появится':'▶ Нажать Start')+'</div><div class="btn" data-a="unsheet">Отмена</div>')}
+ '<div class="btn pri" data-a="start">'+(wk?'Нажать, как только появится':''+IC('play')+' Нажать Start')+'</div><div class="btn" data-a="unsheet">Отмена</div>')}
 function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name:((S.agents.filter(function(a){return a.id==ag})[0]||{}).sess||'—');
  sheet('<h3>Написать '+AN(ag)+'</h3><p>Текст уйдёт в активную сессию как твоё сообщение.</p><div class="tgt">'+LG(ag,'lg')+'<span>В сессию <b>'+esc(ss)+'</b></span></div>'+
  '<textarea class="in" data-in="say" placeholder="Например: продолжай, но без изменений в CI" rows="4">'+esc(U.say.t)+'</textarea>'+
@@ -552,42 +732,42 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=45;
-function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">⬆ Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
+var VER=50;
+function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
- if(U.cached&&!API)return '<div class="alert warn"><div class="k">⚠ ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
- if(U.offline&&API)return '<div class="alert warn"><div class="k">⚠ Нет связи с ПК · данные '+(S.ts?ago(S.ts):'')+'</div><div class="q">Повторяю каждые 15 с. Если ПК выключен — действия не дойдут.</div></div>';
- if(stale())return '<div class="alert warn tap" data-a="refresh"><div class="k">⏱ Данные '+ago(S.ts)+'<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Кнопка «Панель» хранит снимок на момент отправки. Live-версия — кнопка меню «Hermes».</div></div>';
+ if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
+ if(U.offline&&API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' Нет связи с ПК · данные '+(S.ts?ago(S.ts):'')+'</div><div class="q">Повторяю каждые 15 с. Если ПК выключен — действия не дойдут.</div></div>';
+ if(stale())return '<div class="alert warn tap" data-a="refresh"><div class="k">'+IC('clock')+' Данные '+ago(S.ts)+'<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Кнопка «Панель» хранит снимок на момент отправки. Live-версия — кнопка меню «Hermes».</div></div>';
  return ''}
-function qChips(q){return q.perm?'<div class="chips"><span data-a="quick" data-q="'+q.id+'" data-x="0" style="border-color:var(--ok)">✓ '+esc(q.o[0])+'</span><span data-a="quick" data-q="'+q.id+'" data-x="1" style="border-color:var(--bad)">✕ '+esc(q.o[1])+'</span></div>':
+function qChips(q){return q.perm?'<div class="chips"><span data-a="quick" data-q="'+q.id+'" data-x="0" style="border-color:var(--ok)">'+IC('check')+' '+esc(q.o[0])+'</span><span data-a="quick" data-q="'+q.id+'" data-x="1" style="border-color:var(--bad)">'+IC('x')+' '+esc(q.o[1])+'</span></div>':
  '<div class="chips">'+q.o.map(function(o,i){return '<span class="'+(i===q.rec?'rec':'')+'" data-a="quick" data-q="'+q.id+'" data-x="'+i+'">'+esc(o)+'</span>'}).join('')+'</div>'}
 function qAlert(q){var ag=q.ag||'claude';return '<div class="alert '+(ag=='codex'?'codex':'')+'"><div class="k">'+LG(ag,'lg')+' '+AN(ag)+(q.perm?' просит разрешение':' спрашивает')+'<span class="tm">'+(q.ts?ago(q.ts):'')+'</span></div><div class="q">'+esc(q.q)+'</div>'+qChips(q)+autoLine(q)+'</div>'}
 function hero(){var ss=sessState(),cur=S.steps.length?S.steps[S.steps.length-1]:null,q=S.pend[0],bad=hBad(),f=S.log.filter(function(e){return e.k=='fail'})[0],c,k,t,s,b='',ag=q?(q.ag||'claude'):'claude',tm='';
- if(S.stopped){c='bad';k='Стоп';t='Всё остановлено';s='Кликер, уведомления и автоответ выключены. Claude доделает текущий шаг сам.';b='<div class="btn pri" data-a="resume">Запустить снова</div>'}
+ if(S.stopped){c='stop';k='Остановлено тобой';t='Всё остановлено';s='Автопилот, уведомления и автоответ выключены.';b='<div class="btn pri" data-a="resume">Запустить снова</div>'}
  else if(q){c='wait';k='Нужен ты';t=esc(q.q);tm=q.ts?ago(q.ts):'';s=AN(ag)+(q.perm?' просит разрешение':' спрашивает')+(q.s?' · '+q.s:'')+(S.pend.length>1?' · ещё '+(S.pend.length-1)+' ниже':'');
   b=qChips(q)+autoLine(q)+'<div class="btn" data-a="openq" data-q="'+q.id+'" style="margin-top:10px">'+(q.perm?'Подробнее':'Свой ответ или пропустить')+'</div>'}
  else if(S.fails){c='bad';k='Сломалось';t='Сбой ×'+S.fails+(f?' · '+esc(f.t):'');s=f?f.x:'Кликер не смог выполнить действие';b='<div class="btn pri" data-a="heal">Развернуть Claude и проверить</div><div class="chips g sm" style="margin-top:8px"><span data-a="sys">Система ›</span><span data-a="journal" data-x="ev">Журнал ›</span></div>'}
  else if(bad.length){c='bad';k='Сломалось';t=esc(bad.map(function(x){return x.n}).join(', '));s=bad[0].d||'';var fx=bad.filter(function(x){return x.fix})[0];b=fx?'<div class="btn pri" data-a="fix" data-x="'+fx.k+'">'+esc(fx.fl||'Перезапустить')+' · '+esc(fx.n)+'</div>':'<div class="btn pri" data-a="sys">Открыть «Систему»</div>'}
- else if(paused()){c='pause';k='Пауза';t='До '+hm(S.pause);s='Кликер не трогает Claude. Вопросы и сбои приходят.';b='<div class="btn pri" data-a="resume">Снять паузу</div>'}
- else if(!S.clicker.on){c='pause';k='Выключено';t='Кликер выключен';s='Start и ответы из Telegram сами не нажимаются.';b='<div class="btn pri" data-a="clickon">Включить кликер</div>'}
+ else if(paused()){c='pause';k='Пауза';t='До '+hm(S.pause);s='Вопросы и сбои приходят.';b='<div class="btn pri" data-a="resume">Снять паузу</div>'}
+ else if(!S.clicker.on){c='pause';k='Выключено';t='Кликер выключен';s='';b='<div class="btn pri" data-a="clickon">Включить кликер</div>'}
  else{c='ok';k='Всё идёт';t=esc(ss.name);s=(ss.st=='Working'?'Claude работает':ss.st=='Idle'?'Claude простаивает':ss.st||'—')+(cur?' · шаг '+cur.c+' идёт '+dur((nowS()-cur.t)/60):'')+(S.queue.length?' · в очереди '+S.queue.filter(function(x){return x.st!='sent'}).length:'');b=ringBtn()}
- return '<div class="hero" data-c="'+c+'"><div class="hk"><span class="ag '+ag+'">'+LG(ag)+'</span>'+k+(tm?'<span class="tm">'+tm+'</span>':'')+'</div><div class="ht">'+t+'</div><div class="hs">'+esc(s)+'</div><div class="hb">'+b+'</div>'+qaRow()+'</div>'}
+ return '<div class="hero" data-c="'+c+'">'+pet(c)+'<div class="hk"><span class="ag '+ag+'">'+LG(ag)+'</span>'+k+(tm?'<span class="tm">'+tm+'</span>':'')+'</div><div class="ht">'+t+'</div><div class="hs">'+esc(s)+'</div><div class="hb">'+b+'</div>'+qaRow()+'</div>'}
 function qaRow(){var off=S.stopped,P=paused();
- return '<div class="qa">'+[['startsheet','▶','Start',off],['saysheet','✎','Написать',off],['chat','☷','Чат',0],[P?'resume':'pausesheet',P?'▶︎':'⏸',P?'Снять паузу':'Пауза',off]].map(function(a){return '<div data-a="'+a[0]+'" data-x="claude" class="'+(a[3]?'dis':'')+'"><i>'+a[1]+'</i>'+a[2]+'</div>'}).join('')+'</div>'}
+ return '<div class="qa">'+[['startsheet',''+IC('play')+'','Start',off],['saysheet',''+IC('pencil')+'','Написать',off],['chat',''+IC('message-square-text')+'','Чат',0],[P?'resume':'pausesheet',P?IC('play'):IC('pause'),P?'Снять паузу':'Пауза',off]].map(function(a){return '<div data-a="'+a[0]+'" data-x="claude" class="'+(a[3]?'dis':'')+'"><i>'+a[1]+'</i>'+a[2]+'</div>'}).join('')+'</div>'}
 function stripSum(){var G=segs();if(!G.length)return '';var w=G.filter(function(g){return g.s=='W'}).reduce(function(a,g){return a+g.e-g.b},0);return 'работал '+(w/60).toFixed(1)+' ч'}
 function pathSum(){var P=S.steps;return P.length?'сейчас '+P[P.length-1].c:''}
 
 /* утренняя сводка */
 function digestCard(){var D=S.dig;if(!D||LS.get('digHide',0)>=D.until)return awayCard();
- return '<div class="away"><div class="k">☀ Пока ты спал · '+hm(D.since)+'–'+hm(D.until)+'<span data-a="nodig">×</span></div><div class="nums"><div><b>'+D.steps.length+'</b>шагов</div><div><b>'+D.q+'</b>вопросов</div><div><b>'+D.auto+'</b>автоответов</div><div><b>'+D.fails+'</b>сбоев</div><div><b>'+(D.tok/1000).toFixed(1)+'</b>млн ток.</div></div>'+
+ return '<div class="away"><div class="k">'+IC('sparkles')+' Пока ты спал · '+hm(D.since)+'–'+hm(D.until)+'<span data-a="nodig">×</span></div><div class="nums"><div><b>'+D.steps.length+'</b>шагов</div><div><b>'+D.q+'</b>вопросов</div><div><b>'+D.auto+'</b>автоответов</div><div><b>'+D.fails+'</b>сбоев</div><div><b>'+(D.tok/1000).toFixed(1)+'</b>млн ток.</div></div>'+
  (D.steps.length?'<div style="margin-top:8px">'+D.steps.slice(0,4).map(function(s){return '<div class="trow" style="cursor:default"><span>'+esc(s.n)+'</span><b class="mono">'+esc(s.r||'')+'</b></div>'}).join('')+'</div>':'')+'</div>'}
 
 /* очередь задач */
 function queueCard(){var Q=S.queue;
  return '<div class="sec"><div class="sh"><span>Очередь задач'+(Q.length?' · '+Q.length:'')+'</span><a data-a="qaddsheet">+ добавить</a></div><div class="grp">'+(Q.length?Q.map(function(x,i){var sent=x.st=='sent';
-  return '<div class="row" style="padding:10px 6px 10px 14px"><span class="qn mono'+(sent?' sent':'')+'">'+(sent?'✓':i+1)+'</span><div class="t"><div style="font-size:14px;line-height:1.35">'+esc(x.t)+'</div><div class="d">'+(sent?'отправлена '+ago(x.sent||x.ts):'ждёт · добавлена '+ago(x.ts))+'</div></div>'+
-  (!sent&&i>0&&Q[i-1].st!='sent'?'<span class="x" style="font-size:17px" data-a="qup" data-x="'+x.i+'">↑</span>':'')+(sent?'':'<span class="x" data-a="qdel" data-x="'+x.i+'">×</span>')+'</div>'}).join(''):
-  '<div class="row tap" data-a="qaddsheet"><div class="t"><div class="d">Пусто. Добавь задачи — подам Claude по одной, когда он закончит шаг и освободится.</div></div><span class="chev">+</span></div>')+'</div></div>'}
+  return '<div class="row" style="padding:10px 6px 10px 14px"><span class="qn mono'+(sent?' sent':'')+'">'+(sent?''+IC('check')+'':i+1)+'</span><div class="t"><div style="font-size:14px;line-height:1.35">'+esc(x.t)+'</div><div class="d">'+(sent?'отправлена '+ago(x.sent||x.ts):'ждёт · добавлена '+ago(x.ts))+'</div></div>'+
+  (!sent&&i>0&&Q[i-1].st!='sent'?'<span class="x" style="font-size:17px" data-a="qup" data-x="'+x.i+'">'+IC('arrow-up')+'</span>':'')+(sent?'':'<span class="x" data-a="qdel" data-x="'+x.i+'">×</span>')+'</div>'}).join(''):
+  '<div class="row tap" data-a="qaddsheet"><div class="t"><div class="d">Пусто</div></div><span class="chev">+</span></div>')+'</div></div>'}
 function queueSheet(){sheet('<h3>Задача в очередь</h3><p>Подам в проектную сессию Claude, когда он простаивает 5 мин, нет вопросов и ты не трогаешь ПК 2 мин. О каждой подаче придёт уведомление.</p>'+
  '<div class="tgt">'+LG('claude','lg')+'<span>Сейчас в очереди: <b>'+S.queue.filter(function(x){return x.st!='sent'}).length+'</b></span></div>'+
  '<textarea class="in" data-in="qadd" rows="4" placeholder="Например: после WD2b сделай ревью долгов вехи WD">'+esc(U.qadd)+'</textarea>'+
@@ -605,12 +785,12 @@ function projPage(){var P=S.proj||{},D=U.projD,T=P.tasks||[];
  '<div class="sec"><div class="grp"><div class="stats"><div><b>'+(P.done||0)+'/'+(P.total||0)+'</b>готово</div><div><b>'+(P.avg?dur(P.avg).replace(' мин','м').replace(' ч','ч'):'—')+'</b>ср. шаг</div><div><b>'+(P.tok?(P.tok/1000).toFixed(1):'—')+'</b>млн ток.</div><div><b>'+(D?D.commits.length:'—')+'</b>коммитов</div></div>'+
  '<div style="padding:12px 14px"><div class="prog"><i style="width:'+Math.min(100,(P.done||0)/Math.max(1,P.total||1)*100)+'%"></i></div><div class="d" style="margin-top:8px;font-size:12.5px;color:var(--mut)">'+(P.done>=P.total?'Все задачи вехи готовы. Следующая веха появится, когда Claude её спланирует.':P.eta?'Финиш вехи ≈ '+dayName(P.eta).toLowerCase()+' '+hm(P.eta)+' по средней длине шага.':'')+' Задачи — из таблицы прогресса вехи в репозитории.</div></div></div></div>'+
  '<div class="sec"><div class="sh"><span>Задачи вехи</span></div><div class="grp">'+(T.length?T.map(function(t){var c=code(t.n),s=byC[c],cur=!t.d&&s&&!s.e;
-  return '<div class="mstep'+(s?' tap':'')+(cur?' cur':'')+'"'+(s?' data-a="sess" data-x="'+s.id+'"':'')+'><span class="c">'+(t.d?'✓ ':'')+esc(c)+'</span><span class="n">'+esc(t.n.slice(c.length).trim()||t.n)+'</span><span class="v">'+(t.d?(s&&s.e?dur((s.e-s.b)/60):'готово'):cur?'идёт':'—')+(s&&s.tok?'<br>'+(s.tok/1000).toFixed(1)+' млн':'')+'</span></div>'}).join(''):'<div class="row" style="color:var(--mut)">Таблица прогресса не найдена</div>')+'</div></div>';
+  return '<div class="mstep'+(s?' tap':'')+(cur?' cur':'')+'"'+(s?' data-a="sess" data-x="'+s.id+'"':'')+'><span class="c">'+(t.d?''+IC('check')+' ':'')+esc(c)+'</span><span class="n">'+esc(t.n.slice(c.length).trim()||t.n)+'</span><span class="v">'+(t.d?(s&&s.e?dur((s.e-s.b)/60):'готово'):cur?'идёт':'—')+(s&&s.tok?'<br>'+(s.tok/1000).toFixed(1)+' млн':'')+'</span></div>'}).join(''):'<div class="row" style="color:var(--mut)">Таблица прогресса не найдена</div>')+'</div></div>';
  h+='<div class="sec"><div class="sh"><span>Коммиты за сутки'+(D&&D.br?' · '+esc(D.br):'')+'</span></div><div class="grp feed">'+(D?(D.commits.length?D.commits.map(function(c){return '<div class="row" style="align-items:flex-start"><span class="tm mono">'+hm(c.ts)+'</span><div class="t"><div style="font-size:13.5px">'+esc(c.t)+'</div><div class="d mono">'+esc(c.h)+' · '+c.f+' файл.'+(c.pr?' · '+esc(c.pr):'')+'</div></div></div>'}).join(''):'<div class="row" style="color:var(--mut)">Коммитов за сутки нет</div>'):API?'<div class="row"><div class="sk" style="height:80px;flex:1"></div></div>':'<div class="row" style="color:var(--mut)">Коммиты — в live-режиме (кнопка меню «Hermes»).</div>')+'</div></div>';
  return h}
 
 /* чат Claude текстом */
-function loadChat(t){if(!API)return;api('/api/chat?n=30').then(function(r){return r.json()}).then(function(d){U.chat=d;if(U.page=='chat')render(true);if(t)toast('<b>✓</b> Обновлено')}).catch(function(){U.chat={m:[],err:1};if(U.page=='chat')render(true)})}
+function loadChat(t){if(!API)return;api('/api/chat?n=30').then(function(r){return r.json()}).then(function(d){U.chat=d;if(U.page=='chat')render(true);if(t)toast('<b>'+IC('check')+'</b> Обновлено')}).catch(function(){U.chat={m:[],err:1};if(U.page=='chat')render(true)})}
 function chatPage(){var ss=sessState(),C=U.chat;
  var h='<div class="back" data-a="back">‹ Пульт</div><div class="ph"><span class="ag claude" style="width:52px;height:52px;border-radius:14px">'+LG('claude')+'</span><div style="min-width:0"><h2>Чат Claude</h2><div class="d">'+esc(ss.name)+(ss.st?' · '+esc(ss.st):'')+'</div></div></div>';
  if(!API)return h+'<div class="empty">Текст чата читается с ПК — открой панель кнопкой меню «Hermes» (live).</div>';
@@ -618,14 +798,14 @@ function chatPage(){var ss=sessState(),C=U.chat;
  if(C.err||!C.m.length)return h+'<div class="empty">Не удалось прочитать окно Claude. Снимок окна — в карточке вопроса.</div><div class="acts"><div class="btn" data-a="chatref">Обновить</div></div>';
  return h+'<div class="msgs">'+C.m.map(function(m){return '<div class="msg '+m.r+'">'+(m.r=='t'?'':'<span class="mt">'+(m.r=='u'?'Ты':'Claude')+'</span>')+esc(m.t)+'</div>'}).join('')+'</div>'+
  '<div class="hint">Последние '+C.m.length+' сообщений текущей сессии, прочитано из окна '+(C.ts?ago(C.ts):'')+'. Без модели и токенов.</div>'+
- '<div class="acts"><div class="btn" data-a="chatref">↻ Обновить</div><div class="btn pri" data-a="saysheet" data-x="claude">✎ Написать</div></div>'}
+ '<div class="acts"><div class="btn" data-a="chatref">'+IC('refresh-cw')+' Обновить</div><div class="btn pri" data-a="saysheet" data-x="claude">'+IC('pencil')+' Написать</div></div>'}
 
 /* самопроверка */
 function stBlock(){var T=S.st||{},I=T.items||[],ok=I.filter(function(x){return x.ok}).length;
  return '<div class="sec"><div class="sh"><span>Самопроверка'+(I.length?' · '+ok+'/'+I.length:'')+'</span>'+(T.ts&&!T.run?'<span class="sum">'+ago(T.ts)+'</span>':'')+'</div><div class="grp">'+
  (I.length&&!T.run?I.map(function(x){return '<div class="row"><span class="dot '+(x.ok?'ok':'bad')+'"></span><div class="t"><div class="n" style="font-size:14px">'+esc(x.n)+'</div><div class="d">'+esc(x.d||'')+'</div></div></div>'}).join(''):
  '<div class="row"><div class="t"><div class="d">'+(T.run?'Проверяю… (до минуты)':'Проверю API и туннель, подпись initData, бота, cron-задачи, окно Claude, хук вопросов и push мозга. По Claude не кликаю.')+'</div></div></div>')+
- '</div><div class="btn'+(T.run?' dis':'')+'" data-a="selftest" style="margin-top:10px">'+(T.run?'Проверяю…':'✓ Проверить всё')+'</div></div>'}
+ '</div><div class="btn'+(T.run?' dis':'')+'" data-a="selftest" style="margin-top:10px">'+(T.run?'Проверяю…':''+IC('check')+' Проверить всё')+'</div></div>'}
 
 /* правила автоответа и расписание */
 function rulesUI(){return '<div class="d" style="margin:14px 0 2px">Свои правила — сильнее Recommended</div>'+E.auto.rules.map(function(r,i){return '<div class="rule"><input class="in" data-in="rm:'+i+'" placeholder="если в вопросе есть…" value="'+esc(r.m)+'"><span>→</span><input class="in" data-in="rk:'+i+'" placeholder="№ варианта или текст" value="'+esc(r.k)+'"><span class="x" data-a="delrule" data-x="'+i+'">×</span></div>'}).join('')+
@@ -674,7 +854,7 @@ function bioAuth(reason,fn){
 var HOLDFN=null;
 function holdThen(reason,fn){HOLDFN=fn;sheet('<h3>Подтверди удержанием</h3><p>'+esc(reason)+'</p><div class="btn hold" id="hold" data-fn="1"><i></i><span>Удерживай 1 секунду</span></div><div class="btn" data-a="unsheet">Отмена</div>')}
 function bioTest(){bioInit(function(){var w=bioWhy();if(w){bioDiag('test_unavailable');toast(esc(w));render(true);return}
- bioAuth('Проверка Face ID в панели Hermes',function(){toast('<b>✓</b> '+bioName()+' работает');render(true)})})}
+ bioAuth('Проверка Face ID в панели Hermes',function(){toast('<b>'+IC('check')+'</b> '+bioName()+' работает');render(true)})})}
 
 /* вход по Face ID: экран блокировки при открытии и после 5 мин в фоне */
 var LOCK={on:false,busy:false,hid:0};
@@ -703,11 +883,11 @@ function render(keep){var top=window.scrollY,h;
  if(LOADING)h=skeleton();
  else if(U.page=='sys')h=sysPage();else if(U.page=='nowedit')h=nowEdit();
  else if(U.page&&U.page.indexOf('doc:')==0)h=reader(U.page.slice(4));else if(U.page&&U.page.indexOf('sess:')==0)h=sessPage(U.page.slice(5));
- else if(U.page=='chat')h=chatPage();else if(U.page=='proj')h=projPage();else if(U.page)h=agentPage(U.page);else h=U.tab=='home'?home():U.tab=='q'?questions():U.tab=='j'?journal():U.tab=='br'?brain():settings();
+ else if(U.page=='glos')h=glosPage();else if(U.page=='chat')h=chatPage();else if(U.page=='proj')h=projPage();else if(U.page)h=agentPage(U.page);else h=U.tab=='home'?home():U.tab=='q'?questions():U.tab=='j'?journal():U.tab=='br'?brain():settings();
  if(dirty())h+='<div class="savebar"><div class="btn pri" data-a="save">Сохранить изменения</div></div>';
  $('scr').innerHTML=h;window.scrollTo(0,keep?top:0);
  var P=$('path');if(P&&U.step<0)P.scrollLeft=P.scrollWidth;
- $('nav').innerHTML=[['home','◉','Пульт'],['q','?','Вопросы'],['j','☰','Журнал'],['br','◈','Мозг'],['set','⚙','Настройки']].map(function(t){return '<div class="'+(U.tab==t[0]?'on':'')+'" data-a="tab" data-x="'+t[0]+'"><i>'+t[1]+'</i>'+t[2]+(t[0]=='q'&&S.pend.length?'<span class="badge">'+S.pend.length+'</span>':'')+(t[0]=='set'&&hBad().length?'<span class="badge" style="background:var(--bad)">!</span>':'')+'</div>'}).join('');
+ $('nav').innerHTML=[['home',IC('house'),'Пульт'],['q',IC('message-circle-question'),'Вопросы'],['j',IC('scroll-text'),'Журнал'],['br',IC('brain'),'Мозг'],['set',IC('settings'),'Настройки']].map(function(t){return '<div class="'+(U.tab==t[0]?'on':'')+'" data-a="tab" data-x="'+t[0]+'"><i>'+t[1]+'</i>'+t[2]+(t[0]=='q'&&S.pend.length?'<span class="badge">'+S.pend.length+'</span>':'')+(t[0]=='set'&&hBad().length?'<span class="badge" style="background:var(--bad)">!</span>':'')+'</div>'}).join('');
  try{if(inTG())U.page?tg.BackButton.show():tg.BackButton.hide()}catch(e){}}
 function theme(){var dark=MOCK?MOCK.theme!='light':(!inTG()||tg.colorScheme!='light');document.documentElement.dataset.theme=dark?'dark':'light';if(!inTG())return;try{var c=dark?'#07070d':'#f6f4ee';tg.setHeaderColor(c);tg.setBackgroundColor(c);if(tg.setBottomBarColor)tg.setBottomBarColor(c)}catch(e){}}
 function back(){var p=U.page||'';U.page=null;if(p.indexOf('doc:')==0||p=='nowedit')U.tab='br';if(p.indexOf('sess:')==0)U.tab='j';render()}
@@ -842,6 +1022,168 @@ function inflate(b64){var s=b64.replace(/-/g,'+').replace(/_/g,'/');while(s.leng
  if(window.DecompressionStream)return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
  return new Promise(function(res,rej){var sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako_inflate.min.js';sc.onload=function(){res(pako.inflateRaw(u,{to:'string'}))};sc.onerror=rej;document.head.appendChild(sc)})}
 function dec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(decodeURIComponent(escape(atob(s))))}
+
+/* ================= v5 «Просто ↔ Технически» ================= */
+U.pm=LS.get('pm','plain');U.px={};
+['s_tpl','s_bud','s_app','s_quiet','s_auto','s_sched'].forEach(function(k){if(U.col[k]===undefined)U.col[k]=true});
+function PL(){return U.pm!='tech'}
+function modeBar(){return '<div class="sec pmbar"><div class="seg">'+[['plain','просто'],['tech','тех']].map(function(t){return '<span data-a="pm" data-x="'+t[0]+'" class="'+(U.pm==t[0]?'on':'')+'">'+t[1]+'</span>'}).join('')+'</div></div>'}
+function techLine(id,txt){return U.px[id]?'<div class="tl">'+txt+'</div>':''}
+function moreT(id){return ''}
+
+/* пиксельный Гермес из Hermes Desktop: поза по состоянию */
+function pet(c){var f={wait:2,bad:5,stop:7,pause:7}[c];return f==null?'<div class="pet idle" title="Hermes на посту"></div>':'<div class="pet" data-f="'+f+'"></div>'}
+
+/* ---------- словарь ---------- */
+var GLOS=[
+ ['Автопилот (кликер)','Программа, которая раз в несколько минут смотрит на окно Claude: жмёт Start следующего шага и вписывает твои ответы.','cron-задача 90b78aed3c30, ИИ-модель + computer_use; перед ней tv_monitor.py'],
+ ['Монитор','Быстрая проверка без ИИ: изменилось ли окно Claude. Если нет — автопилот не тратит токены.','tv_monitor.py, UIA-сигнатура окна'],
+ ['Сторож','Каждые 10 минут проверяет, что автопилот и сервер живы, и пишет тебе, если нет.','tv_watchdog.py, cron каждые 10 мин'],
+ ['Уведомления','Присылают в Telegram карточки вопросов, тревоги о зависании и сбоях.','tv_notify.py, cron каждые 5 мин, без ИИ'],
+ ['Шаг / сессия','Одна порция работы Claude: от Start до появления кнопки Start следующего шага.','сессия Claude Desktop (вкладка Code)'],
+ ['Веха','Набор шагов с общей целью, например «PC-M1 — команды плеера». Закрыта, когда все шаги готовы.','milestone, *-progress.md в репо проекта'],
+ ['Долги вехи','Мелочи, которые Claude отложил по ходу вехи; разбираются отдельным шагом в конце.','шаг *-debt'],
+ ['PR','Готовый кусок кода, отправленный в GitHub на проверку и слияние.','pull request'],
+ ['Токены','Единица расхода ИИ: чем длиннее чат и чем больше действий, тем больше токенов.','input+output+cache, млн в сутки'],
+ ['Бот / gateway','Часть Hermes, которая держит связь с Telegram: принимает нажатия, шлёт сообщения.','hermes gateway, long polling Bot API'],
+ ['Туннель (Tailscale)','Защищённая дорога из интернета к твоему ПК — по ней телефон получает живые данные.','Tailscale Funnel → 127.0.0.1:8787'],
+ ['Сервер панели','Маленькая программа на ПК, которая отдаёт этой панели данные и принимает команды.','tv_server.py, API /api/*'],
+ ['Мозг','Записная книжка Hermes на GitHub: что за проекты, как устроено, решения, инструкции.','git-репо rosiehaies195/hermes-brain'],
+ ['Cron','Задачи по расписанию: «каждые 5 минут», «каждый день в 23:30».','hermes cron'],
+ ['Хук','Крючок внутри Claude: когда он задаёт вопрос, хук сразу передаёт его Hermes.','Claude Code hooks, PermissionRequest'],
+ ['UIA','Способ «читать» окно программы как текст, без скриншотов: кнопки, статусы, сообщения.','Windows UI Automation'],
+ ['Автоответ','Если ты не ответил за N минут, Hermes выберет рекомендованный вариант сам.','auto.on, rule rec|first'],
+ ['Face ID','Подтверждение лицом для опасных действий и входа в панель.','Telegram BiometricManager']];
+function glosPage(){return '<div class="back" data-a="back">‹ Назад</div><div class="ph"><div><h2>Словарь</h2><div class="d">Что значат слова в панели</div></div></div><div class="sec"><div class="grp">'+
+ GLOS.map(function(g,i){return '<div class="row" style="display:block"><div class="n" style="font-size:14.5px">'+esc(g[0])+'</div><div class="d" style="margin-top:3px;color:var(--tx);opacity:.85">'+esc(g[1])+'</div><div class="tl" style="margin-top:4px">'+esc(g[2])+'</div></div>'}).join('')+'</div></div>'}
+function gl(term){var g=GLOS.filter(function(x){return x[0].toLowerCase().indexOf(term.toLowerCase())==0})[0];return g?'<span class="gq" data-a="gl" data-x="'+esc(g[0])+'">?</span>':''}
+
+/* ---------- журнал: события простыми словами ---------- */
+function shortQ(x){return x.replace(/^.*?·\s*[0-9a-f]{6,}\s*·\s*«[^»]*»:\s*/,'').replace(/^Вопрос (в|из) сессии [^:]+:\s*/,'')}
+function plainEv(e){var x=e.x||'',k=e.k,m;
+ if(k=='status'){if(/из панели/.test(x))return 'Окно Claude развернул на экране — по кнопке из панели';
+  m=x.match(/^(.*):\s*(Working|Idle|Needs input)\s*$/);if(m)return m[2]=='Working'?'Claude работает: «'+m[1]+'»':m[2]=='Idle'?'Claude остановился и ждёт: «'+m[1]+'»':'Claude ждёт твоего ответа: «'+m[1]+'»';return x}
+ if(k=='start'){if(/не удалось/.test(x))return 'Не получилось нажать Start — окно Claude не вышло вперёд';m=x.match(/Start нажат для «?([^»(]+)/);return 'Запустил следующий шаг: «'+(m?m[1].trim():x.split(' (#')[0])+'»'}
+ if(k=='question')return /ТЕСТ/.test(x)?'Тестовый вопрос (проверка панели)':'Claude спросил: «'+shortQ(x).slice(0,140)+'»';
+ if(k=='answer_ok'){m=x.match(/через хук:\s*(.*)/);if(m)return 'Твой ответ «'+m[1]+'» передан Claude';m=x.match(/«([^»]+)»/);return m?'Ответ «'+m[1]+'» вписан в Claude':'Ответ передан Claude'}
+ if(k=='answer_fail')return 'Ответ не удалось передать'+(/не найден/.test(x)?': вопроса уже нет на экране':'');
+ if(k=='fix'){if(/gateway/.test(x))return 'Перезапустил бота в Telegram — по кнопке из панели';if(/Hermes Desktop/.test(x))return 'Перезапустил программу Hermes на ПК';return 'Починка: '+x}
+ if(k=='panel'){if(/API панели/.test(x))return 'Перезапустил сервер панели'+(/ok/.test(x)?' — работает':'');if(/Tailscale/.test(x))return 'Починил связь телефона с ПК';
+  m=x.match(/^cron (pause|resume|run):\s*(.*)/);if(m)return ({pause:'Поставил на паузу',resume:'Включил',run:'Запустил вне очереди'})[m[1]]+' задачу «'+cronPlain(m[2])[0]+'»';
+  m=x.match(/^настройки:\s*(.*)/);if(m)return 'Ты изменил настройки: '+m[1];m=x.match(/^ответ из панели:\s*(.*)/);if(m)return 'Ты ответил из панели: '+m[1];
+  if(/текст для Claude в очереди/.test(x))return 'Сообщение для Claude ждёт, пока ты отойдёшь от ПК: '+(x.match(/«.*»/)||[''])[0];if(/фокус в now/.test(x))return 'Обновил «Что сейчас в работе» в мозге';return 'Из панели: '+x}
+ if(k=='notify'){m=x.match(/Отправил в «[^»]+»:\s*(.*)/);if(m)return 'Отправил Claude твоё сообщение: «'+m[1]+'»';if(/crashed/.test(x))return 'Claude упал при запуске шага — нужно нажать «Try again»';if(/не открылась/.test(x))return 'Start нажат, но новый шаг не открылся';return 'Уведомление: '+x}
+ if(k=='stop')return 'Ты остановил всю автоматику';if(k=='pause')return 'Автопилот на паузе'+(x.match(/до .*/)?' '+x.match(/до .*/)[0]:'');
+ if(k=='auto')return 'Ответил за тебя сам (ты молчал): '+x.replace(/^автоответ:?\s*/i,'');if(k=='say')return 'Сообщение Claude: '+x;
+ if(k=='fail')return 'Сбой: '+x.replace(/foreground_unavailable/g,'окно не вышло вперёд');return x}
+function evRow(e,q){if(!PL())return evRowT(e,q);var id='e'+(e.ts||'')+(e.x||'').length,p=plainEv(e);
+ return '<div class="row tap" data-a="px" data-x="'+id+'" style="align-items:flex-start"><span class="tm">'+esc(e.t)+'</span><span class="k" style="'+(e.k=='fail'||e.k=='stop'||e.k=='answer_fail'?'color:var(--bad)':e.k=='question'?'color:var(--claude)':'')+'">'+(LK[e.k]||IC('circle-dot'))+'</span><span class="x">'+hl(p,q)+techLine(id,'<b>'+esc(e.k)+'</b> · '+esc(e.x))+'</span></div>'}
+
+/* сессии: без служебных «окно развёрнуто», подписи по-человечески */
+function realSess(){return S.sess.filter(function(s){return !/из панели|^окно Claude/.test(s.n)})}
+function sessList(){var keep=S.sess;S.sess=realSess();var h=sessListT();S.sess=keep;if(!PL())return h;
+ return h.replace(/<span>\? (\d+) вопр\.<\/span>/g,'<span>? $1</span>').replace(/(\d+\.\d) млн ток\./g,'$1 млн').replace(/<span>PR (#\d+)<\/span>/g,'<span>$1</span>')
+  .replace(/<div class="hint">Сессия = один шаг[^<]*<\/div>/,'')}
+function journal(){return journalT()}
+
+/* ---------- система: схема + понятные названия ---------- */
+var HPL={tailscale:['Связь телефона с ПК','защищённая сеть, по которой телефон достаёт до ПК','link'],funnel:['Вход из интернета','публичный защищённый адрес для этой панели','link'],server:['Сервер панели','отдаёт панели данные и принимает команды','link'],webapp:['Hermes в браузере','полный Hermes на телефоне в Safari','link'],
+ gateway:['Бот в Telegram','присылает карточки и принимает нажатия','bot'],desktop:['Программа Hermes на ПК','основное приложение Hermes','bot'],
+ clicker:['Автопилот','жмёт Start и вписывает твои ответы','auto'],notifier:['Уведомления','шлёт вопросы и тревоги в Telegram','auto'],watchdog:['Сторож','проверяет, что всё живо, и пишет, если нет','auto'],monitor:['Глаза автопилота','читает окно Claude без скриншотов','auto'],brain:['Сохранение мозга','раз в час отправляет заметки на GitHub','auto'],
+ claude:['Окно Claude','где Claude пишет код','claude']};
+var HG=[['link','Связь'],['bot','Бот и Hermes'],['auto','Автоматика'],['claude','Claude']];
+function hWarn(x){if(x.k=='clicker')return S.stopped||!S.clicker.on||paused()||/пауз/.test(x.d||'');if(x.k=='notifier')return S.stopped||!S.notifier.on||/пауз/.test(x.d||'');return /пауз|выкл|stopped/i.test(x.d||'')}
+function hWord(x){return x.k=='clicker'||x.k=='notifier'?(S.stopped?'остановлен':paused()?'на паузе':'выключен'):'на паузе'}
+function hState(x){return !x.ok?['bad','сломалось']:hWarn(x)?['warn',hWord(x)]:['ok','работает']}
+function chain(){function g(ks){var I=S.health.filter(function(h){return ks.indexOf(h.k)>=0});if(!I.length)return 'ok';if(I.some(function(h){return !h.ok}))return 'bad';if(I.some(hWarn))return 'warn';return 'ok'}
+ var off=S.stopped||!S.clicker.on,cur=S.steps.length?S.steps[S.steps.length-1]:null,P=S.proj||{};
+ var N=[[IC('smartphone'),'Ты','отвечаешь и управляешь из Telegram',g(['tailscale','funnel','server']),g(['tailscale','funnel','server'])=='ok'?'связь с ПК есть':'нет связи с ПК'],
+  [IC('bot'),'Бот в Telegram','присылает карточки, принимает нажатия',g(['gateway']),g(['gateway'])=='ok'?'работает':'не отвечает'],
+  [IC('monitor'),'Hermes на ПК','смотрит на Claude каждые '+(S.clicker.iv||5)+' мин, жмёт Start, вписывает ответы',off?'warn':g(['clicker','notifier','watchdog']),S.stopped?'всё остановлено':!S.clicker.on?'автопилот выключен':paused()?'на паузе':'работает'],
+  [IC('sparkles'),'Claude','пишет код проекта'+(P.ms?' · веха '+P.ms+(P.total?' '+P.done+'/'+P.total:''):cur?' · шаг '+cur.c:''),g(['claude','monitor']),sessState().st=='Working'?'работает':sessState().st=='Needs input'?'ждёт ответа':'ждёт'],
+  [IC('github'),'GitHub','хранит готовый код и мозг',g(['brain']),'сохраняет']];
+ var A=['вопросы и ответы','через защищённый туннель','«видит» окно и нажимает кнопки','сохраняет работу'];
+ return '<div class="sec"><div class="chain">'+N.map(function(n,i){return '<div class="cn '+n[3]+'"><span class="ci">'+n[0]+'</span><div class="t"><div class="n">'+n[1]+'</div></div><span class="cs">'+n[4]+'</span></div>'+(i<A.length?'<div class="ca"></div>':'')}).join('')+'</div></div>'}
+function sysSum(){var bad=hBad().length,w=S.health.filter(function(h){return h.ok&&hWarn(h)}).length;return bad?bad+' сломалось — нажми «Починить» рядом':w||S.stopped?'Всё исправно, но '+(S.stopped?'автоматика остановлена тобой':'часть выключена'):'Всё работает'}
+function sysPage(){if(!PL())return sysPageT();var H=S.health,bad=hBad();
+ var h='<div class="back" data-a="back">‹ Назад</div><div class="ph"><div class="logo" data-st="'+(bad.length?'bad':(S.stopped||!S.clicker.on)?'pause':'ok')+'"></div><div><h2>Как всё работает</h2><div class="d">'+sysSum()+'</div></div></div>'+modeBar()+chain();
+ HG.forEach(function(G){var I=H.filter(function(x){return (HPL[x.k]||[0,0,'link'])[2]==G[0]});if(!I.length)return;
+  h+='<div class="sec"><div class="sh"><span>'+G[1]+'</span></div><div class="grp">'+I.map(function(x){var p=HPL[x.k]||[x.n,''],s=hState(x),id='h'+x.k;
+   return '<div class="row tap" data-a="px" data-x="'+id+'"><span class="dot '+s[0]+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(p[0])+'</div>'+techLine(id,esc(p[1])+'<br>'+esc(x.n)+' · '+esc(x.d||'')+(x.ts?' · '+ago(x.ts):''))+'</div>'+(s[0]=='ok'?'':'<span class="pill '+s[0]+'">'+s[1]+'</span>')+
+   (x.fix?(x.ok?'':'<div class="btn sm" style="min-height:36px;padding:0 10px" data-a="fix" data-x="'+x.k+'">Починить</div>'):'')+(x.ff?'<div class="btn sm" style="min-height:36px;padding:0 10px;color:var(--bad)" data-a="fixforce" data-x="'+x.k+'">Принудительно</div>':'')+'</div>'}).join('')+'</div></div>'});
+ return h+stBlockP()+cronBlock()+hsBlockP()+'<div class="hint" hidden>Если что-то сломалось, сначала нажми «Починить» — это безопасно. Бот перезапускается ~30 секунд; если в этот момент Hermes отвечает тебе в чате, перезапуск подождёт. Сторож сам поднимает бота, если тот молчит 5 минут.<br><a data-a="glos" style="color:var(--gold)">Словарь терминов ›</a> · версия страницы '+VER+'</div>'}
+var STP={'API панели':'Сервер панели отвечает','Tailscale Funnel':'Панель доступна из интернета','Подпись initData':'Чужие не могут управлять панелью','Бот (getMe)':'Бот на связи','Gateway':'Связь с Telegram','Cron-задачи':'Задачи по расписанию идут вовремя','Окно Claude (UIA)':'Автопилот видит окно Claude','Чтение чата Claude':'Чат Claude читается','Хук вопросов Claude':'Вопросы Claude перехватываются','Push мозга':'Мозг сохраняется на GitHub','Страница на GitHub Pages':'Панель последней версии'};
+function stBlockP(){var h=stBlock();return h.replace(/<div class="n" style="font-size:14px">([^<]+)<\/div><div class="d">([^<]*)<\/div>/g,function(all,n,d){return '<div class="n" style="font-size:14px">'+(STP[n]||n)+'</div><div class="d">'+(U.px.st?n+' · '+d:'')+'</div>'})
+ .replace('Самопроверка','Проверка всего').replace(/Проверю API и туннель[^<]*/,'Ещё не проверял')
+ .replace('<div class="grp">','<div class="grp"><div class="row" style="min-height:0;padding:6px 14px">'+moreT('st')+'</div>')}
+function hsBlockP(){return hsBlock().replace('Последние сессии Hermes','Разговоры с Hermes')}
+function schedH(s){s=String(s||'');var m;if(m=s.match(/^every (\d+)m$/))return +m[1]==60?'каждый час':'каждые '+m[1]+' мин';if(m=s.match(/^every day at (\d\d:\d\d)$/))return 'каждый день в '+m[1];if(m=s.match(/^0 (\d+) \* \* \*$/))return 'каждый день в '+('0'+m[1]).slice(-2)+':00';if(m=s.match(/^every (\d+)h$/))return 'каждые '+m[1]+' ч';return s}
+function cronPlain(n){var M=[[/авто-синк/,'Сохранение мозга','копирует заметки и скрипты на GitHub'],[/куратор/,'Итоги дня','вечером ИИ записывает в мозг, что сделано'],[/кликер/,'Автопилот','жмёт Start и вписывает твои ответы'],[/Start-монитор/,'Старый автопилот','прежняя версия, не нужна'],[/watchdog/,'Сторож','проверяет, что всё живо'],[/токенам/,'Отчёт о расходе','вечером присылает расход токенов'],[/уведомления/,'Уведомления','вопросы и тревоги в Telegram'],[/Статус/,'Смена статуса','пишет, когда что-то включилось или упало']];
+ for(var i=0;i<M.length;i++)if(M[i][0].test(n))return [M[i][1],M[i][2]];return [n,'']}
+function cronBlock(){if(!PL())return cronBlockT();if(!S.cj.length)return '';
+ return '<div class="sec"><div class="sh"><span>По расписанию</span></div><div class="grp">'+S.cj.map(function(j){var p=cronPlain(j.n),id='c'+j.id;
+  return '<div class="row tap" data-a="px" data-x="'+id+'"><span class="dot '+(!j.on?'warn':(j.ok?'ok':'bad'))+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(p[0])+'</div><div class="d">'+schedH(j.s)+(j.on?'':' · выкл')+(j.on&&!j.ok&&j.last?' · <span style="color:var(--bad)">сбой</span>':'')+'</div>'+techLine(id,esc(p[1])+'<br>'+(j.on?'следующий '+hmT(j.nx)+' · ':'')+(j.last?'был '+ago(j.last)+' · ':'')+esc(j.n)+' · '+esc(j.s)+' · id '+esc(j.id))+'</div>'+
+   '<div class="btn sm" style="min-height:36px;padding:0 10px" data-a="cronpr" data-x="'+j.id+'">'+(j.on?'Пауза':'Включить')+'</div></div>'}).join('')+'</div></div>'}
+
+/* ---------- мозг ---------- */
+var BSEC={Core:'Главное',Projects:'Проект tv-miniapp',Systems:'Как устроено',Runbooks:'Инструкции',Scripts:'Скрипты',Archive:'Архив'};
+var LACT={decision:'Решение',deploy:'Выложено',fix:'Исправлено',test:'Проверено',verify:'Проверено',audit:'Разбор',update:'Обновлено',build:'Собрано',prototype:'Прототип',feature:'Новое'};
+function plainLog(l){var m=l.match(/^\[(\d{4})-(\d\d)-(\d\d)\]\s*(\w+)\s*\|\s*[^|]*\|\s*(.*)$/);return m?'<b>'+m[3]+'.'+m[2]+'</b> · '+(LACT[m[4]]||m[4])+' · '+esc(m[5]):esc(l)}
+function brainItems(){var o={};(S.brain.sec||[]).forEach(function(s){s.i.forEach(function(i){o[i.p]=i})});return o}
+function brain(){if(!PL())return brainT();var B=S.brain,I=brainItems(),br=I['projects/tv-miniapp/brief.md'],np=B.nowp||[];
+ var h=hd()+modeBar()+'<div class="sec"><div class="sh"><span>Коротко о главном</span></div><div class="grp">'+
+  '<div class="row tap" data-a="doc" data-x="projects/tv-miniapp/brief.md"><span class="ci2">'+IC('target')+'</span><div class="t"><div class="n" style="font-size:14.5px">Проект</div><div class="d">'+'tv-miniapp'+(S.proj&&S.proj.ms?' · веха '+esc(S.proj.ms)+(S.proj.total?' '+S.proj.done+'/'+S.proj.total:''):'')+'</div></div><span class="chev">›</span></div>'+
+  '<div class="row tap" data-a="doc" data-x="now.md" style="align-items:flex-start"><span class="ci2">'+IC('map-pin')+'</span><div class="t"><div class="n" style="font-size:14.5px">Сейчас</div>'+(np.length?'<ul class="pll">'+np.slice(0,2).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'<div class="d">'+esc((B.now||[])[0]||'—')+'</div>')+'</div><span class="chev">›</span></div>'+
+  '<div class="row tap" data-a="glos"><span class="ci2">'+IC('book-open')+'</span><div class="t"><div class="n" style="font-size:14.5px">Словарь</div></div><span class="chev">›</span></div></div></div>'+
+  '<div class="sec"><input class="in" data-in="bq" placeholder="Найти: о чём файл, слово" value="'+esc(U.bq)+'"></div>';
+ if(U.bfull&&U.bq)return h+grepView();
+ h+=(B.sec||[]).map(function(s){var it=s.i.filter(function(i){return match(i)||(i.pl&&(i.pl.t+' '+i.pl.s).toLowerCase().indexOf(U.bq.toLowerCase())>=0)});if(!it.length)return '';
+  return '<div class="sec"><div class="sh"><span>'+esc(BSEC[s.n]||s.n)+'</span></div><div class="grp">'+it.map(function(i){var p=i.pl||{t:i.n,s:i.d};
+   return '<div class="row tap" data-a="doc" data-x="'+esc(i.p)+'"><div class="t"><div class="n" style="font-size:14.5px">'+hl(p.t,U.bq)+'</div>'+(U.bq?'<div class="d">'+hl(p.s,U.bq)+'</div>':'')+'</div><span class="chev">›</span></div>'}).join('')+'</div></div>'}).join('')||'<div class="empty">Ничего не найдено'+(API?'. <a style="color:var(--gold);cursor:pointer" data-a="bfull" data-x="1">Искать в тексте файлов ›</a>':'')+'</div>';
+ return h+'<div class="sec"><div class="sh col'+(U.col.blog?' shut':'')+'" data-a="col" data-x="blog"><span>Что недавно менялось</span></div>'+(U.col.blog?'':'<div class="grp">'+(B.log||[]).map(function(l){return '<div class="row" style="min-height:0"><div class="t" style="font-size:13px;color:var(--mut)">'+plainLog(l)+'</div></div>'}).join('')+'</div>')+'</div>'+
+  ''}
+function splitPlain(src){var m=src.match(/\r?\n## Простыми словами\r?\n([\s\S]*?)(?=\r?\n## |\r?\n# |$)/);if(!m)return {b:null,rest:src};
+ var b=m[1].split(/\r?\n/).filter(function(l){return /^\s*[-*] /.test(l)}).map(function(l){return l.replace(/^\s*[-*]\s+/,'')});return {b:b,rest:src.replace(m[0],'\n')}}
+function reader(p){if(!U.doc||!PL())return readerT(p);var it=brainItems()[p]||{},sp=splitPlain(U.doc.md||''),pl=it.pl||{};
+ return '<div class="back" data-a="back">‹ Мозг</div>'+modeBar()+'<div class="sec"><div class="plc"><div class="plt">'+esc(pl.t||it.n||p)+'</div>'+(sp.b&&sp.b.length?'<ul>'+sp.b.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'<div class="d">'+esc(pl.s||it.d||'Простого объяснения для этого файла пока нет — куратор добавит его вечером.')+'</div>')+'</div></div>'+
+  '<div class="sec"><div class="sh col'+(U.col.dtech?' shut':'')+'" data-a="col" data-x="dtech"><span>Технический текст</span></div></div>'+(U.col.dtech?'':'<div class="reader">'+md(sp.rest).replace(/<div class="fm">[\s\S]*?<\/div>/,'')+'</div>')+
+  '<div class="acts"><div class="btn" data-a="docchat" data-x="'+esc(p)+'">Прислать в чат</div></div>'}
+
+/* ---------- настройки ---------- */
+function settings(){if(!PL())return settingsT();
+ var N=[['question','Вопросы Claude','карточка с вариантами — отвечаешь кнопкой'],['start','Начат новый шаг','Hermes нажал Start'],['hang','Claude завис','ничего не меняется дольше '+E.hang+' мин'],['fail','Что-то сломалось','Claude упал, клик не прошёл и т. п.']];
+ var bad=hBad().length,on=N.filter(function(n){return E.notify[n[0]]}).length;
+ var h=hd()+modeBar()+(S.health.length?'<div class="sec"><div class="grp"><div class="row tap" data-a="sys"><span class="dot '+(bad?'bad':(S.stopped||!S.clicker.on)?'warn':'ok')+'"></span><div class="t"><div class="n">Как всё работает</div></div>'+(bad?'<span class="pill bad">'+bad+'</span>':'')+'<span class="chev">›</span></div></div></div>':'')+
+ '<div class="sec"><div class="sh"><span>О чём сообщать в Telegram</span><span class="sum">'+on+' из 4</span></div><div class="grp">'+N.map(function(n){return '<div class="row"><div class="t"><div class="n">'+n[1]+'</div></div>'+sw(E.notify[n[0]],'nt:'+n[0])+'</div>'}).join('')+'</div></div>'+
+ colSec('s_quiet','Ночью не беспокоить','<div class="grp"><div class="row"><div class="t"><div class="n">Копить ночью, утром сводка</div></div>'+sw(E.quiet.on,'qon')+'</div>'+
+  (E.quiet.on?'<div class="row" style="display:block"><div class="d" style="margin-bottom:6px">С</div>'+seg(['22:00','23:00','00:00','01:00'],E.quiet.from,'qfrom')+'<div class="d" style="margin:10px 0 6px">До</div>'+seg(['07:00','08:00','09:00','10:00'],E.quiet.to,'qto')+'</div>'+
+  '<div class="row"><div class="t"><div class="n">Вопросы всё равно присылать</div></div>'+sw(E.quiet.q,'qq')+'</div><div class="row"><div class="t"><div class="n">Поломки всё равно присылать</div></div>'+sw(E.quiet.fail,'qf')+'</div>':'')+'</div>',E.quiet.on?E.quiet.from+'–'+E.quiet.to:'выкл')+
+ colSec('s_auto','Отвечать за меня','<div class="grp"><div class="row"><div class="t"><div class="n">Выбирать рекомендованный '+gl('Автоответ')+'</div></div>'+sw(E.auto.on,'aon')+'</div>'+
+  (E.auto.on?'<div class="row" style="display:block"><div class="d" style="margin-bottom:6px">Сколько ждать меня</div>'+seg([5,10,15,30,60],E.auto.min,'amin',' мин')+'<div class="d" style="margin:10px 0 6px">Если рекомендации нет</div><div class="seg"><span data-a="arule" data-x="rec" class="'+(E.auto.rule=='rec'?'on':'')+'">ждать меня</span><span data-a="arule" data-x="first" class="'+(E.auto.rule=='first'?'on':'')+'">взять первый</span></div>'+
+  rulesUI().replace('Свои правила — сильнее Recommended','Свои правила').replace('Никогда не отвечать самому, если в вопросе есть','Не отвечать, если есть слова')+'</div>':'')+'</div>',E.auto.on?'через '+E.auto.min+' мин':'выкл')+
+ colSec('s_sched','Когда работать',schedUI().replace(/^<div class="sec"><div class="sh"><span>Расписание<\/span>(<a[^>]*>[^<]*<\/a>)<\/div>/,'<div class="sh" style="margin-top:-2px;justify-content:flex-end">$1</div>').replace(/<\/div>$/,'').replace('Работать только в окне','Автопилот только в эти часы').replace(/<div class="d" style="margin-top:10px">Вне окна кликер на паузе[^<]*<\/div>/,''),E.sched.on?E.sched.from+'–'+E.sched.to:'круглосуточно')+
+ '<div class="sec"><div class="sh"><span>Ещё</span></div></div>'+
+ colSec('s_tpl','Быстрые фразы','<div class="grp">'+(E.tpl.map(function(t,i){return '<div class="row" style="padding:8px 8px 8px 14px;min-height:0"><div class="tplrow" style="flex:1"><input class="in" data-in="tpl:'+i+'" value="'+esc(t)+'" placeholder="Текст фразы"></div><span class="x" data-a="deltpl" data-x="'+i+'">×</span></div>'}).join('')||'<div class="row" style="color:var(--mut)">Нет фраз</div>')+'<div class="row tap" data-a="addtpl" style="min-height:44px;color:var(--gold)">+ добавить фразу</div></div>',E.tpl.length+' шт.')+
+ colSec('s_bud','Лимит расхода '+gl('Токены'),'<div class="grp"><div class="row" style="display:block"><div class="d" style="margin-bottom:6px">В сутки</div>'+seg([4,6,8,12],E.budget,'bud',' млн')+
+  '<div class="d" style="margin:12px 0 6px">Предупредить при</div>'+seg([70,80,90,0],E.warn,'warn','',['70%','80%','90%','не надо'])+'</div></div>',E.budget+' млн/сутки')+
+ colSec('s_app','Телефон и защита','<div class="grp"><div class="row"><div class="t"><div class="n">Вход по '+bioName()+'</div></div>'+sw(U.biolock,'biolock')+'</div>'+
+  '<div class="row"><div class="t"><div class="n">'+bioName()+' для опасных действий</div>'+(U.bio&&bioWhy()?'<div class="d">'+esc(bioWhy())+'</div>':'')+'</div>'+sw(U.bio,'bio')+'</div>'+
+  '<div class="row tap" data-a="biotest"><div class="t"><div class="n">Проверить '+bioName()+'</div>'+(U.bioLast?'<div class="d">'+esc(U.bioLast.step)+'</div>':'')+'</div><span class="chev">›</span></div>'+
+  '<div class="row"><div class="t"><div class="n">Вибрация</div></div>'+sw(U.haptics,'hap')+'</div>'+
+  '<div class="row tap" data-a="full"><div class="t"><div class="n">Во весь экран</div></div><span class="chev">›</span></div><div class="row tap" data-a="homescreen"><div class="t"><div class="n">Иконка на домашнем экране</div></div><span class="chev">›</span></div></div>',(U.biolock?bioName()+' вкл':'без '+bioName()))+
+ '<div class="sec"><div class="grp"><div class="row tap" data-a="glos"><span class="ci2">'+IC('book-open')+'</span><div class="t"><div class="n">Словарь</div></div><span class="chev">›</span></div></div></div>'+
+ '<div class="sec"><div class="btn danger" data-a="stopsheet">'+IC('square')+' Остановить всё</div></div>';
+ return h}
+
+/* ---------- действия v5 ---------- */
+document.addEventListener('click',function(ev){var el=ev.target.closest('[data-a]');if(!el)return;var a=el.dataset.a,x=el.dataset.x;
+ if(a=='pm'){U.pm=x;LS.set('pm',x);haptic('sel');render(true)}
+ else if(a=='px'){if(ev.target.closest('.sw,.btn'))return;U.px[x]=!U.px[x];render(true)}
+ else if(a=='glos'){U.page='glos';render()}
+ else if(a=='gl'){var g=GLOS.filter(function(z){return z[0]==x})[0];if(g)sheet('<h3>'+esc(g[0])+'</h3><p>'+esc(g[1])+'</p><div class="tl" style="margin:8px 0 14px">технически: '+esc(g[2])+'</div><div class="btn" data-a="glos2">Весь словарь</div>')}
+ else if(a=='glos2'){unsheet();U.page='glos';render()}
+ else return;ev.stopImmediatePropagation();ev.preventDefault()},true);
+
 function boot(){LOADING=false;norm();if(!MOCK&&!U.cached)LS.set('last',S);bioInit();if(S.pend.length&&HP.get('tab')=='q')U.tab='q';render();lockCheck();if(HP.get('q'))openQ(HP.get('q'));if(API){setInterval(poll,15000);document.addEventListener('visibilitychange',function(){poll()});setInterval(function(){if(S.pend.length)loadSnap()},5000);if(S.pend.length)loadSnap();setTimeout(function(){poll(true)},1200)}}
 if(tg){try{tg.ready();tg.expand()}catch(e){}theme();try{tg.onEvent('themeChanged',function(){theme();render(true)});tg.BackButton.onClick(back)}catch(e){}}else theme();
 render();if(lockWanted()&&LS.get('lockok',0))lockShow();
