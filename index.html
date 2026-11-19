@@ -972,7 +972,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=77;
+var VER=78;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1619,7 +1619,19 @@ function openSess(id,fresh){if(st.kind!='hermes')return openAgent(id,fresh);var 
 function reload(){if(!st.sid)return Promise.resolve();var id=st.sid;return J(base()+'/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id)return;st.msgs=fromHistory(d.m);paint()})}
 function leave(){ccStop();st.view='list';U.page=null;st.sessions=null;render();loadList()}
 function newChat(){if(!live()){toast('Чат — в live-режиме');return}
- J(base()+'/sessions',{method:'POST',body:{}}).then(function(d){st.sessions=null;st.msgs=[];openSess(d.s.id,true);st.sessions=[d.s];st.title='Новый чат';paint();setTimeout(function(){var t=document.getElementById('hcin');if(t)t.focus()},120)}).catch(function(e){toast(E(e.message))})}
+ projSheet()}
+function projSheet(){var ps=st.projs;
+ if(!ps){sheet('<div class="hcsh"><b>Проект</b></div><div class="hint2">'+(st.perr?E(st.perr):'Загружаю список…')+'</div><div class="btn" data-hc="newnone">Без проекта</div>');
+  J('/projects').then(function(d){st.projs=d.p||[];st.perr='';projSheet()}).catch(function(e){st.perr='Не удалось: '+E(e.message);st.projs=null;doNew('','')});return}
+ if(!ps.length){doNew('','');return}
+ var last=LS.get('hcproj','');
+ var h='<div class="hcsh"><b>Проект для нового чата</b></div><div class="hcml">'+
+  '<div class="hcmi'+(last?'':' on')+'" data-hc="newnone">'+(last?'<i></i>':IC('check'))+'<b>Без проекта</b><span>папка по умолчанию</span></div>'+
+  ps.map(function(p,i){var on=last==p.path;return '<div class="hcmi'+(on?' on':'')+'" data-hc="newproj" data-i="'+i+'">'+(on?IC('check'):'<i></i>')+'<b>'+E(p.name)+'</b><span>'+E(p.path)+'</span></div>'}).join('')+
+  '</div><div class="btn" data-hc="close">Отмена</div>';
+ sheet(h)}
+function doNew(cwd,pname){unsheet();LS.set('hcproj',cwd||'');
+ J(base()+'/sessions',{method:'POST',body:cwd?{cwd:cwd,pname:pname}:{}}).then(function(d){st.sessions=null;st.msgs=[];openSess(d.s.id,true);st.sessions=[d.s];st.title='Новый чат';paint();if(cwd)toast('Проект: '+E(pname));setTimeout(function(){var t=document.getElementById('hcin');if(t)t.focus()},120)}).catch(function(e){toast(E(e.message))})}
 
 /* ---------- ход со стримом ---------- */
 function ctl(d,n){var id=d.request_id||d.prompt_id||d.id;if(!id)return null;
@@ -1711,6 +1723,8 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  case 'ccsend':ccSend();break;
  case 'ccsay':ccSay();break;
  case 'new':newChat();break;
+ case 'newnone':doNew('','');break;
+ case 'newproj':{var pp=(st.projs||[])[+el.dataset.i];if(pp)doNew(pp.path,pp.name)}break;
  case 'refresh':st.sessions=null;paint();loadList();break;
  case 'all':if(st.kind=='claude'){st.call=el.dataset.v=='1';LS.set('hccall',st.call)}else{st.all=el.dataset.v=='1';LS.set('hcall',st.all)}st.sessions=null;paint();loadList();break;
  case 'back':leave();break;
