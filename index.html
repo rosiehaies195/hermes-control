@@ -670,6 +670,9 @@ body.hk-codex .sheet .hcmprov span.on{background:#fff;border-color:#fff;color:#0
 .hccp .ic{width:14px;height:14px}
 .hclist{overscroll-behavior-y:contain}
 
+.hcmsgs,.hcmsgs *{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+.hcmsgs .hcbtn,.hcmsgs [data-hc]{-webkit-user-select:none;user-select:none}
+
 </style>
 </head>
 <body>
@@ -968,7 +971,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=75;
+var VER=76;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1553,9 +1556,11 @@ function pendHtml(p,i){
   '<div class="hcpa"><div class="btn pri" data-hc="appr" data-c="once" data-i="'+i+'">Разрешить</div><div class="btn" data-hc="appr" data-c="session" data-i="'+i+'">На сессию</div><div class="btn bad" data-hc="appr" data-c="deny" data-i="'+i+'">Отклонить</div></div></div>'}
 function paint(){if(!mounted())return;if(st.view=='list'){paintList();return}
  var m=document.getElementById('hcmsgs');if(!m){paintChat();return}
- var near=m.scrollHeight-m.scrollTop-m.clientHeight<140;m.innerHTML=msgsHtml();if(near||st.stick)m.scrollTop=m.scrollHeight;st.stick=false;
+ var near=m.scrollHeight-m.scrollTop-m.clientHeight<140,nh=msgsHtml(),sl=window.getSelection&&window.getSelection(),selin=sl&&!sl.isCollapsed&&sl.rangeCount&&m.contains(sl.anchorNode);
+ if(m.__h===nh||(selin&&!st.stick)){if(selin&&m.__h!==nh)selWait=1}else{m.__h=nh;selWait=0;m.innerHTML=nh;if(near||st.stick)m.scrollTop=m.scrollHeight}st.stick=false;
  var s=document.getElementById('hcsend');if(s){s.className='hcsendb'+(st.busy?' stop':'');s.innerHTML=st.busy?IC('square'):IC('arrow-up')}
  var th=document.getElementById('hcthumbs');if(th)th.innerHTML=thumbsHtml();var ch=document.getElementById('hcchips');if(ch)ch.innerHTML=chipsHtml();var sb=document.getElementById('hcsub');if(sb)sb.textContent=subTxt()}
+var selWait=0;document.addEventListener('selectionchange',function(){if(!selWait)return;var s=window.getSelection();if(s&&s.isCollapsed){selWait=0;setTimeout(function(){if(mounted()&&st.view=='chat')paint()},250)}});
 function schedule(){if(rafId)return;rafId=requestAnimationFrame(function(){rafId=0;paint()})}
 function thumbsHtml(){return st.imgs.map(function(u,i){return '<div class="hcth"><img src="'+u+'"><span data-hc="rmimg" data-i="'+i+'">'+IC('x')+'</span></div>'}).join('')}
 /* ---------- группы сессий как в Desktop: PINNED, даты, потом по источнику (API, TELEGRAM …) ---------- */
