@@ -517,7 +517,7 @@ body:not(.hckb) .hccomp{padding-bottom:10px}
 .hcsendb{width:40px;height:40px;border-radius:10px;background:var(--gold);color:var(--on-gold);display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
 .hcsendb.stop{background:var(--bad);color:#fff}
 .hcsendb .ic{width:20px;height:20px}
-.hcro{padding:12px 14px calc(12px);border-top:1px solid var(--line);color:var(--mut);font-size:13px;display:flex;gap:8px;align-items:flex-start;flex:none}.hcro .ic{width:16px;height:16px;flex:none;margin-top:2px}
+.hcro{padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);color:var(--mut);font-size:13px;display:flex;flex-direction:column;gap:10px;flex:none}.hcro .ic{width:16px;height:16px;vertical-align:-3px}.hcro .btn{min-height:44px}
 .hcsh{padding:4px 0 8px;font-size:15px}
 .hcinp{width:100%;box-sizing:border-box;min-height:46px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--tx);padding:0 12px;font:15px inherit;font-family:inherit;margin-bottom:4px}
 .hint2{color:var(--mut);font-size:13.5px;padding:2px 0 8px;line-height:1.5}
@@ -816,7 +816,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=60;
+var VER=61;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1371,7 +1371,7 @@ function paintChat(){var r=root();if(!r)return;
  r.innerHTML='<div class="hchd"><div class="hcbtn" data-hc="back">'+IC('chevron-left')+'</div><div class="hct0 tap" data-hc="menu">'+E(st.title||'Новый чат')+'</div><div class="hcbtn" data-hc="menu">'+IC('ellipsis')+'</div></div>'+
  '<div id="hcmsgs" class="hcmsgs"></div>'+
  (st.rw?'<div id="hcthumbs" class="hcthumbs"></div><div class="hccomp"><label class="hcbtn" for="hcfile">'+IC('paperclip')+'</label><input id="hcfile" type="file" accept="image/*" multiple hidden>'+
-  '<textarea id="hcin" rows="1" placeholder="Сообщение Hermes"></textarea><div id="hcsend" class="hcsendb" data-hc="send"></div></div>':'<div class="hcro">'+IC('eye')+' Сессия создана в '+E(SRC[st.src]||st.src||'другом месте')+': здесь она только для чтения. Создай новый чат, чтобы писать.</div>');
+  '<textarea id="hcin" rows="1" placeholder="Сообщение Hermes"></textarea><div id="hcsend" class="hcsendb" data-hc="send"></div></div>':'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
  var ta=document.getElementById('hcin');if(ta){ta.value=st.draft;grow(ta)}
  st.stick=true;paint()}
 function grow(t){t.style.height='auto';t.style.height=Math.min(140,t.scrollHeight)+'px'}
@@ -1444,7 +1444,7 @@ function respond(i,choice,answer){var p=st.pend[i];if(!p||!st.run)return;
 /* ---------- меню сессии ---------- */
 function menu(){if(!st.sid)return;var h='<div class="hcsh"><b>'+E(st.title||'Новый чат')+'</b></div>';
  if(st.rw)h+='<div class="btn" data-hc="rename">'+IC('pencil')+' Переименовать</div><div class="btn" data-hc="fork">'+IC('git-branch')+' Ветка: продолжить с копией</div><div class="btn bad" data-hc="del">'+IC('trash-2')+' Удалить</div>';
- else h+='<div class="hint2">Эта сессия из «'+E(SRC[st.src]||st.src)+'»: можно только читать.</div>';
+ else h+='<div class="hint2">Эта сессия из «'+E(SRC[st.src]||st.src)+'»: оригинал только читается.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь (копия)</div>';
  sheet(h+'<div class="btn" data-hc="close">Закрыть</div>')}
 function renameUI(){sheet('<div class="hcsh"><b>Название чата</b></div><input id="hcren" class="hcinp" maxlength="120" value="'+E(st.title).replace(/"/g,'&quot;')+'"><div class="btn pri" data-hc="rensave">Сохранить</div><div class="btn" data-hc="close">Отмена</div>');setTimeout(function(){var i=document.getElementById('hcren');if(i){i.focus();i.select()}},150)}
 function delUI(){sheet('<div class="hcsh"><b>Удалить чат?</b></div><div class="hint2">«'+E(st.title)+'» и вся его история будут удалены с ПК. Это нельзя отменить.</div><div class="btn bad" data-hc="delyes">Удалить</div><div class="btn" data-hc="close">Отмена</div>')}
@@ -1468,7 +1468,7 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  case 'link':try{tg.openLink(el.dataset.u)}catch(e){window.open(el.dataset.u,'_blank')}break;
  case 'rename':unsheet();setTimeout(renameUI,260);break;
  case 'rensave':{var v=(document.getElementById('hcren').value||'').trim();if(!v)return;J('/sessions/'+encodeURIComponent(st.sid),{method:'PATCH',body:{title:v}}).then(function(){st.title=v;unsheet();paintChat();toast('Переименовано')}).catch(function(e){toast(E(e.message))});break}
- case 'fork':unsheet();J('/sessions/'+encodeURIComponent(st.sid)+'/fork',{method:'POST',body:{}}).then(function(d){st.sessions=[d.s];st.msgs=[];openSess(d.s.id);toast('Создана ветка')}).catch(function(e){toast(E(e.message))});break;
+ case 'fork':unsheet();J('/sessions/'+encodeURIComponent(st.sid)+'/fork',{method:'POST',body:{}}).then(function(d){st.sessions=[d.s];st.msgs=[];openSess(d.s.id);toast('Копия создана — пиши')}).catch(function(e){toast(E(e.message))});break;
  case 'del':unsheet();setTimeout(delUI,260);break;
  case 'delyes':{var id=st.sid;J('/sessions/'+encodeURIComponent(id),{method:'DELETE'}).then(function(){unsheet();st.sid=null;st.msgs=[];leave();toast('Удалено')}).catch(function(e){toast(E(e.message))});break}
  }});
