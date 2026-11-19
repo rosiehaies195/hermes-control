@@ -732,7 +732,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=50;
+var VER=51;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -938,7 +938,7 @@ document.addEventListener('click',function(ev){
  case 'cronpr':if(x){var cj=S.cj.filter(function(j){return j.id==x})[0];send({a:'cron',k:cj&&cj.on?'pause':'resume',id:x})}return;
  case 'fixforce':forceSheet(x);return;
  case 'fixforce_go':unsheet();bioAuth('Оборвать ход Hermes и перезапустить '+x,function(){send({a:'fix',k:x,f:1})});return;
- case 'hermes':haptic('sel');if(MOCK){toast('→ '+esc(S.wa));return}location.href=S.wa;return;
+ case 'hermes':haptic('sel');if(MOCK){toast('openLink '+esc(S.wa));return}try{tg.openLink(S.wa,{try_browser:'safari'})}catch(e){try{window.open(S.wa,'_blank')}catch(e2){location.href=S.wa}}return;
  case 'hermes_ext':if(MOCK){toast('openLink '+esc(S.wa));return}try{tg.openLink(S.wa,{try_browser:'safari'})}catch(e){window.open(S.wa,'_blank')}return;
  case 'undo':if(U.undo){var u=U.undo;U.undo=null;$('toast').classList.remove('on');send(u,false)}return;
  case 'pausesheet':pauseSheet();return;
