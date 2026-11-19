@@ -344,7 +344,7 @@ function status(){
  if(!S.clicker.on)return {c:'',t:'Кликер выключен',lg:'pause'};
  return {c:'ok',t:'Работает',lg:'ok'}}
 function hd(){var st=status(),hb=hBad().length;
- var fr=U.cached&&!API?'<span style="color:var(--warn)">кэш · '+ago(S.ts)+'</span>':API?(U.offline?'<span class="live off">НЕТ СВЯЗИ</span>':'<span class="live">LIVE</span>'):(S.ts?'<span style="color:'+(stale()?'var(--warn)':'inherit')+'">данные '+ago(S.ts)+'</span>':'');
+ var fr=U.cached?'<span style="color:var(--warn)">кэш · '+ago(S.ts)+'</span>':API?(U.offline?'<span class="live off">НЕТ СВЯЗИ</span>':'<span class="live">LIVE</span>'):(S.ts?'<span style="color:'+(stale()?'var(--warn)':'inherit')+'">данные '+ago(S.ts)+'</span>':'');
  return '<div class="hd"><div class="logo" data-st="'+st.lg+'"></div><div><h1>Hermes</h1><div class="st"><span class="dot '+(st.c=='ok'?'live':st.c)+'"></span>'+st.t.toLowerCase()+(fr?' · '+fr:'')+'</div></div><div class="r">'+
  (S.health.length?'<div class="ib" data-a="sys" title="Система">⛭<span class="hdot'+(hb?' bad':'')+'"></span></div>':'')+'<div class="ib" data-a="refresh" title="Обновить">↻</div></div></div>'}
 function skeleton(){return '<div class="hd"><div class="logo"></div><div style="flex:1"><div class="sk" style="height:18px;width:110px"></div><div class="sk" style="height:12px;width:170px;margin-top:8px"></div></div></div>'+
@@ -552,7 +552,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=42;
+var VER=43;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">⬆ Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">⚠ ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -846,6 +846,7 @@ function boot(){LOADING=false;norm();if(!MOCK&&!U.cached)LS.set('last',S);bioIni
 if(tg){try{tg.ready();tg.expand()}catch(e){}theme();try{tg.onEvent('themeChanged',function(){theme();render(true)});tg.BackButton.onClick(back)}catch(e){}}else theme();
 render();if(lockWanted()&&LS.get('lockok',0))lockShow();
 var z=HP.get('z'),s0=HP.get('s');
+if(!MOCK&&LS.get('pgver',0)!=43){try{localStorage.removeItem('hc_last')}catch(e){}LS.set('pgver',43)}
 var CACHE=MOCK?null:LS.get('last',null);
 function fromHash(){if(!z&&MENU){if(CACHE){S=CACHE;U.cached=1}boot();toast('Сервер на ПК недоступен — открой «Панель» внизу чата');return}if(z)return inflate(z).then(function(t){S=JSON.parse(t);boot()},function(){boot();toast('Не удалось распаковать статус — обновите Telegram')});if(s0)try{S=dec(s0)}catch(e){}boot()}
 if(MOCK){setTimeout(function(){S=MOCK.state();boot()},MOCK.delay||350)}
