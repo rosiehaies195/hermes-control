@@ -968,7 +968,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=74;
+var VER=75;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1568,6 +1568,7 @@ var SLM={'PINNED':'Закреплённые','TODAY':'Сегодня','YESTERDAY
 function secHtml(label,n,key,open){label=(st.kind!='hermes'&&SLM[label])||label;return '<div class="hcsec'+(key?' tap':'')+'"'+(key?' data-hc="fold" data-k="'+E(key)+'"':'')+'><span>'+E(label)+'</span>'+(n!=null?'<em>'+n+'</em>':'')+(key?IC(open?'chevron-down':'chevron-right'):'')+'</div>'}
 function groupsHtml(){var L=(st.sessions||[]).slice().sort(function(a,b){return b.ts-a.ts}),h='',fold=LS.get('hcfold',{}),lv=st.kind!='hermes'?L.filter(function(x){return x.live}):[],pins=L.filter(function(x){return x.pin&&lv.indexOf(x)<0}),rest=L.filter(function(x){return !x.pin&&lv.indexOf(x)<0});
  if(lv.length)h+=secHtml('ИДЁТ СЕЙЧАС',lv.length)+lv.map(rowHtml).join('');
+ var pn=st.kind!='hermes'?L.filter(function(x){return x.rw&&lv.indexOf(x)<0}):[];if(pn.length){h+=secHtml('ИЗ ПАНЕЛИ · МОИ КОПИИ',pn.length)+pn.map(rowHtml).join('');rest=rest.filter(function(x){return pn.indexOf(x)<0});pins=pins.filter(function(x){return pn.indexOf(x)<0})}
  if(pins.length)h+=secHtml('PINNED',pins.length)+pins.map(rowHtml).join('');
  var dated=[],bysrc={};
  rest.forEach(function(x){if(st.kind!='hermes'||!st.all||x.src=='gui'||x.src=='local'||x.src=='cli'||!x.src)dated.push(x);else(bysrc[x.src]=bysrc[x.src]||[]).push(x)});
@@ -1669,7 +1670,7 @@ var KN={hermes:'Hermes',claude:'Claude',codex:'Codex'},ccTimer=0;
 function kindBar(){return '<div class="hcfil hckind">'+['hermes','claude','codex'].map(function(k){return '<span class="'+(st.kind==k?'on':'')+'" data-hc="kind" data-v="'+k+'">'+KN[k]+'</span>'}).join('')+'</div>'}
 function setKind(k){if(st.kind==k||!KN[k])return;ccStop();st.kind=k;LS.set('hckind',k);st.sessions=null;st.lerr='';st.sid=null;st.msgs=[];st.models=null;st.msel=null;st.mprov='';st.view='list';U.page=null;render();loadList()}
 function ccStop(){if(ccTimer){clearTimeout(ccTimer);ccTimer=0}}
-function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение Claude (продолжу в копии этого чата)…"></textarea><div class="hctb2"><div class="hcchips"><span class="hcchip" data-hc="ccsay">'+IC('arrow-up')+'В рабочую сессию tv-miniapp</span></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
+function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение Claude (продолжу в копии этого чата)…"></textarea><div class="hctb2"><div class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
 function openAgent(id,fresh){var s=(st.sessions||[]).filter(function(x){return x.id==id})[0]||{id:id,t:agentName(),src:st.kind,ts:0,rw:!!fresh};
  ccStop();if(st.sid!=id){st.msgs=[];st.pend=[];st.busy=false;st.run=null;st.err='';st.draft='';st.imgs=[];st.lim=120;st.msel=loadSel(id);st.ccoff=null;st.rt=null}
  st.pin=false;st.sid=id;st.title=s.t;st.rw=!!s.rw;st.src=s.src;st.cclive=!!s.live;st.view='chat';U.page='hcchat';st.stick=true;
