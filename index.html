@@ -959,7 +959,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=71;
+var VER=72;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1447,7 +1447,7 @@ function ago(ts){if(!ts)return '';var d=new Date(ts*1000),n=new Date(),p=functio
 var SRC={api_server:'Панель',telegram:'Telegram',gui:'Desktop',local:'Desktop',cli:'Терминал',cron:'Cron'};
 var EFF={low:'Низк',medium:'Сред',high:'Выс'};
 /* ---------- модель ---------- */
-function pretty(m){m=String(m||'').replace(/^[^/]*\//,'').replace(/\[[^\]]*\]/g,'').replace(/^claude-/,'').replace(/-(\d{8})$/,'').replace(/-(\d)-(\d)(?!\d)/g,' $1.$2').replace(/-(\d)(?=$|-)/g,' $1').replace(/-/g,' ').trim();return m.charAt(0).toUpperCase()+m.slice(1)}
+function pretty(m){if(/^gpt-/i.test(String(m||'')))return String(m).replace(/^gpt-/i,'GPT-').replace(/-([a-z])/g,function(x,c){return '-'+c.toUpperCase()});m=String(m||'').replace(/^[^/]*\//,'').replace(/\[[^\]]*\]/g,'').replace(/^claude-/,'').replace(/-(\d{8})$/,'').replace(/-(\d)-(\d)(?!\d)/g,' $1.$2').replace(/-(\d)(?=$|-)/g,' $1').replace(/-/g,' ').trim();return m.charAt(0).toUpperCase()+m.slice(1)}
 function loadSel(id){try{var v=LS.get('hcmodel:'+id,null);return v&&v.m?v:null}catch(e){return null}}
 function saveSel(id,v){try{LS.set('hcmodel:'+id,v)}catch(e){}}
 function loadModels(force){if(!live())return Promise.resolve();if(st.models&&!force)return Promise.resolve(st.models);st.merr='';
@@ -1552,7 +1552,7 @@ function togglePin(id){var s=(st.sessions||[]).filter(function(x){return x.id==i
  J('/sessions/'+encodeURIComponent(id),{method:'PATCH',body:{pinned:v}}).then(function(){toast(v?'Закреплено':'Откреплено')}).catch(function(e){if(s)s.pin=!v;if(st.sid==id)st.pin=!v;paint();toast(E(e.message))})}
 function paintList(){var r=root();if(!r)return;r.className='k-'+st.kind;
  var h='<div class="hd hchd"><div class="logo" data-st="ok"></div><div class="hcmid"><h1>'+KN[st.kind]+'</h1><div class="st"><span class="dot ok"></span>чат'+(st.sessions?' · '+st.sessions.length+' сесс.':'')+'</div></div><div class="r"><div class="ib" data-hc="refresh" title="Обновить">'+IC('refresh-cw')+'</div></div></div>';
- h+=kindBar();if(st.kind!='codex')h+='<div class="hcnew" data-hc="new">'+IC('plus')+'<b>'+(st.kind=='claude'?'Новый чат Claude':'Новая сессия')+'</b></div>';
+ h+=kindBar();h+='<div class="hcnew" data-hc="new">'+IC('plus')+'<b>'+(st.kind=='claude'?'Новый чат Claude':st.kind=='codex'?'Новый чат Codex':'Новая сессия')+'</b></div>';
  h+=(st.kind=='codex'?'':'<div class="hcfil sub"><span class="'+(!AL()?'on':'')+'" data-hc="all" data-v="0">'+(st.kind=='claude'?'Недавние':'Панель')+'</span><span class="'+(AL()?'on':'')+'" data-hc="all" data-v="1">'+(st.kind=='claude'?'С архивом':'Все сессии')+'</span></div>')+'<div class="hclist">';
  if(!live())h+='<div class="hcempty">Чат работает в live-режиме.<br>Открой панель кнопкой меню «Hermes» рядом с полем ввода.</div>';
  else if(st.lerr)h+='<div class="hcerr">'+E(st.lerr)+'</div>';
@@ -1564,7 +1564,7 @@ function paintChat(){var r=root();if(!r)return;r.className='k-'+st.kind;
  var ta0=document.getElementById('hcin');if(ta0)st.draft=ta0.value;
  r.innerHTML='<div class="hd hchd"><div class="ib" data-hc="back" title="Назад">'+IC('chevron-left')+'</div><div class="hcmid tap" data-hc="menu"><h1>'+E(st.title||'Новая сессия')+'</h1><div class="st"><span class="dot ok"></span><span id="hcsub">'+E(subTxt())+'</span></div></div><div class="r"><div class="ib" data-hc="menu" title="Меню">'+IC('ellipsis')+'</div></div></div>'+
  '<div id="hcmsgs" class="hcmsgs"></div>'+
- (st.rw?'<div class="hccomp"><div id="hcthumbs" class="hcthumbs"></div><textarea id="hcin" rows="1" placeholder="Сообщение '+agentName()+'…"></textarea><div class="hctb2"><label class="hcbtn ghost" for="hcfile">'+IC('paperclip')+'</label><div class=\"hcbtn ghost\" data-hc=\"mic\" title=\"Голосом\">'+IC('mic')+'</div><input id="hcfile" type="file" accept="image/*" multiple hidden><div id="hcchips" class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="send"></div></div></div>':st.kind=='claude'?ccComp():st.kind=='codex'?'<div class="hcro"><div>'+IC('eye')+' Codex пока только читается. Лента обновляется сама.</div></div>':'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
+ (st.rw?'<div class="hccomp"><div id="hcthumbs" class="hcthumbs"></div><textarea id="hcin" rows="1" placeholder="Сообщение '+agentName()+'…"></textarea><div class="hctb2"><label class="hcbtn ghost" for="hcfile">'+IC('paperclip')+'</label><div class=\"hcbtn ghost\" data-hc=\"mic\" title=\"Голосом\">'+IC('mic')+'</div><input id="hcfile" type="file" accept="image/*" multiple hidden><div id="hcchips" class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="send"></div></div></div>':st.kind=='claude'?ccComp():'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
  var ta=document.getElementById('hcin');if(ta){ta.value=st.draft;grow(ta)}
  st.stick=true;paint()}
 function grow(t){t.style.height='auto';t.style.height=Math.min(140,t.scrollHeight)+'px'}
@@ -1646,7 +1646,7 @@ function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" place
 function openAgent(id,fresh){var s=(st.sessions||[]).filter(function(x){return x.id==id})[0]||{id:id,t:agentName(),src:st.kind,ts:0,rw:!!fresh};
  ccStop();if(st.sid!=id){st.msgs=[];st.pend=[];st.busy=false;st.run=null;st.err='';st.draft='';st.imgs=[];st.lim=120;st.msel=loadSel(id);st.ccoff=null;st.rt=null}
  st.pin=false;st.sid=id;st.title=s.t;st.rw=!!s.rw;st.src=s.src;st.cclive=!!s.live;st.view='chat';U.page='hcchat';st.stick=true;
- if(st.kind=='claude')loadModels();
+ loadModels();
  render();if(fresh)return;st.loadingMsgs=true;
  if(st.rw)return J(base()+'/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id||st.busy)return;st.msgs=fromHistory(d.m);st.loadingMsgs=false;st.stick=true;paint()}).catch(function(e){st.loadingMsgs=false;st.err=e.message;paint()});
  ccPoll(true)}
@@ -1664,7 +1664,7 @@ function menu(){if(!st.sid)return;var h='<div class="hcsh"><b>'+E(st.title||'Н�
  else h+='<div class="hint2">Эта сессия из «'+E(SRC[st.src]||st.src)+'»: оригинал только читается.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь (копия)</div>';
  sheet(h+'<div class="btn" data-hc="close">Закрыть</div>')}
 function renameUI(){sheet('<div class="hcsh"><b>Название чата</b></div><input id="hcren" class="hcinp" maxlength="120" value="'+E(st.title).replace(/"/g,'&quot;')+'"><div class="btn pri" data-hc="rensave">Сохранить</div><div class="btn" data-hc="close">Отмена</div>');setTimeout(function(){var i=document.getElementById('hcren');if(i){i.focus();i.select()}},150)}
-function delUI(){sheet('<div class="hcsh"><b>Удалить чат?</b></div><div class="hint2">«'+E(st.title)+'» и вся его история будут удалены с ПК. Это нельзя отменить.</div><div class="btn bad" data-hc="delyes">Удалить</div><div class="btn" data-hc="close">Отмена</div>')}
+function delUI(){sheet('<div class="hcsh"><b>Удалить чат?</b></div><div class="hint2">'+(st.kind=='codex'?'«'+E(st.title)+'» уберётся из панели. Файлы истории Codex останутся на ПК.':'«'+E(st.title)+'» и вся его история будут удалены с ПК. Это нельзя отменить.')+'</div><div class="btn bad" data-hc="delyes">Удалить</div><div class="btn" data-hc="close">Отмена</div>')}
 
 /* ---------- события ---------- */
 document.addEventListener('click',function(ev){var el=ev.target.closest('[data-hc]');if(!el)return;var a=el.dataset.hc;
