@@ -1,0 +1,56 @@
+/* ПРОТОТИПЫ v8 «Проекты» (А/Б/В) */
+.ag.hermes{background:#000 url(logo-portrait.png) center 3px/92% no-repeat;border:1px solid #2a3550}
+.abs8{display:inline-flex;flex:none}.abs8 .ag+.ag{margin-left:-9px;box-shadow:0 0 0 2px var(--s1)}
+.ag.s8{width:22px;height:22px;border-radius:6px;display:inline-grid;vertical-align:middle;margin-right:2px}.ag.s8 img{width:14px;height:14px}
+.ag.m8{width:38px;height:38px;border-radius:10px}.ag.m8 img{width:22px;height:22px}
+.ag.xs8{width:16px;height:16px;border-radius:5px;display:inline-grid;vertical-align:-3px;margin-right:6px;background:none}.ag.xs8 img{width:14px;height:14px}.ag.hermes.xs8{background:#000 url(logo-portrait.png) center 1px/92% no-repeat}
+.alert .k .pn8,.ch8 .pn8{font-weight:700;margin-left:2px}.alert .k .pm8{font:500 11px "JetBrains Mono",monospace;color:var(--mut);margin-left:6px}
+.more8{margin:8px 16px 0;padding:10px;text-align:center;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:13px;cursor:pointer}
+.sum8{margin:6px 16px 4px;font-size:13px;color:var(--mut)}.sum8 b{color:var(--tx)}.ok8{color:var(--ok)}.wait8{color:var(--claude)}.bad8{color:var(--bad)}
+.demo8bar{margin:6px 16px 0;padding:7px 10px;border-radius:8px;background:color-mix(in srgb,var(--warn) 10%,var(--s1));border:1px dashed color-mix(in srgb,var(--warn) 45%,transparent);font-size:12px;color:var(--mut);line-height:1.4}
+.demo8{margin-left:7px;font:600 9.5px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 45%,transparent);border-radius:4px;padding:1px 4px;vertical-align:1px}
+.f8{margin:6px 16px 4px;flex-wrap:nowrap;overflow-x:auto}.f8 span{white-space:nowrap;position:relative}.f8 span i{font:600 11px "JetBrains Mono",monospace;font-style:normal;color:var(--mut);margin-left:4px}
+.f8 span u{position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--claude);text-decoration:none}
+.row.p8{display:block;padding:11px 14px}
+.row.p8.wait{box-shadow:inset 3px 0 0 var(--claude)}.row.p8.bad{box-shadow:inset 3px 0 0 var(--bad)}
+.row.p8.open{background:var(--s2)}
+.qb8{min-width:20px;height:20px;border-radius:10px;background:var(--claude);color:#fff;font:700 11.5px "JetBrains Mono",monospace;display:grid;place-items:center;padding:0 6px;flex:none}
+.pd8{padding:0 14px 14px;background:var(--s2);border-top:1px solid var(--line)}
+.pd8 .stats{margin-top:10px}
+.acts8{display:grid;grid-template-columns:repeat(4,auto);gap:6px;margin-top:10px}
+.acts8 .btn{min-height:38px;padding:0 8px;font-size:12.5px;justify-content:center;gap:5px}
+.acts8 .btn .ic{width:14px;height:14px}
+/* Б: вкладки приложений */
+.tabs8{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 16px 0}
+.tabs8>div{position:relative;padding:10px 6px 9px;border:1px solid var(--line);border-radius:10px;background:var(--s1);text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs8>div.on{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 9%,var(--s1))}
+.tabs8 .ag.xs8{margin:0 0 2px;width:22px;height:22px}.tabs8 .ag.xs8 img{width:18px;height:18px}
+.tabs8 span{font-weight:600;font-size:13.5px}.tabs8 small{font-size:11px;color:var(--mut)}
+.tb8{position:absolute;top:-7px;right:-5px;min-width:19px;height:19px;border-radius:10px;background:var(--claude);color:#fff;font:700 11px "JetBrains Mono",monospace;display:grid;place-items:center;padding:0 5px}
+.else8{display:flex;flex-wrap:wrap;gap:8px;margin:8px 16px 0}
+.else8 span{padding:7px 10px;border-radius:8px;border:1px solid color-mix(in srgb,var(--claude) 40%,var(--line));font-size:12.5px;color:var(--mut);cursor:pointer}.else8 b{color:var(--claude)}
+.inl8{padding:0 14px 12px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--claude) 5%,var(--s1))}.inl8 .q{font-size:14px;margin:2px 0 8px}
+.multi8{margin-left:7px;font:500 10.5px "JetBrains Mono",monospace;color:var(--mut)}
+/* В: сетка */
+.card8{margin:8px 16px 0;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:var(--s1)}
+.card8.wait{border-color:color-mix(in srgb,var(--claude) 55%,transparent);background:color-mix(in srgb,var(--claude) 8%,var(--s1))}
+.card8.bad{border-color:color-mix(in srgb,var(--bad) 55%,transparent);background:color-mix(in srgb,var(--bad) 8%,var(--s1))}
+.ch8{display:flex;align-items:center;gap:7px;cursor:pointer}.sp8{flex:1}
+.card8 .q{margin:10px 0 8px;font-size:14.5px;line-height:1.4}
+.ms8{display:flex;justify-content:space-between;font:500 11px "JetBrains Mono",monospace;color:var(--mut);margin-top:10px}
+.grid8{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 16px 0}
+.grid8 .card8{margin:0;cursor:pointer;min-width:0}.grid8 .card8:active{background:var(--s2)}
+.cn8{font-weight:700;font-size:14.5px;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs8{font-size:12px;color:var(--mut);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.idle8{margin:6px 16px 0}
+/* фиксы: общие правила .chips span / .else8 span не должны рисовать рамку вокруг значка приложения */
+.chips span.ag,.else8 span.ag{padding:0;min-height:0;border:0;background:none;display:inline-grid}
+.chips span.ag.hermes,.else8 span.ag.hermes{background:#000 url(logo-portrait.png) center 1px/92% no-repeat}
+.else8 span.ag{margin-right:6px;vertical-align:-3px}
+.f8{scrollbar-width:none}.f8::-webkit-scrollbar{display:none}
+.row.p8 .t{min-width:0;flex:1}
+.row.p8 .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row.p8 .d{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.nm8{display:inline-block;max-width:calc(100% - 56px);overflow:hidden;text-overflow:ellipsis;vertical-align:bottom;white-space:nowrap}
+.row.p8 .n{overflow:visible}
