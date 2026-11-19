@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Фокус: было / стало</title>
+<style>
+:root{--bg:#0b0d12;--s1:#12151c;--s2:#181c25;--line:#262b38;--tx:#e8e9ee;--mut:#9aa0b0;--acc:#6aa5ff;--ok:#7cc68d;--warn:#e7b85a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Inter,system-ui,sans-serif}
+header{padding:22px 24px 8px;max-width:1100px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px}header p{margin:0;color:var(--mut)}
+nav{display:flex;gap:8px;flex-wrap:wrap;max-width:1100px;margin:14px auto 0;padding:0 24px}
+nav button{background:var(--s1);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:9px 14px;font:inherit;font-size:14px;cursor:pointer}
+nav button.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,var(--s1))}
+main{max-width:1100px;margin:18px auto 60px;padding:0 24px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.col h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 6px;color:var(--mut)}
+.col.new h2{color:var(--acc)}
+.col p{margin:0 0 12px;font-size:14px;min-height:64px}
+.phone{width:390px;max-width:100%;border:10px solid #1b1f2a;border-radius:38px;overflow:hidden;background:#000;box-shadow:0 12px 40px #0008;position:relative}
+.phone iframe{display:block;width:390px;height:780px;border:0;background:#07070d;max-width:100%}
+.tap{margin-top:14px;padding:10px 14px;border-radius:10px;border:1px dashed var(--line);color:var(--mut);font-size:13.5px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tools button{background:var(--s2);color:var(--tx);border:1px solid var(--line);border-radius:9px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer}
+.tools button:active{background:var(--line)}
+.legend{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;display:grid;gap:10px;font-size:14px}
+.legend b{color:var(--tx)}
+.note{color:var(--mut);font-size:13px;margin-top:6px}
+@media(max-width:900px){.row{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>Главный экран «Фокус»: было / стало</h1>
+<p>Слева текущая версия панели (v7.0), справа прототип. Оба экрана живые: на них можно нажимать. Данные — снимок реального состояния, ответы никуда не отправляются.</p></header>
+<nav id="nav"></nav>
+<main><div class="row">
+ <div class="col old"><h2>Было</h2><p id="po"></p><div class="phone"><iframe id="fo" title="Было"></iframe></div></div>
+ <div class="col new"><h2>Стало</h2><p id="pn"></p><div class="phone"><iframe id="fn" title="Стало"></iframe></div></div>
+</div>
+<div class="tap" id="tap"></div>
+<div class="tools" id="tools"></div>
+<div class="legend">
+ <div><b>Что общего во всех экранах.</b> Вверху ровно одна карточка с тем, что требует тебя. Остальное либо плитка-сводка, либо свёрнуто в «Подробности» (раскрывается тапом по заголовку).</div>
+ <div><b>Подсказки «?».</b> Значок у карточки и у каждого раздела. Тап показывает пояснение прямо на месте, второй тап скрывает.</div>
+ <div><b>Отклик на действия.</b> Кнопки «вдавливаются», при отправке появляется тост «Отправляю…», затем «Готово» (зелёная полоса) или ошибка (красная). На телефоне к этому добавляется вибрация: лёгкая на тап, средняя на выбор варианта, отдельная на успех и на ошибку. В браузере на компьютере вибрации нет, тосты видно кнопками ниже.</div>
+ <div class="note">Плитки и раскрытие разделов работают в обоих экранах так же, как в приложении. В «Было» ничего не менялось.</div>
+</div></main>
+<script>
+var D=/*DATA*/[],BASE=location.href.replace(/[^\/]*$/,'');
+var cur=0,nav=document.getElementById('nav');
+D.forEach(function(s,i){var b=document.createElement('button');b.textContent=s.t;b.onclick=function(){show(i)};nav.appendChild(b)});
+function show(i){cur=i;var s=D[i];[].forEach.call(nav.children,function(b,j){b.className=j==i?'on':''});
+ document.getElementById('po').textContent=s.old;document.getElementById('pn').textContent=s.new;
+ document.getElementById('tap').textContent=s.tap||'Экран живой: тапай по карточке, плиткам и заголовкам разделов.';
+ var fo=document.getElementById('fo'),fn=document.getElementById('fn');
+ var t=Date.now();fo.src=BASE+'index.html?v=c70&cmp='+t+'#z='+s.z;fn.src=BASE+'focus-proto.html?cmp='+t+'#z='+s.z;
+ location.hash='s'+i;tools()}
+function tools(){var t=document.getElementById('tools');t.innerHTML='';
+ [['Тост: отправка','wait','<b></b> Отправляю…'],['Тост: готово','ok','<b>✓</b> Ответ «kivi» принят, кликер нажмёт его в Claude'],['Тост: ошибка','err','<b>!</b> Сервер на ПК недоступен']].forEach(function(x){
+  var b=document.createElement('button');b.textContent=x[0];b.onclick=function(){
+   var w=document.getElementById('fn').contentWindow,o=document.getElementById('fo').contentWindow;
+   try{o.toast('<b>✓</b> Готово')}catch(e){}
+   try{w.toastK(x[2].replace('<b></b>','<b>'+w.IC('rotate-cw')+'</b>').replace('<b>✓</b>','<b>'+w.IC('check')+'</b>').replace('<b>!</b>','<b>'+w.IC('triangle-alert')+'</b>'),x[1])}catch(e){}};t.appendChild(b)})}
+var m=(location.hash.match(/s(\d+)/)||[])[1];show(m?+m:0);
+</script></body></html>
