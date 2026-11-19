@@ -26,7 +26,7 @@ main{max-width:1100px;margin:18px auto 60px;padding:0 24px}
 @media(max-width:900px){.row{grid-template-columns:1fr}}
 </style></head><body>
 <header><h1>Главный экран «Фокус»: было / стало</h1>
-<p>Слева текущая версия панели (v7.0), справа прототип. Оба экрана живые: на них можно нажимать. Данные — снимок реального состояния, ответы никуда не отправляются.</p></header>
+<p>Слева текущая боевая версия панели, справа прототип. Оба экрана живые: на них можно нажимать. Данные — снимок реального состояния, ответы никуда не отправляются.</p></header>
 <nav id="nav"></nav>
 <main><div class="row">
  <div class="col old"><h2>Было</h2><p id="po"></p><div class="phone"><iframe id="fo" title="Было"></iframe></div></div>
@@ -48,7 +48,7 @@ function show(i){cur=i;var s=D[i];[].forEach.call(nav.children,function(b,j){b.c
  document.getElementById('po').textContent=s.old;document.getElementById('pn').textContent=s.new;
  document.getElementById('tap').textContent=s.tap||'Экран живой: тапай по карточке, плиткам и заголовкам разделов.';
  var fo=document.getElementById('fo'),fn=document.getElementById('fn');
- var t=Date.now();fo.src=BASE+'index.html?v=c70&cmp='+t+'#z='+s.z;fn.src=BASE+'focus-proto.html?cmp='+t+'#z='+s.z;
+ var t=Date.now();fo.src=BASE+'index.html?cmp='+t+'#z='+s.z;fn.src=BASE+'focus-proto.html?cmp='+t+'#z='+s.z;
  location.hash='s'+i;tools()}
 function tools(){var t=document.getElementById('tools');t.innerHTML='';
  [['Тост: отправка','wait','<b></b> Отправляю…'],['Тост: готово','ok','<b>✓</b> Ответ «kivi» принят, кликер нажмёт его в Claude'],['Тост: ошибка','err','<b>!</b> Сервер на ПК недоступен']].forEach(function(x){
