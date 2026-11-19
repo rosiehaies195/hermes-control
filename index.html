@@ -322,7 +322,7 @@ function send(o,quiet){o=Object.assign({v:1},o);haptic('success');var undo=UNDO[
   p.then(function(r){if(!quiet)toast('<b>✓</b> '+esc(r.text||'Готово'),undo);if(r.state){var keepE=dirty()?E:null;S=r.state;norm();if(keepE)E=keepE;if(o.a=='ans')U.qsel={};render(true)}})
   .catch(function(){if(MENU&&!HP.get('z'))toast('Сервер на ПК недоступен. Открой панель кнопкой «Панель» внизу чата — она работает через бота.');else{toast('Сервер недоступен — отправляю через бота');sd(o)}});return}
  sd(o)}
-function api(path){if(MOCK)return MOCK.api(path);return fetch(API.replace(/\/$/,'')+path,{headers:{'X-Init-Data':tg?tg.initData:''}}).then(function(r){if(!r.ok)throw r;return r})}
+function api(path){if(MOCK)return MOCK.api(path);var ac=window.AbortController?new AbortController():null,tm=ac?setTimeout(function(){ac.abort()},10000):0;return fetch(API.replace(/\/$/,'')+path,{headers:{'X-Init-Data':tg?tg.initData:''},signal:ac?ac.signal:undefined}).then(function(r){clearTimeout(tm);if(!r.ok)throw r;return r},function(e){clearTimeout(tm);throw e})}
 var SNAP={};
 function loadSnap(){if(!API||SNAP.busy||(SNAP.t&&Date.now()-SNAP.t<60000))return;SNAP.busy=1;api('/api/snap').then(function(r){return r.blob()}).then(function(b){if(SNAP.url)URL.revokeObjectURL(SNAP.url);SNAP={url:URL.createObjectURL(b),t:Date.now()};render(true)}).catch(function(){SNAP={t:Date.now(),none:1}})}
 function busy(){return $('sheet').classList.contains('on')||dirty()||document.activeElement&&/INPUT|TEXTAREA/.test(document.activeElement.tagName)}
@@ -552,7 +552,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=44;
+var VER=45;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">⬆ Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">⚠ ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -846,7 +846,7 @@ function boot(){LOADING=false;norm();if(!MOCK&&!U.cached)LS.set('last',S);bioIni
 if(tg){try{tg.ready();tg.expand()}catch(e){}theme();try{tg.onEvent('themeChanged',function(){theme();render(true)});tg.BackButton.onClick(back)}catch(e){}}else theme();
 render();if(lockWanted()&&LS.get('lockok',0))lockShow();
 var z=HP.get('z'),s0=HP.get('s');
-if(!MOCK&&LS.get('pgver',0)!=44){try{localStorage.removeItem('hc_last')}catch(e){}LS.set('pgver',44)}
+if(!MOCK&&LS.get('pgver',0)!=45){try{localStorage.removeItem('hc_last')}catch(e){}LS.set('pgver',45)}
 var CACHE=MOCK?null:LS.get('last',null);
 function fromHash(){if(!z&&MENU){if(CACHE){S=CACHE;U.cached=1}boot();toast('Сервер на ПК недоступен — открой «Панель» внизу чата');return}if(z)return inflate(z).then(function(t){S=JSON.parse(t);boot()},function(){boot();toast('Не удалось распаковать статус — обновите Telegram')});if(s0)try{S=dec(s0)}catch(e){}boot()}
 if(MOCK){setTimeout(function(){S=MOCK.state();boot()},MOCK.delay||350)}
