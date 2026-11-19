@@ -447,10 +447,14 @@ body.hcm #scr{padding:0}
 body.hcm.hckb .nav{display:none}
 #hcroot{position:fixed;left:0;right:0;top:0;bottom:calc(68px + env(safe-area-inset-bottom));display:flex;flex-direction:column;background:var(--bg);padding-top:calc(env(safe-area-inset-top) + var(--tg-content-safe-area-inset-top,0px))}
 body.hckb #hcroot{bottom:0}
-.hchd{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bar);border-bottom:1px solid var(--line);flex:none}
-.hct0{flex:1;font:600 12px var(--font,inherit);letter-spacing:.14em;text-transform:uppercase;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)}
-.hct0.tap{cursor:pointer}
-.hcdot{width:8px;height:8px;border-radius:50%;background:var(--live);box-shadow:0 0 8px var(--live);flex:none;margin-left:2px}
+.hchd{flex:none;gap:12px;display:flex;align-items:center}
+.hchd .logo{width:40px;height:40px;border-radius:10px;margin:0}
+.hchd .r{margin-left:auto;display:flex;gap:8px}
+.hcmid{flex:1;min-width:0}
+.hcmid.tap{cursor:pointer}
+.hcmid h1{margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hcmid .st{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hchd .ib{display:grid;place-items:center;cursor:pointer;flex:none;position:relative}
 .hcbtn{min-width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line2);background:var(--s2);color:var(--mut);cursor:pointer;font-weight:600;font-size:12.5px;padding:0 8px;user-select:none}
 .hcbtn.ghost{border-color:transparent;background:none}
 .hcbtn.pri{background:var(--gold);color:var(--on-gold);border:0}
@@ -849,7 +853,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=62;
+var VER=63;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1340,6 +1344,7 @@ function loadModels(force){if(!live())return Promise.resolve();if(st.models&&!fo
  return J('/models').then(function(d){st.models=d;paint();return d}).catch(function(e){st.merr=e.message||'Ошибка';paint()})}
 function chipTxt(){var sel=st.msel;if(sel&&sel.m)return pretty(sel.m);var c=st.models&&st.models.cur&&st.models.cur.model;return c?pretty(c):'Модель'}
 function effTxt(){var e=st.msel&&st.msel.e;return e?EFF[e]:'Авто'}
+function subTxt(){return st.rw?(st.models||st.msel?chipTxt():'Hermes'):'только чтение'}
 function chipsHtml(){return '<div class="hcchip" data-hc="model">'+E(chipTxt())+(st.msel&&st.msel.m?'<i class="on"></i>':'')+IC('chevron-down')+'</div><div class="hcchip" data-hc="effort">'+E(effTxt())+IC('chevron-down')+'</div>'}
 function modelSheet(){var M=st.models;
  if(!M){sheet('<div class="hcsh"><b>Модель</b></div><div class="hint2">'+(st.merr?E(st.merr):'Загружаю список…')+'</div><div class="btn" data-hc="close">Закрыть</div>');if(!st.models)loadModels().then(function(){if(st.models)modelSheet()});return}
@@ -1413,11 +1418,11 @@ function paint(){if(!mounted())return;if(st.view=='list'){paintList();return}
  var m=document.getElementById('hcmsgs');if(!m){paintChat();return}
  var near=m.scrollHeight-m.scrollTop-m.clientHeight<140;m.innerHTML=msgsHtml();if(near||st.stick)m.scrollTop=m.scrollHeight;st.stick=false;
  var s=document.getElementById('hcsend');if(s){s.className='hcsendb'+(st.busy?' stop':'');s.innerHTML=st.busy?IC('square'):IC('arrow-up')}
- var th=document.getElementById('hcthumbs');if(th)th.innerHTML=thumbsHtml();var ch=document.getElementById('hcchips');if(ch)ch.innerHTML=chipsHtml()}
+ var th=document.getElementById('hcthumbs');if(th)th.innerHTML=thumbsHtml();var ch=document.getElementById('hcchips');if(ch)ch.innerHTML=chipsHtml();var sb=document.getElementById('hcsub');if(sb)sb.textContent=subTxt()}
 function schedule(){if(rafId)return;rafId=requestAnimationFrame(function(){rafId=0;paint()})}
 function thumbsHtml(){return st.imgs.map(function(u,i){return '<div class="hcth"><img src="'+u+'"><span data-hc="rmimg" data-i="'+i+'">'+IC('x')+'</span></div>'}).join('')}
 function paintList(){var r=root();if(!r)return;
- var h='<div class="hchd"><i class="hcdot"></i><div class="hct0">Hermes · Чат</div><div class="hcbtn" data-hc="refresh">'+IC('refresh-cw')+'</div></div>';
+ var h='<div class="hd hchd"><div class="logo" data-st="ok"></div><div class="hcmid"><h1>Hermes</h1><div class="st"><span class="dot ok"></span>чат'+(st.sessions?' · '+st.sessions.length+' сесс.':'')+'</div></div><div class="r"><div class="ib" data-hc="refresh" title="Обновить">'+IC('refresh-cw')+'</div></div></div>';
  h+='<div class="hcnew" data-hc="new">'+IC('plus')+'<b>Новая сессия</b></div>';
  h+='<div class="hcfil"><span class="'+(!st.all?'on':'')+'" data-hc="all" data-v="0">Панель</span><span class="'+(st.all?'on':'')+'" data-hc="all" data-v="1">Все сессии</span></div><div class="hclist">';
  if(!live())h+='<div class="hcempty">Чат работает в live-режиме.<br>Открой панель кнопкой меню «Hermes» рядом с полем ввода.</div>';
@@ -1428,7 +1433,7 @@ function paintList(){var r=root();if(!r)return;
  r.innerHTML=h+'</div>'}
 function paintChat(){var r=root();if(!r)return;
  var ta0=document.getElementById('hcin');if(ta0)st.draft=ta0.value;
- r.innerHTML='<div class="hchd"><div class="hcbtn" data-hc="back">'+IC('chevron-left')+'</div><div class="hct0 tap" data-hc="menu">'+E(st.title||'Новая сессия')+'</div><div class="hcbtn" data-hc="menu">'+IC('ellipsis')+'</div></div>'+
+ r.innerHTML='<div class="hd hchd"><div class="ib" data-hc="back" title="Назад">'+IC('chevron-left')+'</div><div class="hcmid tap" data-hc="menu"><h1>'+E(st.title||'Новая сессия')+'</h1><div class="st"><span class="dot ok"></span><span id="hcsub">'+E(subTxt())+'</span></div></div><div class="r"><div class="ib" data-hc="menu" title="Меню">'+IC('ellipsis')+'</div></div></div>'+
  '<div id="hcmsgs" class="hcmsgs"></div>'+
  (st.rw?'<div class="hccomp"><div id="hcthumbs" class="hcthumbs"></div><textarea id="hcin" rows="1" placeholder="Сообщение Hermes…"></textarea><div class="hctb2"><label class="hcbtn ghost" for="hcfile">'+IC('paperclip')+'</label><input id="hcfile" type="file" accept="image/*" multiple hidden><div id="hcchips" class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="send"></div></div></div>':'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
  var ta=document.getElementById('hcin');if(ta){ta.value=st.draft;grow(ta)}
