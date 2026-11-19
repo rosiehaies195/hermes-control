@@ -710,6 +710,12 @@ function autoGrp(){return colSec('auto','Автоматика','<div class="row"
  (E.clicker.on?'кликер '+E.clicker.iv+' мин':'кликер выкл')+(E.notifier.on?'':' · без уведомлений'))}
 function forecast(){var H=S.tok.h,sum=H.reduce(function(a,b){return a+b},0),last=H.slice(-3),rate=last.reduce(function(a,b){return a+b},0)/last.length,day=rate*24,B=S.budget*1000;
  return {sum:sum,rate:rate,day:day,over:day>B,pct:Math.min(100,sum/B*100),ppct:Math.min(100,day/B*100)}}
+
+function tok14(){var T=S.tok14;if(!T||!T.v||!T.sum)return '';var COL=['var(--gold)','var(--codex)','var(--claude)','var(--ok)','var(--dim)'],mx=1,i,j,tot=T.v.map(function(r){var a=r.reduce(function(x,y){return x+y},0);mx=Math.max(mx,a);return a});
+ var bars=T.v.map(function(r,k){var a=tot[k];return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0"><div style="height:80px;width:100%;display:flex;flex-direction:column-reverse" title="'+T.d[k]+': '+(a/1000).toFixed(1)+' млн">'+r.map(function(x,j){return x?'<i style="display:block;width:100%;height:'+Math.max(1,Math.round(x/mx*80))+'px;background:'+COL[j]+'"></i>':''}).join('')+'</div><span style="font:9px \'JetBrains Mono\',monospace;color:var(--dim)">'+(k%2==(T.v.length-1)%2?T.d[k].slice(0,2):'')+'</span></div>'}).join('');
+ var leg=T.j.map(function(x,j){return '<div class="trow"><span><i style="display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:8px;background:'+COL[j]+'"></i>'+esc(x.n)+'</span><b class="mono">'+(x.k/1000).toFixed(1)+' млн</b></div>'}).join('');
+ var avg=T.v.slice(-7).reduce(function(a,r,k){return a+tot[T.v.length-7+k]},0)/7;
+ return '<div class="tok"><div class="top"><b>'+(T.sum/1000).toFixed(1)+' млн</b><span class="w okk">за 14 дней</span></div><div style="display:flex;gap:3px;align-items:flex-end;margin-top:10px">'+bars+'</div><div style="margin-top:10px">'+leg+'</div><div style="font-size:12.5px;color:var(--mut);margin-top:8px">в среднем '+(avg/1000).toFixed(1)+' млн в сутки за последние 7 дней</div></div>'}
 function tokens(){if(!S.tok||!S.tok.h)return '';var H=S.tok.h,lim=S.budget*1000/24,F=forecast(),sum=F.sum,top=Math.max(Math.max.apply(null,H),lim*1.15);
  var T=S.sess.filter(function(s){return s.tok}).slice().sort(function(a,b){return b.tok-a.tok}).slice(0,3);
  var body='<div class="grp tok"><div class="top"><b>'+(sum/1000).toFixed(1)+' млн</b><span class="w'+(sum>S.budget*1000?'':' okk')+'">'+(sum>S.budget*1000?'выше бюджета':'в пределах бюджета')+'</span></div>'+
@@ -728,7 +734,7 @@ function hermesCard(){return '';var g=S.health.filter(function(h){return h.k=='g
  return '<div class="sec"><div class="grp"><div class="row"><div class="logo" data-st="'+(g.ok?'ok':'bad')+'" style="width:34px;height:34px"></div><div class="t"><div class="n">Hermes</div><div class="d">'+(g.ok?'в браузере':esc(g.d||'gateway не отвечает'))+'</div></div>'+
  (g.ok?'<div class="btn sm" style="min-height:40px;padding:0 14px" data-a="hermes">Открыть</div>':'<div class="btn sm" style="min-height:40px;padding:0 12px" data-a="'+(g.busy?'':'fix')+'" data-x="gateway">'+(g.busy?'…':'Перезапустить')+'</div>')+'</div>'+
  (g.ok?'<div class="row tap" data-a="hermes_ext" style="min-height:40px;padding:8px 14px"><div class="t"><div class="d">Открыть в Safari</div></div><span class="chev">›</span></div>':'')+'</div></div>'}
-function home(){return hd()+updBanner()+netBanner()+hero()+S.pend.slice(1).map(qAlert).join('')+digestCard()+projCard()+queueCard()+colSec('strip','Сессия · 12 ч',strip(),stripSum())+colSec('path','Дорожка шагов',pathView(),pathSum())+tokens()+autoGrp()+feed()+hermesCard()}
+function home(){return hd()+updBanner()+netBanner()+hero()+S.pend.slice(1).map(qAlert).join('')+digestCard()+projCard()+queueCard()+colSec('strip','Сессия · 12 ч',strip(),stripSum())+colSec('path','Дорожка шагов',pathView(),pathSum())+tokens()+colSec('tok14','Токены · 14 дней',tok14(),S.tok14&&S.tok14.sum?(S.tok14.sum/1000).toFixed(1)+' млн':'')+autoGrp()+feed()+hermesCard()}
 
 /* ---------- вопросы ---------- */
 function qcard(q){var c=U.qsel[q.id]||{},dis=c.k===undefined||(c.k==='o'&&!(c.t||'').trim()),ag=q.ag||'claude';
@@ -861,7 +867,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=64;
+var VER=65;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
