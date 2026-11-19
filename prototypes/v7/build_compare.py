@@ -15,8 +15,18 @@ base.update(stopped=False, fails=0, pause=0, pend=[], cancel=[])
 base["clicker"] = dict(base["clicker"], on=True)
 for h in base.get("health", []):
     h["ok"] = 1
+    h["d"] = "в норме"   # real details contain host names
 base.pop("dig", None)
 base["away"] = None
+# the page is public (GitHub Pages): never ship live content, only the numbers the layout needs
+for k in ("wa", "api_url"):
+    base.pop(k, None)
+base.update(hs=[], cj=[], log=[], hist=[], sess=[], projects=[{"name": "demo", "desc": ""}],
+            brain={"sec": [], "now": [], "log": [], "nowp": []},
+            session="PC-M2: пример шага (#100): Working", action="start: PC-M2: пример шага (#100)",
+            steps=[{"c": "PC2a", "x": "PC2a: пример (#98)", "t": now - 7200}, {"c": "PC2b", "x": "PC2b: пример (#99)", "t": now - 3600}])
+if base.get("proj"):
+    base["proj"] = dict(base["proj"], n="demo", t="PC-M2 «Пример вехи»", ms="PC-M2", cur="PC2b", done=5, total=9, tasks=[])
 
 
 def q(i, text, opts, desc, ag="claude", rec=-1, perm=False, ago=300, sess="tv-miniapp · PC-M2"):
@@ -24,7 +34,7 @@ def q(i, text, opts, desc, ag="claude", rec=-1, perm=False, ago=300, sess="tv-mi
 
 
 Q1 = q("a1", "Какую ветку брать за основу для следующей вехи?", ["master", "kivi (Recommended)", "Новая ветка от master"],
-       ["стабильная", "форк SmartTube", "чистый старт"], rec=1, ago=420)
+       ["стабильная", "форк", "чистый старт"], rec=1, ago=420)
 Q2 = q("a2", "Разрешить запуск npm install?", ["Allow", "Deny"], ["", ""], perm=True, ago=90, sess="tv-miniapp")
 Q3 = q("a3", "Показать план перед стартом?", ["Да", "Нет (Recommended)"], ["", ""], ag="codex", rec=1, ago=30, sess="tv-miniapp")
 
