@@ -867,7 +867,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=66;
+var VER=67;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1604,6 +1604,17 @@ function grepView(){if(!API)return '<div class="empty">Поиск по текс�
 document.addEventListener('click',function(ev){var el=ev.target.closest('[data-a=sfhc]');if(!el||!window.HC)return;ev.stopPropagation();U.tab='hc';U.page='hcchat';HC.open(el.dataset.x);render()},true);
 /* простой режим: поиск сразу везде (в техническом — по чипам) */
 document.addEventListener('input',function(ev){if(ev.target.dataset&&ev.target.dataset.in=='bq'&&API&&PL())U.bfull=true},true);
+
+/* v6.7: лента вех на странице проекта (данные: /api/proj -> ms, из *-progress.md и git) */
+function msDur(b,e){var m=Math.max(0,Math.round((e-b)/60));if(m<90)return m<=1?'меньше часа':m+' мин';var h=Math.round(m/60);if(h<48)return h+' ч';return Math.round(h/24)+' дн'}
+function msD(ts){var d=new Date(ts*1000);return ('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)}
+function msBlock(){var D=U.projD;if(!D)return '';var M=D.ms||[];
+ if(!M.length)return API&&!D.ms?'':'<div class="sec"><div class="sh"><span>Все вехи</span></div><div class="grp"><div class="row" style="color:var(--mut)">Журналы вех не найдены</div></div></div>';
+ var fin=M.filter(function(m){return !m.act}).length,cur=M[0],lastDone=0;
+ return '<div class="sec"><div class="sh"><span>Все вехи</span><span class="sum">'+fin+' из '+M.length+' закрыто</span></div><div class="grp">'+M.map(function(m,i){
+  var pct=Math.round(m.done/Math.max(1,m.total)*100),stale=m.act&&i>0;
+  return '<div class="row" style="display:block"><div style="display:flex;align-items:center;gap:10px"><span class="dot '+(m.act?(stale?'bad':'wait'):'ok')+'"></span><div class="t"><div class="n" style="font-size:14.5px">'+esc(m.t||m.id)+'</div><div class="d">'+(m.b?msD(m.b)+(m.e&&msD(m.e)!=msD(m.b)?' → '+msD(m.e):''):'')+(m.b&&m.e?' · '+msDur(m.b,m.e):'')+' · '+m.done+'/'+m.total+' задач'+(stale?' · не закрыта':'')+'</div></div></div><div class="prog" style="margin-top:8px"><i style="width:'+pct+'%"></i></div></div>'}).join('')+'</div></div>'}
+var _pp0=projPage;projPage=function(p){return _pp0(p)+msBlock()};
 
 </script>
 </body>
