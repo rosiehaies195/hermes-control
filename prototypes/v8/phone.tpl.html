@@ -1,0 +1,9 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hermes · А2 в телефоне</title>
+<style>body{margin:0;background:#0b0d12;color:#e8e9ee;font:14px/1.5 Inter,system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 12px 30px}
+p{color:#9aa0b0;max-width:420px;text-align:center;margin:0 0 14px}
+.phone{width:410px;max-width:100%;border:10px solid #1b1f2a;border-radius:38px;overflow:hidden;background:#000;box-shadow:0 12px 40px #0008}
+iframe{display:block;width:100%;height:min(820px,calc(100vh - 110px));border:0;background:#07070d}
+@media(max-width:500px){.phone{border:0;border-radius:0;width:100%}iframe{height:calc(100vh - 90px)}}</style></head><body>
+<p>Вариант А2 в размере телефона. Нажимай на вопросы, проекты, фильтр и вкладки внизу (там «Вопросы» = «Входящие»).</p>
+<div class="phone"><iframe id="f" title="А2"></iframe></div>
+<script>var B=location.href.replace(/[^\/]*$/,'');document.getElementById('f').src=B+'multi-a2.html?t='+Date.now()+'#z=@@Z@@';</script></body></html>
