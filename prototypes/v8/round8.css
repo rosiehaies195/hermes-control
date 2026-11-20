@@ -17,3 +17,12 @@ input.in,textarea.in{border-radius:10px}
 /* строки проектов и фильтр — в палитре Hermes */
 .row2 .n2{font-weight:600}
 .seg2>span.on{background:color-mix(in srgb,var(--gold) 14%,var(--s1));border-color:var(--gold);color:var(--tx)}
+/* «Ещё»: вложенные разделы без второго отступа — все заголовки по одной левой линии */
+.more2 .sec{padding:0;margin-top:0}
+.more2{margin:0 -16px;padding:0 16px}
+.more2>.sec>.sh,.more2 .sh{margin-left:2px}
+/* подпись справа никогда не наезжает на заголовок: заголовок не сжимается, подпись обрезается многоточием */
+.sh{gap:10px}
+.sh>span:first-child{flex:none;display:flex;align-items:center;gap:10px}
+.sh .sum{min-width:0;flex:1 1 auto;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh>span:first-child:after{min-width:12px;width:24px;flex:none}
