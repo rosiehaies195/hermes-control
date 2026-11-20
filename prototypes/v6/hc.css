@@ -1,0 +1,373 @@
+/* v6.2: вкладка «Чат» в облике Hermes Desktop (чёрные панели, синий акцент, КАПС-подписи, малые скругления) */
+body.hcm{overflow:hidden;padding-bottom:0}
+body.hcm #scr{padding:0}
+body.hcm.hckb .nav{display:none}
+#hcroot{position:fixed;left:0;right:0;top:0;bottom:calc(68px + env(safe-area-inset-bottom));display:flex;flex-direction:column;background:var(--bg);padding-top:calc(env(safe-area-inset-top) + var(--tg-content-safe-area-inset-top,0px))}
+body.hckb #hcroot{bottom:0}
+.hchd{flex:none;gap:12px;display:flex;align-items:center}
+.hchd .logo{width:40px;height:40px;border-radius:10px;margin:0}
+.hchd .r{margin-left:auto;display:flex;gap:8px}
+.hcmid{flex:1;min-width:0}
+.hcmid.tap{cursor:pointer}
+.hcmid h1{margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hcmid .st{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hchd .ib{display:grid;place-items:center;cursor:pointer;flex:none;position:relative}
+.hcbtn{min-width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line2);background:var(--s2);color:var(--mut);cursor:pointer;font-weight:600;font-size:12.5px;padding:0 8px;user-select:none}
+.hcbtn.ghost{border-color:transparent;background:none}
+.hcbtn.pri{background:var(--gold);color:var(--on-gold);border:0}
+.hcbtn .ic{width:17px;height:17px}
+.hcnew{display:flex;align-items:center;gap:10px;margin:10px 12px 2px;padding:11px 12px;border:1px solid var(--line2);border-radius:6px;background:var(--s1);cursor:pointer;color:var(--tx);flex:none}
+.hcnew .ic{width:18px;height:18px;color:var(--gold)}
+.hcnew b{font-size:14px;font-weight:600;flex:1}
+.hcnew:active{background:var(--s2)}
+.hcfil{display:flex;gap:0;padding:6px 12px 0;flex:none;border-bottom:1px solid var(--line)}
+.hcfil span{padding:9px 12px;font:600 11px var(--font,inherit);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.hcfil span.on{color:var(--tx);border-bottom-color:var(--gold)}
+.hclist{flex:1;overflow:auto;padding:6px 8px 16px;-webkit-overflow-scrolling:touch}
+.hcsec{display:flex;align-items:center;gap:10px;margin:10px 6px 6px;font:600 11px var(--font,inherit);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.hcsec:before{content:"";width:9px;height:9px;background:radial-gradient(circle,var(--gold) 1.2px,transparent 1.6px) 0 0/3px 3px;flex:none}
+.hcsec:after{content:"";flex:1;height:1px;background:var(--line);order:1}
+.hcsec em{order:2;font:500 10.5px "JetBrains Mono",ui-monospace,monospace;color:var(--dim);font-style:normal;letter-spacing:0}
+.hcsec .ic{order:3;width:14px;height:14px;color:var(--dim)}
+.hcsec.tap{cursor:pointer;min-height:32px}
+.hcbul.pin{background:var(--gold)}
+.hcpin{width:30px;height:30px;display:grid;place-items:center;flex:none;color:var(--dim);border-radius:6px;cursor:pointer;margin-right:-4px}
+.hcpin .ic{width:15px;height:15px}
+.hcpin.on{color:var(--gold)}
+.hcpin:active{background:var(--s2)}
+.hcsess{display:flex;gap:10px;align-items:center;padding:10px 8px;border-radius:6px;cursor:pointer;min-height:44px}
+.hcsess:active{background:var(--s2)}
+.hcbul{width:5px;height:5px;border-radius:50%;background:var(--dim);flex:none;margin:0 3px}
+.hcsb{flex:1;min-width:0}
+.hcsb b{display:block;font-size:14px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hcsess>span{font:500 11px "JetBrains Mono",ui-monospace,monospace;color:var(--dim);flex:none}
+.hcsm{font-size:11.5px;color:var(--dim);margin-top:2px;display:flex;align-items:center;gap:4px}
+.hcsm .ic{width:12px;height:12px}
+.hcempty{padding:40px 16px;text-align:center;color:var(--mut);font-size:14px;line-height:1.6}
+.hcerr{margin:10px 12px;padding:10px 12px;border:1px solid var(--bad);color:var(--bad);border-radius:6px;font-size:13px;word-break:break-word}
+.hcmsgs{flex:1;overflow:auto;padding:14px 14px 8px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.hcrow{display:flex;margin-bottom:14px}
+.hcrow.u{justify-content:flex-end}
+.hcb{max-width:92%;font-size:14.5px;line-height:1.55;word-break:break-word;overflow-wrap:anywhere}
+.hcb.u{background:var(--soft2);border:1px solid #2b3f66;color:var(--tx);border-radius:8px;padding:8px 12px}
+html[data-theme=light] .hcb.u{border-color:#b8cdf5}
+.hcb.u code{background:#0003}
+.hcb.a{max-width:100%;min-width:0;padding:0 2px;background:none;border:0}
+.hcb ul,.hcb ol{margin:4px 0;padding-left:20px}
+.hcb code{font:12.5px 'JetBrains Mono',ui-monospace,Menlo,monospace;background:var(--s2);padding:1px 5px;border-radius:4px}
+.hcpre{margin:6px 0;padding:9px 11px;background:var(--bar);border:1px solid var(--line);border-radius:6px;overflow:auto;max-width:100%;font:12px/1.45 'JetBrains Mono',ui-monospace,Menlo,monospace;white-space:pre;-webkit-overflow-scrolling:touch}
+.hcpre code{background:none;padding:0;font:inherit}
+.hcb a{color:var(--gold);text-decoration:underline;cursor:pointer}
+.hch{font:600 11.5px var(--font,inherit);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:10px 0 3px}
+.hcsp{height:6px}
+.hct2{min-width:0}
+.hctool{margin:6px 0;border:1px solid var(--line);border-radius:6px;background:var(--s1);overflow:hidden}
+.hct{display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:12.5px;cursor:pointer;min-width:0}
+.hct i{flex:none;display:flex;width:16px}
+.hct i .ic{width:14px;height:14px}
+.hct b{flex:none;font:600 11.5px 'JetBrains Mono',ui-monospace,monospace;color:var(--tx)}
+.hct span{flex:1;min-width:0;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:11.5px 'JetBrains Mono',ui-monospace,monospace}
+.hctool.ok i{color:var(--live)}.hctool.err i{color:var(--bad)}.hctool.run i{color:var(--gold)}
+.hctool.run{border-color:#22314a}
+.hctb{padding:0 10px 8px}
+.hcl{font:600 10px var(--font,inherit);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:6px}
+.hcspin{width:13px;height:13px;border:2px solid var(--line2);border-top-color:var(--gold);border-radius:50%;animation:hcs .8s linear infinite;display:block}
+@keyframes hcs{to{transform:rotate(360deg)}}
+.hcdots{display:flex;gap:4px;padding:6px 2px}
+.hcdots i{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:hcd 1.2s infinite}
+.hcdots i:nth-child(2){animation-delay:.2s}.hcdots i:nth-child(3){animation-delay:.4s}
+@keyframes hcd{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.hcmore{text-align:center;color:var(--gold);font:600 11px var(--font,inherit);letter-spacing:.14em;text-transform:uppercase;padding:6px;cursor:pointer}
+.hcim{font-size:12px;opacity:.85;display:flex;gap:4px;align-items:center;margin-bottom:3px}.hcim .ic{width:14px;height:14px}
+.hcpend{margin:8px 0 12px;border:1px solid var(--warn);border-radius:6px;padding:10px 12px;background:var(--s1)}
+.hcpk{font:700 11.5px var(--font,inherit);letter-spacing:.14em;text-transform:uppercase;color:var(--warn);display:flex;gap:6px;align-items:center}.hcpk .ic{width:16px;height:16px}
+.hcpq{margin:6px 0;font-size:14px;word-break:break-word}
+.hcpa{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.hcpa .btn{flex:1;min-width:92px;min-height:44px}
+.hcpa input{flex:1 1 100%;min-height:44px;border-radius:6px;border:1px solid var(--line2);background:var(--bar);color:var(--tx);padding:0 10px;font:inherit}
+.btn.bad{color:var(--bad);border-color:var(--bad)}
+/* композер как в Desktop: карточка, снизу ряд «скрепка · модель · глубина · отправить» */
+.hccomp{margin:0 10px calc(8px + env(safe-area-inset-bottom));border:1px solid var(--line2);border-radius:8px;background:var(--s1);flex:none;display:flex;flex-direction:column;padding:6px 8px}
+body:not(.hckb) .hccomp{margin-bottom:8px}
+.hccomp:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px var(--glow)}
+.hccomp textarea{width:100%;min-height:40px;max-height:140px;resize:none;border:0;background:none;color:var(--tx);padding:6px 4px;font:15px/1.4 inherit;font-family:inherit;outline:none;box-sizing:border-box}
+.hctb2{display:flex;align-items:center;gap:6px}
+.hcchips{flex:1;display:flex;gap:6px;justify-content:flex-end;min-width:0;overflow:hidden}
+.hcchip{display:flex;align-items:center;gap:4px;height:28px;padding:0 8px;border-radius:4px;border:1px solid var(--line2);background:var(--s2);color:var(--mut);font:500 11.5px "JetBrains Mono",ui-monospace,monospace;cursor:pointer;white-space:nowrap;min-width:0}
+.hcchip:first-child{overflow:hidden;text-overflow:ellipsis}
+.hcchip .ic{width:13px;height:13px;flex:none}
+.hcchip i.on{width:6px;height:6px;border-radius:50%;background:var(--gold);flex:none}
+.hcsendb{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--on-gold);display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.hcsendb.stop{background:var(--bad);color:#fff}
+.hcsendb .ic{width:19px;height:19px}
+.hcthumbs{display:flex;gap:8px;flex:none;overflow-x:auto}
+.hcthumbs:empty{display:none}
+.hcth{position:relative;width:52px;height:52px;flex:none;margin:4px 0}
+.hcth img{width:52px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line2)}
+.hcth span{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--bad);color:#fff;display:flex;align-items:center;justify-content:center}.hcth span .ic{width:12px;height:12px}
+.hcro{padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bar);color:var(--mut);font-size:13px;display:flex;flex-direction:column;gap:10px;flex:none}.hcro .ic{width:16px;height:16px;vertical-align:-3px}.hcro .btn{min-height:44px}
+.hcsh{padding:4px 0 8px;font:600 12px var(--font,inherit);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.hcsh b{font-weight:600}
+.hcinp{width:100%;box-sizing:border-box;min-height:44px;border-radius:6px;border:1px solid var(--line2);background:var(--bar);color:var(--tx);padding:0 12px;font:15px inherit;font-family:inherit;margin-bottom:8px}
+.hint2{color:var(--mut);font-size:13.5px;padding:2px 0 8px;line-height:1.5}
+/* шторка выбора модели */
+.hcmprov{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin:0 -2px}
+.hcmprov span{flex:none;padding:6px 10px;border-radius:4px;border:1px solid var(--line2);background:var(--s2);color:var(--mut);font:500 11.5px "JetBrains Mono",ui-monospace,monospace;cursor:pointer}
+.hcmprov span.on{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
+.hcml{max-height:42vh;overflow:auto;margin-bottom:10px;border:1px solid var(--line);border-radius:6px;-webkit-overflow-scrolling:touch}
+.hcmi{display:flex;align-items:center;gap:10px;padding:10px 12px;min-height:44px;border-top:1px solid var(--line);cursor:pointer}
+.hcmi:first-child{border-top:0}
+.hcmi:active{background:var(--s2)}
+.hcmi .ic{width:16px;height:16px;color:var(--gold);flex:none}
+.hcmi i{width:16px;flex:none}
+.hcmi b{font-size:14px;font-weight:600;flex:none}
+.hcmi span{flex:1;min-width:0;text-align:right;color:var(--dim);font:11px "JetBrains Mono",ui-monospace,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hcmi.on b{color:var(--gold)}
+
+.nav div{font-size:9px!important;letter-spacing:.06em!important}
+
+.hcbtn.rec{background:var(--bad);color:#fff;border-color:var(--bad);animation:vcp 1.2s ease-in-out infinite}
+.hcbtn .vct{font:600 11.5px "JetBrains Mono",monospace}
+@keyframes vcp{50%{opacity:.7}}
+.hccomp textarea.vclive{color:var(--mut);font-style:italic}
+
+.hckind{padding-top:4px}.hckind span{flex:1;text-align:center;padding:9px 4px}
+.hclv{color:var(--ok,#3fb950);font-style:normal;font-weight:600}
+.hint3{font-size:11px;color:var(--dim);padding:0 4px}
+.hcsess.cc .hcpin{display:none}
+
+/* ===== v7.1: облик агента. Claude — как Claude Desktop (тёплый графит, терракота, засечки у ответа); Codex — как Codex (нейтральный чёрный, белая кнопка, моно) ===== */
+body.hk-claude #hcroot,body.hk-claude .sheet{--bg:#262624;--s1:#30302e;--s2:#3a3a37;--bar:#262624;--tx:#faf9f5;--mut:#c2c0b6;--dim:#928f85;--line:#3a3935;--line2:#4b4a45;--gold:#d97757;--on-gold:#fff;--glow:rgba(217,119,87,.22);--soft2:#1c1b1a}
+body.hk-codex #hcroot,body.hk-codex .sheet{--bg:#0d0d0d;--s1:#181818;--s2:#232323;--bar:#0d0d0d;--tx:#ececec;--mut:#b4b4b4;--dim:#808080;--line:#252525;--line2:#363636;--gold:#e8e8e8;--on-gold:#0d0d0d;--glow:rgba(255,255,255,.10);--soft2:#2b2b2b}
+body.hk-claude #hcroot,body.hk-codex #hcroot{background:var(--bg);color:var(--tx)}
+/* шапка */
+body.hk-claude #hcroot .hd,body.hk-codex #hcroot .hd{background:var(--bg);border-bottom:1px solid var(--line)}
+body.hk-claude #hcroot .hd h1{font:500 19px/1.2 "Tiempos Headline","Source Serif 4",Georgia,"Times New Roman",serif;letter-spacing:0;text-transform:none;color:var(--tx)}
+body.hk-codex #hcroot .hd h1{font:600 16px/1.2 -apple-system,"SF Pro Text",Inter,system-ui,sans-serif;letter-spacing:0;text-transform:none}
+body.hk-claude #hcroot .hchd .logo{background:#d97757 url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.1' stroke-linecap='round'%3E%3Cpath d='M12 12 L12.00 2.50' transform='rotate(0 12 12)'/%3E%3Cpath d='M12 12 L12.00 5.00' transform='rotate(30 12 12)'/%3E%3Cpath d='M12 12 L12.00 2.50' transform='rotate(60 12 12)'/%3E%3Cpath d='M12 12 L12.00 5.00' transform='rotate(90 12 12)'/%3E%3Cpath d='M12 12 L12.00 2.50' transform='rotate(120 12 12)'/%3E%3Cpath d='M12 12 L12.00 5.00' transform='rotate(150 12 12)'/%3E%3Cpath d='M12 12 L12.00 2.50' transform='rotate(180 12 12)'/%3E%3Cpath d='M12 12 L12.00 5.00' transform='rotate(210 12 12)'/%3E%3Cpath d='M12 12 L12.00 2.50' transform='rotate(240 12 12)'/%3E%3Cpath d='M12 12 L12.00 5.00' transform='rotate(270 12 12)'/%3E%3Cpath d='M12 12 L12.00 2.50' transform='rotate(300 12 12)'/%3E%3Cpath d='M12 12 L12.00 5.00' transform='rotate(330 12 12)'/%3E%3C/svg%3E") center/64% no-repeat;border:0;border-radius:11px;box-shadow:none;animation:none}
+body.hk-codex #hcroot .hchd .logo{background:#fff url(codex.svg) center/64% no-repeat;border:0;border-radius:10px;box-shadow:none;animation:none;filter:none}
+body.hk-claude #hcroot .hd .st,body.hk-codex #hcroot .hd .st{color:var(--dim);font-size:12px}
+body.hk-claude #hcroot .hd .dot,body.hk-codex #hcroot .hd .dot{background:var(--dim);box-shadow:none}
+body.hk-claude #hcroot .ib,body.hk-codex #hcroot .ib{border-radius:10px;background:none;border-color:transparent;color:var(--mut)}
+/* переключатель агентов и фильтры — пилюли */
+body.hk-claude #hcroot .hcfil,body.hk-codex #hcroot .hcfil{border-bottom:0;padding:10px 12px 2px;gap:6px}
+body.hk-claude #hcroot .hcfil span,body.hk-codex #hcroot .hcfil span{padding:7px 14px;border-radius:999px;letter-spacing:0;text-transform:none;font:500 13px -apple-system,Inter,system-ui,sans-serif;border:1px solid transparent;margin:0;color:var(--mut)}
+body.hk-claude #hcroot .hcfil span.on,body.hk-codex #hcroot .hcfil span.on{background:var(--s2);color:var(--tx);border-color:var(--line2)}
+body.hk-claude #hcroot .hcfil.hckind span,body.hk-codex #hcroot .hcfil.hckind span{flex:1;text-align:center}
+body.hk-claude #hcroot .hcfil.sub,body.hk-codex #hcroot .hcfil.sub{padding-top:4px}
+body.hk-claude #hcroot .hcfil.sub span,body.hk-codex #hcroot .hcfil.sub span{padding:4px 12px;font-size:12px;flex:none}
+/* список */
+body.hk-claude #hcroot .hcnew,body.hk-codex #hcroot .hcnew{border-radius:12px;background:var(--s1);border-color:var(--line2)}
+body.hk-claude #hcroot .hcnew .ic{color:var(--gold)}body.hk-codex #hcroot .hcnew .ic{color:var(--tx)}
+body.hk-claude #hcroot .hcsec,body.hk-codex #hcroot .hcsec{letter-spacing:0;text-transform:none;font:500 12px -apple-system,Inter,system-ui,sans-serif;color:var(--dim)}
+body.hk-claude #hcroot .hcsec:before,body.hk-codex #hcroot .hcsec:before,body.hk-claude #hcroot .hcsec:after,body.hk-codex #hcroot .hcsec:after{display:none}
+body.hk-claude #hcroot .hcsec em,body.hk-codex #hcroot .hcsec em{font:500 11px -apple-system,Inter,system-ui,sans-serif}
+body.hk-claude #hcroot .hcsess,body.hk-codex #hcroot .hcsess{border-radius:12px;padding:11px 10px}
+body.hk-claude #hcroot .hcsess:active,body.hk-codex #hcroot .hcsess:active{background:var(--s1)}
+body.hk-claude #hcroot .hcsb b{font:500 15px -apple-system,Inter,system-ui,sans-serif}
+body.hk-claude #hcroot .hcbul,body.hk-codex #hcroot .hcbul{display:none}
+body.hk-claude #hcroot .hcsess>span,body.hk-codex #hcroot .hcsess>span{font:500 11px -apple-system,Inter,system-ui,sans-serif}
+.hclv{color:#4ade80}.hcst{font-style:normal;font-weight:500}.hcst.blocked{color:#e0a458}.hcst.review_ready{color:#7aa7f2}.hcst.completed{color:var(--dim)}
+/* сообщения */
+body.hk-claude #hcroot .hcmsgs{padding:16px 16px 8px}
+body.hk-claude #hcroot .hcb{font-size:16px;line-height:1.65}
+body.hk-claude #hcroot .hcb.a{font-family:"Tiempos Text","Source Serif 4",Georgia,"Times New Roman",serif;font-size:16.5px;line-height:1.68;color:var(--tx)}
+body.hk-claude #hcroot .hcb.u{background:#1c1b1a;border:0;border-radius:18px;padding:10px 15px;font-family:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif;font-size:15.5px;line-height:1.5}
+body.hk-claude #hcroot .hcb.u code{background:#ffffff14}
+body.hk-claude #hcroot .hcb a{color:#e8896a}
+body.hk-claude #hcroot .hch{font:600 17px "Tiempos Headline","Source Serif 4",Georgia,serif;letter-spacing:0;text-transform:none;color:var(--tx);margin:14px 0 4px}
+body.hk-claude #hcroot .hcb code{background:#ffffff12;color:#f0d4c8}
+body.hk-claude #hcroot .hcpre{background:#1c1b1a;border:1px solid var(--line);border-radius:10px}
+body.hk-claude #hcroot .hctool{border:0;background:#2d2d2b;border-radius:10px;margin:7px 0}
+body.hk-claude #hcroot .hct b{font:500 13px -apple-system,Inter,system-ui,sans-serif;color:var(--mut)}
+body.hk-claude #hcroot .hct span{font:12px "JetBrains Mono",ui-monospace,monospace;color:var(--dim)}
+body.hk-claude #hcroot .hctool.ok i{color:#8a9a7b}
+body.hk-claude #hcroot .hcl{color:var(--dim);letter-spacing:.06em}
+body.hk-claude #hcroot .hcdots i{background:var(--gold)}
+/* Codex-сообщения */
+body.hk-codex #hcroot .hcb{font-size:14.5px;line-height:1.6;font-family:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif}
+body.hk-codex #hcroot .hcb.u{background:#2b2b2b;border:0;border-radius:16px;padding:9px 14px}
+body.hk-codex #hcroot .hcb a{color:#6cb6ff}
+body.hk-codex #hcroot .hch{letter-spacing:0;text-transform:none;color:var(--tx);font:600 15px -apple-system,Inter,sans-serif}
+body.hk-codex #hcroot .hcb code{background:#ffffff12;color:#e6e6e6}
+body.hk-codex #hcroot .hcpre{background:#141414;border:1px solid var(--line);border-radius:8px}
+body.hk-codex #hcroot .hctool{border:1px solid var(--line);background:#141414;border-radius:8px}
+body.hk-codex #hcroot .hct b{color:#e6e6e6}
+body.hk-codex #hcroot .hcl{color:var(--dim);letter-spacing:.06em}
+body.hk-codex #hcroot .hcdots i{background:var(--tx)}
+body.hk-codex #hcroot .hcspin{border-top-color:var(--tx)}
+/* композер */
+body.hk-claude #hcroot .hccomp{border-radius:22px;background:var(--s1);border:1px solid var(--line2);padding:8px 10px;margin-bottom:8px}
+body.hk-claude #hcroot .hccomp:focus-within{border-color:#d9775788;box-shadow:0 0 0 3px var(--glow)}
+body.hk-claude #hcroot .hccomp textarea{font-size:16px}
+body.hk-claude #hcroot .hcsendb{border-radius:10px;width:34px;height:34px;background:var(--gold)}
+body.hk-claude #hcroot .hcchip{border:0;background:none;border-radius:999px;color:var(--mut);font:500 12.5px -apple-system,Inter,system-ui,sans-serif;padding:0 9px}
+body.hk-claude #hcroot .hcchip:active{background:var(--s2)}
+body.hk-claude #hcroot .hcbtn.ghost{border-radius:999px}
+body.hk-codex #hcroot .hccomp{border-radius:20px;background:var(--s1);border:1px solid var(--line2);padding:8px 10px;margin-bottom:8px}
+body.hk-codex #hcroot .hccomp:focus-within{border-color:#5a5a5a;box-shadow:0 0 0 3px var(--glow)}
+body.hk-codex #hcroot .hcsendb{background:#fff;color:#0d0d0d}
+body.hk-codex #hcroot .hcchip{border:0;background:var(--s2);border-radius:999px;color:var(--mut);padding:0 10px}
+body.hk-codex #hcroot .hcro{background:var(--bg);border-top:1px solid var(--line)}
+body.hk-claude #hcroot .hcro{background:var(--bg);border-top:1px solid var(--line)}
+body.hk-claude #hcroot .btn.pri{background:var(--gold);color:#fff;border-color:var(--gold)}
+body.hk-codex #hcroot .btn.pri{background:#fff;color:#0d0d0d;border-color:#fff}
+/* шторки */
+body.hk-claude .sheet,body.hk-codex .sheet{border-radius:22px 22px 0 0;background:var(--s1);border-top:1px solid var(--line2);color:var(--tx)}
+body.hk-claude .sheet .hcsh,body.hk-codex .sheet .hcsh{letter-spacing:0;text-transform:none;color:var(--tx);font-size:15px}
+body.hk-claude .sheet .hcmprov span.on{background:var(--gold);border-color:var(--gold);color:#fff}
+body.hk-codex .sheet .hcmprov span.on{background:#fff;border-color:#fff;color:#0d0d0d}
+
+.hcwrap{display:flex;flex-direction:column;align-items:flex-end;max-width:92%;min-width:0}
+.hcwrap.a{align-items:flex-start;max-width:100%;width:100%}
+.hcmeta{display:flex;align-items:center;gap:8px;margin-top:3px;padding:0 3px;color:var(--dim);font-size:11px;line-height:1}
+.hcrow.u .hcmeta{flex-direction:row-reverse}
+.hccp{display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:5px;cursor:pointer;color:var(--dim);-webkit-tap-highlight-color:transparent}
+.hccp:active{background:var(--s2);color:var(--gold)}
+.hccp .ic{width:14px;height:14px}
+.hclist{overscroll-behavior-y:contain}
+
+.hcmsgs,.hcmsgs *{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+.hcmsgs .hcbtn,.hcmsgs [data-hc]{-webkit-user-select:none;user-select:none}
+.hcsel{display:block;width:100%;box-sizing:border-box;min-height:80px;margin:8px 0 12px;padding:10px;border-radius:8px;border:1px solid var(--line2);background:var(--s2);color:var(--tx);font:16px/1.45 inherit;-webkit-user-select:text;user-select:text;resize:none}
+
+/* v7.9: long-press message menu */
+#hcmsgs .hcrow[data-mi] .hcb{transition:transform .18s ease,background-color .18s ease}
+#hcmsgs .hcrow.lp .hcb{transform:scale(.985);background-color:color-mix(in srgb,var(--gold) 10%,transparent)}
+.hcmpv{font-size:14px;line-height:1.45;color:var(--mut);margin:2px 0 12px;padding:10px 12px;border-radius:10px;background:var(--s2);word-break:break-word}
+#sheet .btn .ic{width:17px;height:17px;margin-right:6px;vertical-align:-3px}
+#sheet .btn+.btn{margin-top:8px}
+
+/* v8: forward sheet */
+#sheet .hcfwdk{display:flex;gap:6px;margin:6px 0 10px;padding:0;border:0}
+#sheet .hcfwdk span{flex:1;text-align:center;padding:10px 0;border-radius:12px;border:1px solid var(--line2);font-weight:600;font-size:14.5px;cursor:pointer;color:var(--mut);letter-spacing:0;text-transform:none}
+#sheet .hcfwdk span.on{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
+#sheet .hcfwdl{max-height:52vh;overflow:auto;-webkit-overflow-scrolling:touch}
+
+
+/* ===== v8.1: design "like the official apps" (from prototypes/v8d/design8.css) ===== */
+/* ===== v8 design prototype: "like the official apps" — larger, immersive ===== */
+/* --- immersive chat: no bottom tab bar, composer sits on the safe area --- */
+body.hcv-chat #nav{display:none!important}
+body.hcv-chat #hcroot{bottom:0!important}
+body.hcm #hcroot .hccomp{margin:6px 12px calc(10px + env(safe-area-inset-bottom))}
+body.hcm.hckb #hcroot .hccomp{margin-bottom:8px}
+
+/* --- shared scale (all three agents) --- */
+body.hcm #hcroot .hd{min-height:56px;padding-top:6px;padding-bottom:6px}
+body.hcm #hcroot .hd h1{font-size:18px;line-height:1.25}
+body.hcm #hcroot .hd .st{font-size:13px}
+body.hcm #hcroot .ib{width:42px;height:42px}
+body.hcm #hcroot .ib .ic{width:24px;height:24px}
+body.hcv-chat #hcroot .hd{border-bottom-color:transparent!important}
+body.hcv-chat #hcroot .hcmid{text-align:center;align-items:center}
+body.hcv-chat #hcroot .hcmid h1{font-size:17px}
+
+body.hcm #hcroot .hcmsgs{padding:18px 18px 12px}
+body.hcm #hcroot .hcrow{margin-bottom:24px}
+body.hcm #hcroot .hcb{font-size:17px;line-height:1.6}
+body.hcm #hcroot .hcb.a{font-size:17px;line-height:1.62}
+body.hcm #hcroot .hcb.u{font-size:16.5px;line-height:1.45;padding:11px 16px;border-radius:22px;max-width:84%}
+body.hcm #hcroot .hcwrap{max-width:100%}
+body.hcm #hcroot .hcrow.u .hcwrap{max-width:86%}
+body.hcm #hcroot .hcb p{margin:0 0 12px}
+body.hcm #hcroot .hcb code{font-size:14.5px;padding:2px 6px;border-radius:6px}
+body.hcm #hcroot .hcpre{font-size:13.5px;line-height:1.5;padding:12px 14px;border-radius:14px}
+body.hcm #hcroot .hch{font-size:19px;margin:18px 0 6px}
+body.hcm #hcroot .hcb ul,body.hcm #hcroot .hcb ol{padding-left:24px;margin:6px 0 12px}
+body.hcm #hcroot .hcb li{margin:4px 0}
+body.hcm #hcroot .hctool{border-radius:14px;margin:10px 0}
+body.hcm #hcroot .hct{min-height:44px;padding:10px 14px;gap:10px}
+body.hcm #hcroot .hct b{font-size:14.5px}
+body.hcm #hcroot .hct span{font-size:13px}
+body.hcm #hcroot .hcmeta{gap:2px;margin-top:6px;opacity:.85}
+body.hcm #hcroot .hctm{font-size:12.5px}
+body.hcm #hcroot .hccp{width:38px;height:38px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center}
+body.hcm #hcroot .hccp .ic{width:19px;height:19px}
+body.hcm #hcroot .hcdots i{width:8px;height:8px}
+
+/* composer: big pill */
+body.hcm #hcroot .hccomp{border-radius:26px;padding:10px 12px 8px 16px}
+body.hcm #hcroot .hccomp textarea{font-size:17px!important;line-height:1.45;min-height:28px;padding:4px 0}
+body.hcm #hcroot .hctb2{gap:6px;margin-top:6px;min-height:40px}
+body.hcm #hcroot .hctb2 .hcbtn.ghost{width:40px;height:40px;border-radius:999px;padding:0}
+body.hcm #hcroot .hctb2 .hcbtn .ic{width:22px;height:22px}
+body.hcm #hcroot .hcchip{font-size:14px!important;min-height:36px}
+body.hcm #hcroot .hcsendb{width:38px!important;height:38px!important;border-radius:999px!important}
+body.hcm #hcroot .hcsendb .ic{width:21px;height:21px}
+body.hcm #hcroot .hcro{font-size:15px;line-height:1.5;padding:14px 16px calc(14px + env(safe-area-inset-bottom))}
+
+/* list */
+body.hcv-list #hcroot .hd{min-height:64px}
+body.hcv-list #hcroot .hd h1{font-size:26px!important;font-weight:700;letter-spacing:-.01em}
+body.hcv-list #hcroot .hchd .logo{width:44px;height:44px;border-radius:12px}
+body.hcm #hcroot .hcfil.hckind{padding:10px 14px 4px}
+body.hcm #hcroot .hcfil.hckind span{font-size:15.5px!important;padding:10px 0!important;border-radius:12px!important}
+body.hcm #hcroot .hcnew{margin:12px 14px 4px;padding:14px 16px;border-radius:16px!important;gap:12px}
+body.hcm #hcroot .hcnew b{font-size:16.5px}
+body.hcm #hcroot .hcnew .ic{width:22px;height:22px}
+body.hcm #hcroot .hcfil.sub span{font-size:14px!important;padding:7px 14px!important}
+body.hcm #hcroot .hcsec{font-size:14px!important;padding:16px 18px 6px}
+body.hcm #hcroot .hcsess{padding:13px 14px!important;margin:0 6px;min-height:64px;gap:12px}
+body.hcm #hcroot .hcsb b{font-size:16.5px!important;line-height:1.3}
+body.hcm #hcroot .hcsm{font-size:13.5px;margin-top:3px}
+body.hcm #hcroot .hcsess>span{font-size:12.5px!important}
+body.hcm #hcroot .hcpin .ic{width:18px;height:18px}
+
+/* sheets bigger */
+body.hcm .sheet .btn{min-height:50px;font-size:16px}
+body.hcm .sheet h3{font-size:19px}
+
+/* --- Claude: warm, serif answers, light bubble, orange accent --- */
+body.hk-claude.hcm #hcroot .hcb.a{font-family:"Tiempos Text","Source Serif 4",Charter,"Iowan Old Style",Georgia,serif;font-size:17.5px;line-height:1.65;letter-spacing:.003em}
+body.hk-claude.hcm #hcroot .hcb.u{background:#3a3935;color:#faf9f5;border-radius:20px}
+body.hk-claude.hcv-chat #hcroot .hcmid h1{font:500 17px/1.25 "Tiempos Headline","Source Serif 4",Georgia,serif}
+body.hk-claude.hcm #hcroot .hccomp{background:#30302e;border:1px solid #4b4a45;border-radius:24px;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+body.hk-claude.hcm #hcroot .hcsendb{border-radius:12px!important;background:#d97757}
+body.hk-claude.hcm #hcroot .hctool{background:transparent;border:1px solid #3e3d39}
+[data-theme=light] body.hk-claude #hcroot,[data-theme=light] body.hk-claude .sheet{--bg:#faf9f5;--s1:#ffffff;--s2:#f0eee6;--bar:#faf9f5;--tx:#1f1e1d;--mut:#5e5d59;--dim:#87867f;--line:#e8e6dc;--line2:#d9d6ca;--gold:#c96442}
+[data-theme=light] body.hk-claude.hcm #hcroot .hcb.u{background:#f0eee6;color:#1f1e1d}
+[data-theme=light] body.hk-claude.hcm #hcroot .hccomp{background:#fff;border-color:#e0ddd2;box-shadow:0 4px 18px rgba(31,30,29,.06)}
+[data-theme=light] body.hk-claude.hcm #hcroot .hcb code{background:#f0eee6;color:#7a3e2b}
+[data-theme=light] body.hk-claude.hcm #hcroot .hcpre,[data-theme=light] body.hk-claude.hcm #hcroot .hctool{background:#f5f3ec;border-color:#e8e6dc}
+
+/* --- Codex: ChatGPT-like, neutral, grey bubble, white round send --- */
+body.hk-codex.hcm #hcroot{--bg:#121212;--s1:#212121;--s2:#2f2f2f;--tx:#ececec;--mut:#b4b4b4;--dim:#8f8f8f;--line:#262626;--line2:#383838}
+body.hk-codex.hcm #hcroot .hcb.a{font-family:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif;font-size:17px;line-height:1.6}
+body.hk-codex.hcm #hcroot .hcb.u{background:#2f2f2f;border:0;color:#ececec;border-radius:22px}
+body.hk-codex.hcm #hcroot .hccomp{background:#2f2f2f;border:0;border-radius:28px}
+body.hk-codex.hcm #hcroot .hcsendb{background:#ececec!important;color:#0d0d0d!important}
+body.hk-codex.hcm #hcroot .hcsendb.stop{background:#ececec!important}
+body.hk-codex.hcm #hcroot .hctool{background:transparent;border:1px solid #2c2c2c}
+body.hk-codex.hcm #hcroot .hcpre{background:#0d0d0d;border:1px solid #2c2c2c}
+[data-theme=light] body.hk-codex.hcm #hcroot,[data-theme=light] body.hk-codex .sheet{--bg:#ffffff;--s1:#f9f9f9;--s2:#f4f4f4;--bar:#fff;--tx:#0d0d0d;--mut:#5d5d5d;--dim:#8f8f8f;--line:#ececec;--line2:#e3e3e3}
+[data-theme=light] body.hk-codex.hcm #hcroot .hcb.u{background:#f4f4f4;color:#0d0d0d}
+[data-theme=light] body.hk-codex.hcm #hcroot .hccomp{background:#fff;border:1px solid #e3e3e3;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+[data-theme=light] body.hk-codex.hcm #hcroot .hcsendb{background:#0d0d0d!important;color:#fff!important}
+[data-theme=light] body.hk-codex.hcm #hcroot .hcpre{background:#f9f9f9;border-color:#ececec}
+
+/* --- Hermes: own look, same scale; composer card --- */
+body.hcm:not(.hk-claude):not(.hk-codex) #hcroot .hccomp{border-radius:22px}
+
+/* --- fixes after first screenshots --- */
+body.hcm #hcroot .hcrow.u .hcwrap{max-width:85%}
+body.hcm #hcroot .hcb.u{max-width:100%}
+body.hcv-chat #hcroot .hcmid{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+body.hcv-chat #hcroot .hcmid h1{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.hcv-chat #hcroot .hcmid .st{justify-content:center}
+body.hcm #hcroot .hcsm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.hcm #hcroot .hcsb{min-width:0;flex:1}
+
+/* --- grouped tool calls (design8.js) --- */
+body.hcm #hcroot .hctg{margin:10px 0;border-radius:14px;border:1px solid var(--line2);overflow:hidden}
+body.hcm #hcroot .hctgh{display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 14px;cursor:pointer;color:var(--mut);-webkit-user-select:none;user-select:none}
+body.hcm #hcroot .hctgh i{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+body.hcm #hcroot .hctgh i:empty:before{content:"";width:14px;height:8px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg) translate(1px,-2px);opacity:.8}
+body.hcm #hcroot .hctg.err .hctgh i:empty:before{border-color:var(--bad,#e5484d)}
+body.hcm #hcroot .hctgh b{font:600 14.5px -apple-system,Inter,system-ui,sans-serif;color:var(--tx);white-space:nowrap}
+body.hcm #hcroot .hctgh span{font:13px "JetBrains Mono",ui-monospace,monospace;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+body.hcm #hcroot .hctgh em{width:9px;height:9px;flex:none;border-right:2px solid var(--dim);border-bottom:2px solid var(--dim);transform:rotate(45deg);margin:-4px 4px 0 0;transition:transform .2s}
+body.hcm #hcroot .hctg.open .hctgh em{transform:rotate(-135deg);margin-top:4px}
+body.hcm #hcroot .hctgb{display:none;padding:0 8px 8px}
+body.hcm #hcroot .hctg.open .hctgb{display:block}
+body.hcm #hcroot .hctgb .hctool{margin:6px 0}
