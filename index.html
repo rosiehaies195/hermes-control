@@ -1113,7 +1113,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=81;
+var VER=82;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -1582,7 +1582,7 @@ else fromHash();
 /* Вкладка «Чат»: свой чат с Hermes через tv_server (/api/hc/*) -> API-сервер Hermes. v6.
    Состояние живёт в HC.st; отрисовка идёт мимо общего render(): стрим не должен стирать поле ввода. */
 var HC=(function(){
-var st={kind:LS.get('hckind','hermes'),call:LS.get('hccall',false),ccoff:null,cclive:false,view:'list',sessions:null,all:LS.get('hcall',false),sid:null,title:'',rw:true,src:'',msgs:[],lim:120,busy:false,run:null,pend:[],draft:'',imgs:[],err:'',lerr:'',loadingMsgs:false,cur:null,watch:0,ac:null,models:null,merr:'',msel:null,mprov:'',mq:'',rt:null};
+var st={kind:LS.get('hckind','hermes'),call:LS.get('hccall',false),ccoff:null,cclive:false,view:'list',sessions:null,all:LS.get('hcall',false),sid:null,title:'',rw:true,src:'',msgs:[],lim:120,busy:false,run:null,pend:[],draft:'',imgs:[],err:'',lerr:'',loadingMsgs:false,cur:null,watch:0,ac:null,models:null,merr:'',msel:null,mprov:'',mq:'',rt:null,perm:''};
 var rafId=0;
 function base(){return st.kind=='claude'?'/cc':st.kind=='codex'?'/cx':''}
 function agentName(){return st.kind=='claude'?'Claude':st.kind=='codex'?'Codex':'Hermes'}
@@ -1700,10 +1700,11 @@ function msgsHtml(){var h='',from=Math.max(0,st.msgs.length-st.lim);
  st.pend.forEach(function(p,i){h+=pendHtml(p,i)});
  if(st.err)h+='<div class="hcerr">'+E(st.err)+'</div>';
  return h}
-function pendHtml(p,i){
- if(p.kind=='clarify')return '<div class="hcpend"><div class="hcpk">'+IC('message-circle-question')+' Hermes спрашивает</div><div class="hcpq">'+E(p.text)+'</div><div class="hcpa"><input id="hcclar" placeholder="Ответ"><div class="btn pri" data-hc="clarify" data-i="'+i+'">Ответить</div></div></div>';
- return '<div class="hcpend"><div class="hcpk">'+IC('shield-check')+' Нужно разрешение</div>'+(p.desc?'<div class="hcpq">'+E(p.desc)+'</div>':'')+(p.text?'<pre class="hcpre">'+E(p.text)+'</pre>':'')+
-  '<div class="hcpa"><div class="btn pri" data-hc="appr" data-c="once" data-i="'+i+'">Разрешить</div><div class="btn" data-hc="appr" data-c="session" data-i="'+i+'">На сессию</div><div class="btn bad" data-hc="appr" data-c="deny" data-i="'+i+'">Отклонить</div></div></div>'}
+function pendHtml(p,i){var who=agentName();
+ if(p.kind=='clarify'){var ops=(p.opts||[]).map(function(o){return '<div class="btn" data-hc="clarop" data-i="'+i+'" data-v="'+E(o).replace(/"/g,'&quot;')+'">'+E(o)+'</div>'}).join('');
+  return '<div class="hcpend"><div class="hcpk">'+IC('message-circle-question')+' '+E(who)+' спрашивает</div><div class="hcpq">'+E(p.text)+'</div>'+(ops?'<div class="hcpa hcops">'+ops+'</div>':'')+'<div class="hcpa"><input id="hcclar" placeholder="'+(ops?'Свой ответ':'Ответ')+'"><div class="btn pri" data-hc="clarify" data-i="'+i+'">Ответить</div>'+(st.kind!='hermes'?'<div class="btn" data-hc="clarskip" data-i="'+i+'">Пропустить</div>':'')+'</div></div>'}
+ return '<div class="hcpend"><div class="hcpk">'+IC('shield-check')+' Нужно разрешение'+(p.tool&&st.kind!='hermes'?' · '+E(p.tool):'')+'</div>'+(p.desc?'<div class="hcpq">'+E(p.desc)+'</div>':'')+(p.text?'<pre class="hcpre">'+E(p.text)+'</pre>':'')+
+  '<div class="hcpa"><div class="btn pri" data-hc="appr" data-c="once" data-i="'+i+'">Разрешить</div><div class="btn" data-hc="appr" data-c="session" data-i="'+i+'">'+(st.kind=='hermes'?'На сессию':'Всегда в чате')+'</div><div class="btn bad" data-hc="appr" data-c="deny" data-i="'+i+'">Отклонить</div></div></div>'}
 function paint(){if(!mounted())return;if(st.view=='list'){paintList();return}
  var m=document.getElementById('hcmsgs');if(!m){paintChat();return}
  var near=m.scrollHeight-m.scrollTop-m.clientHeight<140,nh=msgsHtml(),sl=window.getSelection&&window.getSelection(),selin=sl&&!sl.isCollapsed&&sl.rangeCount&&m.contains(sl.anchorNode);
@@ -1718,7 +1719,7 @@ var DATEG=['TODAY','YESTERDAY','EARLIER THIS WEEK','LAST WEEK','EARLIER'];
 function dgroup(ts){var n=new Date(),d=new Date(ts*1000),sod=function(x){return new Date(x.getFullYear(),x.getMonth(),x.getDate()).getTime()},day=864e5,t0=sod(n),dd=Math.round((t0-sod(d))/day);
  if(dd<=0)return 0;if(dd==1)return 1;var wd=(n.getDay()+6)%7,mon=t0-wd*day;if(sod(d)>=mon)return 2;if(sod(d)>=mon-7*day)return 3;return 4}
 function srcName(x){return x=='api_server'?'API':(SRC[x]||x||'OTHER').toUpperCase()}
-function rowHtml(s){return '<div class="hcsess'+(s.cc?' cc':'')+'" data-hc="open" data-id="'+E(s.id)+'"><i class="hcbul'+(s.pin?' pin':'')+'"></i><div class="hcsb"><b>'+E(s.t||'Без названия')+'</b><div class="hcsm">'+(s.rw||s.cc?'':IC('eye')+' ')+E(s.cc?s.src:srcName(s.src))+(s.n!=null?' · '+s.n+(s.cc?' ходов':' сообщ.'):'')+(s.model?' · '+E(pretty(s.model)):'')+(s.stc&&STC[s.stc]?' · <em class="hcst '+s.stc+'">'+STC[s.stc]+'</em>':'')+(s.live?' · <em class="hclv">идёт</em>':'')+'</div></div><span>'+E(ago(s.ts))+'</span><div class="hcpin'+(s.pin?' on':'')+'" data-hc="pin" data-id="'+E(s.id)+'" title="'+(s.pin?'Открепить':'Закрепить')+'">'+IC('pin')+'</div></div>'}
+function rowHtml(s){return '<div class="hcsess'+(s.cc?' cc':'')+'" data-hc="open" data-id="'+E(s.id)+'"><i class="hcbul'+(s.pin?' pin':'')+'"></i><div class="hcsb"><b>'+E(s.t||'Без названия')+'</b><div class="hcsm">'+(s.rw||s.cc?'':IC('eye')+' ')+E(s.cc?s.src:srcName(s.src))+(s.n!=null?' · '+s.n+(s.cc?' ходов':' сообщ.'):'')+(s.model?' · '+E(pretty(s.model)):'')+(s.stc&&STC[s.stc]?' · <em class="hcst '+s.stc+'">'+STC[s.stc]+'</em>':'')+(s.wait?' · <em class="hcst blocked">ждёт ответа</em>':s.live?' · <em class="hclv">идёт</em>':'')+'</div></div><span>'+E(ago(s.ts))+'</span><div class="hcpin'+(s.pin?' on':'')+'" data-hc="pin" data-id="'+E(s.id)+'" title="'+(s.pin?'Открепить':'Закрепить')+'">'+IC('pin')+'</div></div>'}
 var SLM={'PINNED':'Закреплённые','TODAY':'Сегодня','YESTERDAY':'Вчера','EARLIER THIS WEEK':'Раньше на неделе','LAST WEEK':'Прошлая неделя','EARLIER':'Ранее','ИДЁТ СЕЙЧАС':'Идёт сейчас'};
 function secHtml(label,n,key,open){label=(st.kind!='hermes'&&SLM[label])||label;return '<div class="hcsec'+(key?' tap':'')+'"'+(key?' data-hc="fold" data-k="'+E(key)+'"':'')+'><span>'+E(label)+'</span>'+(n!=null?'<em>'+n+'</em>':'')+(key?IC(open?'chevron-down':'chevron-right'):'')+'</div>'}
 function groupsHtml(){var L=(st.sessions||[]).slice().sort(function(a,b){return b.ts-a.ts}),h='',fold=LS.get('hcfold',{}),lv=st.kind!='hermes'?L.filter(function(x){return x.live}):[],pins=L.filter(function(x){return x.pin&&lv.indexOf(x)<0}),rest=L.filter(function(x){return !x.pin&&lv.indexOf(x)<0});
@@ -1787,7 +1788,7 @@ function doNew(cwd,pname){unsheet();LS.set('hcproj',cwd||'');
 function ctl(d,n){var id=d.request_id||d.prompt_id||d.id;if(!id)return null;
  var kind=/clarify/.test(n||'')||d.kind=='clarify'||d.type=='clarify'||d.question?'clarify':'approval';
  var cmd=d.command||d.preview||(d.args&&argPreview(d.args))||'';
- return {id:String(id),gen:d.execution_generation,kind:kind,text:kind=='clarify'?(d.question||d.prompt||d.text||d.message||''):cmd,desc:kind=='approval'?(d.description||d.reason||d.message||(d.tool_name||d.tool||'')):''}}
+ return {id:String(id),gen:d.execution_generation,kind:kind,opts:d.options||null,tool:d.tool_name||'',text:kind=='clarify'?(d.question||d.prompt||d.text||d.message||''):cmd,desc:kind=='approval'?(d.description||d.reason||d.message||(d.tool_name||d.tool||'')):''}}
 function addPend(p){if(!p)return;if(!st.pend.some(function(x){return x.id==p.id}))st.pend.push(p)}
 function lastA(){return st.cur}
 function onEv(n,d){var a=lastA();if(!a)return;
@@ -1799,9 +1800,10 @@ function onEv(n,d){var a=lastA();if(!a)return;
  case 'tool.completed':case 'tool.failed':{var t=null;for(var i=a.parts.length-1;i>=0;i--){if(a.parts[i].p=='tool'&&a.parts[i].st=='run'&&a.parts[i].n==(d.tool_name||d.tool||a.parts[i].n)){t=a.parts[i];break}}
   if(!t){t={p:'tool',id:'',n:d.tool_name||'tool',a:'',st:'run',res:''};a.parts.push(t)}
   t.st=(n=='tool.failed'||d.error)?'err':'ok';if(d.preview)t.res=d.preview;break}
- case 'run.started':{var rq=d.runtime&&d.runtime.requested;st.rt=d.runtime||null;if(st.msel&&st.msel.m&&rq&&rq.model&&rq.model!=st.msel.m)st.err='Hermes применил не ту модель: '+rq.model;break}
+ case 'run.started':{if(d.perm)st.perm=d.perm;var rq=d.runtime&&d.runtime.requested;st.rt=d.runtime||null;if(st.msel&&st.msel.m&&rq&&rq.model&&rq.model!=st.msel.m)st.err='Hermes применил не ту модель: '+rq.model;break}
  case 'run.failed':st.err=(d.error&&(d.error.message||d.error))||d.message||'Ход завершился ошибкой';break;
  case 'run.cancelled':st.err='Остановлено';break;
+ case 'approval.resolved':st.pend=st.pend.filter(function(x){return x.id!=String(d.request_id)});break;
  default:if(/approval|clarify/.test(n)&&/request|required|pending/.test(n))addPend(ctl(d,n))}
  schedule()}
 function sse(resp,cb){if(!resp.body||!resp.body.getReader)return resp.text().then(function(t){var ev='';t.split('\n').forEach(function(l){l=l.replace(/\r$/,'');if(l.indexOf('event:')==0)ev=l.slice(6).trim();else if(l.indexOf('data:')==0){try{cb(ev,JSON.parse(l.slice(5)))}catch(e){}}})});
@@ -1828,6 +1830,9 @@ function watchRun(rid,a,fin){var t0=Date.now(),n=0;st.watch=1;st.err=st.err||'';
    var s=d.status;if(s=='running'||s=='waiting_for_approval'||s=='stopping'||s=='started'||s=='queued'){schedule();if(Date.now()-t0<3600e3)return setTimeout(tick,2500);}
    st.pend=[];st.watch=0;return reload().then(function(){fin();st.run=null})
   }).catch(function(e){if(e.status==404||++n>5){st.watch=0;reload().then(function(){fin();st.run=null},function(){fin();st.run=null})}else setTimeout(tick,3000)})})()}
+function resumeRun(rid){if(st.busy)return;var a={k:'a',parts:[],live:true,ts:Date.now()/1000},done=false;st.msgs.push(a);st.cur=a;st.busy=true;st.run=rid;st.err='';
+ function fin(){if(done)return;done=true;a.live=false;st.busy=false;st.cur=null;paint()}
+ paint();watchRun(rid,a,fin)}
 function stop(){if(!st.run){if(st.ac)st.ac.abort();return}J(base()+'/runs/'+st.run+'/stop',{method:'POST',body:{}}).then(function(){toast('Останавливаю…')}).catch(function(e){toast(E(e.message))})}
 function respond(i,choice,answer){var p=st.pend[i];if(!p||!st.run)return;
  var path=base()+'/runs/'+st.run+(p.kind=='clarify'?'/clarify':'/approval'),body={request_id:p.id};if(p.gen!=null)body.execution_generation=p.gen;if(p.kind=='clarify')body.answer=answer||'';else body.choice=choice;
@@ -1844,7 +1849,7 @@ function openAgent(id,fresh){var s=(st.sessions||[]).filter(function(x){return x
  st.pin=false;st.sid=id;st.title=s.t;st.rw=!!s.rw;st.src=s.src;st.cclive=!!s.live;st.view='chat';U.page='hcchat';st.stick=true;
  loadModels();
  render();if(fresh)return;st.loadingMsgs=true;
- if(st.rw)return J(base()+'/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id||st.busy)return;st.msgs=fromHistory(d.m);st.loadingMsgs=false;st.stick=true;paint()}).catch(function(e){st.loadingMsgs=false;st.err=e.message;paint()});
+ if(st.rw)return J(base()+'/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id||st.busy)return;st.msgs=fromHistory(d.m);st.loadingMsgs=false;st.stick=true;st.perm=d.perm||'';if(d.run)resumeRun(d.run);else paint()}).catch(function(e){st.loadingMsgs=false;st.err=e.message;paint()});
  ccPoll(true)}
 function ccPoll(first){ccStop();var id=st.sid;if(st.kind=='hermes'||st.rw||st.view!='chat'||!id)return;var k=st.kind;
  J(base()+'/sessions/'+encodeURIComponent(id)+'/messages'+(first||st.ccoff==null?'':'?from='+st.ccoff)).then(function(d){if(st.sid!=id||st.kind!=k)return;
@@ -1859,6 +1864,7 @@ function ccSay(){var t=(st.draft||'').trim();if(!t||!live())return;
 
 /* ---------- меню сессии ---------- */
 function menu(){if(!st.sid)return;var h='<div class="hcsh"><b>'+E(st.title||'Новый чат')+'</b></div>'+(st.kind=='hermes'?'<div class="btn" data-hc="pinmenu">'+IC('pin')+' '+(st.pin?'Открепить':'Закрепить')+'</div>':'');
+ if(st.rw&&st.kind!='hermes')h+='<div class="hint2">'+(st.perm=='full'?'Полный доступ: '+E(agentName())+' действует без вопросов.':'Разрешения: '+E(agentName())+' спрашивает перед командами и правками.')+'</div><div class="btn" data-hc="perm">'+IC('shield-check')+' '+(st.perm=='full'?'Спрашивать разрешения':'Полный доступ (не спрашивать)')+'</div>';
  if(st.rw)h+='<div class="btn" data-hc="rename">'+IC('pencil')+' Переименовать</div><div class="btn" data-hc="fork">'+IC('git-branch')+' Ветка: продолжить с копией</div><div class="btn bad" data-hc="del">'+IC('trash-2')+' Удалить</div>';
  else h+='<div class="hint2">Эта сессия из «'+E(SRC[st.src]||st.src)+'»: оригинал только читается.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь (копия)</div>';
  sheet(h+'<div class="btn" data-hc="close">Закрыть</div>')}
@@ -1903,6 +1909,9 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  case 'copy':{var cb=st.msgs[+el.dataset.b],ct=msgText(cb);if(ct)copyText(ct,function(ok){toast(ok?'<b>'+IC('check')+'</b> Скопировано':'Не удалось скопировать');if(ok)haptic('success')})}break;
  case 'rmimg':st.imgs.splice(+el.dataset.i,1);paint();break;
  case 'appr':respond(+el.dataset.i,el.dataset.c);break;
+ case 'clarop':respond(+el.dataset.i,'',el.dataset.v);break;
+ case 'clarskip':respond(+el.dataset.i,'deny','');break;
+ case 'perm':{var nv=st.perm=='full'?'ask':'full';J(base()+'/sessions/'+encodeURIComponent(st.sid),{method:'PATCH',body:{perm:nv}}).then(function(){st.perm=nv;unsheet();toast(nv=='full'?'Полный доступ: без вопросов':'Будет спрашивать разрешения');haptic('success')}).catch(function(e){toast(E(e.message))});break}
  case 'clarify':{var inp=document.getElementById('hcclar');respond(+el.dataset.i,'',inp?inp.value:'')}break;
  case 'link':try{tg.openLink(el.dataset.u)}catch(e){window.open(el.dataset.u,'_blank')}break;
  case 'rename':unsheet();setTimeout(renameUI,260);break;
