@@ -1209,6 +1209,12 @@ body.gu88 .hs88>span{position:relative;z-index:1}
 body.gu88 .hs88>span.on{background:none!important;box-shadow:none!important}
 body.gu88 i.sl88{position:absolute;left:0;z-index:0;border-radius:18px;background:var(--g-on);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.08);pointer-events:none;will-change:transform}
 body.gu88 .pmbar .seg i.sl88,body.gu88 .seg.full i.sl88{border-radius:16px}
+/* закрытые шторка и уведомление не должны выглядывать: шторка поднята над краем (8 px + safe area), поэтому сдвига на её высоту мало,
+   а стекло (backdrop-filter) в WebKit видно и при opacity:0 — в закрытом виде уводим за край и прячем */
+body.gu88 .sheet:not(.on){transform:translateY(calc(100% + 40px + env(safe-area-inset-bottom)));visibility:hidden;transition:transform .25s,visibility 0s linear .25s}
+body.gu88 .sheet.on{visibility:visible;transition:transform .25s,visibility 0s}
+body.gu88 .toast:not(.on){visibility:hidden;transition:transform .2s,opacity .2s,visibility 0s linear .2s}
+body.gu88 .toast.on{visibility:visible;transition:transform .2s,opacity .2s,visibility 0s}
 
 </style>
 </head>
@@ -1508,7 +1514,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=89;
+var VER=90;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';

@@ -6,7 +6,7 @@ R = Path("C:/Users/Peter/hermes-control")
 src = (R / "index.v5.1.html.bak").read_text(encoding="utf-8")
 css = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.css", "multi.css", "prj.css", "glass.css", "glassui.css"))
 js = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.js", "search.js", "ms.js", "voice.js", "design8.js", "stale.js", "multi.js", "prj.js", "glass.js", "glassui.js"))
-VER = 89
+VER = 90
 # extra files for prototypes: python make_app.py <out> [file.js|file.css ...] (paths relative to hermes-control)
 for _x in sys.argv[2:]:
     _t = (R / _x).read_text(encoding="utf-8")
