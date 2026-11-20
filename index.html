@@ -1095,6 +1095,52 @@ body.g86.hcm.hckb #hcroot,body.g86.hcv-chat #hcroot{bottom:0}
 .ap86.tn-bad{box-shadow:inset 3px 0 0 var(--bad)}.ap86.tn-bad .vl86,.ap86.tn-bad .ri86{color:var(--bad)}.ap86.tn-bad .ri86{background:color-mix(in srgb,var(--bad) 16%,var(--s2))}
 .ap86.tn-warn{box-shadow:inset 3px 0 0 var(--warn)}.ap86.tn-warn .vl86,.ap86.tn-warn .ri86{color:var(--warn)}.ap86.tn-warn .ri86{background:color-mix(in srgb,var(--warn) 16%,var(--s2))}
 
+/* v8.8 прототип: Liquid Glass нижней навигации. Цвета Hermes (золото активной вкладки), форма и поведение — как iOS 26 / Instagram. */
+body.gl87.g86 .nav{left:14px;right:14px;bottom:calc(10px + env(safe-area-inset-bottom));height:64px;padding:0 4px;border:0;border-radius:32px;
+ background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.025) 48%,rgba(255,255,255,.06)),color-mix(in srgb,var(--s1) 38%,transparent);
+ -webkit-backdrop-filter:blur(16px) saturate(210%) brightness(1.1);backdrop-filter:blur(16px) saturate(210%) brightness(1.1);
+ box-shadow:0 14px 40px rgba(0,0,0,.55),0 2px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(0,0,0,.28);
+ touch-action:none;-webkit-user-select:none;user-select:none;isolation:isolate;
+ transition:height .42s cubic-bezier(.3,1.35,.45,1),left .42s cubic-bezier(.3,1.35,.45,1),right .42s cubic-bezier(.3,1.35,.45,1)}
+/* стеклянная кромка: светлая сверху-слева и снизу-справа, как преломление на ребре */
+.gb87{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;padding:1px;
+ background:linear-gradient(160deg,rgba(255,255,255,.62),rgba(255,255,255,.10) 28%,rgba(255,255,255,0) 52%,rgba(255,255,255,.08) 78%,rgba(255,255,255,.34));
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+/* блик по верхней половине */
+body.gl87.g86 .nav:after{content:"";position:absolute;inset:1px;border-radius:inherit;pointer-events:none;z-index:0;
+ background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.02) 46%,rgba(255,255,255,0) 60%)}
+/* выбранная вкладка: плоская серая подложка, как в Instagram (без своего стекла, блика и увеличения) */
+.ln87{position:absolute;left:0;top:6px;bottom:6px;border-radius:26px;pointer-events:none;z-index:1;will-change:transform}
+.ln87>span{position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,.13);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.07);transition:background .2s}
+.ln87.drag>span{background:rgba(255,255,255,.18)}
+/* вкладки */
+body.gl87.g86 .nav div{position:relative;z-index:2;margin:0;border-radius:27px;gap:3px;color:color-mix(in srgb,var(--tx) 58%,transparent);transition:color .25s;-webkit-tap-highlight-color:transparent}
+body.gl87.g86 .nav div.on:before{display:none}
+body.gl87.g86 .nav div.on,body.gl87.g86 .nav div.hov{color:var(--gold)}
+body.gl87.g86 .nav div i{display:block;transition:transform .15s ease-out}
+body.gl87.g86 .nav div i .ic{width:23px;height:23px;display:block}
+body.gl87.g86 .nav div.on i .ic{stroke-width:2.3}
+body.gl87.g86 .nav div:active i{transform:scale(.9)}
+.lb87{display:block;max-height:14px;line-height:14px;overflow:hidden;transition:opacity .22s,max-height .32s,transform .32s}
+body.lc87 .lb87{text-transform:none;letter-spacing:0;font-size:10.5px;font-weight:600}
+/* счётчик */
+.bg87{display:none;position:absolute;top:5px;left:calc(50% + 4px);min-width:17px;height:17px;padding:0 5px;box-sizing:border-box;border-radius:9px;background:var(--claude);color:#fff;
+ font:700 10.5px/17px Inter,sans-serif;letter-spacing:0;text-align:center;box-shadow:0 0 0 2px rgba(10,10,18,.55),0 3px 8px rgba(0,0,0,.4)}
+.bg87.vis{display:block}.bg87.bad{background:var(--bad)}
+/* сжатие при прокрутке */
+body.nm87.gl87.g86 .nav{height:50px;left:42px;right:42px}
+body.nm87 .lb87{opacity:0;max-height:0;transform:translateY(4px)}
+body.nm87 .ln87{top:5px;bottom:5px}
+body.nm87 .bg87{top:2px}
+/* светлая тема */
+html[data-theme=light] body.gl87.g86 .nav{background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,.45)),color-mix(in srgb,#fff 40%,transparent);
+ box-shadow:0 12px 34px rgba(0,0,0,.16),0 1px 4px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(0,0,0,.06)}
+html[data-theme=light] .gb87{background:linear-gradient(160deg,rgba(255,255,255,1),rgba(255,255,255,.3) 30%,rgba(0,0,0,.05) 60%,rgba(255,255,255,.7))}
+html[data-theme=light] .ln87>span{background:rgba(0,0,0,.07);box-shadow:none}
+@media (prefers-reduced-motion:reduce){.ln87>span,body.gl87.g86 .nav,.lb87{transition:none}}
+/* полоса прокрутки страницы не должна отъедать ширину у панели (ПК / Telegram Desktop: на длинном «Мозге» панель сужалась) */
+html{scrollbar-width:none}html::-webkit-scrollbar{width:0;height:0;display:none}
+
 </style>
 </head>
 <body>
@@ -1393,7 +1439,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=87;
+var VER=88;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -2673,6 +2719,63 @@ document.addEventListener('click',function(ev){var sh=ev.target.closest('#sheet 
  else if(a=='cx86'){U.cx86=U.cx86||{};U.cx86[x]=!U.cx86[x]}
  else if(a=='cj86'){cronSheet86(x,pid);return}
  render(true)},true);
+
+/* v8.8 «стеклянная» нижняя навигация как в Instagram нижней навигации (как Instagram / iOS 26), поверх prj.js (v8.7).
+   - DOM панели строится один раз и больше не перерисовывается: render() базы пишет старые вкладки в $('nav') —
+     эта запись уходит в скрытый «пустой» узел, а настоящая панель только меняет классы → анимации не обрываются.
+   - Как в Instagram: одна стеклянная панель, под выбранной вкладкой — плоская серая подложка, она плавно переезжает.
+   - Зажал выбранную вкладку и повёл — подложка едет за пальцем, отпустил — вкладка выбрана.
+   - Нажатие слегка утапливает значок, счётчик вопросов выскакивает, при прокрутке вниз панель сжимается (подписи прячутся). */
+(function(){
+ var REAL=document.getElementById('nav'),SINK=document.createElement('div');
+ var _$=$;$=function(i){return i=='nav'?SINK:_$(i)};
+ var TABS=[['home','house','Пульт'],['prj','folder-kanban','Проекты'],['hc','message-square-text','Чат'],['br','brain','Мозг'],['more','circle-ellipsis','Ещё']];
+ var cur=null,RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ window.GL87={min:true};
+ function L(){return REAL.querySelector('.ln87')}
+ function tab(x){return REAL.querySelector('[data-x="'+x+'"]')}
+ function build(){REAL.innerHTML='<span class="gb87"></span><span class="ln87"><span></span></span>'+TABS.map(function(t){
+   return '<div data-a="tab" data-x="'+t[0]+'"><i>'+IC(t[1])+'</i><span class="lb87">'+t[2]+'</span><span class="bg87"></span></div>'}).join('');cur=null}
+ function geo(x){var el=tab(x);return el?{x:el.offsetLeft+2,w:el.offsetWidth-4}:null}
+ function place(x,anim,from){var l=L(),g=geo(x);if(!l||!g||!REAL.offsetWidth)return;l.style.width=g.w+'px';var x0=from!=null?from:l.__x;
+  /* как в Instagram: подложка просто плавно переезжает (лёгкая пружина), без растяжения и «линзы» */
+  if(anim&&x0!=null&&Math.abs(x0-g.x)>1&&!RM&&l.animate)l.animate([{transform:'translateX('+x0+'px)'},{transform:'translateX('+g.x+'px)'}],{duration:340,easing:'cubic-bezier(.32,1.18,.5,1)'});
+  l.style.transform='translateX('+g.x+'px)';l.__x=g.x}
+ function boing(x){var el=tab(x);if(!el||RM||!el.animate)return;el.querySelector('i').animate([{transform:'scale(.9)'},{transform:'scale(1)'}],{duration:220,easing:'ease-out'})}
+ nav86=function(){if(!REAL.querySelector('.ln87'))build();
+  var c=navCur86(),hb=hBad().length;
+  TABS.forEach(function(t){var el=tab(t[0]),b=el.querySelector('.bg87'),txt=t[0]=='home'&&S.pend.length?String(S.pend.length):t[0]=='more'&&hb?'!':'';
+   el.classList.toggle('on',t[0]==c);
+   if(b.textContent!=txt){var was=!!b.textContent;b.textContent=txt;b.className='bg87'+(txt?' vis':'')+(t[0]=='more'?' bad':'');
+    if(txt&&!RM&&b.animate)b.animate(was?[{transform:'scale(1)'},{transform:'scale(1.3)'},{transform:'scale(1)'}]:[{transform:'scale(0)',opacity:0},{transform:'scale(1.3)',opacity:1,offset:.6},{transform:'scale(1)'}],{duration:420,easing:'cubic-bezier(.3,1.5,.5,1)'})}});
+  if(c!=cur){var first=cur==null;cur=c;if(first)requestAnimationFrame(function(){place(c,false)});else{place(c,true);boing(c)}}
+  document.body.classList.add('g86','gl87')};
+ try{nav86()}catch(e){}
+ window.addEventListener('resize',function(){if(cur)place(cur,false)});
+ /* панель была скрыта (открытый чат) или сменила размер — линзу ставим заново, без анимации */
+ if(window.ResizeObserver)new ResizeObserver(function(){if(cur&&REAL.offsetWidth)place(cur,false)}).observe(REAL);
+
+ /* палец: нажал — линза раздулась; повёл — едет за пальцем; отпустил — выбрал вкладку под пальцем */
+ var drag=null;
+ REAL.addEventListener('pointerdown',function(e){var t=e.target.closest('[data-x]');if(!t||t.dataset.x!=cur)return;drag={x0:e.clientX,moved:false,id:e.pointerId}});
+ REAL.addEventListener('pointermove',function(e){if(!drag)return;var l=L();if(!drag.moved&&Math.abs(e.clientX-drag.x0)<8)return;
+  if(!drag.moved){drag.moved=true;l.classList.add('drag');try{REAL.setPointerCapture(drag.id)}catch(_){}}
+  var r=REAL.getBoundingClientRect(),w=l.offsetWidth,x=Math.max(2,Math.min(r.width-w-2,e.clientX-r.left-w/2));l.getAnimations&&l.getAnimations().forEach(function(a){a.cancel()});
+  l.style.transform='translateX('+x+'px)';l.__x=x;
+  var over=null;TABS.forEach(function(t){var g=geo(t[0]);if(e.clientX-r.left>=g.x&&e.clientX-r.left<g.x+g.w)over=t[0]});
+  [].forEach.call(REAL.querySelectorAll('[data-x]'),function(el){el.classList.toggle('hov',el.dataset.x==over)});drag.over=over});
+ function end(e,cancel){if(!drag)return;var l=L(),d=drag;drag=null;l.classList.remove('drag');[].forEach.call(REAL.querySelectorAll('.hov'),function(el){el.classList.remove('hov')});
+  if(d.moved){if(!cancel&&d.over&&d.over!=cur){var el=tab(d.over);el.click()}else place(cur,true)}}
+ REAL.addEventListener('pointerup',function(e){end(e,false)});REAL.addEventListener('pointercancel',function(e){end(e,true)});
+ /* после перетаскивания браузер шлёт click по самой панели — гасим, чтобы не было двойного выбора */
+ REAL.addEventListener('click',function(e){if(e.target==REAL||e.target.classList.contains('gb87'))e.stopPropagation()},true);
+
+ /* прокрутка вниз — панель сжимается (подписи прячутся), вверх — возвращается */
+ var ly=window.scrollY;
+ window.addEventListener('scroll',function(){var y=window.scrollY,b=document.body;if(!GL87.min){b.classList.remove('nm87');ly=y;return}
+  if(y>ly+6&&y>80)b.classList.add('nm87');else if(y<ly-6||y<30)b.classList.remove('nm87');ly=y},{passive:true});
+ REAL.addEventListener('transitionend',function(e){if(e.target==REAL&&cur)place(cur,false)});
+})();
 
 </script>
 </body>
