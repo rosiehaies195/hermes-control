@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Было / Стало</title>
+<style>
+:root{--bg:#0b0d12;--s1:#12151c;--s2:#181c25;--line:#262b38;--tx:#e8e9ee;--mut:#9aa0b0;--acc:#6aa5ff;--ok:#7cc68d;--bad:#ef7b7b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Inter,system-ui,sans-serif}
+header{padding:20px 24px 4px;max-width:1000px;margin:0 auto}h1{font-size:21px;margin:0 0 4px}header p{margin:0;color:var(--mut)}
+nav{display:flex;gap:8px;flex-wrap:wrap;max-width:1000px;margin:12px auto 0;padding:0 24px}
+nav button{background:var(--s1);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:9px 14px;font:inherit;font-size:14px;cursor:pointer}
+nav button.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,var(--s1))}
+main{max-width:1000px;margin:16px auto 60px;padding:0 24px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.col h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;color:var(--mut)}.col.new h2{color:var(--acc)}
+.phone{width:100%;max-width:410px;border:9px solid #1b1f2a;border-radius:34px;overflow:hidden;background:#000;box-shadow:0 12px 40px #0008}
+iframe{display:block;width:100%;height:740px;border:0;background:#07070d}
+.chg{margin-top:20px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--s1)}
+.chg h3{margin:0 0 8px;font-size:15px}.chg ul{margin:0;padding-left:20px;color:var(--tx)}.chg li{margin:4px 0}.chg .n{color:var(--mut);font-size:13px;margin-top:8px}
+.meta{font:500 12px "JetBrains Mono",monospace;color:var(--mut);margin:0 0 8px}
+@media(max-width:900px){.row{grid-template-columns:1fr}.phone{margin:0 auto}}
+</style></head><body>
+<header><h1>Было / Стало</h1><p>Слева текущая боевая панель, справа новый прототип (стиль Hermes + проекты + закругления). Оба экрана живые и показывают одни и те же данные (демо). Выбери экран кнопкой.</p></header>
+<nav id="nav"></nav>
+<main><div class="row">
+ <div class="col old"><h2>Было</h2><div class="meta" id="mo"></div><div class="phone"><iframe id="fo" title="Было"></iframe></div></div>
+ <div class="col new"><h2>Стало</h2><div class="meta" id="mn"></div><div class="phone"><iframe id="fn" title="Стало"></iframe></div></div>
+</div>
+<div class="chg" id="chg"></div></main>
+<script>
+var Z='@@Z@@',BASE=location.href.replace(/[^\/]*$/,'');
+var SC=[
+{t:'Главная',tab:'home',ch:['Стиль Hermes сохранён: шапка, синие КАПС-заголовки с сеткой, цвета','Вопросы в прежних карточках со стилем каждого приложения (Claude оранжевая, Codex синяя), максимум 2 + «Ещё N во Входящих»','Новое: список проектов с фильтром Все / Claude / Codex / Hermes и группами «Требуют тебя / Работают / Свободны»','Токены, автоматика и лента свёрнуты в «Ещё»','Закругления мягче'],n:'Слева один проект (как сейчас), справа демо из 9 проектов.'},
+{t:'Вопросы',tab:'q',ch:['Карточки вопросов прежние (варианты кружками, Пропустить / Ответить, Allow / Deny)','Новое: фильтр Все / Claude / Codex / Hermes сверху','Под вопросом видно проект и веху (kivi-gateway · GW-M3)','Закругления мягче'],n:'Слева подставлены похожие вопросы, чтобы сравнение было честным.'},
+{t:'Журнал · шаги',tab:'j',jt:'sess',ch:['Оставлен прежний журнал','Изменились только закругления карточек, плашек и кнопок']},
+{t:'Журнал · события',tab:'j',jt:'ev',ch:['Оставлен прежний вид','Изменились только закругления']},
+{t:'Настройки',tab:'set',ch:['Оставлены прежние','Изменились только закругления (группы, тумблеры, кнопки)']},
+{t:'Система',page:'sys',ch:['Оставлена прежняя со своим стилем','Изменились только закругления']}
+];
+var DEMO="var n=Math.floor(Date.now()/1000);S.ts=n;var H=function(t){var d=new Date(t*1000);return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)};"+
+"S.sess=[{id:'1',n:'PC2b: команды плеера (#99)',c:'PC2b',b:n-3000,e:null,seg:[[0,'W']],q:1,f:0,tok:1600,pr:'#99'},{id:'2',n:'PC2a: разбор долгов (#98)',c:'PC2a',b:n-9000,e:n-3000,seg:[[0,'W']],q:0,f:0,tok:900,pr:'#98'},{id:'3',n:'PC1c: правки CI (#97)',c:'PC1c',b:n-20000,e:n-9000,seg:[[0,'W']],q:2,f:1,tok:2100,pr:'#97'},{id:'4',n:'PC1b: тесты плеера (#96)',c:'PC1b',b:n-100000,e:n-92000,seg:[[0,'W']],q:0,f:0,tok:700,pr:'#96'},{id:'5',n:'PC1a: каркас (#95)',c:'PC1a',b:n-110000,e:n-101000,seg:[[0,'W']],q:1,f:0,tok:1200,pr:'#95'}];"+
+"S.log=[{t:H(n-120),ts:n-120,k:'status',x:'PC2b: Working'},{t:H(n-900),ts:n-900,k:'question',x:'вопрос: какую ветку брать'},{t:H(n-3000),ts:n-3000,k:'start',x:'start: PC2b: команды плеера (#99)'},{t:H(n-3100),ts:n-3100,k:'answer_ok',x:'ответ: kivi, нажал Submit'},{t:H(n-9000),ts:n-9000,k:'fail',x:'клик не прошёл: окно свёрнуто'}];";
+var OLDQ="S.pend=[{id:'a1',s:'tv-miniapp · PC-M2',q:'Какую ветку брать за основу для следующего шага?',o:['master','kivi (Recommended)','Новая ветка от master'],od:['стабильная','форк','чистый старт'],ag:'claude',ts:n-420,rec:1,perm:false},{id:'a2',s:'tv-miniapp',q:'Разрешить запуск npm install?',o:['Allow','Deny'],od:['',''],ag:'claude',ts:n-90,rec:-1,perm:true},{id:'a3',s:'mobile-app',q:'Применить миграцию к тестовой базе?',o:['Allow','Deny'],od:['',''],ag:'codex',ts:n-200,rec:-1,perm:true}];";
+var cur=0,nav=document.getElementById('nav');
+SC.forEach(function(s,i){var b=document.createElement('button');b.textContent=s.t;b.onclick=function(){show(i)};nav.appendChild(b)});
+function setup(f,isNew,s){var tries=0,iv=setInterval(function(){var w;try{w=f.contentWindow}catch(e){return}
+  if(++tries>60){clearInterval(iv);return}
+  if(!w||!w.S||w.LOADING||!w.render||!w.U)return;
+  clearInterval(iv);
+  try{w.eval(DEMO+(isNew?'':OLDQ));w.U.pm='plain';w.U.tab=s.tab||'home';w.U.page=s.page||null;if(s.jt)w.U.jt=s.jt;w.U.pe=null;w.render();
+   [].forEach.call(w.document.querySelectorAll('.savebar,.demo8bar'),function(x){x.remove()});w.scrollTo(0,0)}catch(e){console.log(e)}
+ },250)}
+function load(f,url,isNew,s){f.onload=function(){setup(f,isNew,s)};f.src=url}
+function show(i){cur=i;var s=SC[i];[].forEach.call(nav.children,function(b,j){b.className=j==i?'on':''});var t=Date.now();
+ document.getElementById('mo').textContent='боевая версия';document.getElementById('mn').textContent='новый дизайн';
+ load(document.getElementById('fo'),BASE+'index.html?cmp='+t+'#z='+Z,false,s);load(document.getElementById('fn'),BASE+'multi-h.html?cmp='+t+'#z='+Z,true,s);
+ document.getElementById('chg').innerHTML='<h3>Что изменилось: '+s.t+'</h3><ul>'+s.ch.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>'+(s.n?'<div class="n">'+s.n+'</div>':'');
+ location.hash='s'+i}
+var m=(location.hash.match(/s(\d+)/)||[])[1];show(m?+m:0);
+</script></body></html>

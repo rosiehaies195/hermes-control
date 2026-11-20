@@ -1,0 +1,19 @@
+/* Закругления (понравились пользователю) поверх стиля Hermes; цвета, шрифты и заголовки не трогаем */
+.grp,.alert,.away,.qcard{border-radius:14px}
+.hero,.hero:after,.plc{border-radius:16px}
+.btn,.hcbtn,.hcnew,.ib,.qa div{border-radius:10px}
+.pill,.tags span,.badge,.live,.gq{border-radius:8px}
+.chips span,.chips.g span,.seg span,.pmbar .seg span{border-radius:9px}
+.seg.full span{border-radius:9px}
+input.in,textarea.in{border-radius:10px}
+.ci2,.cn,.cn .ci{border-radius:10px}
+.toast{border-radius:12px}
+.sheet{border-radius:18px 18px 0 0}
+.prog,.prog i{border-radius:4px}
+.strip .bar{border-radius:6px}
+.hero .hk .ag{border-radius:7px}
+/* блок «ещё N вопросов» на главной */
+.moreH{margin:8px 16px 0;padding:11px;border:1px dashed var(--line2,var(--line));border-radius:12px;text-align:center;font-size:13px;color:var(--mut);cursor:pointer}
+/* строки проектов и фильтр — в палитре Hermes */
+.row2 .n2{font-weight:600}
+.seg2>span.on{background:color-mix(in srgb,var(--gold) 14%,var(--s1));border-color:var(--gold);color:var(--tx)}
