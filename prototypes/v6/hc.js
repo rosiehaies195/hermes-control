@@ -167,7 +167,7 @@ function paintChat(){var r=root();if(!r)return;r.className='k-'+st.kind;
  var ta0=document.getElementById('hcin');if(ta0)st.draft=ta0.value;
  r.innerHTML='<div class="hd hchd"><div class="ib" data-hc="back" title="Назад">'+IC('chevron-left')+'</div><div class="hcmid tap" data-hc="menu"><h1>'+E(st.title||'Новая сессия')+'</h1><div class="st"><span class="dot ok"></span><span id="hcsub">'+E(subTxt())+'</span></div></div><div class="r"><div class="ib" data-hc="menu" title="Меню">'+IC('ellipsis')+'</div></div></div>'+
  '<div id="hcmsgs" class="hcmsgs"></div>'+
- (st.rw?'<div class="hccomp"><div id="hcthumbs" class="hcthumbs"></div><textarea id="hcin" rows="1" placeholder="Сообщение '+agentName()+'…"></textarea><div class="hctb2"><label class="hcbtn ghost" for="hcfile">'+IC('paperclip')+'</label><div class=\"hcbtn ghost\" data-hc=\"mic\" title=\"Голосом\">'+IC('mic')+'</div><input id="hcfile" type="file" accept="image/*" multiple hidden><div id="hcchips" class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="send"></div></div></div>':st.kind=='claude'?ccComp():'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
+ (st.rw?'<div class="hccomp"><div id="hcthumbs" class="hcthumbs"></div><textarea id="hcin" rows="1" placeholder="Сообщение '+agentName()+'…"></textarea><div class="hctb2"><label class="hcbtn ghost" for="hcfile">'+IC('paperclip')+'</label><div class=\"hcbtn ghost\" data-hc=\"mic\" title=\"Голосом\">'+IC('mic')+'</div><input id="hcfile" type="file" accept="image/*" multiple hidden><div id="hcchips" class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="send"></div></div></div>':deskOK()?ccComp():'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
  var ta=document.getElementById('hcin');if(ta){ta.value=st.draft;grow(ta)}
  if(st.fwdDraft&&ta){st.draft=st.fwdDraft;st.fwdDraft=null;ta.value=st.draft;grow(ta);setTimeout(function(){toast(IC('forward')+' Текст вставлен: допиши и отправь')},60)}
  st.stick=true;paint()}
@@ -262,7 +262,9 @@ var KN={hermes:'Hermes',claude:'Claude',codex:'Codex'},ccTimer=0;
 function kindBar(){return '<div class="hcfil hckind">'+['hermes','claude','codex'].map(function(k){return '<span class="'+(st.kind==k?'on':'')+'" data-hc="kind" data-v="'+k+'">'+KN[k]+'</span>'}).join('')+'</div>'}
 function setKind(k){if(st.kind==k||!KN[k])return;ccStop();st.kind=k;LS.set('hckind',k);st.sessions=null;st.lerr='';st.sid=null;st.msgs=[];st.models=null;st.msel=null;st.mprov='';st.view='list';U.page=null;render();loadList()}
 function ccStop(){if(ccTimer){clearTimeout(ccTimer);ccTimer=0}}
-function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение в этот чат (уйдёт в Claude Desktop на ПК)…"></textarea><div class="hctb2"><div class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
+var DWS={local:1,gui:1,cli:1,desktop:1},DESK={claude:'Claude Desktop',codex:'Codex Desktop',hermes:'Hermes на ПК'};
+function deskOK(){return st.kind=='claude'||st.kind=='codex'||(st.kind=='hermes'&&!!DWS[st.src])}
+function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение в этот чат (уйдёт в '+DESK[st.kind]+')…"></textarea><div class="hctb2"><div class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
 function openAgent(id,fresh){var s=(st.sessions||[]).filter(function(x){return x.id==id})[0]||{id:id,t:agentName(),src:st.kind,ts:0,rw:!!fresh};
  ccStop();if(st.sid!=id){st.msgs=[];st.pend=[];st.busy=false;st.run=null;st.err='';st.draft='';st.imgs=[];st.lim=120;st.msel=loadSel(id);st.ccoff=null;st.rt=null}
  st.pin=false;st.sid=id;st.title=s.t;st.rw=!!s.rw;st.src=s.src;st.cclive=!!s.live;st.view='chat';U.page='hcchat';st.stick=true;
@@ -276,18 +278,20 @@ function ccPoll(first){ccStop();var id=st.sid;if(st.kind=='hermes'||st.rw||st.vi
   st.ccoff=d.off;st.cclive=!!d.live;st.loadingMsgs=false;st.err='';if(first)st.stick=true;paint()
  }).catch(function(e){st.loadingMsgs=false;st.err=e.message||'Нет связи';paint()}).then(function(){if(st.sid==id&&st.kind==k&&!st.rw&&st.view=='chat'&&!ccTimer)ccTimer=setTimeout(function(){ccTimer=0;if(U.tab=='hc'&&mounted())ccPoll(false)},3000)})}
 function ccSend(){var t=(st.draft||'').trim();if(!t||!live()||st.dsending)return;
- if(st.kind=='claude'&&!st.rw&&st.sid){var o=st.sid;st.dsending=true;paint();toast('Передаю в Claude Desktop на ПК…');
-  J('/cc/sessions/'+encodeURIComponent(o)+'/desk',{method:'POST',body:{t:t}}).then(function(d){st.dsending=false;if(st.sid!=o)return;st.draft='';var ta=document.getElementById('hcin');if(ta){ta.value='';grow(ta)}st.stick=true;toast(E(d.text||'Отправлено'));haptic('success');paint();ccPoll(false)})
+ if(!st.rw&&st.sid&&deskOK()){var o=st.sid,k=st.kind;st.dsending=true;paint();toast('Передаю в '+DESK[k]+'…');
+  J(base()+'/sessions/'+encodeURIComponent(o)+'/desk',{method:'POST',body:{t:t}}).then(function(d){st.dsending=false;if(st.sid!=o)return;st.draft='';var ta=document.getElementById('hcin');if(ta){ta.value='';grow(ta)}st.stick=true;toast(E(d.text||'Отправлено'));haptic('success');paint();if(k=='hermes')hPoll(o,0);else ccPoll(false)})
    .catch(function(e){st.dsending=false;paint();toast(E(e.message));haptic('error')});return}
  ccSay()}
+function hPoll(id,n){if(st.sid!=id||st.kind!='hermes'||st.view!='chat'||n>60)return;setTimeout(function(){if(st.sid!=id)return;var c=st.msgs.length;reload().then(function(){if(st.sid!=id)return;var l=st.msgs[st.msgs.length-1];if(st.msgs.length>c&&l&&l.k=='a'&&n>2)return;hPoll(id,n+1)}).catch(function(){hPoll(id,n+1)})},3000)}
 function ccSay(){var t=(st.draft||'').trim();if(!t||!live())return;
  J('/cc/say',{method:'POST',body:{t:t}}).then(function(d){st.draft='';var ta=document.getElementById('hcin');if(ta){ta.value='';grow(ta)}toast(d.text||'В очереди');haptic('success')}).catch(function(e){toast(E(e.message))})}
 
 /* ---------- меню сессии ---------- */
 function menu(){if(!st.sid)return;var h='<div class="hcsh"><b>'+E(st.title||'Новый чат')+'</b></div>'+(st.kind=='hermes'?'<div class="btn" data-hc="pinmenu">'+IC('pin')+' '+(st.pin?'Открепить':'Закрепить')+'</div>':'');
- if(st.rw&&st.kind!='hermes')h+='<div class="hint2">'+(st.perm=='full'?'Полный доступ: '+E(agentName())+' действует без вопросов.':'Разрешения: '+E(agentName())+' спрашивает перед командами и правками.')+'</div><div class="btn" data-hc="perm">'+IC('shield-check')+' '+(st.perm=='full'?'Спрашивать разрешения':'Полный доступ (не спрашивать)')+'</div>';
+ if(st.rw&&st.kind!='hermes'){var PM={pc:'Как на ПК',ask:'Спрашивать всё',full:'Полный доступ'},PD={pc:'те же права, что у '+E(agentName())+' на этом ПК'+(st.kind=='claude'?' (режим Auto: безопасное — само, рискованное — спросит)':' (Codex на ПК работает без вопросов)'),ask:'карточка Разрешить/Отклонить перед каждой командой и правкой',full:'никаких вопросов'},cur=PM[st.perm]?st.perm:'pc';
+  h+='<div class="hint2">Разрешения: <b>'+PM[cur]+'</b> — '+PD[cur]+'.</div>'+['pc','ask','full'].filter(function(k){return k!=cur}).map(function(k){return '<div class="btn" data-hc="perm" data-v="'+k+'">'+IC('shield-check')+' '+PM[k]+'</div>'}).join('')}
  if(st.rw)h+='<div class="btn" data-hc="rename">'+IC('pencil')+' Переименовать</div><div class="btn" data-hc="fork">'+IC('git-branch')+' Ветка: продолжить с копией</div><div class="btn bad" data-hc="del">'+IC('trash-2')+' Удалить</div>';
- else h+='<div class="hint2">'+(st.kind=='claude'?'Это чат Claude Desktop. Поле ввода отправляет сообщение прямо в него: Claude Desktop на ПК откроет чат и выполнит ход, ответ появится здесь. Работает, когда ты не за ПК. Копия — отдельный чат в панели, оригинал не меняется.':'Эта сессия из «'+E(SRC[st.src]||st.src)+'»: оригинал только читается.')+'</div><div class="btn'+(st.kind=='claude'?'':' pri')+'" data-hc="fork">'+IC('git-branch')+' Продолжить здесь (копия)</div>';
+ else h+='<div class="hint2">'+(st.kind=='claude'?'Это чат Claude Desktop. Поле ввода отправляет сообщение прямо в него: Claude Desktop на ПК откроет чат и выполнит ход, ответ появится здесь. Работает, когда ты не за ПК. Копия — отдельный чат в панели, оригинал не меняется.':deskOK()?'Это чат '+DESK[st.kind]+'. Поле ввода отправляет сообщение прямо в него: ход выполнит '+DESK[st.kind]+', история одна на ПК и в панели. Копия — отдельный чат в панели.':'Эта сессия из «'+E(SRC[st.src]||st.src)+'»: оригинал только читается.')+'</div><div class="btn'+(deskOK()?'':' pri')+'" data-hc="fork">'+IC('git-branch')+' Продолжить здесь (копия)</div>';
  sheet(h+'<div class="btn" data-hc="close">Закрыть</div>')}
 function renameUI(){sheet('<div class="hcsh"><b>Название чата</b></div><input id="hcren" class="hcinp" maxlength="120" value="'+E(st.title).replace(/"/g,'&quot;')+'"><div class="btn pri" data-hc="rensave">Сохранить</div><div class="btn" data-hc="close">Отмена</div>');setTimeout(function(){var i=document.getElementById('hcren');if(i){i.focus();i.select()}},150)}
 function delUI(){sheet('<div class="hcsh"><b>Удалить чат?</b></div><div class="hint2">'+(st.kind=='codex'?'«'+E(st.title)+'» уберётся из панели. Файлы истории Codex останутся на ПК.':'«'+E(st.title)+'» и вся его история будут удалены с ПК. Это нельзя отменить.')+'</div><div class="btn bad" data-hc="delyes">Удалить</div><div class="btn" data-hc="close">Отмена</div>')}
@@ -332,7 +336,7 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  case 'appr':respond(+el.dataset.i,el.dataset.c);break;
  case 'clarop':respond(+el.dataset.i,'',el.dataset.v);break;
  case 'clarskip':respond(+el.dataset.i,'deny','');break;
- case 'perm':{var nv=st.perm=='full'?'ask':'full';J(base()+'/sessions/'+encodeURIComponent(st.sid),{method:'PATCH',body:{perm:nv}}).then(function(){st.perm=nv;unsheet();toast(nv=='full'?'Полный доступ: без вопросов':'Будет спрашивать разрешения');haptic('success')}).catch(function(e){toast(E(e.message))});break}
+ case 'perm':{var nv=el.dataset.v||'pc';J(base()+'/sessions/'+encodeURIComponent(st.sid),{method:'PATCH',body:{perm:nv}}).then(function(){st.perm=nv;unsheet();toast(nv=='full'?'Полный доступ: без вопросов':nv=='ask'?'Будет спрашивать перед каждым действием':'Права как на ПК');haptic('success')}).catch(function(e){toast(E(e.message))});break}
  case 'clarify':{var inp=document.getElementById('hcclar');respond(+el.dataset.i,'',inp?inp.value:'')}break;
  case 'link':try{tg.openLink(el.dataset.u)}catch(e){window.open(el.dataset.u,'_blank')}break;
  case 'rename':unsheet();setTimeout(renameUI,260);break;
@@ -375,9 +379,9 @@ function fwdSheet(k){if(!st.fwdSrc)return;var L=st.fwdL[k],nm={hermes:'Hermes',c
  var h='<div class="hcsh"><b>Переслать в…</b></div><div class="hcfil hckind hcfwdk">'+['hermes','claude','codex'].map(function(x){return '<span class="'+(x==k?'on':'')+'" data-hc="fwdk" data-v="'+x+'">'+nm[x]+'</span>'}).join('')+'</div>'+
   '<div class="hcml hcfwdl"><div class="hcmi" data-hc="fwdnew" data-v="'+k+'">'+IC('plus')+'<b>Новый чат '+nm[k]+'</b><span>создать и вставить текст</span></div>';
  if(!L){h+='<div class="hint2">Загружаю…</div>';J(fwdPath(k)).then(function(d){st.fwdL[k]=d.s||[];if(document.querySelector('.hcfwdk span.on[data-v="'+k+'"]'))fwdSheet(k)}).catch(function(e){st.fwdL[k]=[];toast(E(e.message))})}
- else{var ok=L.filter(function(x){return (x.rw||k=='claude')&&!(k==st.fwdSrc.kind&&x.id==st.fwdSrc.sid)}).sort(function(a,b){return (b.rw?1:0)-(a.rw?1:0)||b.ts-a.ts}).slice(0,25);
+ else{var ok=L.filter(function(x){return (x.rw||k=='claude'||k=='codex'||x.dw)&&!(k==st.fwdSrc.kind&&x.id==st.fwdSrc.sid)}).sort(function(a,b){return (b.rw?1:0)-(a.rw?1:0)||b.ts-a.ts}).slice(0,25);
   if(!ok.length)h+='<div class="hint2">Чатов, куда можно писать, нет. Создай новый.</div>';
-  ok.forEach(function(x){h+='<div class="hcmi" data-hc="fwdto" data-v="'+k+'" data-id="'+E(x.id)+'"><i></i><b>'+E(x.t||'Без названия')+'</b><span>'+(x.rw?'':x.dw?'в чат на ПК · ':'продолжу в копии · ')+E(ago(x.ts))+'</span></div>'})}
+  ok.forEach(function(x){h+='<div class="hcmi" data-hc="fwdto" data-v="'+k+'" data-id="'+E(x.id)+'"><i></i><b>'+E(x.t||'Без названия')+'</b><span>'+(x.rw?'':(x.dw||k=='codex')?'в чат на ПК · ':'продолжу в копии · ')+E(ago(x.ts))+'</span></div>'})}
  sheet(h+'</div><div class="btn" data-hc="close">Отмена</div>')}
 function fwdGo(k,id,isNew){var f=st.fwdSrc;if(!f)return;unsheet();st.fwdSrc=null;
  if(st.kind!=k){ccStop();st.kind=k;LS.set('hckind',k);st.models=null;st.msel=null;st.mprov=''}
