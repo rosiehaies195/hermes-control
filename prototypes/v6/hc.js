@@ -87,8 +87,16 @@ function msgTime(ts){if(!ts)return '';var d=new Date(ts*1000),n=new Date(),p=fun
 function msgText(b){if(!b)return '';if(b.k=='u')return b.t||'';return (b.parts||[]).filter(function(p){return p.p=='t'}).map(function(p){return p.t}).join('\n\n')}
 function metaHtml(b,i){var t=msgTime(b.ts),has=!!msgText(b).trim();if(!t&&!has)return '';if(b.live&&!has)return '';
  return '<div class=\"hcmeta\">'+(t?'<span class=\"hctm\">'+E(t)+'</span>':'')+(has?'<span class=\"hccp\" data-hc=\"copy\" data-b=\"'+i+'\" title=\"Копировать\">'+IC('copy')+'</span>':'')+(has?'<span class=\"hccp\" data-hc=\"seltx\" data-b=\"'+i+'\" title=\"Выделить\">'+IC('type')+'</span>':'')+'</div>'}
-function copyText(tx,done){function fb(){var a=document.createElement('textarea');a.value=tx;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0;font-size:16px';document.body.appendChild(a);a.focus();a.select();try{a.setSelectionRange(0,tx.length)}catch(e){}var ok=false;try{ok=document.execCommand('copy')}catch(e){}document.body.removeChild(a);done(ok)}
- if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(tx).then(function(){done(true)},fb);else fb()}
+function diag(ev,o){try{o=o||{};o.ev=ev;o.ua=String(navigator.userAgent).slice(0,180);o.pl=tg&&tg.platform;o.tv=tg&&tg.version;o.sc=!!window.isSecureContext;o.ver=typeof VER!='undefined'?VER:0;hq('/diag',{method:'POST',body:o}).catch(function(){})}catch(e){}}
+function copyText(tx,done){var r={n:tx.length,ex:0,cb:'-'},ok=false,sh=document.getElementById('sheet'),host=sh&&sh.classList.contains('on')?sh:document.body,sel=window.getSelection&&window.getSelection(),keep=[];
+ try{for(var q=0;sel&&q<sel.rangeCount;q++)keep.push(sel.getRangeAt(q))}catch(e){}
+ try{var a=document.createElement('textarea');a.value=tx;a.setAttribute('inputmode','none');a.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;margin:0;opacity:0.01;font-size:16px;z-index:-1';host.appendChild(a);
+  a.contentEditable='true';a.readOnly=false;var rg=document.createRange();rg.selectNodeContents(a);if(sel){sel.removeAllRanges();sel.addRange(rg)}
+  try{a.focus({preventScroll:true})}catch(e){a.focus()}a.select();try{a.setSelectionRange(0,tx.length+1)}catch(e){}
+  ok=!!document.execCommand('copy');r.ex=ok?1:0;a.blur();host.removeChild(a)}catch(e){r.exe=String(e).slice(0,80)}
+ try{if(sel){sel.removeAllRanges();keep.forEach(function(k){sel.addRange(k)})}}catch(e){}
+ if(ok){done(true);diag('copy',r);return}
+ if(navigator.clipboard&&navigator.clipboard.writeText){r.cb='try';try{navigator.clipboard.writeText(tx).then(function(){r.cb='ok';done(true);diag('copy',r)},function(e){r.cb='err:'+(e&&e.name);done(false);diag('copy',r)})}catch(e){r.cb='throw';done(false);diag('copy',r)}}else{done(false);diag('copy',r)}}
 /* ---------- свайп вниз: базовый ptr (rotate+translate) в чате дёргался — глушим, в списке свой ---------- */
 (function(){var y0=null,dy=0,lst=null;function pt(){return document.getElementById('ptr')}
  document.addEventListener('touchstart',function(e){var r=root();if(!r||!r.contains(e.target))return;e.stopPropagation();window.PY=null;
@@ -103,11 +111,11 @@ function copyText(tx,done){function fb(){var a=document.createElement('textarea'
 function msgsHtml(){var h='',from=Math.max(0,st.msgs.length-st.lim);
  if(from>0)h+='<div class="hcmore" data-hc="older">Показать более ранние ('+from+')</div>';
  for(var i=from;i<st.msgs.length;i++){var b=st.msgs[i];
-  if(b.k=='u'){h+='<div class="hcrow u"><div class="hcwrap"><div class="hcb u">'+(b.im?'<div class="hcim">'+IC('image')+' '+b.im+' фото</div>':'')+(b.t?md(b.t):'')+'</div>'+metaHtml(b,i)+'</div></div>';continue}
+  if(b.k=='u'){h+='<div class="hcrow u" data-mi="'+i+'"><div class="hcwrap"><div class="hcb u">'+(b.im?'<div class="hcim">'+IC('image')+' '+b.im+' фото</div>':'')+(b.t?md(b.t):'')+'</div>'+metaHtml(b,i)+'</div></div>';continue}
   var inner='';b.parts.forEach(function(p,pi){inner+=p.p=='t'?'<div class="hct2">'+md(p.t)+'</div>':toolHtml(p,i,pi)});
   if(b.live&&!b.parts.length)inner='<div class="hcdots"><i></i><i></i><i></i></div>';
   else if(b.live&&b.parts[b.parts.length-1].p=='tool'&&b.parts[b.parts.length-1].st!='run')inner+='<div class="hcdots"><i></i><i></i><i></i></div>';
-  h+='<div class="hcrow a"><div class="hcwrap a"><div class="hcb a">'+inner+'</div>'+metaHtml(b,i)+'</div></div>'}
+  h+='<div class="hcrow a" data-mi="'+i+'"><div class="hcwrap a"><div class="hcb a">'+inner+'</div>'+metaHtml(b,i)+'</div></div>'}
  st.pend.forEach(function(p,i){h+=pendHtml(p,i)});
  if(st.err)h+='<div class="hcerr">'+E(st.err)+'</div>';
  return h}
@@ -160,6 +168,7 @@ function paintChat(){var r=root();if(!r)return;r.className='k-'+st.kind;
  '<div id="hcmsgs" class="hcmsgs"></div>'+
  (st.rw?'<div class="hccomp"><div id="hcthumbs" class="hcthumbs"></div><textarea id="hcin" rows="1" placeholder="Сообщение '+agentName()+'…"></textarea><div class="hctb2"><label class="hcbtn ghost" for="hcfile">'+IC('paperclip')+'</label><div class=\"hcbtn ghost\" data-hc=\"mic\" title=\"Голосом\">'+IC('mic')+'</div><input id="hcfile" type="file" accept="image/*" multiple hidden><div id="hcchips" class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="send"></div></div></div>':st.kind=='claude'?ccComp():'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
  var ta=document.getElementById('hcin');if(ta){ta.value=st.draft;grow(ta)}
+ if(st.fwdDraft&&ta){st.draft=st.fwdDraft;st.fwdDraft=null;ta.value=st.draft;grow(ta);setTimeout(function(){toast(IC('forward')+' Текст вставлен: допиши и отправь')},60)}
  st.stick=true;paint()}
 function grow(t){t.style.height='auto';t.style.height=Math.min(140,t.scrollHeight)+'px'}
 function after(){document.body.classList.toggle('hcm',U.tab=='hc');['claude','codex'].forEach(function(k){document.body.classList.toggle('hk-'+k,U.tab=='hc'&&st.kind==k)});if(U.tab!='hc'){document.body.classList.remove('hckb');return}
@@ -289,7 +298,7 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  case 'all':if(st.kind=='claude'){st.call=el.dataset.v=='1';LS.set('hccall',st.call)}else{st.all=el.dataset.v=='1';LS.set('hcall',st.all)}st.sessions=null;paint();loadList();break;
  case 'back':leave();break;
  case 'menu':menu();break;
- case 'close':unsheet();break;
+ case 'close':st.fwdDraft=null;unsheet();break;
  case 'pin':togglePin(el.dataset.id);break;
  case 'fold':{var f=LS.get('hcfold',{}),k=el.dataset.k,cur=f[k]===undefined?k=='api_server':!!f[k];f[k]=!cur;LS.set('hcfold',f);paint();break}
  case 'pinmenu':unsheet();togglePin(st.sid);break;
@@ -302,7 +311,13 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  case 'send':send();break;
  case 'tool':{var t=st.msgs[+el.dataset.b];t=t&&t.parts[+el.dataset.p];if(t){t.open=!t.open;var m=document.getElementById('hcmsgs'),y=m.scrollTop;paint();m.scrollTop=y}break}
  case 'older':st.lim+=200;paint();break;
- case 'seltx':{var sb=st.msgs[+el.dataset.b],stx=msgText(sb);if(stx){sheet('<h3>Выделить текст</h3><textarea id="hcsel" class="hcsel" readonly>'+E(stx)+'</textarea><div class="btn pri" data-hc="copyall" data-b="'+el.dataset.b+'">Копировать всё</div><div class="btn" data-hc="close">Закрыть</div>');setTimeout(function(){var t=document.getElementById('hcsel');if(t){t.style.height=Math.min(Math.max(t.scrollHeight,80),window.innerHeight*.5)+'px'}},30)}}break;
+ case 'seltx':{var sb=st.msgs[+el.dataset.b],stx=msgText(sb);if(stx){sheet('<h3>Выделить текст</h3><textarea id="hcsel" class="hcsel" inputmode="none" autocomplete="off" autocorrect="off" spellcheck="false">'+E(stx)+'</textarea><div class="btn pri" data-hc="copyall" data-b="'+el.dataset.b+'">Копировать всё</div><div class="btn" data-hc="close">Закрыть</div>');setTimeout(function(){var t=document.getElementById('hcsel');if(t){t.style.height=Math.min(Math.max(t.scrollHeight,80),window.innerHeight*.5)+'px'}},30)}}break;
+ case 'copycode':{var cc=codeBlocks(msgText(st.msgs[+el.dataset.b]))[+el.dataset.k];if(cc)copyText(cc,function(ok){toast(ok?'<b>'+IC('check')+'</b> Код скопирован':'Не удалось скопировать');if(ok){haptic('success');unsheet()}})}break;
+ case 'msgmenu':msgMenu(+el.dataset.b);break;
+ case 'fwd':fwdStart(+el.dataset.b);break;
+ case 'fwdk':fwdSheet(el.dataset.v);break;
+ case 'fwdto':fwdGo(el.dataset.v,el.dataset.id,false);break;
+ case 'fwdnew':fwdGo(el.dataset.v,'',true);break;
  case 'copyall':{var cb2=st.msgs[+el.dataset.b],ct2=msgText(cb2);if(ct2)copyText(ct2,function(ok){toast(ok?'<b>'+IC('check')+'</b> Скопировано':'Не удалось скопировать');if(ok){haptic('success');unsheet()}})}break;
  case 'copy':{var cb=st.msgs[+el.dataset.b],ct=msgText(cb);if(ct)copyText(ct,function(ok){toast(ok?'<b>'+IC('check')+'</b> Скопировано':'Не удалось скопировать');if(ok)haptic('success')})}break;
  case 'rmimg':st.imgs.splice(+el.dataset.i,1);paint();break;
@@ -322,5 +337,40 @@ document.addEventListener('keydown',function(e){if(e.target.id=='hcin'&&e.key=='
 document.addEventListener('change',function(e){if(e.target.id!='hcfile')return;var fs=[].slice.call(e.target.files||[]).slice(0,4-st.imgs.length);e.target.value='';
  fs.reduce(function(p,f){return p.then(function(){return readImg(f).then(function(u){st.imgs.push(u)})})},Promise.resolve()).then(paint).catch(function(){toast('Не удалось прочитать фото')})});
 function readImg(file){return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var M=1280,s=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*s));c.height=Math.max(1,Math.round(im.height*s));c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.82))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(file)})}
-return {open:function(id){if(st.kind!='hermes'){st.kind='hermes';LS.set('hckind','hermes')}return openSess(id)},pretty:pretty,st:st,shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint}
+function codeBlocks(t){var out=[],re=/```[\w+.-]*[ \t]*\n([\s\S]*?)```/g,m;while((m=re.exec(String(t||'')))&&out.length<4)out.push(m[1].replace(/\n$/,''));return out}
+function msgMenu(i){var b=st.msgs[i],t=msgText(b);if(!t||!t.trim())return;var cb=codeBlocks(t),pv=t.replace(/\s+/g,' ').trim();if(pv.length>140)pv=pv.slice(0,140)+'…';
+ var h='<h3>Сообщение</h3><div class="hcmpv">'+E(pv)+'</div><div class="btn pri" data-hc="copyall" data-b="'+i+'">'+IC('copy')+' Копировать</div><div class="btn" data-hc="seltx" data-b="'+i+'">'+IC('type')+' Выделить текст</div><div class="btn" data-hc="fwd" data-b="'+i+'">'+IC('forward')+' Переслать в другой чат</div>';
+ cb.forEach(function(c,k){h+='<div class="btn" data-hc="copycode" data-b="'+i+'" data-k="'+k+'">'+IC('code')+' Копировать код'+(cb.length>1?' '+(k+1):'')+'</div>'});
+ sheet(h+'<div class="btn" data-hc="close">Закрыть</div>')}
+(function(){var T=0,T2=0,x0=0,y0=0,row=null,armed=0,fired=0;
+ function off(){clearTimeout(T);T=0;if(row&&!armed)row.classList.remove('lp')}
+ document.addEventListener('pointerdown',function(e){if(!mounted()||st.view!='chat')return;if(e.pointerType=='mouse'&&!window.__lpMouse)return;
+  var r=e.target.closest&&e.target.closest('#hcmsgs .hcrow[data-mi]');if(!r||e.target.closest('[data-hc],a,input,textarea'))return;
+  off();row=r;armed=0;x0=e.clientX;y0=e.clientY;
+  T=setTimeout(function(){T=0;armed=1;r.classList.add('lp');haptic('sel');
+   T2=setTimeout(function(){r.classList.remove('lp');var sl=window.getSelection&&window.getSelection(),nat=!!(sl&&!sl.isCollapsed&&sl.rangeCount&&r.contains(sl.anchorNode));
+    diag('lp',{nat:nat?1:0});if(nat)return;fired=Date.now();msgMenu(+r.dataset.mi)},230)},450)},true);
+ document.addEventListener('pointermove',function(e){if(T&&(Math.abs(e.clientX-x0)>10||Math.abs(e.clientY-y0)>10))off()},true);
+ ['pointerup','pointercancel'].forEach(function(n){document.addEventListener(n,function(){if(T)off()},true)});
+ document.addEventListener('scroll',function(){if(T)off()},true);
+ document.addEventListener('click',function(e){if(fired&&Date.now()-fired<900){fired=0;e.preventDefault();e.stopPropagation()}},true);
+ document.addEventListener('contextmenu',function(e){if(e.target.closest&&e.target.closest('#hcmsgs .hcrow[data-mi]')&&armed){e.preventDefault()}},true);
+})();
+function fwdQuote(b){var t=msgText(b).trim(),who=b.k=='u'?'моё сообщение':agentName();
+ return '[Переслано из '+agentName()+' · «'+(st.title||'чат')+'» · '+who+']\n'+t.split('\n').map(function(l){return '> '+l}).join('\n')+'\n\n'}
+function fwdStart(i){var b=st.msgs[i];if(!b||!msgText(b).trim())return;st.fwdSrc={q:fwdQuote(b),kind:st.kind,sid:st.sid};st.fwdL=st.fwdL||{};fwdSheet(st.kind)}
+function fwdPath(k){return k=='claude'?'/cc/sessions?limit=40':k=='codex'?'/cx/sessions?limit=40':'/sessions?limit=40'}
+function fwdSheet(k){if(!st.fwdSrc)return;var L=st.fwdL[k],nm={hermes:'Hermes',claude:'Claude',codex:'Codex'};
+ var h='<div class="hcsh"><b>Переслать в…</b></div><div class="hcfil hckind hcfwdk">'+['hermes','claude','codex'].map(function(x){return '<span class="'+(x==k?'on':'')+'" data-hc="fwdk" data-v="'+x+'">'+nm[x]+'</span>'}).join('')+'</div>'+
+  '<div class="hcml hcfwdl"><div class="hcmi" data-hc="fwdnew" data-v="'+k+'">'+IC('plus')+'<b>Новый чат '+nm[k]+'</b><span>создать и вставить текст</span></div>';
+ if(!L){h+='<div class="hint2">Загружаю…</div>';J(fwdPath(k)).then(function(d){st.fwdL[k]=d.s||[];if(document.querySelector('.hcfwdk span.on[data-v="'+k+'"]'))fwdSheet(k)}).catch(function(e){st.fwdL[k]=[];toast(E(e.message))})}
+ else{var ok=L.filter(function(x){return (x.rw||k=='claude')&&!(k==st.fwdSrc.kind&&x.id==st.fwdSrc.sid)}).sort(function(a,b){return (b.rw?1:0)-(a.rw?1:0)||b.ts-a.ts}).slice(0,25);
+  if(!ok.length)h+='<div class="hint2">Чатов, куда можно писать, нет. Создай новый.</div>';
+  ok.forEach(function(x){h+='<div class="hcmi" data-hc="fwdto" data-v="'+k+'" data-id="'+E(x.id)+'"><i></i><b>'+E(x.t||'Без названия')+'</b><span>'+(x.rw?'':'продолжу в копии · ')+E(ago(x.ts))+'</span></div>'})}
+ sheet(h+'</div><div class="btn" data-hc="close">Отмена</div>')}
+function fwdGo(k,id,isNew){var f=st.fwdSrc;if(!f)return;unsheet();st.fwdSrc=null;
+ if(st.kind!=k){ccStop();st.kind=k;LS.set('hckind',k);st.models=null;st.msel=null;st.mprov=''}
+ st.sessions=(st.fwdL[k]||[]).map(function(x){if(k!='hermes')x.cc=true;return x});st.fwdDraft=f.q;
+ if(isNew){st.view='list';render();newChat()}else openSess(id)}
+return {msgMenu:msgMenu,fwdStart:fwdStart,copyText:copyText,open:function(id){if(st.kind!='hermes'){st.kind='hermes';LS.set('hckind','hermes')}return openSess(id)},pretty:pretty,st:st,shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint}
 })();

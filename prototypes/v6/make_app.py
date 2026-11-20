@@ -6,7 +6,7 @@ R = Path("C:/Users/Peter/hermes-control")
 src = (R / "index.v5.1.html.bak").read_text(encoding="utf-8")
 css = (R / "prototypes/v6/hc.css").read_text(encoding="utf-8")
 js = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.js", "search.js", "ms.js", "voice.js"))
-VER = 78
+VER = 80
 # extra files for prototypes: python make_app.py <out> [file.js|file.css ...] (paths relative to hermes-control)
 for _x in sys.argv[2:]:
     _t = (R / _x).read_text(encoding="utf-8")
@@ -22,6 +22,8 @@ def rep(old, new, cnt=1):
 
 # icons used by the chat (Lucide paths)
 ICONS = {
+ "forward": '<polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/>',
+ "code": '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
  "type": '<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/>',
  "copy": '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
  "mic": '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
