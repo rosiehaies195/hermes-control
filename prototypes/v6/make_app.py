@@ -6,7 +6,7 @@ R = Path("C:/Users/Peter/hermes-control")
 src = (R / "index.v5.1.html.bak").read_text(encoding="utf-8")
 css = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.css", "multi.css", "prj.css", "glass.css", "glassui.css", "cx.css", "qfull.css", "voicefix.css"))
 js = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.js", "search.js", "ms.js", "voice.js", "design8.js", "stale.js", "multi.js", "prj.js", "glass.js", "glassui.js", "cx.js", "qfull.js"))
-VER = 94
+VER = 95
 # extra files for prototypes: python make_app.py <out> [file.js|file.css ...] (paths relative to hermes-control)
 for _x in sys.argv[2:]:
     _t = (R / _x).read_text(encoding="utf-8")
@@ -31,6 +31,7 @@ ICONS = {
  "plus": '<path d="M5 12h14"/><path d="M12 5v14"/>',
  "paperclip": '<path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/>',
  "trash-2": '<path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+ "monitor": '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>',
  "git-branch": '<path d="M15 6a9 9 0 0 0-9 9V3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>',
  "chevron-left": '<path d="m15 18-6-6 6-6"/>',
  "ellipsis": '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
