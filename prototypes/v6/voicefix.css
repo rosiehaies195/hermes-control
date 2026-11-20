@@ -1,0 +1,9 @@
+/* v9.4: кнопка микрофона во время записи. Круглые кнопки композера фиксированы 40 px (hc.css:293), а при записи внутри
+   квадрат «стоп» + таймер «0:10» — содержимое вылезало из круга на скрепку, а стекло (glassui) перебивало красный фон. */
+body.hcm #hcroot .hctb2 .hcbtn.rec{width:auto!important;min-width:40px;padding:0 12px 0 10px!important;gap:6px;flex:none;
+ background:var(--bad)!important;border-color:var(--bad)!important;color:#fff!important;border-radius:20px!important}
+body.hcm #hcroot .hctb2 .hcbtn.rec .ic{width:16px;height:16px}
+body.hcm #hcroot .hctb2 .hcbtn.rec .vct{font:600 12.5px "JetBrains Mono",monospace;color:#fff}
+body.hcm #hcroot .hctb2 .hcchips{min-width:0;flex:1 1 auto;overflow:hidden}
+/* на время записи прячем чип глубины, иначе чип модели обрезается без стрелки */
+body.hcm #hcroot .hctb2:has(.hcbtn.rec) .hcchip[data-hc=effort]{display:none}

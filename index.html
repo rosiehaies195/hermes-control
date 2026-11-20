@@ -1225,6 +1225,16 @@ body.gu88 .toast.on{visibility:visible;transition:transform .2s,opacity .2s,visi
 .qf93 .qcard{margin-bottom:6px}
 .qx93{text-align:center;font:600 13px Inter,sans-serif;color:var(--mut);padding:8px 0 4px;cursor:pointer}
 
+/* v9.4: кнопка микрофона во время записи. Круглые кнопки композера фиксированы 40 px (hc.css:293), а при записи внутри
+   квадрат «стоп» + таймер «0:10» — содержимое вылезало из круга на скрепку, а стекло (glassui) перебивало красный фон. */
+body.hcm #hcroot .hctb2 .hcbtn.rec{width:auto!important;min-width:40px;padding:0 12px 0 10px!important;gap:6px;flex:none;
+ background:var(--bad)!important;border-color:var(--bad)!important;color:#fff!important;border-radius:20px!important}
+body.hcm #hcroot .hctb2 .hcbtn.rec .ic{width:16px;height:16px}
+body.hcm #hcroot .hctb2 .hcbtn.rec .vct{font:600 12.5px "JetBrains Mono",monospace;color:#fff}
+body.hcm #hcroot .hctb2 .hcchips{min-width:0;flex:1 1 auto;overflow:hidden}
+/* на время записи прячем чип глубины, иначе чип модели обрезается без стрелки */
+body.hcm #hcroot .hctb2:has(.hcbtn.rec) .hcchip[data-hc=effort]{display:none}
+
 </style>
 </head>
 <body>
@@ -1523,7 +1533,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=93;
+var VER=94;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
