@@ -27,5 +27,5 @@ function moreA2(){if(U.col.more8===undefined)U.col.more8=true;var shut=U.col.mor
  return '<div class="sec g2" style="margin-top:6px"><div class="sh col'+(shut?' shut':'')+'" data-a="col" data-x="more8"><span>Ещё</span><span class="sum">токены, автоматика, лента</span></div>'+(shut?'':'<div class="more2">'+tokens().replace(/ shut/,'')+(S.tok14&&S.tok14.sum?colSec('tok14','Токены · 14 дней',tok14(),''):'')+autoGrp()+feed()+'</div>')+'</div>'}
 function homeA2(){['tok','tok14','auto','feed','strip','path'].forEach(function(k){if(U.col[k]===undefined)U.col[k]=true});
  return hd()+updBanner()+netBanner()+'<div class="demo2">Демо: настоящий только tv-miniapp</div>'+inboxA2()+
-  '<div class="sec" style="margin-top:14px"><div class="sh"><span>Проекты</span><span class="sum">'+proj8().length+' · '+proj8().filter(function(p){return p.st=='work'}).length+' работают</span><a data-a="d8" data-x="add">+ добавить</a></div></div>'+filtA2()+listA2()+moreA2()}
+  '<div class="ph2"><h2>Проекты</h2><span class="cnt2">'+proj8().length+'</span><span class="add2" data-a="d8" data-x="add">'+IC('plus')+'Добавить</span></div>'+filtA2()+listA2()+moreA2()}
 var _h2=home;home=function(){return homeA2()};

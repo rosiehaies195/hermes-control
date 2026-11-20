@@ -52,3 +52,24 @@
 .oa8{margin-top:8px;display:grid;gap:8px}.oa8 textarea{width:100%}
 .ib2 .all8,.all8{margin:8px 16px 0;border:1px solid var(--line);border-radius:10px;padding:11px;text-align:center;font-size:13px;color:var(--tx);cursor:pointer}
 .ib2 .all8{margin:0;border:0;border-top:1px solid var(--line);border-radius:0}
+
+/* ===== полировка: шапка и фильтр ===== */
+.ph2{display:flex;align-items:center;gap:8px;margin:20px 16px 8px}
+.ph2 h2{margin:0;font:700 17px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--tx)}
+.ph2 .cnt2{font:600 12px "JetBrains Mono",monospace;color:var(--mut);background:var(--s2);border-radius:10px;padding:2px 8px}
+.ph2 .add2{margin-left:auto;display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line);background:var(--s1);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer}
+.ph2 .add2 .ic{width:14px;height:14px}.ph2 .add2:active{background:var(--s2)}
+.seg2{display:flex;gap:8px;padding:0;margin:0 16px 6px;border:0;background:none;overflow-x:auto;scrollbar-width:none}.seg2::-webkit-scrollbar{display:none}
+.seg2>span{flex:1 0 auto;height:40px;padding:0 12px;gap:7px;border-radius:12px;border:1px solid var(--line);background:var(--s1);color:var(--mut);font-size:13.5px;font-weight:600;justify-content:center;align-items:center}
+.seg2>span.on{background:color-mix(in srgb,var(--gold) 12%,var(--s1));border-color:var(--gold);color:var(--tx);box-shadow:none}
+.seg2>span i{font:600 11.5px "JetBrains Mono",monospace;color:var(--dim);margin-left:1px}
+.seg2>span.on i{color:var(--gold)}
+/* единые значки приложений 20x20 */
+.seg2 span.ag{width:20px;height:20px;min-height:0;padding:0;margin:0;border-radius:6px;border:0;box-shadow:none;display:grid;place-items:center;overflow:hidden;flex:none;background:var(--s2)}
+.seg2 span.ag img{width:14px;height:14px;border-radius:0}
+.seg2 span.ag.claude{background:color-mix(in srgb,var(--claude) 20%,var(--s2))}
+.seg2 span.ag.codex{background:none}.seg2 span.ag.codex img{width:20px;height:20px;border-radius:6px}
+.seg2 span.ag.hermes{background:#000 url(logo-portrait.png) center 2px/96% no-repeat}
+.seg2 span.on span.ag,.seg2 span.on span.ag.claude{box-shadow:none}
+.seg2>span i{display:none}
+.seg2>span{flex:1 1 auto;padding:0 10px}
