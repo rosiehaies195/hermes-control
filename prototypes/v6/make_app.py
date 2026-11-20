@@ -4,9 +4,9 @@ import sys
 from pathlib import Path
 R = Path("C:/Users/Peter/hermes-control")
 src = (R / "index.v5.1.html.bak").read_text(encoding="utf-8")
-css = (R / "prototypes/v6/hc.css").read_text(encoding="utf-8")
-js = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.js", "search.js", "ms.js", "voice.js", "design8.js", "stale.js"))
-VER = 86
+css = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.css", "multi.css", "prj.css"))
+js = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.js", "search.js", "ms.js", "voice.js", "design8.js", "stale.js", "multi.js", "prj.js"))
+VER = 87
 # extra files for prototypes: python make_app.py <out> [file.js|file.css ...] (paths relative to hermes-control)
 for _x in sys.argv[2:]:
     _t = (R / _x).read_text(encoding="utf-8")

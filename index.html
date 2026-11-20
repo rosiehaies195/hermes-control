@@ -815,6 +815,286 @@ body.hcm #hcroot .hctgb{display:none;padding:0 8px 8px}
 body.hcm #hcroot .hctg.open .hctgb{display:block}
 body.hcm #hcroot .hctgb .hctool{margin:6px 0}
 
+/* v8.3 «Проекты» (прототип H): home8 + homeA2 + round8 из prototypes/v8, без демо-правил */
+/* ПРОТОТИПЫ v8 «Проекты» (А/Б/В) */
+.ag.hermes{background:#000 url(logo-portrait.png) center 3px/92% no-repeat;border:1px solid #2a3550}
+.abs8{display:inline-flex;flex:none}.abs8 .ag+.ag{margin-left:-9px;box-shadow:0 0 0 2px var(--s1)}
+.ag.s8{width:22px;height:22px;border-radius:6px;display:inline-grid;vertical-align:middle;margin-right:2px}.ag.s8 img{width:14px;height:14px}
+.ag.m8{width:38px;height:38px;border-radius:10px}.ag.m8 img{width:22px;height:22px}
+.ag.xs8{width:16px;height:16px;border-radius:5px;display:inline-grid;vertical-align:-3px;margin-right:6px;background:none}.ag.xs8 img{width:14px;height:14px}.ag.hermes.xs8{background:#000 url(logo-portrait.png) center 1px/92% no-repeat}
+.alert .k .pn8,.ch8 .pn8{font-weight:700;margin-left:2px}.alert .k .pm8{font:500 11px "JetBrains Mono",monospace;color:var(--mut);margin-left:6px}
+.more8{margin:8px 16px 0;padding:10px;text-align:center;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:13px;cursor:pointer}
+.sum8{margin:6px 16px 4px;font-size:13px;color:var(--mut)}.sum8 b{color:var(--tx)}.ok8{color:var(--ok)}.wait8{color:var(--claude)}.bad8{color:var(--bad)}
+.demo8bar{margin:6px 16px 0;padding:7px 10px;border-radius:8px;background:color-mix(in srgb,var(--warn) 10%,var(--s1));border:1px dashed color-mix(in srgb,var(--warn) 45%,transparent);font-size:12px;color:var(--mut);line-height:1.4}
+.demo8{margin-left:7px;font:600 9.5px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 45%,transparent);border-radius:4px;padding:1px 4px;vertical-align:1px}
+.f8{margin:6px 16px 4px;flex-wrap:nowrap;overflow-x:auto}.f8 span{white-space:nowrap;position:relative}.f8 span i{font:600 11px "JetBrains Mono",monospace;font-style:normal;color:var(--mut);margin-left:4px}
+.f8 span u{position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--claude);text-decoration:none}
+.row.p8{display:block;padding:11px 14px}
+.row.p8.wait{box-shadow:inset 3px 0 0 var(--claude)}.row.p8.bad{box-shadow:inset 3px 0 0 var(--bad)}
+.row.p8.open{background:var(--s2)}
+.qb8{min-width:20px;height:20px;border-radius:10px;background:var(--claude);color:#fff;font:700 11.5px "JetBrains Mono",monospace;display:grid;place-items:center;padding:0 6px;flex:none}
+.pd8{padding:0 14px 14px;background:var(--s2);border-top:1px solid var(--line)}
+.pd8 .stats{margin-top:10px}
+.acts8{display:grid;grid-template-columns:repeat(4,auto);gap:6px;margin-top:10px}
+.acts8 .btn{min-height:38px;padding:0 8px;font-size:12.5px;justify-content:center;gap:5px}
+.acts8 .btn .ic{width:14px;height:14px}
+/* Б: вкладки приложений */
+.tabs8{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 16px 0}
+.tabs8>div{position:relative;padding:10px 6px 9px;border:1px solid var(--line);border-radius:10px;background:var(--s1);text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs8>div.on{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 9%,var(--s1))}
+.tabs8 .ag.xs8{margin:0 0 2px;width:22px;height:22px}.tabs8 .ag.xs8 img{width:18px;height:18px}
+.tabs8 span{font-weight:600;font-size:13.5px}.tabs8 small{font-size:11px;color:var(--mut)}
+.tb8{position:absolute;top:-7px;right:-5px;min-width:19px;height:19px;border-radius:10px;background:var(--claude);color:#fff;font:700 11px "JetBrains Mono",monospace;display:grid;place-items:center;padding:0 5px}
+.else8{display:flex;flex-wrap:wrap;gap:8px;margin:8px 16px 0}
+.else8 span{padding:7px 10px;border-radius:8px;border:1px solid color-mix(in srgb,var(--claude) 40%,var(--line));font-size:12.5px;color:var(--mut);cursor:pointer}.else8 b{color:var(--claude)}
+.inl8{padding:0 14px 12px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--claude) 5%,var(--s1))}.inl8 .q{font-size:14px;margin:2px 0 8px}
+.multi8{margin-left:7px;font:500 10.5px "JetBrains Mono",monospace;color:var(--mut)}
+/* В: сетка */
+.card8{margin:8px 16px 0;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:var(--s1)}
+.card8.wait{border-color:color-mix(in srgb,var(--claude) 55%,transparent);background:color-mix(in srgb,var(--claude) 8%,var(--s1))}
+.card8.bad{border-color:color-mix(in srgb,var(--bad) 55%,transparent);background:color-mix(in srgb,var(--bad) 8%,var(--s1))}
+.ch8{display:flex;align-items:center;gap:7px;cursor:pointer}.sp8{flex:1}
+.card8 .q{margin:10px 0 8px;font-size:14.5px;line-height:1.4}
+.ms8{display:flex;justify-content:space-between;font:500 11px "JetBrains Mono",monospace;color:var(--mut);margin-top:10px}
+.grid8{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 16px 0}
+.grid8 .card8{margin:0;cursor:pointer;min-width:0}.grid8 .card8:active{background:var(--s2)}
+.cn8{font-weight:700;font-size:14.5px;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs8{font-size:12px;color:var(--mut);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.idle8{margin:6px 16px 0}
+/* фиксы: общие правила .chips span / .else8 span не должны рисовать рамку вокруг значка приложения */
+.chips span.ag,.else8 span.ag{padding:0;min-height:0;border:0;background:none;display:inline-grid}
+.chips span.ag.hermes,.else8 span.ag.hermes{background:#000 url(logo-portrait.png) center 1px/92% no-repeat}
+.else8 span.ag{margin-right:6px;vertical-align:-3px}
+.f8{scrollbar-width:none}.f8::-webkit-scrollbar{display:none}
+.row.p8 .t{min-width:0;flex:1}
+.row.p8 .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row.p8 .d{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.nm8{display:inline-block;max-width:calc(100% - 56px);overflow:hidden;text-overflow:ellipsis;vertical-align:bottom;white-space:nowrap}
+.row.p8 .n{overflow:visible}
+/* А2: спокойная версия */
+.demo2{margin:4px 16px 0;font-size:11.5px;color:var(--dim)}
+.ib2{padding:0}
+.qi2{padding:12px 14px;border-bottom:1px solid var(--line)}.qi2:last-of-type{border-bottom:0}
+.qh2{display:flex;align-items:center;gap:7px;font-size:13px}.qh2 b{font-weight:600}.qh2 .tm2{margin-left:auto;font:500 11px "JetBrains Mono",monospace;color:var(--dim)}
+.qt2{margin:7px 0 10px;font-size:14.5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.qi2 .chips{gap:6px}
+.qi2 .chips span{padding:7px 12px;min-height:34px;font-size:13px;border-radius:8px;border-color:var(--line)}
+.qi2 .chips span.rec{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 8%,transparent)}
+.mo2{padding:11px;text-align:center;font-size:13px;color:var(--mut);cursor:pointer;border-top:1px solid var(--line)}
+.seg2{display:grid;grid-template-columns:repeat(4,1fr);margin:6px 16px 4px;padding:3px;border-radius:10px;background:var(--s1);border:1px solid var(--line)}
+.seg2 span{display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 2px;border-radius:7px;font-size:13px;color:var(--mut);cursor:pointer;white-space:nowrap}
+.seg2 span.on{background:var(--s2);color:var(--tx);box-shadow:0 0 0 1px var(--line2,var(--line))}
+.seg2 span i{font:500 10.5px "JetBrains Mono",monospace;font-style:normal;color:var(--dim)}
+.seg2 .ag.xs8{margin:0}
+.g2 .sh{margin-top:14px}
+.row2{display:flex;align-items:center;gap:11px;padding:11px 14px;min-height:60px;border-bottom:1px solid var(--line);cursor:pointer}
+.grp>.row2:last-child{border-bottom:0}.row2:active,.row2.open{background:var(--s2)}
+.row2 .ag.m8{width:34px;height:34px;border-radius:9px}.row2 .ag.m8 img{width:20px;height:20px}
+.row2 .abs8 .ag+.ag{margin-left:-14px}
+.t2{min-width:0;flex:1}
+.n2{display:flex;align-items:center;gap:7px;font-size:14.5px;font-weight:600;min-width:0}
+.n2 .dot{width:7px;height:7px}.nm2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d2{font-size:12.5px;color:var(--mut);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fr2{font:500 12px "JetBrains Mono",monospace;color:var(--dim);flex:none}
+.bd2{font:600 11px "JetBrains Mono",monospace;color:var(--bad);flex:none}
+.more2 .sec{margin-top:0}.more2 .sh{margin-top:12px}
+.more2 .grp{margin-top:6px}
+
+/* фильтр: одинаковые значки, без рамок вложенных span */
+.seg2>span{display:flex}
+.seg2 span.ag{padding:0;min-height:0;border-radius:4px;background:none;color:inherit;box-shadow:none;display:inline-grid;width:16px;height:16px;margin:0 2px 0 0}
+.seg2 span.ag img{width:16px;height:16px;border-radius:4px}
+.seg2 span.ag.hermes{background:#000 url(logo-portrait.png) center 1px/92% no-repeat}
+.seg2 span.on span.ag{box-shadow:none;background:none}.seg2 span.on span.ag.hermes{background:#000 url(logo-portrait.png) center 1px/92% no-repeat}
+.seg2>span{gap:4px}
+/* раскрытый проект */
+.pd2{padding:2px 14px 14px;background:var(--s2);border-bottom:1px solid var(--line)}
+.dq2{padding:10px 0 12px;border-bottom:1px solid var(--line)}
+.dl2{font:600 10.5px Inter,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:var(--claude)}
+.qt2.full{display:block;-webkit-line-clamp:unset;margin:6px 0 10px}
+.pd2 .chips{gap:6px}.pd2 .chips span{padding:7px 12px;min-height:34px;font-size:13px;border-radius:8px}
+.mt2{margin-top:12px;font-size:12.5px;color:var(--mut);line-height:1.5}
+.ac2{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.ac2>div{display:flex;align-items:center;justify-content:center;gap:5px;min-height:38px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;background:var(--s1);white-space:nowrap}
+.ac2>div .ic{width:14px;height:14px}.ac2>div.pri{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
+.ac2>div:active{opacity:.8}
+/* Входящие */
+.qc8{margin:8px 16px 0;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:var(--s1)}
+.qc8 .chips span{padding:7px 12px;min-height:34px;font-size:13px;border-radius:8px}
+.qx8{display:flex;gap:18px;margin-top:10px;font-size:13px;color:var(--mut)}.qx8 span{cursor:pointer;padding:4px 0}
+.oa8{margin-top:8px;display:grid;gap:8px}.oa8 textarea{width:100%}
+.ib2 .all8,.all8{margin:8px 16px 0;border:1px solid var(--line);border-radius:10px;padding:11px;text-align:center;font-size:13px;color:var(--tx);cursor:pointer}
+.ib2 .all8{margin:0;border:0;border-top:1px solid var(--line);border-radius:0}
+
+/* ===== полировка: шапка и фильтр ===== */
+.ph2{display:flex;align-items:center;gap:8px;margin:20px 16px 8px}
+.ph2 h2{margin:0;font:700 17px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--tx)}
+.ph2 .cnt2{font:600 12px "JetBrains Mono",monospace;color:var(--mut);background:var(--s2);border-radius:10px;padding:2px 8px}
+.ph2 .add2{margin-left:auto;display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line);background:var(--s1);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer}
+.ph2 .add2 .ic{width:14px;height:14px}.ph2 .add2:active{background:var(--s2)}
+.seg2{display:flex;gap:8px;padding:0;margin:0 16px 6px;border:0;background:none;overflow-x:auto;scrollbar-width:none}.seg2::-webkit-scrollbar{display:none}
+.seg2>span{flex:1 0 auto;height:40px;padding:0 12px;gap:7px;border-radius:12px;border:1px solid var(--line);background:var(--s1);color:var(--mut);font-size:13.5px;font-weight:600;justify-content:center;align-items:center}
+.seg2>span.on{background:color-mix(in srgb,var(--gold) 12%,var(--s1));border-color:var(--gold);color:var(--tx);box-shadow:none}
+.seg2>span i{font:600 11.5px "JetBrains Mono",monospace;color:var(--dim);margin-left:1px}
+.seg2>span.on i{color:var(--gold)}
+/* единые значки приложений 20x20 */
+.seg2 span.ag{width:20px;height:20px;min-height:0;padding:0;margin:0;border-radius:6px;border:0;box-shadow:none;display:grid;place-items:center;overflow:hidden;flex:none;background:var(--s2)}
+.seg2 span.ag img{width:14px;height:14px;border-radius:0}
+.seg2 span.ag.claude{background:color-mix(in srgb,var(--claude) 20%,var(--s2))}
+.seg2 span.ag.codex{background:none}.seg2 span.ag.codex img{width:20px;height:20px;border-radius:6px}
+.seg2 span.ag.hermes{background:#000 url(logo-portrait.png) center 2px/96% no-repeat}
+.seg2 span.on span.ag,.seg2 span.on span.ag.claude{box-shadow:none}
+.seg2>span i{display:none}
+.seg2>span{flex:1 1 auto;padding:0 10px}
+/* Закругления (понравились пользователю) поверх стиля Hermes; цвета, шрифты и заголовки не трогаем */
+.grp,.alert,.away,.qcard{border-radius:14px}
+.hero,.hero:after,.plc{border-radius:16px}
+.btn,.hcbtn,.hcnew,.ib,.qa div{border-radius:10px}
+.pill,.tags span,.badge,.live,.gq{border-radius:8px}
+.chips span,.chips.g span,.seg span,.pmbar .seg span{border-radius:9px}
+.seg.full span{border-radius:9px}
+input.in,textarea.in{border-radius:10px}
+.ci2,.cn,.cn .ci{border-radius:10px}
+.toast{border-radius:12px}
+.sheet{border-radius:18px 18px 0 0}
+.prog,.prog i{border-radius:4px}
+.strip .bar{border-radius:6px}
+.hero .hk .ag{border-radius:7px}
+/* блок «ещё N вопросов» на главной */
+.moreH{margin:8px 16px 0;padding:11px;border:1px dashed var(--line2,var(--line));border-radius:12px;text-align:center;font-size:13px;color:var(--mut);cursor:pointer}
+/* строки проектов и фильтр — в палитре Hermes */
+.row2 .n2{font-weight:600}
+.seg2>span.on{background:color-mix(in srgb,var(--gold) 14%,var(--s1));border-color:var(--gold);color:var(--tx)}
+/* «Ещё»: вложенные разделы без второго отступа — все заголовки по одной левой линии */
+.more2 .sec{padding:0;margin-top:0}
+.more2{margin:0 -16px;padding:0 16px}
+.more2>.sec>.sh,.more2 .sh{margin-left:2px}
+/* подпись справа никогда не наезжает на заголовок: заголовок не сжимается, подпись обрезается многоточием */
+.sh{gap:10px}
+.sh>span:first-child{flex:none;display:flex;align-items:center;gap:10px}
+.sh .sum{min-width:0;flex:1 1 auto;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh>span:first-child:after{min-width:12px;width:24px;flex:none}
+.ac2>div.dis{opacity:.45;pointer-events:none}.ac2>div.off8{opacity:.6;font-weight:500}
+.ac2{grid-template-columns:repeat(auto-fit,minmax(0,1fr))}.ac2>div .ag.xs8{margin:0}
+.alert .pj8{display:flex;align-items:center;gap:2px;margin:6px 0 -2px;font:600 11.5px "JetBrains Mono",monospace;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.alert .pj8 .abs8{margin-right:4px}.alert .pj8 .ag.xs8{margin-right:0}
+
+/* «Агенты»: строки как у проектов, кнопка справа */
+.row2.ag8{cursor:default}.row2.ag8:active{background:none}
+.row2 .ab8{min-height:32px;height:32px;padding:0 12px;font-size:13px;flex:none;white-space:nowrap}
+.ag.m8.sys8{display:grid;place-items:center;background:var(--s2);color:var(--mut)}.ag.m8.sys8 .ic{width:18px;height:18px}
+
+/* v8.5: «Агенты» = состояние, тап = фильтр; плашка «Всё остановлено»; блоки агентов в раскрытом проекте */
+.row2.ag8{cursor:pointer}.row2.ag8:active{background:var(--s2)}
+.row2.ag8.on{background:color-mix(in srgb,var(--gold) 8%,var(--s1));box-shadow:inset 3px 0 0 var(--gold)}
+.fl85{font:600 10px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 50%,transparent);border-radius:5px;padding:1px 5px;flex:none}
+.stop85{margin:8px 16px 0;padding:10px 12px;border-radius:14px;display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--warn) 11%,var(--s1));border:1px solid color-mix(in srgb,var(--warn) 45%,transparent)}
+.stop85 .si85{color:var(--warn);display:grid;place-items:center;flex:none}.stop85 .si85 .ic{width:18px;height:18px}
+.st85{flex:1;min-width:0}.st85 b{display:block;font-size:14.5px}.st85 small{display:block;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stop85 .btn{flex:none;min-height:36px;padding:0 14px}
+.ab85{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.ah85{display:flex;align-items:center;gap:7px;font-size:13.5px}.ah85 .ag.xs8{margin-right:0}.ah85 .dot{width:7px;height:7px}
+.as85{color:var(--mut);font-size:12.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ab85 .ac2{margin-top:8px}
+.cj85{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)}.cj85:last-child{border-bottom:0}
+.cj85.off{opacity:.6}.cj85 .dot{width:6px;height:6px;flex:none}
+.cn85{flex:1;min-width:0;font-size:13px}.cn85 div{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cn85 small{display:block;font:500 11px "JetBrains Mono",monospace;color:var(--dim)}
+.cb85{flex:none;padding:6px 10px;border:1px solid var(--line);border-radius:8px;font-size:12px;font-weight:600;background:var(--s1);cursor:pointer}.cb85:active{opacity:.8}
+.cm85{padding:8px 0 0;font-size:12.5px;color:var(--mut);cursor:pointer}
+.hint85{margin:0 0 8px;font-size:13px;color:var(--mut);text-align:center}
+.cn85 small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* v8.7: glass-навигация, плитки агентов, Пульт, вкладка «Проекты», экран проекта (вариант B), «Ещё». Палитра и шрифты Hermes. */
+/* --- нижняя навигация: плавающая полупрозрачная пилюля с размытием (как Instagram на iPhone), подписи КАПСОМ как в Hermes --- */
+body.g86{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+body.g86 .nav{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));height:62px;padding:0 5px;border-radius:31px;
+ background:color-mix(in srgb,var(--s1) 55%,transparent);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);
+ border:1px solid color-mix(in srgb,var(--tx) 12%,transparent);box-shadow:0 12px 32px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.07);z-index:6}
+html[data-theme=light] body.g86 .nav{background:color-mix(in srgb,#fff 62%,transparent);box-shadow:0 10px 28px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.6)}
+body.g86 .nav div{margin:5px 0;border-radius:26px;gap:4px;transition:color .15s}
+body.g86 .nav div i .ic{width:22px;height:22px}
+body.g86 .nav div.on:before{top:0;bottom:0;left:2px;right:2px;height:auto;border-radius:26px;background:color-mix(in srgb,var(--gold) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 22%,transparent)}
+body.g86 .nav .badge{top:3px;left:calc(50% + 6px);box-shadow:0 0 0 2px color-mix(in srgb,var(--s1) 80%,transparent)}
+body.g86 .savebar{bottom:calc(80px + env(safe-area-inset-bottom))}
+body.g86.hcm #hcroot{bottom:calc(82px + env(safe-area-inset-bottom))}
+body.g86.hcm.hckb #hcroot,body.g86.hcv-chat #hcroot{bottom:0}
+
+/* --- плитки агентов: одна форма и размер, логотип по центру, без наложений --- */
+.tl86{flex:none;display:inline-grid;place-items:center;overflow:hidden;border-radius:24%;background:var(--s2);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tx) 9%,transparent);vertical-align:middle}
+.tl86 img{display:block;width:62%;height:62%}
+.tl86 .ic{width:56%;height:56%;color:var(--mut)}
+.tl86.t-claude{background:color-mix(in srgb,var(--claude) 18%,var(--s2))}
+.tl86.t-codex{background:#fff}.tl86.t-codex img{width:100%;height:100%}
+.tl86.t-hermes{background:#000}.tl86.t-hermes img{width:100%;height:100%;object-fit:contain}
+.tl86.t-sys{background:var(--s2)}
+.tl86.soon{background:none;box-shadow:inset 0 0 0 1px var(--line);border:1px dashed var(--dim)}
+.tl86.xs{width:18px;height:18px;border-radius:5px}
+.tl86.s{width:26px;height:26px;border-radius:7px}
+.tl86.m{width:36px;height:36px;border-radius:10px}
+.tl86.l{width:48px;height:48px;border-radius:13px}
+.tls86{display:inline-flex;gap:4px;flex:none;align-items:center}
+.seg2 .tl86.xs,.pj8 .tl86.xs{margin:0}
+.alert .pj8 .tls86{margin-right:6px}
+
+/* --- общие строки --- */
+.rw86{display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:56px;border-top:1px solid var(--line)}
+.grp>.rw86:first-child,.grp>.ah86:first-child{border-top:0}
+.rw86.tap{cursor:pointer}.rw86.tap:active{background:var(--s2)}
+.rw86.sub{padding-left:24px;min-height:50px}.rw86.sub .dot{flex:none}
+.rw86.dis{opacity:.45;pointer-events:none}
+.ri86{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--s2);color:var(--mut)}
+.ri86 .ic{width:17px;height:17px}.ri86.g{background:color-mix(in srgb,var(--gold) 16%,var(--s2));color:var(--gold)}
+.n2.g{color:var(--gold)}.n2.w{font-weight:600}
+.d2 .dot{display:inline-block;width:7px;height:7px;margin-right:6px;vertical-align:1px}
+.cv86{flex:none;color:var(--dim);display:grid;place-items:center;transition:transform .15s}.cv86 .ic{width:17px;height:17px}.cv86.up{transform:rotate(90deg)}
+.vl86{flex:none;font-size:13.5px;color:var(--mut);font-weight:600;max-width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vl86.on{color:var(--gold)}
+.au86{flex:none;font:600 9.5px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 45%,transparent);border-radius:5px;padding:1px 5px}
+.row2 .cv86{margin-left:-4px}
+
+/* --- Пульт --- */
+.nf86{cursor:default}.nf86:active{background:none}
+.calm86{margin:12px 16px 0;padding:14px;border-radius:16px;display:flex;gap:12px;align-items:flex-start;background:var(--s1);border:1px solid var(--line)}
+.calm86>.ic{width:22px;height:22px;color:var(--ok);flex:none;margin-top:1px}.calm86 b{display:block;font-size:15px}.calm86 small{display:block;color:var(--mut);font-size:13px;margin-top:2px;line-height:1.4}
+.wt86{color:var(--claude)}
+
+/* --- вкладка «Проекты»: агенты = состояние + фильтр --- */
+.ags86{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ags86>div{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px 10px;border-radius:14px;background:var(--s1);border:1px solid var(--line);cursor:pointer;min-width:0;text-align:center}
+.ags86>div:active{background:var(--s2)}
+.ags86>div.on{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--s1))}
+.ags86>div.soon{opacity:.6}
+.ags86 b{font-size:13px}
+.ags86 small{font-size:11px;color:var(--mut);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ags86 small .dot{display:inline-block;width:6px;height:6px;margin-right:4px;vertical-align:1px}
+.ags86 small .dot:not(.ok):not(.bad):not(.wait){display:none}
+
+/* --- экран проекта --- */
+.back .ic{width:18px;height:18px;margin-left:-4px}
+.ph86{align-items:center}.ph86 .d{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ph86 .d .dot{width:7px;height:7px}
+.ph86 h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mt86{padding:8px 18px 0;font-size:12.5px;color:var(--mut)}
+.ph86+.mt86+.sec,.mt86+.sec{margin-top:10px}
+.ah86{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.ah86 .n2{font-size:15px}
+.bd86{padding:0 14px 14px}
+/* B: значение справа, выбор в шторке */
+.ah86.rw86{border-top:0}
+.rb86{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--dim);box-sizing:border-box}
+.rd86.on .rb86{border:5px solid var(--gold)}
+/* шторки с пояснениями */
+.ma86{display:flex;gap:12px;align-items:flex-start;padding:12px;margin-top:8px;border-radius:14px;border:1px solid var(--line);background:var(--s2);cursor:pointer}
+.ma86:active{opacity:.85}.ma86>.ic{width:19px;height:19px;flex:none;color:var(--gold);margin-top:1px}
+.ma86 b{display:block;font-size:14.5px}.ma86 small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px;line-height:1.4}
+.ma86.rd86 .rb86{margin-top:1px}.ma86.rd86.on{border-color:var(--gold)}
+.nt86{margin:12px 0 0!important;font-size:12.5px!important}
+.hint{padding-bottom:6px}
+.sbad86{color:var(--bad)}
+.ph86 .d{flex-wrap:nowrap;align-items:flex-start}.ph86 .d .dot{margin-top:6px}.ds86{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* строка автопилота: цвет состояния (пауза — оранжевый Claude, сбой — красный, всё остановлено — жёлтый) */
+.ap86.tn-wait{box-shadow:inset 3px 0 0 var(--claude)}.ap86.tn-wait .vl86,.ap86.tn-wait .ri86{color:var(--claude)}.ap86.tn-wait .ri86{background:color-mix(in srgb,var(--claude) 16%,var(--s2))}
+.ap86.tn-bad{box-shadow:inset 3px 0 0 var(--bad)}.ap86.tn-bad .vl86,.ap86.tn-bad .ri86{color:var(--bad)}.ap86.tn-bad .ri86{background:color-mix(in srgb,var(--bad) 16%,var(--s2))}
+.ap86.tn-warn{box-shadow:inset 3px 0 0 var(--warn)}.ap86.tn-warn .vl86,.ap86.tn-warn .ri86{color:var(--warn)}.ap86.tn-warn .ri86{background:color-mix(in srgb,var(--warn) 16%,var(--s2))}
+
 </style>
 </head>
 <body>
@@ -1113,7 +1393,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=86;
+var VER=87;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -2075,6 +2355,324 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  window.fetch=function(u,o){var s=String(u&&u.url||u),isApi=/\/api\//.test(s);
   if(stale&&isApi)return Promise.resolve(new Response(JSON.stringify({error:'expired',text:MSG}),{status:401,headers:{'Content-Type':'application/json'}}));
   return of(u,o).then(function(r){if(isApi&&r.status==401){r.clone().json().then(function(j){if(j&&j.error=='expired'){stale=true;banner()}}).catch(function(){})}return r})}})();
+
+/* v8.5 «Проекты» по модели проект × агент (решение 20.11); основа — v8.3 (прототип H на реальных данных).
+   Стиль Hermes не меняется: КАПС-заголовки .sh, боевые карточки вопросов qAlert/qChips, шапка hd().
+   Новое: список проектов (S.prj от tv_multi.py), фильтр Claude/Codex/Hermes на главной и во «Вопросах»,
+   вопросы с pid (ответ в любом месте закрывает вопрос везде — это одна запись S.pend), закругления (multi.css). */
+var ST8={wait:['Ждёт тебя','wait'],bad:['Сбой','bad'],work:['Работает','ok'],idle:['Свободен','']};
+var APPS8=['claude','codex','hermes'],ANM8={claude:'Claude',codex:'Codex',hermes:'Hermes'};
+function AB1(app,c){return app=='hermes'?'<span class="ag hermes '+(c||'')+'"></span>':'<span class="ag '+app+' '+(c||'')+'">'+LG(app)+'</span>'}
+function AB8(p,c){return '<span class="abs8">'+p.apps.map(function(a){return AB1(a,c)}).join('')+'</span>'}
+function waiting8(p){return p.st=='wait'||p.st=='bad'}
+/* проекты: S.prj с бэкенда; вопросы проекта = S.pend с тем же pid. Без S.prj (старый бэкенд) — один проект из S.proj */
+function proj8(){var L=S.prj&&S.prj.length?S.prj:[{id:'main',n:(S.proj&&S.proj.n)||'Проект',apps:['claude'],st:S.pend.length?'wait':'idle',ms:(S.proj&&S.proj.ms)||'',done:(S.proj&&S.proj.done)||0,total:(S.proj&&S.proj.total)||0,sub:S.session||'',tok:0,last:0,auto:true}];
+ var auto=(L.filter(function(p){return p.auto})[0]||L[0]).id;
+ return L.map(function(p){var o=Object.assign({},p);o.apps=(p.apps&&p.apps.length)?p.apps:['claude'];o.tok=+p.tok||0;
+  o.q=S.pend.filter(function(q){return (q.pid||auto)==p.id});if(o.q.length&&o.st!='bad')o.st='wait';return o})}
+function prjById8(id){return proj8().filter(function(p){return p.id==id})[0]}
+function appsOfQ8(q){var L=proj8(),p=L.filter(function(z){return z.id==q.pid})[0]||L.filter(function(z){return z.auto})[0];return p?p.apps:[q.ag||'claude']}
+
+/* фильтр по приложению: общий компонент (главная — U.pf, «Вопросы» — U.qf8) */
+function appFilt8(key,list,getApps){return '<div class="seg2">'+['all'].concat(APPS8).map(function(a){
+  return '<span data-a="af8" data-k="'+key+'" data-x="'+a+'" class="'+((U[key]||'all')==a?'on':'')+'">'+(a=='all'?'Все':AB1(a,'xs8')+ANM8[a])+'</span>'}).join('')+'</div>'}
+function filtA2(){return appFilt8('pf',proj8(),function(p){return p.apps})}
+
+/* строка проекта: значок приложения, имя + точка статуса, одна строка подписи, справа счётчик вопросов / сбой / n из m */
+function ago8(t){var m=Math.max(1,Math.round((nowS()-t)/60));return m<60?m+' мин':m<1440?Math.round(m/60)+' ч':Math.round(m/1440)+' дн'}
+function rowA2(p){var open=U.pe==p.id,dot=p.st=='wait'?'wait':p.st=='bad'?'bad':p.st=='work'?'ok':'';
+ var right=p.q.length?'<span class="qb8">'+p.q.length+'</span>':p.st=='bad'?'<span class="bd2">сбой</span>':p.last?'<span class="fr2">'+ago8(p.last)+'</span>':'';
+ return '<div class="row2 '+(open?'open':'')+'" data-a="pe" data-x="'+esc(p.id)+'">'+AB8(p,'m8')+'<div class="t2"><div class="n2"><span class="dot '+dot+'"></span><span class="nm2">'+esc(p.n)+'</span></div><div class="d2">'+(p.q.length&&!open?esc(p.q[0].q):esc(p.sub||''))+'</div></div>'+right+'</div>'+
+  (open?detA2(p):'')}
+function listA2(){var L=proj8(),f=U.pf||'all',V=L.filter(function(p){return f=='all'||p.apps.indexOf(f)>=0});if(!U.pg)U.pg={};if(!('idle' in U.pg))U.pg.idle=true;
+ V=V.slice().sort(function(a,b){return (b.last||0)-(a.last||0)});var need=V.filter(waiting8),work=V.filter(function(p){return p.st=='work'}),idle=V.filter(function(p){return p.st=='idle'});
+ function grp(t,arr,k,sm){if(!arr.length)return '';var shut=U.pg[k];return '<div class="sec g2"><div class="sh col'+(shut?' shut':'')+'" data-a="pg" data-x="'+k+'"><span>'+t+' · '+arr.length+'</span>'+(shut&&sm?'<span class="sum">'+esc(sm)+'</span>':'')+'</div>'+(shut?'':'<div class="grp">'+arr.map(rowA2).join('')+'</div>')+'</div>'}
+ return grp('Требуют тебя',need,'need','')+grp('Работают',work,'work','')+grp('Свободны',idle,'idle',idle.map(function(p){return p.n}).join(', '))||'<div class="empty">В этом приложении пока нет проектов</div>'}
+function moreA2(){if(U.col.more8===undefined)U.col.more8=true;var shut=U.col.more8;
+ return '<div class="sec g2" style="margin-top:6px"><div class="sh col'+(shut?' shut':'')+'" data-a="col" data-x="more8"><span>Ещё</span><span class="sum">токены, автоматика, лента</span></div>'+(shut?'':'<div class="more2">'+(S.queue&&S.queue.length?queueCard():'')+tokens().replace(/ shut/,'')+(S.tok14&&S.tok14.sum?colSec('tok14','Токены · 14 дней',tok14(),''):'')+autoGrp()+feed()+'</div>')+'</div>'}
+/* «Нужен ты»: боевые карточки вопросов (стиль каждого приложения), максимум 2, остальное во «Входящих» */
+function inboxH(){var P=S.pend;if(!P.length)return '';var sh=P.slice(0,2);
+ return '<div class="sec" style="margin-top:6px"><div class="sh"><span>Нужен ты · '+P.length+'</span><a data-a="tab" data-x="q">все вопросы ›</a></div></div>'+sh.map(qAlertP8).join('')+
+  (P.length>2?'<div class="moreH" data-a="tab" data-x="q">Ещё '+(P.length-2)+' '+(P.length-2==1?'вопрос':P.length-2<5?'вопроса':'вопросов')+' во «Входящих» ›</div>':'')}
+/* карточка вопроса с подписью проекта (если проектов больше одного) */
+function qAlertP8(q){var h=qAlert(q),p=prjById8(q.pid);if(!p||proj8().length<2)return h;
+ return h.replace('<div class="q">','<div class="pj8">'+AB8(p,'xs8')+esc(p.n)+'</div><div class="q">')}
+/* v8.5: раскрытый проект = блок по каждому его агенту (модель «проект × агент», решение 20.11).
+   Claude: автопилот проекта (Start/Написать/Пауза/Открыть) или «автопилот не включён»; Hermes: cron-задачи проекта
+   (имя задачи начинается с имени проекта) с Прогон/Пауза; Codex: «не подключён». Кнопки уходят с data-pid. */
+function cronOf8(p){var n=(p.n||'').toLowerCase();return (S.cj||[]).filter(function(j){return n&&(j.n||'').toLowerCase().indexOf(n)==0})}
+function pb8(act,ic,t,cls,x,pid){return '<div class="'+(cls||'')+'" data-a="'+act+'"'+(x?' data-x="'+esc(x)+'"':'')+(pid?' data-pid="'+esc(pid)+'"':'')+'>'+(ic?IC(ic):'')+t+'</div>'}
+function blk8(app,st,dot,body){return '<div class="ab85"><div class="ah85">'+AB1(app,'xs8')+'<b>'+ANM8[app]+'</b><span class="dot '+(dot||'')+'"></span><span class="as85">'+st+'</span></div>'+(body||'')+'</div>'}
+function claudeBlk8(p){if(!p.auto)return blk8('claude','автопилот не включён','','<div class="ac2">'+pb8('pchat8','','Чаты Claude','','claude')+'</div>');
+ var off=S.stopped,P=paused(),st,dot='';
+ if(off){st='всё остановлено';dot='wait'}else if(S.fails){st='сбой ×'+S.fails;dot='bad'}else if(P){st='пауза до '+hm(S.pause);dot='wait'}
+ else if(!S.clicker.on){st='кликер выключен'}else if(p.st=='work'){st='автопилот · работает';dot='ok'}else if(p.q.length){st='автопилот · ждёт тебя';dot='wait'}else st='автопилот · ждёт шага';
+ var b=pb8('startsheet','play','Start',off?'dis':'','claude',p.id)+pb8('saysheet','pencil','Написать',off?'dis':'','claude',p.id)+
+  (S.clicker.on||off?pb8(P?'resume':'pausesheet',P?'play':'pause',P?'Снять паузу':'Пауза',off?'dis':'','claude',p.id):pb8('clickon','play','Кликер','','claude',p.id))+pb8('proj','','Открыть','pri');
+ return blk8('claude',st,dot,'<div class="ac2">'+b+'</div>')}
+function hermesBlk8(p){var J=cronOf8(p),on=J.filter(function(j){return j.on}),bad=on.filter(function(j){return !j.ok});
+ if(!J.length)return blk8('hermes','нет задач по расписанию','','<div class="ac2">'+pb8('pchat8','','Чаты Hermes','','hermes')+'</div>');
+ var nm=(p.n||'').length,show=J.slice().sort(function(a,b){return (b.on-a.on)||(b.last||0)-(a.last||0)}),more=show.length>4?show.length-4:0;
+ var rows=show.slice(0,4).map(function(j){var t=(j.n||'').slice(nm).replace(/^[\s·:\-—]+/,'')||j.n;
+  return '<div class="cj85'+(j.on?'':' off')+'"><span class="dot '+(!j.on?'':j.ok?'ok':'bad')+'"></span><div class="cn85"><div>'+esc(t)+'</div><small>'+(!j.on?'на паузе':(j.ok?'':'сбой · ')+(j.last?hm(j.last):'не запускалась')+(j.nx?' → '+hm(j.nx):''))+'</small></div>'+
+   '<span class="cb85" data-a="cronrun" data-x="'+esc(j.id)+'">Прогон</span><span class="cb85" data-a="cronpr" data-x="'+esc(j.id)+'">'+(j.on?'Пауза':'Включить')+'</span></div>'}).join('');
+ return blk8('hermes',on.length+' из '+J.length+' по расписанию'+(bad.length?' · сбой':''),bad.length?'bad':on.length?'ok':'',rows+(more?'<div class="cm85" data-a="sys">ещё '+more+' · все задачи в «Системе» ›</div>':''))}
+function codexBlk8(p){return blk8('codex','не подключён','','<div class="ac2">'+pb8('pchat8','','Чаты Codex','','codex')+pb8('pcx8','','Что это значит','off8')+'</div>')}
+function detA2(p){var q=p.q.map(function(z){return '<div class="dq2"><div class="dl2">'+AN(z.ag||'claude')+(z.perm?' просит разрешение':' спрашивает')+' · '+ago(z.ts).replace(' назад','')+'</div><div class="qt2 full">'+esc(z.q)+'</div>'+qChips(z)+'</div>'}).join('');
+ var meta=[p.ms?'веха '+esc(p.ms):'',p.total?p.done+' из '+p.total+' задач':'',p.tok?p.tok.toFixed(1)+' млн ток.':'',p.last?ago(p.last):''].filter(Boolean).join(' · ');
+ var A=APPS8.filter(function(a){return p.apps.indexOf(a)>=0}).map(function(a){return a=='claude'?claudeBlk8(p):a=='hermes'?hermesBlk8(p):codexBlk8(p)}).join('');
+ return '<div class="pd2">'+q+(meta||p.path?'<div class="mt2">'+meta+(p.path&&!PL()?'<br><span class="mono" style="font-size:11px">'+esc(p.path)+'</span>':'')+'</div>':'')+(p.total?'<div class="prog" style="margin-top:8px"><i style="width:'+Math.round(p.done/p.total*100)+'%"></i></div>':'')+A+'</div>'}
+
+/* «Агенты» — только состояние. Тап по строке = фильтр проектов (U.pf), повторный тап снимает.
+   Кнопка справа только при сбое самого агента: Claude — S.fails / окно Claude (health claude); Hermes — сбой cron / gateway. */
+function pl8(n,a,b,c){return n+' '+(n%10==1&&n%100!=11?a:n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?b:c)}
+function agRow8(app,name,dot,sub,btn){var on=(U.pf||'all')==app;return '<div class="row2 ag8'+(on?' on':'')+'" data-a="agf8" data-x="'+app+'">'+AB1(app,'m8')+'<div class="t2"><div class="n2"><span class="dot '+dot+'"></span><span class="nm2">'+name+'</span>'+(on?'<span class="fl85">фильтр</span>':'')+'</div><div class="d2">'+sub+'</div></div>'+(btn||'')+'</div>'}
+function agBtn8(a,t,x){return '<div class="btn sm pri ab8" data-a="'+a+'"'+(x?' data-x="'+x+'"':'')+'>'+t+'</div>'}
+function agents8(){var L=proj8(),bad=hBad(),hk=function(k){return bad.filter(function(h){return h.k==k})[0]},f=S.log.filter(function(e){return e.k=='fail'})[0],sum='';
+ var of=function(a){return L.filter(function(p){return p.apps.indexOf(a)>=0})},R=[];
+ /* Claude */
+ var C=of('claude'),cw=C.filter(waiting8).length,cwork=C.filter(function(p){return p.st=='work'}).length,win=hk('claude'),cd,cs,cb='';
+ cs='ведёт '+pl8(C.length,'проект','проекта','проектов')+' · '+(cw?cw+' '+(cw==1?'ждёт':'ждут'):'никто не ждёт');
+ if(S.fails||win){cd='bad';cs=(win?'окно Claude: '+esc(win.d||'не отвечает'):'сбой ×'+S.fails+(f?': '+esc(f.x):''))+' · '+pl8(C.length,'проект','проекта','проектов');cb=win&&win.fix?agBtn8('fix',esc(win.fl||'Перезапустить'),win.k):agBtn8('heal','Проверить');sum='сбой Claude'}
+ else if(S.stopped){cd='wait';cs='остановлен · '+cs}
+ else{var np=paused()?C.filter(function(p){return p.auto}).length:0;cd=cw||np?'wait':cwork?'ok':'';if(np)cs+=' · '+np+' на паузе'}
+ R.push(agRow8('claude','Claude',cd,cs,cb));
+ /* Hermes */
+ var Hm=of('hermes'),J=S.cj||[],on=J.filter(function(j){return j.on}),jb=on.filter(function(j){return !j.ok}),gw=hk('gateway'),hb='',hs=pl8(Hm.length,'проект','проекта','проектов')+' · '+pl8(on.length,'задача','задачи','задач')+' по расписанию';
+ if(gw){hs='gateway: '+esc(gw.d||'не отвечает');hb=gw.fix?agBtn8('fix',esc(gw.fl||'Перезапустить'),gw.k):agBtn8('sys','Система');sum=sum||'сбой Hermes'}
+ else if(jb.length){hs='сбой: '+esc(jb[0].n)+(jb.length>1?' и ещё '+(jb.length-1):'');hb=agBtn8('sys','Система');sum=sum||'сбой Hermes'}
+ R.push(agRow8('hermes','Hermes',gw||jb.length?'bad':on.length?'ok':'',hs,hb));
+ /* Codex */
+ var X=of('codex');R.push(agRow8('codex','Codex','','не подключён'+(X.length?' · чаты в '+pl8(X.length,'проекте','проектах','проектах'):''),''));
+ /* прочие сбои системы (не окно Claude и не gateway — они уже в строках агентов) */
+ var rest=bad.filter(function(h){return h.k!='claude'&&h.k!='gateway'});
+ if(rest.length){var fx=rest.filter(function(x){return x.fix})[0];R.push('<div class="row2 ag8 sys85"><span class="ag m8 sys8">'+IC('activity')+'</span><div class="t2"><div class="n2"><span class="dot bad"></span><span class="nm2">Система</span></div><div class="d2">'+esc(rest.map(function(x){return x.n}).join(', '))+(rest[0].d?' · '+esc(rest[0].d):'')+'</div></div>'+(fx?agBtn8('fix',esc(fx.fl||'Перезапустить'),fx.k):agBtn8('sys','Открыть'))+'</div>');sum=sum||'сбой системы'}
+ return '<div class="sec"><div class="sh"><span>Агенты</span>'+(sum?'<span class="sum">'+sum+'</span>':'')+'</div><div class="grp">'+R.join('')+'</div></div>'}
+
+/* плашка «Стоп всего»: пока S.stopped — сверху Пульта; сама кнопка «Остановить всё» — в Настройках */
+function stopBar8(){return S.stopped?'<div class="stop85"><span class="si85">'+IC('square')+'</span><div class="st85"><b>Всё остановлено</b><small>автопилот и уведомления выключены</small></div><div class="btn sm pri" data-a="resume">Запустить всё</div></div>':''}
+home=function(){['tok','tok14','auto','feed','strip','path'].forEach(function(k){if(U.col[k]===undefined)U.col[k]=true});
+ return hd()+stopBar8()+updBanner()+netBanner()+agents8()+digestCard()+inboxH()+
+  '<div class="sec"><div class="sh"><span>Проекты · '+proj8().length+'</span><a data-a="padd8">+ добавить</a></div></div>'+filtA2()+listA2()+moreA2()+hermesCard()};
+/* Настройки: пока всё остановлено, вместо «Остановить всё» — «Запустить всё» (обе ветки: просто/тех) */
+['settings','settingsT'].forEach(function(n){var f=window[n];if(typeof f!='function')return;window[n]=function(){var h=f.apply(this,arguments);
+ return S.stopped?h.replace(/<div class="btn danger" data-a="stopsheet">[\s\S]*?<\/div>/,'<div class="hint85">Сейчас всё остановлено.</div><div class="btn pri" data-a="resume">'+IC('play')+' Запустить всё</div>'):h}});
+
+/* «Вопросы»: боевые карточки + фильтр по приложению сверху + подпись проекта */
+var _qH8=questions;questions=function(){var all=S.pend,f=U.qf8||'all',_hd=hd,_qa=qAlert;
+ S.pend=all.filter(function(q){return f=='all'||appsOfQ8(q).indexOf(f)>=0});
+ hd=function(){return _hd()+'<div style="margin-top:8px">'+appFilt8('qf8',all,appsOfQ8)+'</div>'};
+ var h;try{h=_qH8()}finally{hd=_hd;S.pend=all}return h};
+
+/* Start / Написать / Пауза уходят с pid проекта (бэкенд проверяет, что у проекта есть автопилот) */
+var _send8=send;send=function(o,quiet){if(o&&U.pid8&&/^(start|say|pause)$/.test(o.a))o=Object.assign({pid:U.pid8},o);return _send8(o,quiet)};
+document.addEventListener('click',function(ev){var el=ev.target.closest('[data-pid]');if(el)U.pid8=el.dataset.pid},true);
+document.addEventListener('click',function(ev){var el=ev.target.closest('[data-a]');if(!el||!/^(pe|pg|af8|agf8|pchat8|pcx8|padd8)$/.test(el.dataset.a))return;
+ var a=el.dataset.a,x=el.dataset.x;ev.stopPropagation();ev.preventDefault();haptic('sel');
+ if(a=='pe'){U.pe=U.pe==x?null:x}
+ else if(a=='pg'){U.pg=U.pg||{};U.pg[x]=!U.pg[x]}
+ else if(a=='af8'){U[el.dataset.k]=x;U.pe=null}
+ else if(a=='agf8'){U.pf=(U.pf||'all')==x?'all':x;U.pe=null}
+ else if(a=='pcx8'){toast('Codex пока не подключён: статус и вопросы не отслеживаются. Чаты Codex открываются во вкладке «Чат».');return}
+ else if(a=='padd8'){toast('Проекты появляются сами: папка, где за 14 дней был чат Claude или Codex, или cron Hermes с именем проекта. Автопилот Claude пока у одного проекта (tv-miniapp); для остальных — следующий этап.');return}
+ else if(a=='pchat8'){U.tab='hc';U.page=null;render();setTimeout(function(){if(window.HC&&HC.st.kind!=x){var b=document.querySelector('[data-hc=kind][data-v="'+x+'"]');if(b)b.click()}},0);return}
+ render(true)},true);
+
+/* v8.7 «Вкладка Проекты + glass» (вид проекта — вариант B, выбран 20.11) (план: runbook miniapp-panel, «v8.6»; решение 2026-11-20 (4)).
+   Слой поверх prototypes/v6/multi.js (v8.5, не выложена). Стиль Hermes не меняется: КАПС-заголовки .sh, .grp, qAlert, палитра.
+   Новое: нижняя навигация Пульт · Проекты · Чат · Мозг · Ещё (glass, плавающая), Пульт = входящие (стоп, сбои, вопросы, сводка),
+   вкладка «Проекты» (агенты-фильтр + список), отдельный экран проекта U.page='prj8',
+   реестр агентов AGENTS8, «Ещё» = Журнал, Настройки, Система. Автопилот на проект × агент — пока только вид (бэкенд — следующий этап). */
+Object.assign(ICP,{
+ 'folder-kanban':'<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/><path d="M8 10v4"/><path d="M12 10v2"/><path d="M16 10v6"/>',
+ 'circle-ellipsis':'<circle cx="12" cy="12" r="10"/><path d="M17 12h.01"/><path d="M12 12h.01"/><path d="M7 12h.01"/>',
+ 'ellipsis':'<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+ 'power':'<path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/>',
+ 'chevron-left':'<path d="m15 18-6-6 6-6"/>'});
+
+/* ---------- реестр агентов: новый агент = одна запись ---------- */
+var AGENTS8={
+ claude:{n:'Claude',app:'Claude Desktop',logo:'claude.svg',caps:['status','chats','questions','autopilot','next'],modes:['off','ask','full','pause'],
+  next:'Начать следующий шаг',nextD:'Нажмёт Start в чате проекта в Claude Desktop: Claude возьмёт следующий шаг плана.'},
+ codex:{n:'Codex',app:'Codex Desktop',logo:'codex.svg',caps:['chats','autopilot','next'],modes:['off','ask','full','pause'],wired:false,
+  md:{full:'Когда сессия закончилась, сам берёт промпт из её конца, открывает новую сессию и запускает. Зовёт тебя по вопросам и сбоям.'},
+  next:'Начать следующую сессию',nextD:'Возьмёт промпт из конца прошлой сессии, откроет новую в папке проекта и запустит.'},
+ hermes:{n:'Hermes',app:'Hermes на ПК',logo:'logo-portrait.png',caps:['status','chats','cron','autopilot'],modes:['off','full','pause'],
+  md:{off:'Задачи проекта по расписанию не запускаются.',full:'Задачи проекта идут по расписанию сами: кликер, сторож, уведомления.',pause:'Задачи проекта стоят до выбранного времени, потом пойдут снова.'}},
+ higgsfield:{n:'Higgsfield',app:'Higgsfield',soon:true,ic:'sparkles',caps:[],modes:[]}
+};
+function agKeys86(all){return Object.keys(AGENTS8).filter(function(k){return all||!AGENTS8[k].soon})}
+APPS8=agKeys86();agKeys86(true).forEach(function(k){ANM8[k]=AGENTS8[k].n});
+function can86(app,c){var A=AGENTS8[app];return !!(A&&A.caps.indexOf(c)>=0)}
+
+/* ---------- значки: одинаковые плитки, логотип одного размера, без наложений; Hermes — портрет целиком ---------- */
+function TL(app,sz){var A=AGENTS8[app]||{n:app};return '<span class="tl86 '+(sz||'m')+' t-'+app+(A.soon?' soon':'')+'" title="'+esc(A.n)+'">'+(A.logo?'<img src="'+A.logo+'" alt="">':IC(A.ic||'bot'))+'</span>'}
+function TLS(p,sz){return '<span class="tls86">'+p.apps.map(function(a){return TL(a,sz)}).join('')+'</span>'}
+AB1=function(app,c){return TL(app,c=='m8'?'m':'xs')};
+AB8=function(p,c){return TLS(p,c=='m8'?'m':'xs')};
+
+/* ---------- автопилот: режимы и текущее состояние ---------- */
+var MODES86={off:['Выкл','power','Сам ничего не делает. Шаги запускаешь ты, вопросы приходят тебе.'],
+ ask:['Только вопросы','message-circle-question','Шаги сам не начинает. На вопросы отвечает по твоим правилам, остальные присылает тебе.'],
+ full:['Полный','play','Сам начинает следующий шаг, когда прошлый готов, и ведёт вопросы. Зовёт тебя только по вопросам и сбоям.'],
+ pause:['Пауза','pause','Ничего не делает до выбранного времени, потом вернётся в прежний режим.']};
+function modeOf86(p,app){if(app=='claude'){if(!p.auto)return 'off';if(paused())return 'pause';return S.clicker.on?'full':'off'}
+ if(app=='hermes'){var J=cronOf8(p);return J.filter(function(j){return j.on}).length?'full':'off'}return 'off'}
+function mdx86(app,m){var A=AGENTS8[app];return A&&A.md&&A.md[m]||MODES86[m][2]}
+function wired86(app){return AGENTS8[app]&&AGENTS8[app].wired!==false}
+function modeLbl86(p,app,m){return m=='pause'&&app=='claude'&&paused()?'Пауза до '+hm(S.pause):MODES86[m][0]}
+function setMode86(pid,app,m){var p=prjById8(pid);if(!p)return;var cur=modeOf86(p,app);
+ if(S.stopped){toast('Сейчас всё остановлено. Сначала «Запустить всё» сверху Пульта.');return}
+ if(!wired86(app)){toast(AGENTS8[app].n+' ещё не подключён: автопилот появится после подключения (следующий этап).');return}
+ if(m==cur&&m!='pause'){toast('Уже включено: '+MODES86[m][0]);return}
+ if(app=='claude'&&p.auto){if(m=='pause'){U.pid8=pid;pauseSheet();return}
+  if(m=='full'){if(paused())send({a:'resume',pid:pid});else send(Object.assign(SET(S),{clicker:true}));return}}
+ if(app=='hermes'&&m=='pause'){toast('Пауза задач Hermes этого проекта — в списке «Задачи по расписанию» (тап по задаче).');return}
+ toast('Режим «'+MODES86[m][0]+'» для '+AGENTS8[app].n+' в «'+esc(p.n)+'» появится на следующем этапе (автопилот на несколько проектов).')}
+
+/* ---------- состояние агента в проекте ---------- */
+function stOf86(p,app){
+ if(app=='claude'){if(!p.auto)return p.q.length?['wait','ждёт твоего ответа']:['',p.sub?'чат: '+p.sub:'автопилот выключен'];
+  if(S.stopped)return ['wait','всё остановлено'];if(S.fails)return ['bad','сбой ×'+S.fails+' · Start не прошёл'];if(paused())return ['wait','пауза до '+hm(S.pause)];
+  if(p.q.length)return ['wait','ждёт твоего ответа'];if(p.st=='work')return ['ok','работает над шагом'];return ['','ждёт следующего шага']}
+ if(app=='hermes'){var J=cronOf8(p),on=J.filter(function(j){return j.on}),bad=on.filter(function(j){return !j.ok});
+  if(!J.length)return ['','нет задач по расписанию'];if(bad.length)return ['bad','сбой задачи: '+cronName86(bad[0],p)];
+  return on.length?['ok',pl8(on.length,'задача работает','задачи работают','задач работают')+' по расписанию']:['','задачи на паузе']}
+ if(app=='codex')return ['','не подключён · видны только чаты'];
+ return ['','скоро']}
+/* одна главная кнопка с полным глаголом + остальное в «⋯» */
+function main86(p,app){var A=AGENTS8[app];
+ if(app=='claude'&&p.auto)return {a:'startsheet',x:'claude',t:A.next,d:A.nextD,ic:'play',dis:S.stopped};
+ if(app=='codex')return {a:'pchat8',x:'codex',t:'Открыть чаты Codex',d:'Чаты Codex этого ПК во вкладке «Чат».',ic:'message-square-text'};
+ if(app=='hermes')return {a:'pchat8',x:'hermes',t:'Написать Hermes',d:'Чат с Hermes во вкладке «Чат».',ic:'message-square-text'};
+ return {a:'pchat8',x:app,t:'Открыть чаты '+A.n,d:'Чаты '+A.n+' во вкладке «Чат».',ic:'message-square-text'}}
+function acts86(p,app){var L=[];
+ if(app=='claude'&&p.auto){L.push(['saysheet','claude','pencil','Написать в чат проекта','Текст уйдёт в чат «'+p.n+'» в Claude Desktop, как будто ты набрал его на ПК.']);
+  L.push(['proj','','target','Вехи и задачи','План проекта, прогресс вехи, последние коммиты.']);L.push(['pchat8','claude','message-square-text','Все чаты Claude','Чаты Claude Desktop и панели во вкладке «Чат».'])}
+ else if(app=='claude')L.push(['pchat8','claude','message-square-text','Чаты Claude','Чаты Claude Desktop и панели во вкладке «Чат».']);
+ if(app=='hermes'){L.push(['sys','','activity','Все задачи в «Системе»','Расписание, последние запуски и сбои всех задач Hermes.'])}
+ if(app=='codex')L.push(['pcx8','','info','Что значит «не подключён»','Панель видит чаты Codex, но не следит за статусом и вопросами. Полное подключение — следующий этап.']);
+ return L}
+
+/* ---------- задачи Hermes: человеческие описания ---------- */
+var CRON86=[[/кликер/i,'Нажимает Start в Claude, когда шаг готов'],[/watchdog|сторож/i,'Следит, что автоматика жива, и чинит сбои'],[/уведомлен/i,'Присылает вопросы и тревоги в Telegram'],
+ [/токен/i,'Считает расход токенов за день'],[/синк|sync/i,'Сохраняет мозг на GitHub'],[/куратор/i,'Вечером переносит итоги дня в мозг'],[/монитор/i,'Старый монитор Start (заменён кликером)']];
+function cronName86(j,p){var nm=(p&&p.n||'').length,t=(j.n||'');if(nm&&t.toLowerCase().indexOf(p.n.toLowerCase())==0)t=t.slice(nm).replace(/^[\s·:\-—]+/,'');
+ for(var i=0;i<CRON86.length;i++)if(CRON86[i][0].test(j.n||''))return CRON86[i][1];return t||j.n}
+function every86(j){if(!j.nx||!j.last||j.nx<=j.last)return '';var m=Math.round((j.nx-j.last)/60);return m<60?'каждые '+m+' мин':m<1440?'каждые '+Math.round(m/60)+' ч':'раз в день'}
+function cronSub86(j){return !j.on?'на паузе':(j.ok?'':'сбой · ')+[every86(j),j.nx&&j.nx>nowS()?'следующий '+hm(j.nx):''].filter(Boolean).join(' · ')}
+function cronBlk86(p){var J=cronOf8(p);if(!J.length)return '';U.cx86=U.cx86||{};var open=U.cx86[p.id],on=J.filter(function(j){return j.on}).length,bad=J.filter(function(j){return j.on&&!j.ok}).length;
+ var head='<div class="rw86 tap" data-a="cx86" data-x="'+esc(p.id)+'"><span class="ri86">'+IC('clock')+'</span><div class="t2"><div class="n2">Задачи по расписанию</div><div class="d2">'+on+' из '+J.length+' работают'+(bad?' · сбой':'')+'</div></div><span class="cv86'+(open?' up':'')+'">'+IC('chevron-right')+'</span></div>';
+ if(!open)return head;
+ return head+J.slice().sort(function(a,b){return (b.on-a.on)||(b.last||0)-(a.last||0)}).map(function(j){return '<div class="rw86 sub tap" data-a="cj86" data-x="'+esc(j.id)+'" data-pid="'+esc(p.id)+'"><span class="dot '+(!j.on?'':j.ok?'ok':'bad')+'"></span><div class="t2"><div class="n2 w">'+esc(cronName86(j,p))+'</div><div class="d2">'+esc(cronSub86(j))+'</div></div><span class="cv86">'+IC('chevron-right')+'</span></div>'}).join('')}
+function cronSheet86(id,pid){var j=(S.cj||[]).filter(function(x){return x.id==id})[0],p=prjById8(pid);if(!j)return;
+ sheet('<h3>'+esc(cronName86(j,p))+'</h3><p>'+esc(j.n)+' · '+esc(cronSub86(j)||'')+(j.last?' · последний запуск '+hm(j.last):'')+'</p>'+
+  '<div class="ma86" data-a="cronrun" data-x="'+esc(j.id)+'">'+IC('play')+'<div><b>Запустить сейчас</b><small>Один внеочередной прогон, расписание не меняется.</small></div></div>'+
+  '<div class="ma86" data-a="cronpr" data-x="'+esc(j.id)+'">'+IC(j.on?'pause':'play')+'<div><b>'+(j.on?'Приостановить':'Включить')+'</b><small>'+(j.on?'Задача перестанет запускаться по расписанию, пока не включишь.':'Задача снова пойдёт по расписанию.')+'</small></div></div>')}
+
+/* ---------- шторки: режим автопилота и «⋯» ---------- */
+function modeSheet86(pid,app){var p=prjById8(pid),A=AGENTS8[app],cur=modeOf86(p,app);
+ sheet('<h3>Автопилот · '+A.n+'</h3><p>Проект «'+esc(p.n)+'». Что '+A.n+' делает сам, пока тебя нет.</p>'+A.modes.map(function(m){var M=MODES86[m];
+  return '<div class="ma86 rd86'+(m==cur?' on':'')+'" data-a="md86" data-x="'+m+'" data-k="'+app+'" data-pid="'+esc(pid)+'"><span class="rb86"></span><div><b>'+(m==cur?modeLbl86(p,app,m):M[0])+'</b><small>'+mdx86(app,m)+'</small></div></div>'}).join('')+
+  (wired86(app)?'':'<p class="nt86">'+A.n+' ещё не подключён — выбор заработает после подключения.</p>'))}
+function moreSheet86(pid,app){var p=prjById8(pid),A=AGENTS8[app];
+ sheet('<h3>'+A.n+' · '+esc(p.n)+'</h3><p>Другие действия</p>'+acts86(p,app).map(function(r){return '<div class="ma86" data-a="'+r[0]+'"'+(r[1]?' data-x="'+r[1]+'"':'')+' data-pid="'+esc(p.id)+'">'+IC(r[2])+'<div><b>'+r[3]+'</b><small>'+esc(r[4])+'</small></div></div>'}).join(''))}
+
+/* ---------- блок агента в проекте: три варианта вида ---------- */
+function head86(p,app){var s=stOf86(p,app),A=AGENTS8[app];return '<div class="ah86">'+TL(app,'m')+'<div class="t2"><div class="n2">'+A.n+'</div><div class="d2"><span class="dot '+s[0]+'"></span>'+esc(s[1])+'</div></div></div>'}
+/* блок агента (вариант B, выбран 20.11): строки как в Настройках iOS — значение режима справа, выбор в шторке с пояснениями;
+   строка автопилота подсвечивается цветом состояния (пауза, сбой, всё остановлено) */
+function tone86(p,app){if(S.stopped)return 'warn';var s=stOf86(p,app)[0];if(s=='bad')return 'bad';return modeOf86(p,app)=='pause'?'wait':''}
+function blkB86(p,app){var A=AGENTS8[app],cur=modeOf86(p,app),M=main86(p,app),L=acts86(p,app);
+ var rows=head86(p,app).replace('class="ah86"','class="ah86 rw86"');
+ if(can86(app,'autopilot')){var tn=wired86(app)?tone86(p,app):'';rows+='<div class="rw86 tap ap86'+(tn?' tn-'+tn:'')+'" data-a="msh86" data-x="'+app+'" data-pid="'+esc(p.id)+'"><span class="ri86">'+IC(tn=='bad'?'triangle-alert':tn=='warn'?'square':cur=='pause'?'pause':'zap')+'</span><div class="t2"><div class="n2">Автопилот</div><div class="d2">'+(!wired86(app)?'появится после подключения':tn=='warn'?'Всё остановлено: автопилот не работает, пока не нажмёшь «Запустить всё».':tn=='bad'?esc(stOf86(p,app)[1])+' · '+esc(mdx86(app,cur)):esc(mdx86(app,cur)))+'</div></div><span class="vl86'+(cur=='off'?'':' on')+'">'+(!wired86(app)?'—':tn=='warn'?'Остановлен':modeLbl86(p,app,cur))+'</span><span class="cv86">'+IC('chevron-right')+'</span></div>'}
+ if(app=='hermes')rows+=cronBlk86(p);
+ rows+='<div class="rw86 tap act'+(M.dis?' dis':'')+'" data-a="'+M.a+'" data-x="'+M.x+'" data-pid="'+esc(p.id)+'"><span class="ri86 g">'+IC(M.ic)+'</span><div class="t2"><div class="n2 g">'+M.t+'</div><div class="d2">'+esc(M.d)+'</div></div></div>';
+ if(L.length)rows+='<div class="rw86 tap" data-a="ms86" data-x="'+app+'" data-pid="'+esc(p.id)+'"><span class="ri86">'+IC('ellipsis')+'</span><div class="t2"><div class="n2">Другие действия</div><div class="d2">'+esc(L.map(function(r){return r[3]}).join(', '))+'</div></div><span class="cv86">'+IC('chevron-right')+'</span></div>';
+ return '<div class="sec"><div class="sh"><span>'+A.n+'</span></div><div class="grp">'+rows+'</div></div>'}
+/* ---------- экран проекта ---------- */
+function prjPage86(){var p=prjById8(U.pid86);if(!p){U.page=null;return prjTab86()}
+ var dot=p.st=='wait'?'wait':p.st=='bad'?'bad':p.st=='work'?'ok':'',stt=(ST8[p.st]||ST8.idle)[0];
+ var meta=[p.ms?'веха '+esc(p.ms):'',p.total?p.done+' из '+p.total+' задач':'',p.tok?p.tok.toFixed(1)+' млн ток.':'',p.last?ago(p.last):''].filter(Boolean).join(' · ');
+ var h='<div class="back" data-a="back">'+IC('chevron-left')+'Проекты</div><div class="ph ph86">'+TLS(p,'l')+'<div style="min-width:0"><h2>'+esc(p.n)+'</h2><div class="d"><span class="dot '+dot+'"></span><span class="ds86">'+(p.st!='idle'&&p.sub?esc(p.sub):stt)+'</span></div></div></div>'+
+  (meta?'<div class="mt86">'+meta+'</div>':'')+(p.total?'<div class="sec"><div class="prog"><i style="width:'+Math.round(p.done/p.total*100)+'%"></i></div></div>':'')+stopBar8();
+ if(p.q.length)h+='<div class="sec"><div class="sh"><span>Вопросы · '+p.q.length+'</span></div></div>'+p.q.map(qAlert).join('');
+ var L=APPS8.filter(function(a){return p.apps.indexOf(a)>=0});
+ h+=L.map(function(a){return blkB86(p,a)}).join('');
+ return h}
+
+/* ---------- вкладка «Проекты» ---------- */
+function agSt86(app){var L=proj8().filter(function(p){return p.apps.indexOf(app)>=0}),A=AGENTS8[app],w=L.filter(function(p){return p.st=='wait'}).length,bad=hBad();
+ if(A.soon)return ['','скоро'];
+ if(app=='claude'&&(S.fails||bad.some(function(h){return h.k=='claude'})))return ['bad','сбой · '+pl8(L.length,'проект','проекта','проектов')];
+ if(app=='hermes'&&(bad.some(function(h){return h.k=='gateway'})||(S.cj||[]).some(function(j){return j.on&&!j.ok})))return ['bad','сбой задачи'];
+ if(!wired86(app))return ['',pl8(L.length,'проект','проекта','проектов')+' · не подключён'];
+ if(S.stopped)return ['wait','остановлен'];
+ return [w?'wait':L.some(function(p){return p.st=='work'})?'ok':'',pl8(L.length,'проект','проекта','проектов')+(w?' · '+w+' '+(w==1?'ждёт':'ждут'):'')]}
+function agStrip86(){return '<div class="sec"><div class="sh"><span>Агенты</span>'+((U.pf||'all')!='all'?'<a data-a="agf86" data-x="all">показать все</a>':'')+'</div><div class="ags86">'+agKeys86(true).map(function(k){var s=agSt86(k),on=(U.pf||'all')==k;
+ return '<div class="'+(on?'on':'')+(AGENTS8[k].soon?' soon':'')+'" data-a="agf86" data-x="'+k+'">'+TL(k,'m')+'<b>'+AGENTS8[k].n+'</b><small><span class="dot '+s[0]+'"></span>'+esc(s[1])+'</small></div>'}).join('')+'</div></div>'}
+rowA2=function(p){var dot=p.st=='wait'?'wait':p.st=='bad'?'bad':p.st=='work'?'ok':'';
+ var right=p.q.length?'<span class="qb8">'+p.q.length+'</span>':p.st=='bad'?'<span class="bd2">сбой</span>':p.last?'<span class="fr2">'+ago8(p.last)+'</span>':'';
+ var au=p.apps.some(function(a){return modeOf86(p,a)!='off'});
+ return '<div class="row2" data-a="po86" data-x="'+esc(p.id)+'">'+TLS(p,'s')+'<div class="t2"><div class="n2"><span class="dot '+dot+'"></span><span class="nm2">'+esc(p.n)+'</span>'+(au?'<span class="au86">авто</span>':'')+'</div><div class="d2">'+(p.q.length?esc(p.q[0].q):esc(p.sub||''))+'</div></div>'+right+'<span class="cv86">'+IC('chevron-right')+'</span></div>'};
+function prjTab86(){return hd()+agStrip86()+'<div class="sec"><div class="sh"><span>Проекты · '+proj8().length+'</span><a data-a="padd8">+ добавить</a></div></div>'+listA2()}
+
+/* ---------- Пульт: стоп, сбои, вопросы, сводка ---------- */
+function fRow86(app,t,d,btn){return '<div class="row2 ag8 nf86">'+(app=='sys'?'<span class="tl86 m t-sys">'+IC('activity')+'</span>':TL(app,'m'))+'<div class="t2"><div class="n2"><span class="dot bad"></span><span class="nm2">'+t+'</span></div><div class="d2">'+d+'</div></div>'+(btn||'')+'</div>'}
+function faults86(){var bad=hBad(),hk=function(k){return bad.filter(function(h){return h.k==k})[0]},f=S.log.filter(function(e){return e.k=='fail'})[0],R=[];
+ var win=hk('claude');if(S.fails||win)R.push(fRow86('claude',win?'Окно Claude не отвечает':'Claude: сбой ×'+S.fails,esc(win?(win.d||''):(f?f.x:'Start не прошёл')),win&&win.fix?agBtn8('fix',esc(win.fl||'Перезапустить'),win.k):agBtn8('heal','Проверить')));
+ var gw=hk('gateway'),jb=(S.cj||[]).filter(function(j){return j.on&&!j.ok});
+ if(gw)R.push(fRow86('hermes','Hermes: бот не отвечает',esc(gw.d||'gateway'),gw.fix?agBtn8('fix',esc(gw.fl||'Перезапустить'),gw.k):agBtn8('sys','Система')));
+ else if(jb.length)R.push(fRow86('hermes','Hermes: сбой задачи',esc(cronName86(jb[0]))+(jb.length>1?' и ещё '+(jb.length-1):''),agBtn8('sys','Система')));
+ var rest=bad.filter(function(h){return h.k!='claude'&&h.k!='gateway'});
+ if(rest.length){var fx=rest.filter(function(x){return x.fix})[0];R.push(fRow86('sys','Система',esc(rest.map(function(x){return x.n}).join(', ')),fx?agBtn8('fix',esc(fx.fl||'Перезапустить'),fx.k):agBtn8('sys','Открыть')))}
+ return R.length?'<div class="sec"><div class="sh"><span>Сбои · '+R.length+'</span></div><div class="grp">'+R.join('')+'</div></div>':''}
+function sumRow86(){var L=proj8(),bd=L.filter(function(p){return p.st=='bad'}).length,w=L.filter(function(p){return p.st=='wait'}).length,wk=L.filter(function(p){return p.st=='work'}).length,id=L.length-w-wk-bd;
+ var parts=[bd?'<b class="sbad86">'+bd+' '+(bd==1?'со сбоем':'со сбоем')+'</b>':'',w?'<b class="wt86">'+w+' '+(w==1?'ждёт':'ждут')+'</b>':'',wk?wk+' '+(wk==1?'работает':'работают'):'',id?id+' '+(id==1?'свободен':'свободны'):''].filter(Boolean).join(' · ');
+ return '<div class="sec"><div class="sh"><span>Проекты · '+L.length+'</span></div><div class="grp"><div class="rw86 tap" data-a="tab" data-x="prj"><span class="tls86">'+agKeys86().map(function(k){return TL(k,'s')}).join('')+'</span><div class="t2"><div class="n2 w">'+parts+'</div><div class="d2">'+(w||bd?esc(L.filter(waiting8).map(function(p){return p.n}).join(', ')):'все проекты и их агенты — во вкладке «Проекты»')+'</div></div><span class="cv86">'+IC('chevron-right')+'</span></div></div></div>'}
+home=function(){var P=S.pend,fl=faults86();
+ var q=P.length?'<div class="sec"><div class="sh"><span>Вопросы · '+P.length+'</span></div></div>'+P.map(qAlertP8).join(''):'';
+ var calm=!P.length&&!fl&&!S.stopped?'<div class="calm86">'+IC('check')+'<div><b>Всё спокойно</b><small>Вопросов и сбоев нет. Когда агенту что-то понадобится, оно появится здесь.</small></div></div>':'';
+ return hd()+stopBar8()+updBanner()+netBanner()+fl+q+calm+sumRow86()};
+
+/* ---------- «Ещё»: Журнал, Настройки, Система + сводка ---------- */
+function moreTab86(){var hb=hBad().length;['tok','tok14','auto','feed'].forEach(function(k){if(U.col[k]===undefined)U.col[k]=true});
+ var R=[['tab','j','scroll-text','Журнал','сессии, события, «пока ты спал»',''],['tab','set','settings','Настройки','уведомления, автоответ, Face ID, «Остановить всё»',''],['sys','','activity','Система',hb?hb+' требуют внимания':'все компоненты в норме',hb?'bad':'ok']];
+ return hd()+'<div class="sec"><div class="grp">'+R.map(function(r){return '<div class="rw86 tap" data-a="'+r[0]+'"'+(r[1]?' data-x="'+r[1]+'"':'')+'><span class="ri86">'+IC(r[2])+'</span><div class="t2"><div class="n2">'+r[3]+'</div><div class="d2">'+(r[5]?'<span class="dot '+r[5]+'"></span>':'')+r[4]+'</div></div><span class="cv86">'+IC('chevron-right')+'</span></div>'}).join('')+'</div></div>'+
+  '<div class="mr86">'+(S.queue&&S.queue.length?queueCard():'')+tokens()+(S.tok14&&S.tok14.sum?colSec('tok14','Токены · 14 дней',tok14(),''):'')+autoGrp()+feed()+'</div>'}
+/* «Пока ты спал» уехал с Пульта в Журнал */
+['journal'].forEach(function(n){var f=window[n];window[n]=function(){var h=f.apply(this,arguments),d=digestCard(),H=hd(),i=h.indexOf(H);return d&&i>=0?h.slice(0,i+H.length)+d+h.slice(i+H.length):h}});
+
+/* ---------- нижняя навигация glass ---------- */
+function navCur86(){var p=U.page||'';if(p=='sys'||p.indexOf('sess:')==0)return 'more';if(p=='prj8'||p=='proj')return 'prj';if(p.indexOf('doc:')==0||p=='nowedit'||p=='glos')return 'br';if(p=='hcchat')return 'hc';
+ return {j:'more',set:'more',q:'home'}[U.tab]||U.tab}
+function nav86(){var c=navCur86(),hb=hBad().length;
+ $('nav').innerHTML=[['home','house','Пульт'],['prj','folder-kanban','Проекты'],['hc','message-square-text','Чат'],['br','brain','Мозг'],['more','circle-ellipsis','Ещё']].map(function(t){
+  var b=t[0]=='home'&&S.pend.length?'<span class="badge">'+S.pend.length+'</span>':t[0]=='more'&&hb?'<span class="badge" style="background:var(--bad)">!</span>':'';
+  return '<div class="'+(c==t[0]?'on':'')+'" data-a="tab" data-x="'+t[0]+'"><i>'+IC(t[1])+'</i>'+t[2]+b+'</div>'}).join('');
+ document.body.classList.add('g86')}
+var _render86=render;render=function(keep){if(U.tab=='q')U.tab='home';
+ var mine=!LOADING&&(U.page=='prj8'||!U.page&&(U.tab=='prj'||U.tab=='more'));
+ if(!mine){_render86(keep);if(!LOADING&&!U.page&&(U.tab=='j'||U.tab=='set')){var sc=$('scr');if(sc&&!sc.querySelector('.bm86'))sc.insertAdjacentHTML('afterbegin','<div class="back bm86" data-a="tab" data-x="more">'+IC('chevron-left')+'Ещё</div>')}}
+ else{var top=window.scrollY;$('scr').innerHTML=U.page=='prj8'?prjPage86():U.tab=='prj'?prjTab86():moreTab86();window.scrollTo(0,keep?top:0);try{if(inTG())U.page?tg.BackButton.show():tg.BackButton.hide()}catch(e){}}
+ if(!LOADING)nav86()};
+var _back86=back;back=function(){if(U.page=='proj'&&U.ret86){U.page='prj8';U.ret86=null;render();return}_back86()};
+
+/* ---------- клики прототипа (capture: раньше общих обработчиков) ---------- */
+document.addEventListener('click',function(ev){var sh=ev.target.closest('#sheet .ma86');if(sh&&!/^(md86)$/.test(sh.dataset.a))unsheet();
+ var el=ev.target.closest('[data-a]');if(!el)return;var a=el.dataset.a,x=el.dataset.x,pid=el.dataset.pid;
+ if(a=='tab'&&x=='q'){ev.stopPropagation();ev.preventDefault();U.tab='home';U.page=null;render();return}
+ if(a=='proj'&&U.page=='prj8'){U.ret86=1;return}
+ if(a=='startsheet'||a=='saysheet'){if(pid)U.pid8=pid;return}
+ if(!/^(po86|agf86|md86|msh86|ms86|cx86|cj86)$/.test(a))return;ev.stopPropagation();ev.preventDefault();haptic('sel');
+ if(a=='po86'){U.page='prj8';U.pid86=x;render();return}
+ if(a=='agf86'){if(x!='all'&&AGENTS8[x]&&AGENTS8[x].soon){toast(AGENTS8[x].n+' — следующий агент. Подключается одной записью в реестре агентов: имя, логотип и что он умеет (статус, чаты, вопросы, автопилот).');return}U.pf=x=='all'||(U.pf||'all')==x?'all':x;U.pg=U.pg||{};U.pg.idle=U.pf=='all'}
+ else if(a=='md86'){if(el.closest('#sheet'))unsheet();setMode86(pid,el.dataset.k,x);return}
+ else if(a=='msh86'){modeSheet86(pid,x);return}
+ else if(a=='ms86'){moreSheet86(pid,x);return}
+ else if(a=='cx86'){U.cx86=U.cx86||{};U.cx86[x]=!U.cx86[x]}
+ else if(a=='cj86'){cronSheet86(x,pid);return}
+ render(true)},true);
 
 </script>
 </body>

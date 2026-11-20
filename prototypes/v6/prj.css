@@ -1,0 +1,90 @@
+/* v8.7: glass-навигация, плитки агентов, Пульт, вкладка «Проекты», экран проекта (вариант B), «Ещё». Палитра и шрифты Hermes. */
+/* --- нижняя навигация: плавающая полупрозрачная пилюля с размытием (как Instagram на iPhone), подписи КАПСОМ как в Hermes --- */
+body.g86{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+body.g86 .nav{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));height:62px;padding:0 5px;border-radius:31px;
+ background:color-mix(in srgb,var(--s1) 55%,transparent);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);
+ border:1px solid color-mix(in srgb,var(--tx) 12%,transparent);box-shadow:0 12px 32px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.07);z-index:6}
+html[data-theme=light] body.g86 .nav{background:color-mix(in srgb,#fff 62%,transparent);box-shadow:0 10px 28px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.6)}
+body.g86 .nav div{margin:5px 0;border-radius:26px;gap:4px;transition:color .15s}
+body.g86 .nav div i .ic{width:22px;height:22px}
+body.g86 .nav div.on:before{top:0;bottom:0;left:2px;right:2px;height:auto;border-radius:26px;background:color-mix(in srgb,var(--gold) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 22%,transparent)}
+body.g86 .nav .badge{top:3px;left:calc(50% + 6px);box-shadow:0 0 0 2px color-mix(in srgb,var(--s1) 80%,transparent)}
+body.g86 .savebar{bottom:calc(80px + env(safe-area-inset-bottom))}
+body.g86.hcm #hcroot{bottom:calc(82px + env(safe-area-inset-bottom))}
+body.g86.hcm.hckb #hcroot,body.g86.hcv-chat #hcroot{bottom:0}
+
+/* --- плитки агентов: одна форма и размер, логотип по центру, без наложений --- */
+.tl86{flex:none;display:inline-grid;place-items:center;overflow:hidden;border-radius:24%;background:var(--s2);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tx) 9%,transparent);vertical-align:middle}
+.tl86 img{display:block;width:62%;height:62%}
+.tl86 .ic{width:56%;height:56%;color:var(--mut)}
+.tl86.t-claude{background:color-mix(in srgb,var(--claude) 18%,var(--s2))}
+.tl86.t-codex{background:#fff}.tl86.t-codex img{width:100%;height:100%}
+.tl86.t-hermes{background:#000}.tl86.t-hermes img{width:100%;height:100%;object-fit:contain}
+.tl86.t-sys{background:var(--s2)}
+.tl86.soon{background:none;box-shadow:inset 0 0 0 1px var(--line);border:1px dashed var(--dim)}
+.tl86.xs{width:18px;height:18px;border-radius:5px}
+.tl86.s{width:26px;height:26px;border-radius:7px}
+.tl86.m{width:36px;height:36px;border-radius:10px}
+.tl86.l{width:48px;height:48px;border-radius:13px}
+.tls86{display:inline-flex;gap:4px;flex:none;align-items:center}
+.seg2 .tl86.xs,.pj8 .tl86.xs{margin:0}
+.alert .pj8 .tls86{margin-right:6px}
+
+/* --- общие строки --- */
+.rw86{display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:56px;border-top:1px solid var(--line)}
+.grp>.rw86:first-child,.grp>.ah86:first-child{border-top:0}
+.rw86.tap{cursor:pointer}.rw86.tap:active{background:var(--s2)}
+.rw86.sub{padding-left:24px;min-height:50px}.rw86.sub .dot{flex:none}
+.rw86.dis{opacity:.45;pointer-events:none}
+.ri86{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--s2);color:var(--mut)}
+.ri86 .ic{width:17px;height:17px}.ri86.g{background:color-mix(in srgb,var(--gold) 16%,var(--s2));color:var(--gold)}
+.n2.g{color:var(--gold)}.n2.w{font-weight:600}
+.d2 .dot{display:inline-block;width:7px;height:7px;margin-right:6px;vertical-align:1px}
+.cv86{flex:none;color:var(--dim);display:grid;place-items:center;transition:transform .15s}.cv86 .ic{width:17px;height:17px}.cv86.up{transform:rotate(90deg)}
+.vl86{flex:none;font-size:13.5px;color:var(--mut);font-weight:600;max-width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vl86.on{color:var(--gold)}
+.au86{flex:none;font:600 9.5px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 45%,transparent);border-radius:5px;padding:1px 5px}
+.row2 .cv86{margin-left:-4px}
+
+/* --- Пульт --- */
+.nf86{cursor:default}.nf86:active{background:none}
+.calm86{margin:12px 16px 0;padding:14px;border-radius:16px;display:flex;gap:12px;align-items:flex-start;background:var(--s1);border:1px solid var(--line)}
+.calm86>.ic{width:22px;height:22px;color:var(--ok);flex:none;margin-top:1px}.calm86 b{display:block;font-size:15px}.calm86 small{display:block;color:var(--mut);font-size:13px;margin-top:2px;line-height:1.4}
+.wt86{color:var(--claude)}
+
+/* --- вкладка «Проекты»: агенты = состояние + фильтр --- */
+.ags86{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ags86>div{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px 10px;border-radius:14px;background:var(--s1);border:1px solid var(--line);cursor:pointer;min-width:0;text-align:center}
+.ags86>div:active{background:var(--s2)}
+.ags86>div.on{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--s1))}
+.ags86>div.soon{opacity:.6}
+.ags86 b{font-size:13px}
+.ags86 small{font-size:11px;color:var(--mut);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ags86 small .dot{display:inline-block;width:6px;height:6px;margin-right:4px;vertical-align:1px}
+.ags86 small .dot:not(.ok):not(.bad):not(.wait){display:none}
+
+/* --- экран проекта --- */
+.back .ic{width:18px;height:18px;margin-left:-4px}
+.ph86{align-items:center}.ph86 .d{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ph86 .d .dot{width:7px;height:7px}
+.ph86 h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mt86{padding:8px 18px 0;font-size:12.5px;color:var(--mut)}
+.ph86+.mt86+.sec,.mt86+.sec{margin-top:10px}
+.ah86{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.ah86 .n2{font-size:15px}
+.bd86{padding:0 14px 14px}
+/* B: значение справа, выбор в шторке */
+.ah86.rw86{border-top:0}
+.rb86{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--dim);box-sizing:border-box}
+.rd86.on .rb86{border:5px solid var(--gold)}
+/* шторки с пояснениями */
+.ma86{display:flex;gap:12px;align-items:flex-start;padding:12px;margin-top:8px;border-radius:14px;border:1px solid var(--line);background:var(--s2);cursor:pointer}
+.ma86:active{opacity:.85}.ma86>.ic{width:19px;height:19px;flex:none;color:var(--gold);margin-top:1px}
+.ma86 b{display:block;font-size:14.5px}.ma86 small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px;line-height:1.4}
+.ma86.rd86 .rb86{margin-top:1px}.ma86.rd86.on{border-color:var(--gold)}
+.nt86{margin:12px 0 0!important;font-size:12.5px!important}
+.hint{padding-bottom:6px}
+.sbad86{color:var(--bad)}
+.ph86 .d{flex-wrap:nowrap;align-items:flex-start}.ph86 .d .dot{margin-top:6px}.ds86{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* строка автопилота: цвет состояния (пауза — оранжевый Claude, сбой — красный, всё остановлено — жёлтый) */
+.ap86.tn-wait{box-shadow:inset 3px 0 0 var(--claude)}.ap86.tn-wait .vl86,.ap86.tn-wait .ri86{color:var(--claude)}.ap86.tn-wait .ri86{background:color-mix(in srgb,var(--claude) 16%,var(--s2))}
+.ap86.tn-bad{box-shadow:inset 3px 0 0 var(--bad)}.ap86.tn-bad .vl86,.ap86.tn-bad .ri86{color:var(--bad)}.ap86.tn-bad .ri86{background:color-mix(in srgb,var(--bad) 16%,var(--s2))}
+.ap86.tn-warn{box-shadow:inset 3px 0 0 var(--warn)}.ap86.tn-warn .vl86,.ap86.tn-warn .ri86{color:var(--warn)}.ap86.tn-warn .ri86{background:color-mix(in srgb,var(--warn) 16%,var(--s2))}
