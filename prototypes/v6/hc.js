@@ -59,14 +59,14 @@ function blocks(t){var lines=E(t).split('\n'),out=[],ul=null,tbl=[];
   if(!l.trim()){out.push('<div class="hcsp"></div>');return}
   out.push('<div>'+inl(l)+'</div>')});
  flush();return out.join('')}
-function md(src){src=String(src||'');var parts=[],re=/```([\w+.-]*)[ \t]*\n([\s\S]*?)```/g,last=0,m;
- while((m=re.exec(src))){parts.push(blocks(src.slice(last,m.index)));parts.push('<pre class="hcpre"><code>'+E(m[2].replace(/\n$/,''))+'</code></pre>');last=re.lastIndex}
- var rest=src.slice(last),o=rest.indexOf('```');
+function md(src){src=String(src||'');var parts=[],re=/(?:^|\n)[ \t]{0,3}```([\w+.-]*)[ \t]*\n([\s\S]*?)(?:\n[ \t]{0,3}```[ \t]*(?=\n|$)|$(?![\s\S]))/g,last=0,m;
+ while((m=re.exec(src))){if(m[0]===''){re.lastIndex++;continue}parts.push(blocks(src.slice(last,m.index)));parts.push('<pre class="hcpre"><code>'+E(m[2].replace(/\n$/,''))+'</code></pre>');last=re.lastIndex}
+ var rest=src.slice(last),o=-1;
  if(o>=0){parts.push(blocks(rest.slice(0,o)));parts.push('<pre class="hcpre"><code>'+E(rest.slice(o+3).replace(/^[\w+.-]*\n?/,''))+'</code></pre>')}else parts.push(blocks(rest));
  return parts.join('')}
 
 /* ---------- история -> блоки ---------- */
-function argPreview(a){if(!a)return '';try{var j=typeof a=='string'?JSON.parse(a):a;var k=['command','cmd','path','file_path','query','url','pattern','prompt','text'];for(var i=0;i<k.length;i++)if(j[k[i]])return String(j[k[i]]);var v=Object.keys(j)[0];return v?String(j[v]):''}catch(e){return String(a)}}
+function argPreview(a){if(!a)return '';try{var j=typeof a=='string'?JSON.parse(a):a;var k=['command','cmd','path','file_path','query','url','pattern','prompt','text'];for(var i=0;i<k.length;i++)if(j[k[i]])return String(j[k[i]]);var v=Object.keys(j)[0];if(!v)return '';var x=j[v];return typeof x=='string'?x:(x&&typeof x=='object'?JSON.stringify(x):String(x))}catch(e){return String(a)}}
 function resErr(s){try{var j=JSON.parse(s);if(j&&typeof j=='object'){if(j.error)return true;if(j.exit_code!=null&&j.exit_code!==0)return true}}catch(e){}return false}
 function fromHistory(m,out0){var out=out0||[],a=out.length&&out[out.length-1].k=='a'?out[out.length-1]:null;
  m.forEach(function(x){
