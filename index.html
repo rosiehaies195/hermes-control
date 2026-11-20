@@ -1220,6 +1220,11 @@ body.gu88 .toast.on{visibility:visible;transition:transform .2s,opacity .2s,visi
 .pr91{margin:12px 0 4px;max-height:38vh;overflow:auto;white-space:pre-wrap;word-break:break-word;font:12.5px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--tx);background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;-webkit-user-select:text;user-select:text}
 #sheet textarea#cxin91{margin-top:12px;min-height:110px;resize:vertical;font-size:16px}
 
+/* v9.3: раскрытая карточка вопроса на Пульте (qfull.js) */
+.qf93{margin:0 0 12px}
+.qf93 .qcard{margin-bottom:6px}
+.qx93{text-align:center;font:600 13px Inter,sans-serif;color:var(--mut);padding:8px 0 4px;cursor:pointer}
+
 </style>
 </head>
 <body>
@@ -1518,7 +1523,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=92;
+var VER=93;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -2946,6 +2951,28 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-a
  if(a=='cxgo2'){var t=(document.getElementById('cxin91')||{}).value||'';if(!t.trim()){toast('Напиши, что сделать в новой сессии.');return}
   unsheet();U.cxt91='';send({a:'cxnew',pid:pid,t:t.trim()});cxAfter91();return}
  if(a=='cxrulego'){unsheet();send({a:'cxrule',pid:pid});return}},true);
+
+/* v9.3: полная карточка вопроса прямо на Пульте / в проекте.
+   С v8.7 вкладки «Вопросы» нет (prj.js переводит U.tab=='q' на Пульт), а короткая карточка qAlert давала только готовые варианты:
+   «Свой ответ», «Пропустить» и подробности разрешения стали недоступны. Здесь: чип «Другое…» (у разрешения с командой — «Подробнее…»)
+   раскрывает боевую qcard() на месте короткой карточки; «Свернуть» возвращает короткую. Ответ уходит теми же qsel/qsub/qskip. */
+(function(){
+ var _chips=qChips;
+ qChips=function(q){var h=_chips(q);if(q.perm&&!q.cmd)return h;
+  var more='<span class="more" data-a="openq" data-q="'+q.id+'">'+(q.perm?'Подробнее…':'Другое…')+'</span>';
+  return h.replace(/<\/div>$/,more+'</div>')};
+ var _qa=qAlert;
+ qAlert=function(q){if(U.qopen93!=q.id)return _qa(q);
+  return '<div class="qf93">'+qcard(q)+'<div class="qx93" data-a="qclose93" data-q="'+q.id+'">Свернуть</div></div>'};
+ var _send=send;send=function(o,q){if(o&&o.a=='ans'&&o.q==U.qopen93)U.qopen93=null;return _send.apply(this,arguments)};
+ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-a]');if(!el)return;var a=el.dataset.a,qid=el.dataset.q;
+  if(a!='openq'&&a!='qclose93')return;ev.stopPropagation();ev.preventDefault();haptic('sel');
+  if(a=='qclose93'){U.qopen93=null;render(true);return}
+  var q=S.pend.filter(function(z){return z.id==qid})[0];if(!q)return;
+  U.qopen93=qid;U.qsel=U.qsel||{};U.qsel[qid]=q.perm?{}:{k:'o'};render(true);
+  setTimeout(function(){var c=document.getElementById('q-'+qid);if(c)c.scrollIntoView({block:'center',behavior:'smooth'});
+   var i=document.querySelector('[data-in=other][data-q="'+qid+'"]');if(i)i.focus({preventScroll:true})},60)},true);
+})();
 
 </script>
 </body>
