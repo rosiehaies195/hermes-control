@@ -687,6 +687,134 @@ body.hk-codex .sheet .hcmprov span.on{background:#fff;border-color:#fff;color:#0
 #sheet .hcfwdk span.on{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
 #sheet .hcfwdl{max-height:52vh;overflow:auto;-webkit-overflow-scrolling:touch}
 
+
+/* ===== v8.1: design "like the official apps" (from prototypes/v8d/design8.css) ===== */
+/* ===== v8 design prototype: "like the official apps" — larger, immersive ===== */
+/* --- immersive chat: no bottom tab bar, composer sits on the safe area --- */
+body.hcv-chat #nav{display:none!important}
+body.hcv-chat #hcroot{bottom:0!important}
+body.hcm #hcroot .hccomp{margin:6px 12px calc(10px + env(safe-area-inset-bottom))}
+body.hcm.hckb #hcroot .hccomp{margin-bottom:8px}
+
+/* --- shared scale (all three agents) --- */
+body.hcm #hcroot .hd{min-height:56px;padding-top:6px;padding-bottom:6px}
+body.hcm #hcroot .hd h1{font-size:18px;line-height:1.25}
+body.hcm #hcroot .hd .st{font-size:13px}
+body.hcm #hcroot .ib{width:42px;height:42px}
+body.hcm #hcroot .ib .ic{width:24px;height:24px}
+body.hcv-chat #hcroot .hd{border-bottom-color:transparent!important}
+body.hcv-chat #hcroot .hcmid{text-align:center;align-items:center}
+body.hcv-chat #hcroot .hcmid h1{font-size:17px}
+
+body.hcm #hcroot .hcmsgs{padding:18px 18px 12px}
+body.hcm #hcroot .hcrow{margin-bottom:24px}
+body.hcm #hcroot .hcb{font-size:17px;line-height:1.6}
+body.hcm #hcroot .hcb.a{font-size:17px;line-height:1.62}
+body.hcm #hcroot .hcb.u{font-size:16.5px;line-height:1.45;padding:11px 16px;border-radius:22px;max-width:84%}
+body.hcm #hcroot .hcwrap{max-width:100%}
+body.hcm #hcroot .hcrow.u .hcwrap{max-width:86%}
+body.hcm #hcroot .hcb p{margin:0 0 12px}
+body.hcm #hcroot .hcb code{font-size:14.5px;padding:2px 6px;border-radius:6px}
+body.hcm #hcroot .hcpre{font-size:13.5px;line-height:1.5;padding:12px 14px;border-radius:14px}
+body.hcm #hcroot .hch{font-size:19px;margin:18px 0 6px}
+body.hcm #hcroot .hcb ul,body.hcm #hcroot .hcb ol{padding-left:24px;margin:6px 0 12px}
+body.hcm #hcroot .hcb li{margin:4px 0}
+body.hcm #hcroot .hctool{border-radius:14px;margin:10px 0}
+body.hcm #hcroot .hct{min-height:44px;padding:10px 14px;gap:10px}
+body.hcm #hcroot .hct b{font-size:14.5px}
+body.hcm #hcroot .hct span{font-size:13px}
+body.hcm #hcroot .hcmeta{gap:2px;margin-top:6px;opacity:.85}
+body.hcm #hcroot .hctm{font-size:12.5px}
+body.hcm #hcroot .hccp{width:38px;height:38px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center}
+body.hcm #hcroot .hccp .ic{width:19px;height:19px}
+body.hcm #hcroot .hcdots i{width:8px;height:8px}
+
+/* composer: big pill */
+body.hcm #hcroot .hccomp{border-radius:26px;padding:10px 12px 8px 16px}
+body.hcm #hcroot .hccomp textarea{font-size:17px!important;line-height:1.45;min-height:28px;padding:4px 0}
+body.hcm #hcroot .hctb2{gap:6px;margin-top:6px;min-height:40px}
+body.hcm #hcroot .hctb2 .hcbtn.ghost{width:40px;height:40px;border-radius:999px;padding:0}
+body.hcm #hcroot .hctb2 .hcbtn .ic{width:22px;height:22px}
+body.hcm #hcroot .hcchip{font-size:14px!important;min-height:36px}
+body.hcm #hcroot .hcsendb{width:38px!important;height:38px!important;border-radius:999px!important}
+body.hcm #hcroot .hcsendb .ic{width:21px;height:21px}
+body.hcm #hcroot .hcro{font-size:15px;line-height:1.5;padding:14px 16px calc(14px + env(safe-area-inset-bottom))}
+
+/* list */
+body.hcv-list #hcroot .hd{min-height:64px}
+body.hcv-list #hcroot .hd h1{font-size:26px!important;font-weight:700;letter-spacing:-.01em}
+body.hcv-list #hcroot .hchd .logo{width:44px;height:44px;border-radius:12px}
+body.hcm #hcroot .hcfil.hckind{padding:10px 14px 4px}
+body.hcm #hcroot .hcfil.hckind span{font-size:15.5px!important;padding:10px 0!important;border-radius:12px!important}
+body.hcm #hcroot .hcnew{margin:12px 14px 4px;padding:14px 16px;border-radius:16px!important;gap:12px}
+body.hcm #hcroot .hcnew b{font-size:16.5px}
+body.hcm #hcroot .hcnew .ic{width:22px;height:22px}
+body.hcm #hcroot .hcfil.sub span{font-size:14px!important;padding:7px 14px!important}
+body.hcm #hcroot .hcsec{font-size:14px!important;padding:16px 18px 6px}
+body.hcm #hcroot .hcsess{padding:13px 14px!important;margin:0 6px;min-height:64px;gap:12px}
+body.hcm #hcroot .hcsb b{font-size:16.5px!important;line-height:1.3}
+body.hcm #hcroot .hcsm{font-size:13.5px;margin-top:3px}
+body.hcm #hcroot .hcsess>span{font-size:12.5px!important}
+body.hcm #hcroot .hcpin .ic{width:18px;height:18px}
+
+/* sheets bigger */
+body.hcm .sheet .btn{min-height:50px;font-size:16px}
+body.hcm .sheet h3{font-size:19px}
+
+/* --- Claude: warm, serif answers, light bubble, orange accent --- */
+body.hk-claude.hcm #hcroot .hcb.a{font-family:"Tiempos Text","Source Serif 4",Charter,"Iowan Old Style",Georgia,serif;font-size:17.5px;line-height:1.65;letter-spacing:.003em}
+body.hk-claude.hcm #hcroot .hcb.u{background:#3a3935;color:#faf9f5;border-radius:20px}
+body.hk-claude.hcv-chat #hcroot .hcmid h1{font:500 17px/1.25 "Tiempos Headline","Source Serif 4",Georgia,serif}
+body.hk-claude.hcm #hcroot .hccomp{background:#30302e;border:1px solid #4b4a45;border-radius:24px;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+body.hk-claude.hcm #hcroot .hcsendb{border-radius:12px!important;background:#d97757}
+body.hk-claude.hcm #hcroot .hctool{background:transparent;border:1px solid #3e3d39}
+[data-theme=light] body.hk-claude #hcroot,[data-theme=light] body.hk-claude .sheet{--bg:#faf9f5;--s1:#ffffff;--s2:#f0eee6;--bar:#faf9f5;--tx:#1f1e1d;--mut:#5e5d59;--dim:#87867f;--line:#e8e6dc;--line2:#d9d6ca;--gold:#c96442}
+[data-theme=light] body.hk-claude.hcm #hcroot .hcb.u{background:#f0eee6;color:#1f1e1d}
+[data-theme=light] body.hk-claude.hcm #hcroot .hccomp{background:#fff;border-color:#e0ddd2;box-shadow:0 4px 18px rgba(31,30,29,.06)}
+[data-theme=light] body.hk-claude.hcm #hcroot .hcb code{background:#f0eee6;color:#7a3e2b}
+[data-theme=light] body.hk-claude.hcm #hcroot .hcpre,[data-theme=light] body.hk-claude.hcm #hcroot .hctool{background:#f5f3ec;border-color:#e8e6dc}
+
+/* --- Codex: ChatGPT-like, neutral, grey bubble, white round send --- */
+body.hk-codex.hcm #hcroot{--bg:#121212;--s1:#212121;--s2:#2f2f2f;--tx:#ececec;--mut:#b4b4b4;--dim:#8f8f8f;--line:#262626;--line2:#383838}
+body.hk-codex.hcm #hcroot .hcb.a{font-family:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif;font-size:17px;line-height:1.6}
+body.hk-codex.hcm #hcroot .hcb.u{background:#2f2f2f;border:0;color:#ececec;border-radius:22px}
+body.hk-codex.hcm #hcroot .hccomp{background:#2f2f2f;border:0;border-radius:28px}
+body.hk-codex.hcm #hcroot .hcsendb{background:#ececec!important;color:#0d0d0d!important}
+body.hk-codex.hcm #hcroot .hcsendb.stop{background:#ececec!important}
+body.hk-codex.hcm #hcroot .hctool{background:transparent;border:1px solid #2c2c2c}
+body.hk-codex.hcm #hcroot .hcpre{background:#0d0d0d;border:1px solid #2c2c2c}
+[data-theme=light] body.hk-codex.hcm #hcroot,[data-theme=light] body.hk-codex .sheet{--bg:#ffffff;--s1:#f9f9f9;--s2:#f4f4f4;--bar:#fff;--tx:#0d0d0d;--mut:#5d5d5d;--dim:#8f8f8f;--line:#ececec;--line2:#e3e3e3}
+[data-theme=light] body.hk-codex.hcm #hcroot .hcb.u{background:#f4f4f4;color:#0d0d0d}
+[data-theme=light] body.hk-codex.hcm #hcroot .hccomp{background:#fff;border:1px solid #e3e3e3;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+[data-theme=light] body.hk-codex.hcm #hcroot .hcsendb{background:#0d0d0d!important;color:#fff!important}
+[data-theme=light] body.hk-codex.hcm #hcroot .hcpre{background:#f9f9f9;border-color:#ececec}
+
+/* --- Hermes: own look, same scale; composer card --- */
+body.hcm:not(.hk-claude):not(.hk-codex) #hcroot .hccomp{border-radius:22px}
+
+/* --- fixes after first screenshots --- */
+body.hcm #hcroot .hcrow.u .hcwrap{max-width:85%}
+body.hcm #hcroot .hcb.u{max-width:100%}
+body.hcv-chat #hcroot .hcmid{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+body.hcv-chat #hcroot .hcmid h1{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.hcv-chat #hcroot .hcmid .st{justify-content:center}
+body.hcm #hcroot .hcsm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.hcm #hcroot .hcsb{min-width:0;flex:1}
+
+/* --- grouped tool calls (design8.js) --- */
+body.hcm #hcroot .hctg{margin:10px 0;border-radius:14px;border:1px solid var(--line2);overflow:hidden}
+body.hcm #hcroot .hctgh{display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 14px;cursor:pointer;color:var(--mut);-webkit-user-select:none;user-select:none}
+body.hcm #hcroot .hctgh i{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+body.hcm #hcroot .hctgh i:empty:before{content:"";width:14px;height:8px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg) translate(1px,-2px);opacity:.8}
+body.hcm #hcroot .hctg.err .hctgh i:empty:before{border-color:var(--bad,#e5484d)}
+body.hcm #hcroot .hctgh b{font:600 14.5px -apple-system,Inter,system-ui,sans-serif;color:var(--tx);white-space:nowrap}
+body.hcm #hcroot .hctgh span{font:13px "JetBrains Mono",ui-monospace,monospace;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+body.hcm #hcroot .hctgh em{width:9px;height:9px;flex:none;border-right:2px solid var(--dim);border-bottom:2px solid var(--dim);transform:rotate(45deg);margin:-4px 4px 0 0;transition:transform .2s}
+body.hcm #hcroot .hctg.open .hctgh em{transform:rotate(-135deg);margin-top:4px}
+body.hcm #hcroot .hctgb{display:none;padding:0 8px 8px}
+body.hcm #hcroot .hctg.open .hctgb{display:block}
+body.hcm #hcroot .hctgb .hctool{margin:6px 0}
+
 /* ПРОТОТИПЫ v8 «Проекты» (А/Б/В) */
 .ag.hermes{background:#000 url(logo-portrait.png) center 3px/92% no-repeat;border:1px solid #2a3550}
 .abs8{display:inline-flex;flex:none}.abs8 .ag+.ag{margin-left:-9px;box-shadow:0 0 0 2px var(--s1)}
@@ -819,6 +947,40 @@ body.hk-codex .sheet .hcmprov span.on{background:#fff;border-color:#fff;color:#0
 .seg2 span.on span.ag,.seg2 span.on span.ag.claude{box-shadow:none}
 .seg2>span i{display:none}
 .seg2>span{flex:1 1 auto;padding:0 10px}
+
+/* ДИЗАЙН-СИСТЕМА v8: общий слой для всех экранов (грузится после home8/homeA2 css) */
+/* шапка: ниже и тише */
+.hd{padding:9px 16px 8px;gap:10px}
+.hd .logo{width:32px;height:32px;border-radius:9px}
+.hd h1{font-size:13px;letter-spacing:.18em}
+.hd .st{font-size:11.5px}
+.hd .ib{width:34px;height:34px}
+/* заголовки разделов: без сетки, без линии, обычным регистром */
+.sh{font:600 13.5px var(--font,Inter,sans-serif);text-transform:none;letter-spacing:0;color:var(--tx);margin:0 2px 8px;gap:8px}
+.sh>span:first-child:before{display:none}.sh>span:first-child:after{display:none}
+.sh .sum{font:500 11.5px "JetBrains Mono",monospace;color:var(--dim);margin-left:auto}
+.sh a{font-size:12.5px;letter-spacing:0;color:var(--mut)}
+.sh.col:after{margin-left:6px}
+.sec{margin-top:16px}
+/* переключатель «просто|тех» живёт только в Настройках */
+.pmbar{display:none}
+body.showmode .pmbar{display:flex;justify-content:flex-start;margin:10px 16px 0}
+.sec.pmbar{padding:0}
+/* карточки-группы: тише */
+.grp{border-radius:14px;border:1px solid var(--line);background:var(--s1);overflow:hidden}
+.pill,.tags span{border-radius:8px;border:0;background:var(--s2);font-size:11px;padding:3px 8px}
+/* журнал: плотные строки */
+.jr{display:flex;align-items:center;gap:11px;padding:10px 14px;min-height:56px;border-bottom:1px solid var(--line);cursor:pointer}
+.grp>.jr:last-child{border-bottom:0}.jr:active{background:var(--s2)}
+.jr .jd{flex:none;width:8px;height:8px;border-radius:50%;background:var(--dim)}
+.jr.run .jd{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}.jr.err .jd{background:var(--bad)}.jr.ask .jd{background:var(--claude)}
+.jr .jt{min-width:0;flex:1}
+.jr .jn{font-size:14.5px;font-weight:600;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jr .js{font:500 12px "JetBrains Mono",monospace;color:var(--mut);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jr .jv{flex:none;text-align:right;font:600 12px "JetBrains Mono",monospace;color:var(--mut)}
+.jr .jv.bad{color:var(--bad)}.jr .jv small{display:block;font-weight:500;color:var(--dim);font-size:10.5px}
+.jday{display:flex;align-items:baseline;justify-content:space-between;margin:18px 4px 8px;font:600 13px Inter,sans-serif}.jday span{font:500 11.5px "JetBrains Mono",monospace;color:var(--dim)}
+.jsearch{margin:10px 16px 0}
 
 </style>
 </head>
@@ -1118,7 +1280,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=80;
+var VER=81;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -2022,6 +2184,37 @@ function vcStart(){
  }).catch(function(e){var n=e&&e.name||'';toast(n=='NotAllowedError'||n=='SecurityError'?'Нет доступа к микрофону. Разреши его в настройках iOS для Telegram или диктуй с клавиатуры':'Микрофон недоступен: '+esc(n||'ошибка'))})}
 document.addEventListener('click',function(ev){var el=ev.target.closest('[data-hc=mic]');if(!el)return;ev.stopPropagation();if(VC.busy)return;if(VC.rec)vcStop();else vcStart()},true);
 
+/* v8 design prototype: immersive chat (no bottom nav), view classes, Telegram header colour follows the agent,
+   consecutive tool calls collapse into one "N actions" row like the official apps */
+(function(){var last='',OPEN={};
+ function plural(n,a,b,c){var m=n%10,h=n%100;return n+' '+(m==1&&h!=11?a:m>=2&&m<=4&&(h<12||h>14)?b:c)}
+ function groupTools(){var m=document.getElementById('hcmsgs');if(!m)return;
+  m.querySelectorAll('.hcb.a').forEach(function(b){var kids=[].slice.call(b.children),run=[];
+   function flush(){if(run.length>=2){var row=b.closest('.hcrow'),key=(row&&row.dataset.mi)+':'+kids.indexOf(run[0]),
+     nr=run.filter(function(t){return t.classList.contains('run')}).length,ne=run.filter(function(t){return t.classList.contains('err')}).length,
+     names=[];run.forEach(function(t){var n=(t.querySelector('.hct b')||{}).textContent||'';if(n&&names.indexOf(n)<0)names.push(n)});
+     var anyOpen=run.some(function(t){return t.classList.contains('open')});
+     var g=document.createElement('div');g.className='hctg'+(OPEN[key]||anyOpen?' open':'')+(nr?' run':'')+(ne?' err':'');g.dataset.k=key;
+     g.innerHTML='<div class="hctgh"><i>'+(nr?'<span class="hcspin"></span>':'')+'</i><b>'+(nr?'Работаю: ':'Выполнено ')+plural(run.length,'действие','действия','действий')+(ne?' · '+plural(ne,'ошибка','ошибки','ошибок'):'')+'</b><span>'+names.slice(0,4).join(', ').replace(/[<>&]/g,'')+'</span><em></em></div>';
+     var body=document.createElement('div');body.className='hctgb';b.insertBefore(g,run[0]);run.forEach(function(t){body.appendChild(t)});g.appendChild(body)}run=[]}
+   kids.forEach(function(k){if(k.classList&&k.classList.contains('hctool'))run.push(k);else flush()});flush()})}
+ document.addEventListener('click',function(e){var h=e.target.closest&&e.target.closest('.hctgh');if(!h)return;var g=h.parentNode,o=!g.classList.contains('open');g.classList.toggle('open',o);OPEN[g.dataset.k]=o},true);
+ function upd(){var b=document.body;if(!b)return;var m=b.classList.contains('hcm'),c=m&&!!document.getElementById('hcmsgs'),key=(m?1:0)+''+(c?1:0)+b.className.indexOf('hk-claude')+b.className.indexOf('hk-codex');
+  if(c)groupTools();
+  if(b.classList.contains('hcv-chat')!=c)b.classList.toggle('hcv-chat',c);
+  if(b.classList.contains('hcv-list')!=(m&&!c))b.classList.toggle('hcv-list',m&&!c);
+  if(key==last)return;last=key;
+  try{var T=window.Telegram&&Telegram.WebApp;if(!T||!T.setHeaderColor)return;var r=document.getElementById('hcroot'),col=null;
+   if(m&&r){var bg=getComputedStyle(r).backgroundColor,mm=bg.match(/\d+/g);if(mm)col='#'+mm.slice(0,3).map(function(x){return ('0'+(+x).toString(16)).slice(-2)}).join('')}
+   if(!col)col=document.documentElement.dataset.theme=='light'?'#f6f4ee':'#07070d';
+   T.setHeaderColor(col);T.setBackgroundColor(col);if(T.setBottomBarColor)T.setBottomBarColor(col)}catch(e){}}
+ var mo=new MutationObserver(function(){upd()});
+ function start(){mo.observe(document.body,{childList:true,subtree:true});upd()}
+ if(document.body)start();else document.addEventListener('DOMContentLoaded',start);
+ setInterval(upd,700);
+ window.D8={groupTools:groupTools,OPEN:OPEN};
+})();
+
 /* v8: общее для трёх прототипов «Проекты»: демо-данные, значки приложений, ответы на вопросы, раскрытие проекта.
    Проект первичен, у него один или несколько приложений (apps). Настоящий проект один (tv-miniapp), остальные демо. */
 var P8=null;
@@ -2161,6 +2354,22 @@ document.addEventListener('input',function(ev){var k=ev.target.dataset&&ev.targe
 var _r8=render;render=function(k){_r8(k);var n=allQ8().length,b=document.querySelector('#nav [data-x=q]');if(b){var e=b.querySelector('.badge');if(n){if(!e){e=document.createElement('span');e.className='badge';b.appendChild(e)}e.textContent=n}else if(e)e.remove()}};
 /* на главной ссылка ведёт сюда */
 var _ib=inboxA2;inboxA2=function(){return _ib().replace(/<div class="mo2"[^>]*>[^<]*<\/div>/,'')+(allQ8().length?'<div class="mo2 all8" data-a="tab" data-x="q">Все вопросы · '+allQ8().length+' ›</div>':'')}
+
+/* v8: дизайн-система — журнал плотными строками, режим «просто|тех» в Настройках */
+var _modeBar=modeBar;modeBar=function(){return document.body.classList.contains('showmode')?_modeBar():''};
+var _set8=settings;settings=function(){document.body.classList.add('showmode');var h;try{h=_set8()}finally{}return h};
+var _rd8=render;render=function(k){document.body.classList.toggle('showmode',U.tab=='set'&&!U.page);_rd8(k)};
+function sessRows8(){var L=realSess().slice().reverse();if(!L.length)return '<div class="empty">Сессий пока нет</div>';var day='',h='',open=false;
+ L.forEach(function(s){var d=dayName(s.b);if(d!=day){if(open)h+='</div>';h+='<div class="jday">'+d+'<span>'+L.filter(function(z){return dayName(z.b)==d}).length+' шагов</span></div><div class="grp">';day=d;open=true}
+  var min=((s.e||nowS())-s.b)/60,run=!s.e,err=s.f>0;
+  h+='<div class="jr '+(run?'run':err?'err':'')+'" data-a="sess" data-x="'+s.id+'"><span class="jd"></span><div class="jt"><div class="jn">'+esc(s.n)+'</div><div class="js">'+hm(s.b)+'–'+(run?'сейчас':hm(s.e))+' · '+dur(min)+'</div></div>'+
+   '<div class="jv'+(err?' bad':'')+'">'+(err?s.f+' сбой':s.q?s.q+' вопр.':'')+(s.tok?'<small>'+(s.tok/1000).toFixed(1)+' млн</small>':'')+'</div></div>'});
+ return h+(open?'</div>':'')}
+function evRows8(){loadLog();var LOG=U.flog||S.log,f=JF.filter(function(x){return x[0]==U.jf})[0],q=(U.jq||'').toLowerCase(),L=LOG.filter(function(e){return (!f[2]||f[2].indexOf(e.k)>=0)&&(!q||e.x.toLowerCase().indexOf(q)>=0)});
+ return '<div class="seg2" style="margin-top:10px">'+JF.map(function(x){return '<span data-a="jf" data-x="'+x[0]+'" class="'+(U.jf==x[0]?'on':'')+'">'+x[1]+'</span>'}).join('')+'</div>'+
+  '<div class="jsearch"><input class="in" data-in="jq" placeholder="Поиск по журналу" value="'+esc(U.jq||'')+'"></div>'+
+  '<div class="sec"><div class="grp feed">'+(L.length?L.slice(0,60).map(function(e){return evRow(e,q)}).join(''):'<div class="row" style="color:var(--mut)">Ничего не найдено</div>')+'</div></div>'}
+journal=function(){return hd()+'<div class="ph2"><h2>Журнал</h2></div><div class="seg2 two">'+[['sess','Шаги'],['ev','События']].map(function(t){return '<span data-a="jt" data-x="'+t[0]+'" class="'+(U.jt==t[0]?'on':'')+'">'+t[1]+'</span>'}).join('')+'</div>'+(U.jt=='sess'?sessRows8():evRows8())};
 
 </script>
 </body>
