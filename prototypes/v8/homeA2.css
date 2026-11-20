@@ -26,3 +26,22 @@
 .bd2{font:600 11px "JetBrains Mono",monospace;color:var(--bad);flex:none}
 .more2 .sec{margin-top:0}.more2 .sh{margin-top:12px}
 .more2 .grp{margin-top:6px}
+
+/* фильтр: одинаковые значки, без рамок вложенных span */
+.seg2>span{display:flex}
+.seg2 span.ag{padding:0;min-height:0;border-radius:4px;background:none;color:inherit;box-shadow:none;display:inline-grid;width:16px;height:16px;margin:0 2px 0 0}
+.seg2 span.ag img{width:16px;height:16px;border-radius:4px}
+.seg2 span.ag.hermes{background:#000 url(logo-portrait.png) center 1px/92% no-repeat}
+.seg2 span.on span.ag{box-shadow:none;background:none}.seg2 span.on span.ag.hermes{background:#000 url(logo-portrait.png) center 1px/92% no-repeat}
+.seg2>span{gap:4px}
+/* раскрытый проект */
+.pd2{padding:2px 14px 14px;background:var(--s2);border-bottom:1px solid var(--line)}
+.dq2{padding:10px 0 12px;border-bottom:1px solid var(--line)}
+.dl2{font:600 10.5px Inter,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:var(--claude)}
+.qt2.full{display:block;-webkit-line-clamp:unset;margin:6px 0 10px}
+.pd2 .chips{gap:6px}.pd2 .chips span{padding:7px 12px;min-height:34px;font-size:13px;border-radius:8px}
+.mt2{margin-top:12px;font-size:12.5px;color:var(--mut);line-height:1.5}
+.ac2{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.ac2>div{display:flex;align-items:center;justify-content:center;gap:5px;min-height:38px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;background:var(--s1);white-space:nowrap}
+.ac2>div .ic{width:14px;height:14px}.ac2>div.pri{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
+.ac2>div:active{opacity:.8}
