@@ -1,0 +1,68 @@
+/* v8.9: стеклянные элементы управления по принципу iOS 26 / Instagram (как нижняя панель v8.8).
+   Стекло — у «плавающих» элементов поверх контента: кнопки шапки (Система, Обновить, кнопки чата), «Назад», переключатели
+   (просто/тех, фильтры журнала, Hermes/Claude/Codex), «Новый чат», шторки, уведомление, значок обновления, поле ввода чата.
+   Контент (ответы на вопросы, золотые главные кнопки, «Отправить») остаётся плотным. body.gu88 — включает; body.gc88 — ещё и обычные кнопки в контенте. */
+body.gu88{--g-fill:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.03) 55%,rgba(255,255,255,.05)),color-mix(in srgb,var(--s1) 46%,transparent);
+ --g-rim:inset 1px 1px 0 rgba(255,255,255,.24),inset -1px -1px 0 rgba(255,255,255,.07),inset 0 0 0 .5px rgba(255,255,255,.10);
+ --g-drop:0 6px 18px rgba(0,0,0,.38),0 1px 3px rgba(0,0,0,.25);--g-blur:blur(16px) saturate(200%) brightness(1.08);--g-on:rgba(255,255,255,.14)}
+html[data-theme=light] body.gu88{--g-fill:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.55)),color-mix(in srgb,#fff 40%,transparent);
+ --g-rim:inset 1px 1px 0 #fff,inset -1px -1px 0 rgba(0,0,0,.04),inset 0 0 0 .5px rgba(0,0,0,.06);--g-drop:0 4px 14px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);--g-on:rgba(0,0,0,.07)}
+
+/* общий вид стекла */
+body.gu88 .ib,body.gu88 .hcbtn,body.gu88 .back,body.gu88 .pmbar .seg,body.gu88 .chips.g span,body.gu88 .hckind,body.gu88 .hcnew,body.gu88 .ptr span,
+body.gu88 .toast,body.gu88 .sheet,body.gu88 #hcroot .hccomp,body.gc88 .btn:not(.pri):not(.danger),body.gu88 .seg.full{
+ background:var(--g-fill)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border-color:transparent!important;box-shadow:var(--g-rim),var(--g-drop)}
+/* нажатие: стекло чуть светлеет и утапливается */
+body.gu88 .ib,body.gu88 .hcbtn,body.gu88 .back,body.gu88 .chips.g span,body.gu88 .hcnew,body.gc88 .btn:not(.pri):not(.danger){transition:transform .16s ease-out,filter .16s}
+body.gu88 .ib:active,body.gu88 .hcbtn:active,body.gu88 .back:active,body.gu88 .chips.g span:active,body.gu88 .hcnew:active,body.gc88 .btn:not(.pri):not(.danger):active{transform:scale(.93);filter:brightness(1.25)}
+
+/* кнопки шапки — круглые, как в iOS 26 */
+body.gu88 .ib{width:38px;height:38px;border-radius:50%!important;color:var(--tx)}
+body.gu88 .ib .ic{width:18px;height:18px}
+body.gu88 .ib .hdot{top:4px;right:4px;box-shadow:0 0 0 2px rgba(0,0,0,.45)}
+body.gu88 .hcbtn{height:38px;min-width:38px;border-radius:19px!important;color:var(--tx)}
+/* «Назад» — капсула со стрелкой */
+body.gu88 .back{display:inline-flex;width:auto;align-items:center;gap:4px;min-height:0;height:36px;margin:12px 0 0 16px;padding:0 14px 0 9px;border-radius:18px;
+ color:var(--tx);letter-spacing:.02em;text-transform:none;font-size:14px;font-weight:600}
+body.gu88 .back .ic{width:18px;height:18px;margin:0;color:var(--gold)}
+/* переключатели: стеклянная дорожка, выбранное — серая подложка, как на нижней панели */
+body.gu88 .pmbar .seg,body.gu88 .seg.full{border-radius:20px!important;padding:3px;gap:0}
+body.gu88 .pmbar .seg span,body.gu88 .seg.full span{border:0!important;border-radius:16px!important;background:none!important;color:var(--mut);transition:background .25s,color .25s}
+body.gu88 .pmbar .seg span.on,body.gu88 .seg.full span.on{background:var(--g-on)!important;color:var(--gold);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.08)}
+body.gu88 .chips.g span{border-radius:18px!important;color:var(--mut)}
+body.gu88 .chips.g span.on{background:linear-gradient(var(--g-on),var(--g-on)),var(--g-fill)!important;color:var(--gold)}
+body.gu88 .hckind{border-radius:22px!important;padding:3px!important}
+body.gu88 .hckind span{border:0!important;border-radius:18px!important;background:none!important}
+body.gu88 .hckind span.on{background:var(--g-on)!important}
+/* «Новый чат» */
+body.gu88 .hcnew{border-radius:22px!important}
+/* значок «тяни, чтобы обновить» */
+body.gu88 .ptr span{border-radius:50%!important}
+/* уведомление — плавающая капсула */
+body.gu88 .toast{border-radius:22px!important;left:18px;right:18px;padding:11px 16px;color:var(--tx)}
+/* шторка — плавающая стеклянная карточка с отступами, как в iOS 26 */
+body.gu88 .sheet{left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));border-radius:30px!important;padding-bottom:20px;
+ --g-fill:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03)),color-mix(in srgb,var(--s1) 72%,transparent);-webkit-backdrop-filter:blur(28px) saturate(190%);backdrop-filter:blur(28px) saturate(190%)}
+body.gu88 .sheet .gr{background:rgba(255,255,255,.28)}
+html[data-theme=light] body.gu88 .sheet{--g-fill:color-mix(in srgb,#fff 80%,transparent)}
+body.gu88 .veil{background:rgba(0,0,0,.35)}
+/* поле ввода чата — стеклянная пилюля (кнопка «Отправить» остаётся цветной) */
+body.gu88 #hcroot .hccomp{border-radius:24px!important}
+body.gu88 #hcroot .hccomp:focus-within{box-shadow:var(--g-rim),var(--g-drop),0 0 0 2px color-mix(in srgb,var(--gold) 45%,transparent)}
+/* обычные кнопки в контенте (если включено) */
+body.gc88 .btn:not(.pri):not(.danger){border-radius:22px!important;color:var(--tx)}
+@media (prefers-reduced-motion:reduce){body.gu88 .ib,body.gu88 .hcbtn,body.gu88 .back{transition:none}}
+/* отступы: стеклянные элементы не прилипают к краям экрана и не теснятся в шапке */
+body.gu88 #hcroot .hckind{margin:6px 14px 2px!important;width:auto!important;box-sizing:border-box}
+body.gu88 #hcroot .hd .ib,body.gu88 #hcroot .hd .hcbtn{width:38px!important;height:38px!important;min-width:38px!important;flex:none}
+body.gu88 #hcroot .hd{padding-top:8px;padding-bottom:8px;min-height:56px;box-sizing:border-box}
+body.gu88 #hcroot .hcnew{margin-left:14px!important;margin-right:14px!important}
+/* «‹ Ещё» в шапке Журнала/Настроек */
+body.gu88 .hd .back.inhd88{margin:0;flex:none;height:38px;padding:0 13px 0 8px}
+body.gu88 .hd.sub88 h1{font-size:19px}
+/* переезжающая подложка переключателей */
+body.gu88 .hs88{position:relative}
+body.gu88 .hs88>span{position:relative;z-index:1}
+body.gu88 .hs88>span.on{background:none!important;box-shadow:none!important}
+body.gu88 i.sl88{position:absolute;left:0;z-index:0;border-radius:18px;background:var(--g-on);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.08);pointer-events:none;will-change:transform}
+body.gu88 .pmbar .seg i.sl88,body.gu88 .seg.full i.sl88{border-radius:16px}
