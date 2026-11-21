@@ -1542,7 +1542,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=100;
+var VER=101;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -2037,8 +2037,11 @@ function loadModels(force){if(!live())return Promise.resolve();if(st.models&&!fo
  return J(base()+'/models').then(function(d){st.models=d;paint();return d}).catch(function(e){st.merr=e.message||'Ошибка';paint()})}
 function chipTxt(){var sel=st.msel;if(sel&&sel.m)return pretty(sel.m);var c=st.models&&st.models.cur&&st.models.cur.model;return c?pretty(c):'Модель'}
 function effTxt(){var e=st.msel&&st.msel.e;return e?EFF[e]:'Авто'}
-function subTxt(){if(st.kind!='hermes'&&!st.rw)return st.cclive?'идёт сейчас · чат на ПК':'чат на ПК';return st.rw?(st.models||st.msel?chipTxt():agentName()):(deskOK()?'чат на ПК':'только чтение')}
-function chipsHtml(){return '<div class="hcchip" data-hc="model">'+E(chipTxt())+(st.msel&&st.msel.m?'<i class="on"></i>':'')+IC('chevron-down')+'</div><div class="hcchip" data-hc="effort">'+E(effTxt())+IC('chevron-down')+'</div>'}
+function subTxt(){/*p5one*/if(!st.rw&&deskOK())return deskRun()?'отвечает…':(st.kind!='codex'&&st.msel&&st.msel.m?chipTxt():agentName());return st.rw?(st.models||st.msel?chipTxt():agentName()):'только чтение'}
+function deskRun(){return st.kind=='hermes'?!!(st.cur&&st.cur.live):!!st.cclive}
+function sendBtn(){var s=document.getElementById('hcsend');if(!s)return;var dk=!st.rw&&deskOK(),idle=!(st.draft||'').trim()&&!st.imgs.length,stp=dk?(deskRun()&&idle):st.busy;
+ s.className='hcsendb'+(stp?' stop':'')+(dk&&st.dsending?' wait':'');s.innerHTML=stp?IC('square'):IC('arrow-up')}
+function chipsHtml(){if(!st.rw&&st.kind=='codex')return '';return '<div class="hcchip" data-hc="model">'+E(chipTxt())+(st.msel&&st.msel.m?'<i class="on"></i>':'')+IC('chevron-down')+'</div><div class="hcchip" data-hc="effort">'+E(effTxt())+IC('chevron-down')+'</div>'}
 function modelSheet(){var M=st.models;
  if(!M){sheet('<div class="hcsh"><b>Модель</b></div><div class="hint2">'+(st.merr?E(st.merr):'Загружаю список…')+'</div><div class="btn" data-hc="close">Закрыть</div>');if(!st.models)loadModels().then(function(){if(st.models)modelSheet()});return}
  if(!st.mprov){var cp=st.msel&&st.msel.p||M.cur.provider;st.mprov=M.p.some(function(p){return p.slug==cp})?cp:(M.p[0]&&M.p[0].slug)||''}
@@ -2138,7 +2141,7 @@ function paint(){if(!mounted())return;if(st.view=='list'){paintList();return}
  var m=document.getElementById('hcmsgs');if(!m){paintChat();return}
  var near=m.scrollHeight-m.scrollTop-m.clientHeight<140,nh=msgsHtml(),sl=window.getSelection&&window.getSelection(),selin=sl&&!sl.isCollapsed&&sl.rangeCount&&m.contains(sl.anchorNode);
  if(m.__h===nh||(selin&&!st.stick)){if(selin&&m.__h!==nh)selWait=1}else{m.__h=nh;selWait=0;m.innerHTML=nh;if(near||st.stick)m.scrollTop=m.scrollHeight}st.stick=false;
- var s=document.getElementById('hcsend');if(s){s.className='hcsendb'+(st.busy?' stop':'');s.innerHTML=st.busy?IC('square'):IC('arrow-up')}
+ sendBtn();
  var th=document.getElementById('hcthumbs');if(th)th.innerHTML=thumbsHtml();var ch=document.getElementById('hcchips');if(ch)ch.innerHTML=chipsHtml();var sb=document.getElementById('hcsub');if(sb)sb.textContent=subTxt()}
 var selWait=0;document.addEventListener('selectionchange',function(){if(!selWait)return;var s=window.getSelection();if(s&&s.isCollapsed){selWait=0;setTimeout(function(){if(mounted()&&st.view=='chat')paint()},250)}});
 function schedule(){if(rafId)return;rafId=requestAnimationFrame(function(){rafId=0;paint()})}
@@ -2153,7 +2156,7 @@ var SLM={'PINNED':'Закреплённые','TODAY':'Сегодня','YESTERDAY
 function secHtml(label,n,key,open){label=(st.kind!='hermes'&&SLM[label])||label;return '<div class="hcsec'+(key?' tap':'')+'"'+(key?' data-hc="fold" data-k="'+E(key)+'"':'')+'><span>'+E(label)+'</span>'+(n!=null?'<em>'+n+'</em>':'')+(key?IC(open?'chevron-down':'chevron-right'):'')+'</div>'}
 function groupsHtml(){var L=(st.sessions||[]).slice().sort(function(a,b){return b.ts-a.ts}),h='',fold=LS.get('hcfold',{}),lv=st.kind!='hermes'?L.filter(function(x){return x.live}):[],pins=L.filter(function(x){return x.pin&&lv.indexOf(x)<0}),rest=L.filter(function(x){return !x.pin&&lv.indexOf(x)<0});
  if(lv.length)h+=secHtml('ИДЁТ СЕЙЧАС',lv.length)+lv.map(rowHtml).join('');
- var pn=st.kind!='hermes'?L.filter(function(x){return x.rw&&lv.indexOf(x)<0}):[];if(pn.length){h+=secHtml('ИЗ ПАНЕЛИ · МОИ КОПИИ',pn.length)+pn.map(rowHtml).join('');rest=rest.filter(function(x){return pn.indexOf(x)<0});pins=pins.filter(function(x){return pn.indexOf(x)<0})}
+ var pn=st.kind!='hermes'?L.filter(function(x){return x.rw&&lv.indexOf(x)<0}):[];if(pn.length){h+=secHtml('ДРУГИЕ ЧАТЫ',pn.length)+pn.map(rowHtml).join('');rest=rest.filter(function(x){return pn.indexOf(x)<0});pins=pins.filter(function(x){return pn.indexOf(x)<0})}
  if(pins.length)h+=secHtml('PINNED',pins.length)+pins.map(rowHtml).join('');
  var dated=[],bysrc={};
  rest.forEach(function(x){if(st.kind!='hermes'||!st.all||x.src=='gui'||x.src=='local'||x.src=='cli'||!x.src)dated.push(x);else(bysrc[x.src]=bysrc[x.src]||[]).push(x)});
@@ -2177,7 +2180,7 @@ function paintChat(){var r=root();if(!r)return;r.className='k-'+st.kind;
  var ta0=document.getElementById('hcin');if(ta0)st.draft=ta0.value;
  r.innerHTML='<div class="hd hchd"><div class="ib" data-hc="back" title="Назад">'+IC('chevron-left')+'</div><div class="hcmid tap" data-hc="menu"><h1>'+E(st.title||'Новая сессия')+'</h1><div class="st"><span class="dot ok"></span><span id="hcsub">'+E(subTxt())+'</span></div></div><div class="r"><div class="ib" data-hc="menu" title="Меню">'+IC('ellipsis')+'</div></div></div>'+
  '<div id="hcmsgs" class="hcmsgs"></div>'+
- (st.rw?'<div class="hccomp"><div id="hcthumbs" class="hcthumbs"></div><textarea id="hcin" rows="1" placeholder="Сообщение '+agentName()+'…"></textarea><div class="hctb2"><label class="hcbtn ghost" for="hcfile">'+IC('paperclip')+'</label><div class=\"hcbtn ghost\" data-hc=\"mic\" title=\"Голосом\">'+IC('mic')+'</div><input id="hcfile" type="file" accept="image/*" multiple hidden><div id="hcchips" class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="send"></div></div></div>':deskOK()?ccComp():'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
+ (st.rw||deskOK()?'<div class="hccomp"><div id="hcthumbs" class="hcthumbs"></div><textarea id="hcin" rows="1" placeholder="Сообщение '+agentName()+'…"></textarea><div class="hctb2"><label class="hcbtn ghost" for="hcfile">'+IC('paperclip')+'</label><div class=\"hcbtn ghost\" data-hc=\"mic\" title=\"Голосом\">'+IC('mic')+'</div><input id="hcfile" type="file" accept="image/*" multiple hidden><div id="hcchips" class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="send"></div></div></div>':'<div class="hcro"><div>'+IC('eye')+' Сессия из «'+E(SRC[st.src]||st.src||'другого места')+'» — оригинал здесь только читается. Можно продолжить в копии: вся история сохранится, оригинал не изменится.</div><div class="btn pri" data-hc="fork">'+IC('git-branch')+' Продолжить здесь</div></div>');
  var ta=document.getElementById('hcin');if(ta){ta.value=st.draft;grow(ta)}
  if(st.fwdDraft&&ta){st.draft=st.fwdDraft;st.fwdDraft=null;ta.value=st.draft;grow(ta);setTimeout(function(){toast(IC('forward')+' Текст вставлен: допиши и отправь')},60)}
  st.stick=true;paint()}
@@ -2185,7 +2188,7 @@ function grow(t){t.style.height='auto';t.style.height=Math.min(140,t.scrollHeigh
 function after(){document.body.classList.toggle('hcm',U.tab=='hc');['claude','codex'].forEach(function(k){document.body.classList.toggle('hk-'+k,U.tab=='hc'&&st.kind==k)});if(U.tab!='hc'){document.body.classList.remove('hckb');return}
  if(!mounted())return;if(st.view=='chat')U.page='hcchat';
  try{if(inTG())st.view=='chat'?tg.BackButton.show():tg.BackButton.hide()}catch(e){}
- st.view=='chat'?paintChat():paintList();if(st.kind!='hermes'&&!st.rw&&st.view=='chat'&&!ccTimer)ccPoll(false);if(st.view=='list'&&live()&&!st.sessions&&!st.lerr)loadList()}
+ st.view=='chat'?paintChat():paintList();if(st.kind!='hermes'&&!st.rw&&st.view=='chat'&&!ccTimer&&!ccFly)ccPoll(false);if(st.kind=='hermes'&&!st.rw&&st.view=='chat'&&st.sid&&DWS[st.src]&&!hwOn)hWatch(st.sid);if(st.view=='list'&&live()&&!st.sessions&&!st.lerr)loadList()}
 
 /* ---------- данные ---------- */
 function loadList(){var k=st.kind;st.lerr='';return J(k=='claude'?'/cc/sessions?limit=60'+(st.call?'&all=1':''):k=='codex'?'/cx/sessions?limit=60':'/sessions?limit=100'+(st.all?'&all=1':'')).then(function(d){if(st.kind!=k)return;st.sessions=d.s;if(k!='hermes')st.sessions.forEach(function(x){x.cc=true});paint()}).catch(function(e){if(st.kind!=k)return;st.lerr=e.message||'Ошибка';paint()}).then(function(){if(k!='hermes'&&st.kind==k&&st.view=='list'){ccStop();ccTimer=setTimeout(function(){ccTimer=0;if(st.kind!='hermes'&&st.view=='list'&&U.tab=='hc'&&mounted())loadList()},8000)}})}
@@ -2210,8 +2213,10 @@ function projSheet(){var ps=st.projs;
   ps.map(function(p,i){var on=last==p.path;return '<div class="hcmi'+(on?' on':'')+'" data-hc="newproj" data-i="'+i+'">'+(on?IC('check'):'<i></i>')+'<b>'+E(p.name)+'</b><span>'+E(p.path)+'</span></div>'}).join('')+
   '</div><div class="btn" data-hc="close">Отмена</div>';
  sheet(h)}
-function doNew(cwd,pname){unsheet();LS.set('hcproj',cwd||'');
- J(base()+'/sessions',{method:'POST',body:cwd?{cwd:cwd,pname:pname}:{}}).then(function(d){st.sessions=null;st.msgs=[];openSess(d.s.id,true);st.sessions=[d.s];st.title='Новый чат';paint();if(cwd)toast('Проект: '+E(pname));setTimeout(function(){var t=document.getElementById('hcin');if(t)t.focus()},120)}).catch(function(e){toast(E(e.message))})}
+function doNew(cwd,pname){unsheet();LS.set('hcproj',cwd||'');var k=st.kind;
+ J('/new',{method:'POST',body:{agent:k,cwd:cwd||'',pname:pname||''}}).then(function(d){if(st.kind!=k)return;
+  if(k=='hermes'&&!st.all){st.all=true;LS.set('hcall',true)}
+  st.msgs=[];st.sessions=[d.s];if(k=='hermes'){openSess(d.s.id,true)}else openAgent(d.s.id,true);st.title=d.s.t||'Новый чат';st.rw=false;st.src=d.s.src;paint();if(cwd)toast('Проект: '+E(pname));setTimeout(function(){var t=document.getElementById('hcin');if(t)t.focus()},120)}).catch(function(e){toast(E(e.message))})}
 
 /* ---------- ход со стримом ---------- */
 function ctl(d,n){var id=d.request_id||d.prompt_id||d.id;if(!id)return null;
@@ -2241,7 +2246,7 @@ function sse(resp,cb){if(!resp.body||!resp.body.getReader)return resp.text().the
   lines.forEach(function(l){l=l.replace(/\r$/,'');if(l.indexOf('event:')==0)ev=l.slice(6).trim();else if(l.indexOf('data:')==0){var d;try{d=JSON.parse(l.slice(5))}catch(e){return}cb(ev,d)}else if(l==='')ev=''});return pump()})}
  return pump()}
 function chatBody(t,imgs){var b={input:t,images:imgs},m=st.msel;if(m){if(m.m){b.model=m.m;b.provider=m.p}if(m.e)b.effort=m.e}return b}
-function send(){if(st.kind!='hermes'&&!st.rw){ccSend();return}if(st.busy){stop();return}
+function send(){if(!st.rw&&deskOK()){if(deskRun()&&!(st.draft||'').trim()&&!st.imgs.length){deskStop();return}ccSend();return}if(st.busy){stop();return}
  var t=(st.draft||'').trim();if(!t&&!st.imgs.length)return;if(!st.sid||!st.rw||!live())return;
  var imgs=st.imgs.slice(),sid=st.sid;st.msgs.push({k:'u',t:t,im:imgs.length,ts:Date.now()/1000});var a={k:'a',parts:[],live:true,ts:Date.now()/1000};st.msgs.push(a);st.cur=a;
  st.busy=true;st.run=null;st.err='';st.draft='';st.imgs=[];st.stick=true;var ta=document.getElementById('hcin');if(ta){ta.value='';grow(ta)}paint();
@@ -2268,10 +2273,10 @@ function respond(i,choice,answer){var p=st.pend[i];if(!p||!st.run)return;
  J(path,{method:'POST',body:body}).then(function(){st.pend.splice(i,1);paint();haptic('success')}).catch(function(e){if(e.status==409){st.pend.splice(i,1);paint();toast('Запрос уже неактуален')}else toast(E(e.message))})}
 
 /* ---------- Claude / Codex: транскрипты с ПК; Claude из панели — через встроенный `claude -p` ---------- */
-var KN={hermes:'Hermes',claude:'Claude',codex:'Codex'},ccTimer=0;
+var KN={hermes:'Hermes',claude:'Claude',codex:'Codex'},ccTimer=0,ccFly=false,ccTok=0,hwTok=0,hwOn=false,hwAc=null;
 function kindBar(){return '<div class="hcfil hckind">'+['hermes','claude','codex'].map(function(k){return '<span class="'+(st.kind==k?'on':'')+'" data-hc="kind" data-v="'+k+'">'+KN[k]+'</span>'}).join('')+'</div>'}
 function setKind(k){if(st.kind==k||!KN[k])return;ccStop();st.kind=k;LS.set('hckind',k);st.sessions=null;st.lerr='';st.sid=null;st.msgs=[];st.models=null;st.msel=null;st.mprov='';st.view='list';U.page=null;render();loadList()}
-function ccStop(){if(ccTimer){clearTimeout(ccTimer);ccTimer=0}}
+function ccStop(){if(ccTimer){clearTimeout(ccTimer);ccTimer=0}ccTok++;ccFly=false}
 var DWS={local:1,gui:1,cli:1,desktop:1},DESK={claude:'Claude Desktop',codex:'Codex Desktop',hermes:'Hermes на ПК'};
 function deskOK(){return st.kind=='claude'||st.kind=='codex'||(st.kind=='hermes'&&!!DWS[st.src])}
 function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение в этот чат (уйдёт в '+DESK[st.kind]+')…"></textarea><div class="hctb2"><div class="hcbtn ghost" data-hc="mic" title="Голосом">'+IC('mic')+'</div><div class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
@@ -2282,16 +2287,32 @@ function openAgent(id,fresh){var s=(st.sessions||[]).filter(function(x){return x
  render();if(fresh)return;st.loadingMsgs=true;
  if(st.rw)return J(base()+'/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id||st.busy)return;st.msgs=fromHistory(d.m);st.loadingMsgs=false;st.stick=true;st.perm=d.perm||'';if(d.run)resumeRun(d.run);else paint()}).catch(function(e){st.loadingMsgs=false;st.err=e.message;paint()});
  ccPoll(true)}
-function ccPoll(first){ccStop();var id=st.sid;if(st.kind=='hermes'||st.rw||st.view!='chat'||!id)return;var k=st.kind;
- J(base()+'/sessions/'+encodeURIComponent(id)+'/messages'+(first||st.ccoff==null?'':'?from='+st.ccoff)).then(function(d){if(st.sid!=id||st.kind!=k)return;
-  if(first||st.ccoff==null)st.msgs=fromHistory(d.m);else if(d.m.length)st.msgs=fromHistory(d.m,st.msgs);
-  st.ccoff=d.off;st.cclive=!!d.live;st.loadingMsgs=false;st.err='';if(first)st.stick=true;paint()
- }).catch(function(e){st.loadingMsgs=false;st.err=e.message||'Нет связи';paint()}).then(function(){if(st.sid==id&&st.kind==k&&!st.rw&&st.view=='chat'&&!ccTimer)ccTimer=setTimeout(function(){ccTimer=0;if(U.tab=='hc'&&mounted())ccPoll(false)},3000)})}
-function ccSend(){var t=(st.draft||'').trim();if(!t||!live()||st.dsending)return;
- if(!st.rw&&st.sid&&deskOK()){var o=st.sid,k=st.kind;st.dsending=true;paint();toast('Передаю в '+DESK[k]+'…');
-  J(base()+'/sessions/'+encodeURIComponent(o)+'/desk',{method:'POST',body:{t:t}}).then(function(d){st.dsending=false;if(st.sid!=o)return;st.draft='';var ta=document.getElementById('hcin');if(ta){ta.value='';grow(ta)}st.stick=true;toast(E(d.text||'Отправлено'));haptic('success');paint();if(k=='hermes')hPoll(o,0);else ccPoll(false)})
-   .catch(function(e){st.dsending=false;paint();toast(E(e.message));haptic('error')});return}
+function ccPoll(first){ccStop();var id=st.sid;if(st.kind=='hermes'||st.rw||st.view!='chat'||!id)return;var k=st.kind,tok=ccTok,t0=Date.now(),lp=!(first||st.ccoff==null);ccFly=true;
+ J(base()+'/sessions/'+encodeURIComponent(id)+'/messages'+(lp?'?from='+st.ccoff+'&sz='+(st.ccsz||st.ccoff)+'&wait=20':'')).then(function(d){if(tok!=ccTok||st.sid!=id||st.kind!=k)return;
+  if(!lp)st.msgs=fromHistory(d.m);else if(d.m.length)st.msgs=fromHistory(d.m,st.msgs);
+  st.ccoff=d.off;st.ccsz=d.size;st.cclive=!!d.live;st.loadingMsgs=false;st.err='';if(first)st.stick=true;paint();return d.m.length
+ }).catch(function(e){if(tok!=ccTok)return;st.loadingMsgs=false;st.err=e.message||'Нет связи';paint();return -1}).then(function(g){if(tok!=ccTok)return;ccFly=false;
+  if(st.sid==id&&st.kind==k&&!st.rw&&st.view=='chat'&&!ccTimer)ccTimer=setTimeout(function(){ccTimer=0;if(U.tab=='hc'&&mounted())ccPoll(false)},g>0?40:(g===-1||Date.now()-t0<1500?2500:40))})}
+function deskStop(){var o=st.sid;if(!o||!live())return;toast('Останавливаю…');
+ J(base()+'/sessions/'+encodeURIComponent(o)+'/deskstop',{method:'POST',body:{}}).then(function(){haptic('success');if(st.sid==o&&st.kind!='hermes')ccPoll(false)}).catch(function(e){toast(E(e.message));haptic('error')})}
+function ccSend(){var t=(st.draft||'').trim();if((!t&&!st.imgs.length)||!live()||st.dsending)return;
+ if(!st.rw&&st.sid&&deskOK()){var o=st.sid,k=st.kind,imgs=st.imgs.slice(),m=st.msel||{},b={t:t};if(imgs.length)b.images=imgs;if(k!='codex'){if(m.m){b.model=m.m;b.provider=m.p}if(m.e)b.effort=m.e}
+  st.dsending=true;st.draft='';st.imgs=[];var ta0=document.getElementById('hcin');if(ta0){ta0.value='';grow(ta0)}paint();
+  J(base()+'/sessions/'+encodeURIComponent(o)+'/desk',{method:'POST',body:b}).then(function(d){st.dsending=false;if(st.sid!=o)return;st.stick=true;if(d&&d.queued)toast('В очереди: уйдёт после текущего ответа');haptic('success');paint();if(d&&d.sid&&d.sid!=o&&st.kind==k){st.sid=d.sid;st.ccoff=null;st.ccsz=0;st.msgs=[];st.sessions=null}if(k=='hermes'){if(!hwOn)hPoll(o,0)}else ccPoll(false)})
+   .catch(function(e){st.dsending=false;if(st.sid==o&&!st.draft){st.draft=t;st.imgs=imgs;var ta=document.getElementById('hcin');if(ta){ta.value=t;grow(ta)}}paint();toast(E(e.message));haptic('error')});return}
  ccSay()}
+function hLive(){var a=st.cur;if(!a||!a.live){a={k:'a',parts:[],live:true,ts:Date.now()/1000};st.cur=a;st.msgs.push(a)}return a}
+function hWatch(id){hwOn=true;var tok=++hwTok;if(hwAc){try{hwAc.abort()}catch(e){}}hwAc=window.AbortController?new AbortController():null;
+ function again(){hwOn=false;if(tok==hwTok&&st.sid==id&&st.kind=='hermes'&&!st.rw&&st.view=='chat'&&U.tab=='hc'&&mounted())setTimeout(function(){if(tok==hwTok&&!hwOn)hWatch(id)},400)}
+ function ok(){return tok==hwTok&&st.sid==id}
+ function fin(a){if(a){a.live=false}st.cur=null;setTimeout(function(){if(!ok())return;reload()},350)}
+ hq(base()+'/sessions/'+encodeURIComponent(id)+'/watch',{signal:hwAc?hwAc.signal:undefined}).then(function(r){if(!r.ok)throw new Error('watch '+r.status);
+  return sse(r,function(n,d){if(!ok())return;
+   if(n=='watch.ready'){if(d.running){hLive();st.stick=true;paint()}}
+   else if(n=='turn.start'){hLive();st.stick=true;reload().then(function(){if(ok()&&st.cur&&st.msgs.indexOf(st.cur)<0){st.msgs.push(st.cur);paint()}})}
+   else if(n=='assistant.delta'||n=='tool.started'||n=='tool.completed'){var a=hLive();onEv(n,d);st.stick=true}
+   else if(n=='turn.complete'){fin(st.cur);paint()}
+  })}).then(again,again)}
 function hPoll(id,n){if(st.sid!=id||st.kind!='hermes'||st.view!='chat'||n>60)return;setTimeout(function(){if(st.sid!=id)return;var c=st.msgs.length;reload().then(function(){if(st.sid!=id)return;var l=st.msgs[st.msgs.length-1];if(st.msgs.length>c&&l&&l.k=='a'&&n>2)return;hPoll(id,n+1)}).catch(function(){hPoll(id,n+1)})},3000)}
 function ccSay(){var t=(st.draft||'').trim();if(!t||!live())return;
  J('/cc/say',{method:'POST',body:{t:t}}).then(function(d){st.draft='';var ta=document.getElementById('hcin');if(ta){ta.value='';grow(ta)}toast(d.text||'В очереди');haptic('success')}).catch(function(e){toast(E(e.message))})}
@@ -2302,7 +2323,7 @@ function menu(){if(!st.sid)return;var h='<div class="hcsh"><b>'+E(st.title||'Н�
   h+='<div class="hint2">Разрешения: <b>'+PM[cur]+'</b> — '+PD[cur]+'.</div>'+['pc','ask','full'].filter(function(k){return k!=cur}).map(function(k){return '<div class="btn" data-hc="perm" data-v="'+k+'">'+IC('shield-check')+' '+PM[k]+'</div>'}).join('')}
  if(st.rw&&st.kind!='hermes')h+='<div class="btn" data-hc="openpc">'+IC('monitor')+' Открыть на ПК</div><div class="hint2">Чат откроется в '+DESK[st.kind]+'. Дальше пиши где удобно: история одна, с телефона сообщения пойдут через ПК.</div>';
  if(st.rw)h+='<div class="btn" data-hc="rename">'+IC('pencil')+' Переименовать</div><div class="btn" data-hc="fork">'+IC('git-branch')+' Ветка: продолжить с копией</div><div class="btn bad" data-hc="del">'+IC('trash-2')+' Удалить</div>';
- else h+='<div class="hint2">'+(st.kind=='claude'?'Это чат Claude Desktop. Поле ввода отправляет сообщение прямо в него: Claude Desktop на ПК откроет чат и выполнит ход, ответ появится здесь. Можно, даже когда ты за ПК: текст вставится разом, окно вернётся тебе. Копия — отдельный чат в панели, оригинал не меняется.':deskOK()?'Это чат '+DESK[st.kind]+'. Поле ввода отправляет сообщение прямо в него: ход выполнит '+DESK[st.kind]+', история одна на ПК и в панели. Копия — отдельный чат в панели.':'Эта сессия из «'+E(SRC[st.src]||st.src)+'»: оригинал только читается.')+'</div><div class="btn'+(deskOK()?'':' pri')+'" data-hc="fork">'+IC('git-branch')+' Продолжить здесь (копия)</div>';
+ else if(deskOK())h+='<div class="btn" data-hc="fork">'+IC('git-branch')+' Ветка: продолжить с копией</div>';else h+='<div class="hint2">'+(st.kind=='claude'?'Это чат Claude Desktop. Поле ввода отправляет сообщение прямо в него: Claude Desktop на ПК откроет чат и выполнит ход, ответ появится здесь. Можно, даже когда ты за ПК: текст вставится разом, окно вернётся тебе. Копия — отдельный чат в панели, оригинал не меняется.':deskOK()?'Это чат '+DESK[st.kind]+'. Поле ввода отправляет сообщение прямо в него: ход выполнит '+DESK[st.kind]+', история одна на ПК и в панели. Копия — отдельный чат в панели.':'Эта сессия из «'+E(SRC[st.src]||st.src)+'»: оригинал только читается.')+'</div><div class="btn'+(deskOK()?'':' pri')+'" data-hc="fork">'+IC('git-branch')+' Продолжить здесь (копия)</div>';
  sheet(h+'<div class="btn" data-hc="close">Закрыть</div>')}
 function renameUI(){sheet('<div class="hcsh"><b>Название чата</b></div><input id="hcren" class="hcinp" maxlength="120" value="'+E(st.title).replace(/"/g,'&quot;')+'"><div class="btn pri" data-hc="rensave">Сохранить</div><div class="btn" data-hc="close">Отмена</div>');setTimeout(function(){var i=document.getElementById('hcren');if(i){i.focus();i.select()}},150)}
 function delUI(){sheet('<div class="hcsh"><b>Удалить чат?</b></div><div class="hint2">'+(st.kind=='codex'?'«'+E(st.title)+'» уберётся из панели. Файлы истории Codex останутся на ПК.':'«'+E(st.title)+'» и вся его история будут удалены с ПК. Это нельзя отменить.')+'</div><div class="btn bad" data-hc="delyes">Удалить</div><div class="btn" data-hc="close">Отмена</div>')}
@@ -2357,7 +2378,7 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  case 'del':unsheet();setTimeout(delUI,260);break;
  case 'delyes':{var id=st.sid;J(base()+'/sessions/'+encodeURIComponent(id),{method:'DELETE'}).then(function(){unsheet();st.sid=null;st.msgs=[];leave();toast('Удалено')}).catch(function(e){toast(E(e.message))});break}
  }});
-document.addEventListener('input',function(e){if(e.target.id=='hcin'){st.draft=e.target.value;grow(e.target)}if(e.target.id=='hcmq'){st.mq=e.target.value;mlist()}});
+document.addEventListener('input',function(e){if(e.target.id=='hcin'){st.draft=e.target.value;grow(e.target);sendBtn()}if(e.target.id=='hcmq'){st.mq=e.target.value;mlist()}});
 document.addEventListener('focusin',function(e){if(e.target.id=='hcin')document.body.classList.add('hckb')});
 document.addEventListener('focusout',function(e){if(e.target.id=='hcin')setTimeout(function(){if(document.activeElement&&document.activeElement.id=='hcin')return;document.body.classList.remove('hckb')},250)});
 document.addEventListener('keydown',function(e){if(e.target.id=='hcin'&&e.key=='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();send()}if(e.target.id=='hcren'&&e.key=='Enter'){e.preventDefault();var b=document.querySelector('[data-hc=rensave]');if(b)b.click()}});
@@ -2393,7 +2414,7 @@ function fwdSheet(k){if(!st.fwdSrc)return;var L=st.fwdL[k],nm={hermes:'Hermes',c
  if(!L){h+='<div class="hint2">Загружаю…</div>';J(fwdPath(k)).then(function(d){st.fwdL[k]=d.s||[];if(document.querySelector('.hcfwdk span.on[data-v="'+k+'"]'))fwdSheet(k)}).catch(function(e){st.fwdL[k]=[];toast(E(e.message))})}
  else{var ok=L.filter(function(x){return (x.rw||k=='claude'||k=='codex'||x.dw)&&!(k==st.fwdSrc.kind&&x.id==st.fwdSrc.sid)}).sort(function(a,b){return (b.rw?1:0)-(a.rw?1:0)||b.ts-a.ts}).slice(0,25);
   if(!ok.length)h+='<div class="hint2">Чатов, куда можно писать, нет. Создай новый.</div>';
-  ok.forEach(function(x){h+='<div class="hcmi" data-hc="fwdto" data-v="'+k+'" data-id="'+E(x.id)+'"><i></i><b>'+E(x.t||'Без названия')+'</b><span>'+(x.rw?'':(x.dw||k=='codex')?'в чат на ПК · ':'продолжу в копии · ')+E(ago(x.ts))+'</span></div>'})}
+  ok.forEach(function(x){h+='<div class="hcmi" data-hc="fwdto" data-v="'+k+'" data-id="'+E(x.id)+'"><i></i><b>'+E(x.t||'Без названия')+'</b><span>'+E(ago(x.ts))+'</span></div>'})}
  sheet(h+'</div><div class="btn" data-hc="close">Отмена</div>')}
 function fwdGo(k,id,isNew){var f=st.fwdSrc;if(!f)return;unsheet();st.fwdSrc=null;
  if(st.kind!=k){ccStop();st.kind=k;LS.set('hckind',k);st.models=null;st.msel=null;st.mprov=''}
