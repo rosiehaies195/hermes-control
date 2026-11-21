@@ -288,7 +288,7 @@ function ccSay(){var t=(st.draft||'').trim();if(!t||!live())return;
 
 /* ---------- меню сессии ---------- */
 function menu(){if(!st.sid)return;var h='<div class="hcsh"><b>'+E(st.title||'Новый чат')+'</b></div>'+(st.kind=='hermes'?'<div class="btn" data-hc="pinmenu">'+IC('pin')+' '+(st.pin?'Открепить':'Закрепить')+'</div>':'');
- if(st.rw&&st.kind!='hermes'){var PM={pc:'Как на ПК',ask:'Спрашивать всё',full:'Полный доступ'},PD={pc:'те же права, что у '+E(agentName())+' на этом ПК'+(st.kind=='claude'?' (режим Auto: безопасное — само, рискованное — спросит)':' (Codex на ПК работает без вопросов)'),ask:'карточка Разрешить/Отклонить перед каждой командой и правкой',full:'никаких вопросов'},cur=PM[st.perm]?st.perm:'pc';
+ if(st.rw&&st.kind!='hermes'){var PM={pc:'Как на ПК',ask:'Спрашивать всё',full:'Сам, кроме опасных'},PD={pc:'те же права, что у '+E(agentName())+' на этом ПК'+(st.kind=='claude'?' (режим Auto: безопасное — само, рискованное — спросит)':' (Codex на ПК работает без вопросов)'),ask:'карточка Разрешить/Отклонить перед каждой командой и правкой',full:'безопасное разрешаю сам, опасное (rm -rf, push --force, .env, sudo… — стоп-список) — карточка тебе; каждое авто-разрешение в Журнале'},cur=PM[st.perm]?st.perm:'pc';
   h+='<div class="hint2">Разрешения: <b>'+PM[cur]+'</b> — '+PD[cur]+'.</div>'+['pc','ask','full'].filter(function(k){return k!=cur}).map(function(k){return '<div class="btn" data-hc="perm" data-v="'+k+'">'+IC('shield-check')+' '+PM[k]+'</div>'}).join('')}
  if(st.rw&&st.kind!='hermes')h+='<div class="btn" data-hc="openpc">'+IC('monitor')+' Открыть на ПК</div><div class="hint2">Чат откроется в '+DESK[st.kind]+'. Дальше пиши где удобно: история одна, с телефона сообщения пойдут через ПК.</div>';
  if(st.rw)h+='<div class="btn" data-hc="rename">'+IC('pencil')+' Переименовать</div><div class="btn" data-hc="fork">'+IC('git-branch')+' Ветка: продолжить с копией</div><div class="btn bad" data-hc="del">'+IC('trash-2')+' Удалить</div>';
@@ -337,7 +337,7 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  case 'appr':respond(+el.dataset.i,el.dataset.c);break;
  case 'clarop':respond(+el.dataset.i,'',el.dataset.v);break;
  case 'clarskip':respond(+el.dataset.i,'deny','');break;
- case 'perm':{var nv=el.dataset.v||'pc';J(base()+'/sessions/'+encodeURIComponent(st.sid),{method:'PATCH',body:{perm:nv}}).then(function(){st.perm=nv;unsheet();toast(nv=='full'?'Полный доступ: без вопросов':nv=='ask'?'Будет спрашивать перед каждым действием':'Права как на ПК');haptic('success')}).catch(function(e){toast(E(e.message))});break}
+ case 'perm':{var nv=el.dataset.v||'pc';J(base()+'/sessions/'+encodeURIComponent(st.sid),{method:'PATCH',body:{perm:nv}}).then(function(){st.perm=nv;unsheet();toast(nv=='full'?'Сам разрешаю, кроме опасных — те карточкой тебе':nv=='ask'?'Будет спрашивать перед каждым действием':'Права как на ПК');haptic('success')}).catch(function(e){toast(E(e.message))});break}
  case 'clarify':{var inp=document.getElementById('hcclar');respond(+el.dataset.i,'',inp?inp.value:'')}break;
  case 'link':try{tg.openLink(el.dataset.u)}catch(e){window.open(el.dataset.u,'_blank')}break;
  case 'rename':unsheet();setTimeout(renameUI,260);break;

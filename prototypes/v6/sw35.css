@@ -1,0 +1,8 @@
+/* Этап 3.5: переключатели агента в проекте, плашка паузы, «Ждёт тебя» (sw35.js). Строки — как в базе: одна строка заголовка и подписи. */
+.sw35 .t2,.pz35 .t2,.wr35 .t2{flex:1;min-width:0}
+.sw35>.sw{flex:none;margin-left:6px}
+.pz35 .ab8{margin-left:6px}
+.au86.pz35c{color:var(--claude);border-color:color-mix(in srgb,var(--claude) 45%,transparent)}
+.au86.ck35c{color:var(--mut);border-color:var(--line)}
+.lb35{margin:14px 2px 6px}
+#sheet .seg+.lb35{margin-top:14px}
