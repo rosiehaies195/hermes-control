@@ -74,14 +74,15 @@ function resErr(s){try{var j=JSON.parse(s);if(j&&typeof j=='object'){if(j.error)
 function fromHistory(m,out0){var out=out0||[],a=out.length&&out[out.length-1].k=='a'?out[out.length-1]:null;
  m.forEach(function(x){
   if(x.r=='user'){a=null;var c=x.c||'',im=0;c=c.replace(/\n*\[Image attached at:[^\]]*\]/g,function(){im++;return ''}).replace(/\n*\[screenshot\]/g,'').trim();if(c||im)out.push({k:'u',t:c,im:im,ts:x.ts||0});return}
-  if(x.r=='assistant'){if(!a){a={k:'a',parts:[]};out.push(a)}if(x.ts)a.ts=x.ts;if((x.c||'').trim())a.parts.push({p:'t',t:x.c});(x.tc||[]).forEach(function(c){a.parts.push({p:'tool',id:c.id,n:c.n||'tool',a:c.a||'',st:'ok',res:''})});return}
+  if(x.r=='assistant'){if(!a){a={k:'a',parts:[]};out.push(a)}if(x.ts)a.ts=x.ts;if((x.c||'').trim())a.parts.push({p:'t',t:x.c});(x.tc||[]).forEach(function(c){a.parts.push({p:'tool',id:c.id,n:c.n||'tool',a:c.a||'',st:'nr',res:''})});return}
   if(x.r=='tool'){for(var i=out.length-1;i>=0;i--){if(out[i].k!='a')continue;var f=out[i].parts.filter(function(p){return p.p=='tool'&&p.id==x.tid})[0];if(f){f.res=x.c||'';f.st=resErr(x.c)?'err':'ok';break}}}
  });
  return out.filter(function(b){return b.k!='a'||b.parts.length})}
 
 /* ---------- отрисовка ---------- */
 function shell(){return '<div id="hcroot"></div>'}
-function toolHtml(t,bi,pi){var cls=t.st=='run'?'run':t.st=='err'?'err':'ok',ic=t.st=='run'?'<span class="hcspin"></span>':t.st=='err'?IC('x'):IC('check');
+function toolHtml(t,bi,pi){var s0=t.st=='nr'?(st.cclive&&!st.rw&&bi==st.msgs.length-1?'run':'ok'):t.st;/*s4tool*/
+ var cls=s0=='run'?'run':s0=='err'?'err':'ok',ic=s0=='run'?'<span class="hcspin"></span>':s0=='err'?IC('x'):IC('check');
  var line=argPreview(t.a);if(line.length>90)line=line.slice(0,90)+'…';
  return '<div class="hctool '+cls+(t.open?' open':'')+'"><div class="hct" data-hc="tool" data-b="'+bi+'" data-p="'+pi+'"><i>'+ic+'</i><b>'+E(t.n)+'</b><span>'+E(line)+'</span></div>'+
   (t.open?'<div class="hctb">'+(t.a?'<div class="hcl">запрос</div><pre class="hcpre">'+E(typeof t.a=='string'?t.a:JSON.stringify(t.a)).slice(0,3000)+'</pre>':'')+(t.res?'<div class="hcl">результат</div><pre class="hcpre">'+E(String(t.res).slice(0,3000))+'</pre>':'')+'</div>':'')+'</div>'}
