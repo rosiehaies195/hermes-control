@@ -27,7 +27,7 @@ function loadModels(force){if(!live())return Promise.resolve();if(st.models&&!fo
  return J(base()+'/models').then(function(d){st.models=d;paint();return d}).catch(function(e){st.merr=e.message||'Ошибка';paint()})}
 function chipTxt(){var sel=st.msel;if(sel&&sel.m)return pretty(sel.m);var c=st.models&&st.models.cur&&st.models.cur.model;return c?pretty(c):'Модель'}
 function effTxt(){var e=st.msel&&st.msel.e;return e?EFF[e]:'Авто'}
-function subTxt(){if(st.kind!='hermes'&&!st.rw)return st.cclive?'идёт сейчас · чтение':'только чтение';return st.rw?(st.models||st.msel?chipTxt():agentName()):'только чтение'}
+function subTxt(){if(st.kind!='hermes'&&!st.rw)return st.cclive?'идёт сейчас · чат на ПК':'чат на ПК';return st.rw?(st.models||st.msel?chipTxt():agentName()):(deskOK()?'чат на ПК':'только чтение')}
 function chipsHtml(){return '<div class="hcchip" data-hc="model">'+E(chipTxt())+(st.msel&&st.msel.m?'<i class="on"></i>':'')+IC('chevron-down')+'</div><div class="hcchip" data-hc="effort">'+E(effTxt())+IC('chevron-down')+'</div>'}
 function modelSheet(){var M=st.models;
  if(!M){sheet('<div class="hcsh"><b>Модель</b></div><div class="hint2">'+(st.merr?E(st.merr):'Загружаю список…')+'</div><div class="btn" data-hc="close">Закрыть</div>');if(!st.models)loadModels().then(function(){if(st.models)modelSheet()});return}
@@ -264,7 +264,7 @@ function setKind(k){if(st.kind==k||!KN[k])return;ccStop();st.kind=k;LS.set('hcki
 function ccStop(){if(ccTimer){clearTimeout(ccTimer);ccTimer=0}}
 var DWS={local:1,gui:1,cli:1,desktop:1},DESK={claude:'Claude Desktop',codex:'Codex Desktop',hermes:'Hermes на ПК'};
 function deskOK(){return st.kind=='claude'||st.kind=='codex'||(st.kind=='hermes'&&!!DWS[st.src])}
-function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение в этот чат (уйдёт в '+DESK[st.kind]+')…"></textarea><div class="hctb2"><div class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
+function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение в этот чат (уйдёт в '+DESK[st.kind]+')…"></textarea><div class="hctb2"><div class="hcbtn ghost" data-hc="mic" title="Голосом">'+IC('mic')+'</div><div class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
 function openAgent(id,fresh){var s=(st.sessions||[]).filter(function(x){return x.id==id})[0]||{id:id,t:agentName(),src:st.kind,ts:0,rw:!!fresh};
  ccStop();if(st.sid!=id){st.msgs=[];st.pend=[];st.busy=false;st.run=null;st.err='';st.draft='';st.imgs=[];st.lim=120;st.msel=loadSel(id);st.ccoff=null;st.rt=null}
  st.pin=false;st.sid=id;st.title=s.t;st.rw=!!s.rw;st.src=s.src;st.cclive=!!s.live;st.view='chat';U.page='hcchat';st.stick=true;

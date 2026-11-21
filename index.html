@@ -1533,7 +1533,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=98;
+var VER=99;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -2028,7 +2028,7 @@ function loadModels(force){if(!live())return Promise.resolve();if(st.models&&!fo
  return J(base()+'/models').then(function(d){st.models=d;paint();return d}).catch(function(e){st.merr=e.message||'Ошибка';paint()})}
 function chipTxt(){var sel=st.msel;if(sel&&sel.m)return pretty(sel.m);var c=st.models&&st.models.cur&&st.models.cur.model;return c?pretty(c):'Модель'}
 function effTxt(){var e=st.msel&&st.msel.e;return e?EFF[e]:'Авто'}
-function subTxt(){if(st.kind!='hermes'&&!st.rw)return st.cclive?'идёт сейчас · чтение':'только чтение';return st.rw?(st.models||st.msel?chipTxt():agentName()):'только чтение'}
+function subTxt(){if(st.kind!='hermes'&&!st.rw)return st.cclive?'идёт сейчас · чат на ПК':'чат на ПК';return st.rw?(st.models||st.msel?chipTxt():agentName()):(deskOK()?'чат на ПК':'только чтение')}
 function chipsHtml(){return '<div class="hcchip" data-hc="model">'+E(chipTxt())+(st.msel&&st.msel.m?'<i class="on"></i>':'')+IC('chevron-down')+'</div><div class="hcchip" data-hc="effort">'+E(effTxt())+IC('chevron-down')+'</div>'}
 function modelSheet(){var M=st.models;
  if(!M){sheet('<div class="hcsh"><b>Модель</b></div><div class="hint2">'+(st.merr?E(st.merr):'Загружаю список…')+'</div><div class="btn" data-hc="close">Закрыть</div>');if(!st.models)loadModels().then(function(){if(st.models)modelSheet()});return}
@@ -2265,7 +2265,7 @@ function setKind(k){if(st.kind==k||!KN[k])return;ccStop();st.kind=k;LS.set('hcki
 function ccStop(){if(ccTimer){clearTimeout(ccTimer);ccTimer=0}}
 var DWS={local:1,gui:1,cli:1,desktop:1},DESK={claude:'Claude Desktop',codex:'Codex Desktop',hermes:'Hermes на ПК'};
 function deskOK(){return st.kind=='claude'||st.kind=='codex'||(st.kind=='hermes'&&!!DWS[st.src])}
-function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение в этот чат (уйдёт в '+DESK[st.kind]+')…"></textarea><div class="hctb2"><div class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
+function ccComp(){return '<div class="hccomp"><textarea id="hcin" rows="1" placeholder="Сообщение в этот чат (уйдёт в '+DESK[st.kind]+')…"></textarea><div class="hctb2"><div class="hcbtn ghost" data-hc="mic" title="Голосом">'+IC('mic')+'</div><div class="hcchips"></div><div id="hcsend" class="hcsendb" data-hc="ccsend"></div></div></div>'}
 function openAgent(id,fresh){var s=(st.sessions||[]).filter(function(x){return x.id==id})[0]||{id:id,t:agentName(),src:st.kind,ts:0,rw:!!fresh};
  ccStop();if(st.sid!=id){st.msgs=[];st.pend=[];st.busy=false;st.run=null;st.err='';st.draft='';st.imgs=[];st.lim=120;st.msel=loadSel(id);st.ccoff=null;st.rt=null}
  st.pin=false;st.sid=id;st.title=s.t;st.rw=!!s.rw;st.src=s.src;st.cclive=!!s.live;st.view='chat';U.page='hcchat';st.stick=true;
@@ -2434,7 +2434,9 @@ function vcSet(t){var ta=document.getElementById('hcin');if(!ta)return;ta.value=
 function vcFail(m){VC.busy=false;VC.rec=null;clearInterval(VC.tick);vcUi();toast(m)}
 function vcBlob(){return new Blob(VC.chunks,{type:VC.mime.split(';')[0]})}
 function vcSend(blob,partial,cb){var fr=new FileReader();fr.onload=function(){VJ('/transcribe',{audio:fr.result,lang:'ru',partial:!!partial}).then(cb,function(e){cb(null,e)})};fr.onerror=function(){cb(null,new Error('не удалось прочитать запись'))};fr.readAsDataURL(blob)}
-function vcPartial(){if(!VC.rec||VC.fly||!VC.chunks.length||Date.now()-VC.t0<1500)return;var my=++VC.seq;VC.fly=true;
+/* v9.9: таймер 4 раза в секунду (раньше раз в 1,5 с и прыгал 40→42→44), черновик не чаще раза в 1,2 с, лимит записи 5 мин */
+function vcTime(){var b=vcBtn(),t=b&&b.querySelector('.vct');if(t&&VC.rec){var f=vcFmt();if(t.textContent!=f)t.textContent=f}else vcUi()}
+function vcPartial(){if(!VC.rec||VC.fly||!VC.chunks.length||Date.now()-VC.t0<1500||Date.now()-(VC.lp||0)<1200)return;VC.lp=Date.now();var my=++VC.seq;VC.fly=true;
  vcSend(vcBlob(),true,function(d){VC.fly=false;if(d&&d.text&&VC.rec&&my==VC.seq)vcSet(d.text)})}
 function vcStop(){clearTimeout(VC.timer);if(VC.rec&&VC.rec.state!='inactive'){try{VC.rec.requestData();VC.rec.stop()}catch(e){}}}
 function vcStart(){
@@ -2450,7 +2452,7 @@ function vcStart(){
     if(err){toast('Не удалось распознать: '+esc(String(err.message||err).slice(0,80)));return}
     var t=((d&&d.text)||'').trim();if(!t){vcSet('');toast('Речь не распознана');return}
     vcSet(t);var ta2=document.getElementById('hcin');if(ta2)ta2.focus();toast('<b>'+IC('check')+'</b> Текст готов, проверь и отправь')})};
-  r.start(1000);vcUi();VC.tick=setInterval(function(){vcUi();vcPartial()},1500);VC.timer=setTimeout(vcStop,120000);
+  r.start(1000);vcUi();VC.lp=0;VC.tick=setInterval(function(){vcTime();vcPartial()},250);VC.timer=setTimeout(vcStop,300000);
  }).catch(function(e){var n=e&&e.name||'';toast(n=='NotAllowedError'||n=='SecurityError'?'Нет доступа к микрофону. Разреши его в настройках iOS для Telegram или диктуй с клавиатуры':'Микрофон недоступен: '+esc(n||'ошибка'))})}
 document.addEventListener('click',function(ev){var el=ev.target.closest('[data-hc=mic]');if(!el)return;ev.stopPropagation();if(VC.busy)return;if(VC.rec)vcStop();else vcStart()},true);
 
