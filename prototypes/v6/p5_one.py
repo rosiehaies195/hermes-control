@@ -47,7 +47,7 @@ rep("""function ccSend(){var t=(st.draft||'').trim();if(!t||!live()||st.dsending
 function ccSend(){var t=(st.draft||'').trim();if((!t&&!st.imgs.length)||!live()||st.dsending)return;
  if(!st.rw&&st.sid&&deskOK()){var o=st.sid,k=st.kind,imgs=st.imgs.slice(),m=st.msel||{},b={t:t};if(imgs.length)b.images=imgs;if(k!='codex'){if(m.m){b.model=m.m;b.provider=m.p}if(m.e)b.effort=m.e}
   st.dsending=true;st.draft='';st.imgs=[];var ta0=document.getElementById('hcin');if(ta0){ta0.value='';grow(ta0)}paint();
-  J(base()+'/sessions/'+encodeURIComponent(o)+'/desk',{method:'POST',body:b}).then(function(d){st.dsending=false;if(st.sid!=o)return;st.stick=true;if(d&&d.queued)toast('В очереди: уйдёт после текущего ответа');haptic('success');paint();""")
+  J(base()+'/sessions/'+encodeURIComponent(o)+'/desk',{method:'POST',body:b}).then(function(d){st.dsending=false;if(st.sid!=o)return;st.stick=true;if(d&&(d.queued||d.now))toast(d.text||'В очереди: уйдёт после текущего ответа');haptic('success');paint();""")
 rep("""   .catch(function(e){st.dsending=false;paint();toast(E(e.message));haptic('error')});return}""",
     """   .catch(function(e){st.dsending=false;if(st.sid==o&&!st.draft){st.draft=t;st.imgs=imgs;var ta=document.getElementById('hcin');if(ta){ta.value=t;grow(ta)}}paint();toast(E(e.message));haptic('error')});return}""")
 # typing switches the button between stop and send
