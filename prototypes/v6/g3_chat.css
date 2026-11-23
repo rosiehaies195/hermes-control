@@ -1,0 +1,210 @@
+/* gpt3 — экран чата ChatGPT iOS (решение (15)). Числа — замеры кадров IMG_3214 (3 px = 1 pt, CSS px = pt),
+   спецификация tools/panel-tests/gpt2/ref/chatgpt-video-spec.txt (§ в комментариях). Только для Hermes и Codex. */
+:root{--g3t:calc(env(safe-area-inset-top,0px) + 6px);--g3b:max(env(safe-area-inset-bottom,0px),var(--tg-safe-area-inset-bottom,0px),12px);
+ --g3bg:#000;--g3fg:#fff;--g3sub:#8e8e8e;--g3ub:#010557;--g3ut:#d6e1ff;--g3gl:#1d1d1d;--g3hi:rgba(255,255,255,.30);--g3hi2:rgba(255,255,255,.22);
+ --g3act:#c7c7c7;--g3blue:#2f5bef;--g3ph:#7c7c7c;--g3card:#1e1e1e;--g3pop:rgba(34,33,35,.96);--g3popt:#f7f6f9;--g3red:#ff5b5f;
+ --g3f:'SF Pro Text',-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Roboto,sans-serif}
+html[data-theme=light]{--g3bg:#fff;--g3fg:#0d0d0d;--g3sub:#8f8f8f;--g3ub:#e9eefc;--g3ut:#0d1b4a;--g3gl:#f4f4f4;--g3hi:rgba(255,255,255,.9);--g3hi2:rgba(0,0,0,.06);
+ --g3act:#5d5d5d;--g3ph:#8f8f8f;--g3card:#f2f2f2;--g3pop:rgba(250,250,250,.86);--g3popt:#0d0d0d}
+/* старый экран чата скрыт целиком, нижние вкладки в открытом чате не видны (как у ChatGPT: назад — ☰) */
+body.g3on #hcroot>:not(#g3){display:none!important}
+body.g3on .nav,body.g3on #ptr{display:none!important}
+body.g3on{background:var(--g3bg)}
+.g3{position:fixed;inset:0;z-index:30;background:var(--g3bg);color:var(--g3fg);font-family:var(--g3f);font-size:17px;line-height:24px;
+ -webkit-font-smoothing:antialiased;letter-spacing:-.43px;-webkit-text-size-adjust:100%;overflow:hidden}
+.g3 *{box-sizing:border-box}
+.g3i{width:24px;height:24px;fill:currentColor;display:block;flex:none}
+.g3v{fill:currentColor;display:block;flex:none}
+/* стекло (§2): заливка #1d1d1d, светлая кромка 1 px сверху и снизу, размытие под ним */
+.g3gl{background:linear-gradient(#232323,var(--g3gl) 40%);box-shadow:inset 0 1px 0 var(--g3hi),inset 0 -1px 0 var(--g3hi2);
+ -webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4)}
+html[data-theme=light] .g3gl{background:rgba(255,255,255,.78);box-shadow:inset 0 1px 0 var(--g3hi),0 0 0 .5px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
+/* ---------- шапка (§2): ☰ круг 44 x16; справа капсула 104.3×44 (✎ …) до x 377.3 ---------- */
+.g3hd{position:absolute;left:16px;right:16px;top:var(--g3t);height:44px;display:flex;align-items:center;z-index:3;pointer-events:none}
+.g3hd>*{pointer-events:auto}
+.g3sp{flex:1}
+/* под строкой состояния лента гаснет до ~12% (кадр 54: y 36–45 pt), ниже 47 pt — без затемнения (кадр 13) */
+.g3top{position:absolute;left:0;right:0;top:0;height:max(0px,calc(var(--g3t) - 11px));z-index:3;pointer-events:none;background:linear-gradient(rgba(0,0,0,.88) calc(100% - 4px),rgba(0,0,0,0))}
+.g3b44{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--g3fg)}
+.g3cap{width:104.3px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:space-between;padding:0 1.1px 0 3.2px;color:var(--g3fg)}
+.g3cap i{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+/* пустой новый чат (кадр 01): справа один круг 44 (x 333.3…377.3); ✎ «новый чат» в новом чате не нужен */
+.g3hd.g3empty .g3cap{width:44px;padding:0;justify-content:center}.g3hd.g3empty .g3cap i[data-g3=new]{display:none}
+.g3hd .g3i{width:22px;height:22px}
+.g3b44:active,.g3cap i:active,.g3plus:active,.g3mic:active,.g3go:active,.g3act i:active{opacity:.55}
+/* ---------- лента ---------- */
+.g3f{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
+.g3f::-webkit-scrollbar{display:none}
+.g3l{padding:calc(var(--g3t) + 44px + 21.7px) 16px 120px;min-height:100%}
+/* пузырь (§5): #010557, текст #d6e1ff 17 pt, строка 25 pt, поля 17.7/10.85, r 23 (22.3 у многострочного), макс. 279.3, справа 16 */
+.g3um{display:flex;flex-direction:column;align-items:flex-end;margin:0 0 30.7px}
+.g3ub{max-width:279.3px;background:var(--g3ub);color:var(--g3ut);border-radius:23px;padding:10.85px 17.7px;line-height:25px;overflow-wrap:anywhere;white-space:normal}
+.g3ub p{margin:0}.g3ub p+p{margin-top:8px}.g3ub a{color:inherit}
+.g3ub pre,.g3ub code{white-space:pre-wrap;font-size:15px}
+.g3uim{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;margin-bottom:8px;max-width:279.3px}
+.g3uim img{width:120px;height:120px;object-fit:cover;border-radius:20px;display:block}
+.g3uim0{display:flex;align-items:center;gap:6px;color:var(--g3sub);font-size:15px;margin-bottom:6px}
+.g3uim0 .g3i{width:18px;height:18px}
+/* ответ (§5): белый 17 pt, строка 24, абзац +16, жирный 600, маркер • с отступом 24 */
+.g3ta2{margin:0 0 26px}
+.g3a{overflow-wrap:anywhere}
+.g3a>*:first-child{margin-top:0}.g3a>*:last-child{margin-bottom:0}
+/* разметка HC.md: абзацы — div, между ними .hcsp; замер кадра 54: абзац +16, перед списком +8, после списка +16, пункты без зазора */
+.g3a .hcsp{height:16px}.g3a .hcsp+.hcsp{height:8px}
+.g3a .hcsp+ul,.g3a .hcsp+ol{margin-top:-8px}
+.g3a p{margin:0 0 16px}
+.g3a b,.g3a strong{font-weight:600}
+.g3a .hch,.g3a h1,.g3a h2,.g3a h3,.g3a h4{font:600 20px/26px var(--g3f);letter-spacing:-.45px;color:var(--g3fg);text-transform:none;margin:8px 0 4px}
+/* список: текст пункта x 49, маркер • x 31 (кадр 54) */
+.g3a ul,.g3a ol{margin:0;padding-left:32px}
+.g3a ul{list-style:none}
+.g3a ul>li{position:relative}
+.g3a ul>li::before{content:'';position:absolute;left:-17.4px;top:9.6px;width:6px;height:6px;border-radius:3px;background:currentColor}
+.g3a ol>li::marker{color:var(--g3fg)}
+.g3a li{margin:0;padding:0}
+.g3a .hcpre{background:var(--g3card);border:0;border-radius:14px;padding:14px;margin:0;font:13px/19px ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:0;color:#a5abb9}
+.g3a a{color:var(--g3fg);text-decoration:underline;text-decoration-color:rgba(255,255,255,.4)}
+.g3a code{font:15px/1.4 ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:0;background:#262626;border-radius:6px;padding:1px 5px}
+/* код-блок (§5): x 15.7…377, фон #1e1e1e, r 14, моно #a5abb9 ~13 pt */
+.g3a pre{background:var(--g3card);border-radius:14px;padding:14px 14px;margin:0 -0.3px 16px;overflow-x:auto;font:13px/19px ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:0;color:#a5abb9;white-space:pre}
+.g3a pre code{background:none;padding:0;font:inherit;color:inherit}
+.g3a table{border-collapse:collapse;font-size:15px;line-height:20px;margin:0 0 16px;display:block;overflow-x:auto}
+.g3a th,.g3a td{border-bottom:1px solid #2e2e2e;padding:8px 12px 8px 0;text-align:left}
+.g3a blockquote{margin:0 0 16px;padding-left:14px;border-left:3px solid #3a3a3a;color:#d0d0d0}
+.g3a hr{border:0;border-top:1px solid #2e2e2e;margin:20px 0}
+/* «Работал 7 с ›» (кадр 14): серый 17 pt, шеврон */
+.g3wk{display:inline-flex;align-items:center;gap:4px;color:var(--g3sub);margin:0 0 14px;cursor:pointer}
+.g3wk .g3i{width:15px;height:15px;transition:transform .25s}.g3wk.on .g3i{transform:rotate(90deg)}
+.g3tl{margin:-6px 0 16px;border-left:2px solid #2a2a2a;padding-left:12px}
+.g3to{font-size:14px;line-height:20px;color:var(--g3sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
+.g3to b{font-weight:500;color:#bdbdbd}.g3to{cursor:pointer;padding:3px 0}.g3tl .g3pre{margin:4px 0 8px;font-size:12px;line-height:17px;max-height:240px}.g3to.bad b{color:var(--g3red)}
+/* «Думаю» (кадры 12–13): серый текст с бегущим бликом */
+.g3think{padding-left:28.3px;color:var(--g3sub);height:24px}
+/* кадры 12–13: светло-серый текст, по нему бежит тёмная полоса («Re» тёмные, «membering» светлые) */
+.g3think span{background:linear-gradient(90deg,#b4b4b4 0%,#b4b4b4 38%,#3e3e3e 50%,#b4b4b4 62%,#b4b4b4 100%);background-size:250% 100%;
+ -webkit-background-clip:text;background-clip:text;color:transparent;animation:g3sh 1.6s linear infinite}
+@keyframes g3sh{from{background-position:100% 0}to{background-position:-50% 0}}
+.g3load{padding:30px 0 0 1.7px}
+/* затухание хвоста при стриминге: слово проявляется 440 мс (замер по pts кадров 61.5–66.5 с записи 3214) */
+.g3fw{animation:g3fi 440ms cubic-bezier(.3,.6,.5,1) both}
+@keyframes g3fi{from{opacity:0}to{opacity:1}}
+/* ожидание: белая точка пульсирует (ChatGPT) */
+.g3dot{height:24px;display:flex;align-items:center;padding-left:1px}
+.g3dot i{width:13px;height:13px;border-radius:50%;background:var(--g3fg);animation:g3pl 1.4s cubic-bezier(.4,0,.6,1) infinite}
+@keyframes g3pl{0%,100%{transform:scale(.55);opacity:.85}50%{transform:scale(1);opacity:1}}
+/* «Отпусти, чтобы отменить»: подпись красная, × на тёмно-красном, ↑ серая (кадры 0231.79, 0233.29) */
+.g3hold.cancel{color:#f06c6c}
+.g3c.cancel .g3dx{background:#7a1b1b;color:#ff4a4a}
+.g3c.cancel .g3dict .g3go{background:#4a4a4a}
+/* значки под ответом (§5): высота 15, шаг 30.2, первый x 17.3, #c7c7c7, на 22 ниже текста */
+.g3act{display:flex;margin:9.7px 0 0 -6px;color:var(--g3act)}
+.g3act i{width:30px;height:30px;display:flex;align-items:center;justify-content:center}
+.g3act .g3i{width:19px;height:19px}
+.g3act i.on{color:var(--g3fg)}.g3act i.ok{color:var(--g3fg)}
+.g3older{text-align:center;color:var(--g3sub);font-size:15px;padding:4px 0 18px}
+.g3err{color:var(--g3red);font-size:15px;line-height:20px;margin:0 0 16px}
+/* карточки разрешения/вопроса — как баннер ChatGPT (§8): #1e1e1e, r 20, кнопки-капсулы (светлая главная) */
+.g3card{background:var(--g3card);border-radius:20px;padding:16px;margin:0 0 20px}
+.g3ck{display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:6px}.g3ck .g3i{width:20px;height:20px}
+.g3cq{color:#d8d8d8;font-size:16px;line-height:22px;margin-bottom:10px;white-space:pre-wrap}
+.g3pre{background:#121212;border-radius:12px;padding:10px 12px;margin:0 0 12px;font:13px/18px ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:0;color:#a5abb9;white-space:pre-wrap;max-height:180px;overflow:auto}
+.g3ops{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.g3cin input{width:100%;height:44px;border-radius:22px;border:0;background:#2a2a2a;color:var(--g3fg);font:inherit;padding:0 16px;margin-bottom:10px;outline:none}
+.g3cbt{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.g3pb{height:44px;border-radius:22px;background:#2f2f2f;color:var(--g3fg);display:flex;align-items:center;justify-content:center;padding:0 18px;font-weight:600;font-size:16px;cursor:pointer}
+.g3pb.pri{background:#fff;color:#000}
+/* ---------- «вниз» (§6): круг 32, стекло, по центру, над полем ---------- */
+.g3dn{position:absolute;left:50%;width:32px;height:32px;margin-left:-16px;border-radius:16px;display:flex;align-items:center;justify-content:center;z-index:3;color:var(--g3fg);
+ background:rgba(68,68,68,.72);opacity:0;transform:scale(.6);pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.3,1.3,.5,1)}
+.g3dn.on{opacity:1;transform:none;pointer-events:auto}.g3dn .g3i{width:17px;height:17px}
+/* ---------- подсказки пустого чата (§4, кадр 01) ---------- */
+.g3sg{position:absolute;left:0;right:0;display:none;z-index:2;padding:0 16px}
+.g3sg.on{display:block}
+.g3sg div{display:flex;align-items:center;height:46.7px;color:#c8c8c8;gap:0;cursor:pointer}
+.g3sg .g3i{width:24.4px;height:24.4px;margin:0 12.4px 0 7.25px}
+/* ---------- поле (§3): пилюля 48, r 24, x 34…359.3 и низ на 34 от края; с клавиатурой x 12.3…381 ---------- */
+/* покадрово по pts записи 3214: клавиатура вверх — поля 34 → 12 за 420 мс cubic-bezier(.3,.8,.3,1) вместе с клавиатурой (79.31–79.70 с);
+   вниз — 12 → 34 за 220 мс cubic-bezier(.1,.2,.2,1.05), через 67 мс после начала ухода клавиатуры (54.54 → 54.61–54.80 с) */
+.g3c{position:absolute;left:34px;right:34px;bottom:var(--g3b);z-index:4;border-radius:24px;transition:left .22s cubic-bezier(.1,.2,.2,1.05) .067s,right .22s cubic-bezier(.1,.2,.2,1.05) .067s,bottom .22s cubic-bezier(.1,.2,.2,1.05) .067s}
+body.hckb .g3c{left:12.3px;right:12.3px;bottom:12px;transition:left .42s cubic-bezier(.3,.8,.3,1),right .42s cubic-bezier(.3,.8,.3,1),bottom .42s cubic-bezier(.3,.8,.3,1)}
+.g3lt>:last-child{margin-bottom:0}
+.g3row{display:flex;align-items:center;min-height:48px;padding:0 8px 0 0}
+.g3plus{width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;color:var(--g3fg);cursor:pointer}
+.g3plus .g3i{width:21px;height:21px}
+.g3ta{flex:1;min-width:0;display:flex;align-items:center;padding:0 0 0 1.7px}
+.g3 #hcin{display:block;width:100%;border:0;outline:none;background:none;resize:none;color:var(--g3fg);font:17px/24px var(--g3f);letter-spacing:-.43px;padding:12px 0;margin:0;
+ caret-color:var(--g3blue);min-height:48px;max-height:none;box-shadow:none;border-radius:0;-webkit-appearance:none;overflow-y:auto;scrollbar-width:none}
+.g3 #hcin::placeholder{color:var(--g3ph);opacity:1}
+.g3mic{width:40px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;color:var(--g3fg);margin-right:11.8px;cursor:pointer}
+.g3mic .g3i{width:22px;height:22px}
+.g3go{width:32px;height:32px;flex:none;border-radius:16px;background:var(--g3blue);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.g3go .g3i{width:19px;height:19px}
+.g3go[data-i=stop] .g3i{width:20px;height:20px}
+.g3hide{display:none!important}
+/* карточка: перенос строки или фото — текст сверху, ряд «+ … 🎤 ↑» внизу (кадры 11, 16, 22, 23) */
+.g3c.card .g3row{flex-wrap:wrap;align-items:flex-end;padding-bottom:8px}
+.g3c.card .g3ta{order:-1;flex:0 0 100%;padding:4px 16px 0 16px}
+.g3c.card #hcin{padding:11.3px 0 .7px;min-height:0}
+.g3c.card .g3plus{height:32px}.g3c.card .g3mic{height:32px}
+.g3c.card .g3plus{margin-right:auto}
+/* длинный текст (кадр 16): карточка до 248 pt, справа сверху ⤢ — поле на весь экран */
+.g3exp{position:absolute;top:14.3px;right:9px;width:28px;height:28px;display:none;align-items:center;justify-content:center;color:#d0d0d0;cursor:pointer;z-index:2}
+.g3c.card.tall .g3exp,.g3c.full .g3exp{display:flex}
+.g3c.card.tall .g3ta{padding-right:31px}
+.g3c.full{top:calc(var(--g3t) + 52px)}
+.g3c.full .g3row{height:100%;align-content:space-between}
+.g3c.full #hcin{max-height:none}
+/* фото в поле (кадры 22–23): квадрат 120, r 20, крестик — тёмный круг в правом верхнем углу */
+.g3th:empty{display:none}
+.g3 #hcthumbs{display:flex;gap:8px;overflow-x:auto;padding:7.7px 7.7px 8px;scrollbar-width:none}
+.g3 #hcthumbs:empty{display:none}
+.g3 .hcth{position:relative;width:120px;height:120px;flex:none;border-radius:20px;overflow:hidden;margin:0}
+.g3 .hcth img{width:100%;height:100%;object-fit:cover;display:block;border-radius:20px}
+.g3 .hcth span{position:absolute;top:9px;right:9.5px;width:21px;height:21px;border-radius:11px;background:rgba(40,40,40,.85);display:flex;align-items:center;justify-content:center;color:#fff}
+.g3 .hcth span svg{width:11px;height:11px}
+/* ---------- диктовка (§10): та же пилюля; × круг 32 #353535 x42; волна x89…262; ■ круг 32 #262626; ↑ синяя ---------- */
+.g3dict{display:none}
+.g3c.rec .g3row{display:none}
+.g3c.rec .g3row.g3ghost{display:flex;position:absolute;left:0;right:0;bottom:0;pointer-events:none}
+.g3c.rec .g3dict{display:flex;align-items:center;height:48px;padding:0 8px}
+.g3dx,.g3ds{width:32px;height:32px;border-radius:16px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer}
+.g3dx{background:#353535}.g3dx .g3i{width:17px;height:17px}
+.g3ds{background:#262626;margin:0 14px 0 11.3px}.g3ds .g3i{width:20px;height:20px}
+.g3wv{flex:1;height:32px;margin-left:15px;color:#a6a6a6;display:flex;align-items:center;cursor:pointer}
+.g3wv canvas{width:100%;height:32px;display:block}
+.g3wv span{color:var(--g3sub);font-size:15px}
+.g3spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:g3rot .8s linear infinite}
+@keyframes g3rot{to{transform:rotate(360deg)}}
+/* живой текст диктовки (кадр 28): карточка над полем */
+.g3tr{position:absolute;left:34px;right:34px;z-index:4;display:none;max-height:180px;overflow:auto;background:#262626;border-radius:20px;padding:12px 16px;color:var(--g3fg);white-space:pre-wrap}
+body.hckb .g3tr{left:12.3px;right:12.3px}
+.g3tr.on{display:block}
+/* удержание: «Отпусти, чтобы отправить» по центру, лента затемняется (кадр 29) */
+.g3hold{position:absolute;left:0;right:0;text-align:center;color:#8c8c8c;z-index:4;display:none;font-size:18px;line-height:24px}
+.g3hold.on{display:block}
+/* кадр 28: лента гаснет к низу (градиент ~190 pt над полем), пилюля при удержании шире на 7.7 pt с каждой стороны */
+body.g3dim .g3f{-webkit-mask-image:linear-gradient(#000 calc(100% - var(--g3sh,300px)),rgba(0,0,0,.35) calc(100% - var(--g3sh,300px) + 150px),rgba(0,0,0,.2));mask-image:linear-gradient(#000 calc(100% - var(--g3sh,300px)),rgba(0,0,0,.35) calc(100% - var(--g3sh,300px) + 150px),rgba(0,0,0,.2))}
+body.g3dim .g3c{left:26.3px;right:26px}
+body.g3dim .g3c.rec .g3dict{padding:0 10px 0 9.4px}body.g3dim .g3c .g3dx{margin-left:1.4px}body.g3dim .g3c .g3ds{margin-right:15.6px}
+/* изменение сообщения */
+.g3ed{display:flex;align-items:center;gap:8px;padding:10px 16px 0;color:var(--g3sub);font-size:15px}
+.g3ed b{flex:1;font-weight:500}.g3ed i{font-style:normal;color:var(--g3fg);cursor:pointer}.g3ed .g3i{width:16px;height:16px}
+/* ---------- меню (§7): Liquid Glass, r 32, заливка #222123/α, строки 42.8, значок 18, подпись 17 #f7f6f9 ---------- */
+#g3veil{position:fixed;inset:0;z-index:60}
+.g3pop{position:fixed;z-index:61;border-radius:32px;background:var(--g3pop);color:var(--g3popt);font-family:var(--g3f);font-size:17px;letter-spacing:-.43px;line-height:22px;
+ -webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);box-shadow:inset 0 1.2px 0 rgba(255,255,255,.18),0 0 0 .5px rgba(255,255,255,.06),0 12px 40px rgba(0,0,0,.45);padding:8px 0;overflow:hidden}
+.g3pop.out{opacity:0;transform:scale(.92);transition:opacity .16s,transform .18s}
+.g3mh{color:#69686a;font-size:15px;line-height:19px;padding:7px 24px 6px 29.7px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.g3mi{display:flex;align-items:center;height:42.8px;padding:0 20px 0 29.7px;gap:16.6px;cursor:pointer;white-space:nowrap}
+.g3mi .g3i{width:19px;height:19px}.g3mi span{overflow:hidden;text-overflow:ellipsis}
+.g3mi:active{background:rgba(255,255,255,.08)}
+.g3mi.bad{color:var(--g3red)}
+.g3ck{width:19px;height:19px;flex:none;display:block}
+/* меню «+» (§7.2): строки 68, значок в круге 44 #373737, подпись ~20 pt */
+.g3pp{border-radius:40px;padding:12px 0;background:rgba(31,31,31,.9)}
+.g3pi{display:flex;align-items:center;height:68px;padding:0 20px 0 24.4px;gap:17.6px;cursor:pointer;font-size:19px;color:#fff}
+.g3pi i{width:44px;height:44px;border-radius:22px;background:#373737;display:flex;align-items:center;justify-content:center;flex:none}
+.g3pi i .g3i{width:21px;height:21px}
+.g3pi span{flex:1}.g3pi em{font-style:normal;font-size:15px;color:#8e8e8e;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g3pi:active{background:rgba(255,255,255,.06)}
+@media (prefers-reduced-motion:reduce){.g3c,.g3dn,.g3wk .g3i{transition:none}.g3think span{animation:none;color:var(--g3sub);background:none}}

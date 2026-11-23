@@ -1,0 +1,264 @@
+/* gpt17 — боковое меню ☰ 1:1 с записями экрана iPhone (runbook panel-gpt gpt17-side-plan).
+   Вид ChatGPT (Hermes, Codex): кадры IMG_3214 0372.58 / 0344.44, настройки 0405.63 / 0410.21.
+   Вид Claude: кадры IMG_3213 0219.98 / 0010.85, «Недавние» 0182.39, фильтр 0199.47, долгое нажатие 0191.99.
+   Числа — pt кадра (3 px = 1 pt) = CSS px. Классы только с приставкой sd3 (правило про коллизии с базой). */
+:root{--sd3t:var(--g3t,calc(env(safe-area-inset-top,0px) + 6px));--sd3b:var(--g3b,max(env(safe-area-inset-bottom,0px),12px));
+ --sd3f:'SF Pro Text',-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Roboto,sans-serif;
+ --sd3fd:'SF Pro Display','SF Pro Text',-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+/* ---------- подложка меню (под экраном чата: экран z 30, меню 29) ---------- */
+.sd3{position:fixed;left:0;top:0;bottom:0;z-index:29;overflow:hidden;font-family:var(--sd3f);-webkit-user-select:none;user-select:none;
+ -webkit-tap-highlight-color:transparent;display:none;letter-spacing:-.43px}
+.sd3.on{display:block}
+.sd3.g{width:310px;background:#000;color:#fff}
+.sd3.c{width:320.3px;background:#121212;color:#fafaf8}
+html[data-theme=light] .sd3.g{background:#fff;color:#0d0d0d}
+html[data-theme=light] .sd3.c{background:#faf9f5;color:#141413}
+.sd3sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.sd3sc::-webkit-scrollbar{display:none}
+/* шапка стоит, список уходит под неё (0344.44: «Pinned» гаснет под «ChatGPT») */
+.sd3hd{position:absolute;left:0;right:0;top:0;height:calc(var(--sd3t) + 50px);z-index:2;pointer-events:none}
+.sd3.g .sd3hd{background:linear-gradient(#000 calc(100% - 14px),rgba(0,0,0,0))}
+.sd3.c .sd3hd{background:linear-gradient(#121212 calc(100% - 14px),rgba(18,18,18,0))}
+html[data-theme=light] .sd3.g .sd3hd{background:linear-gradient(#fff calc(100% - 14px),rgba(255,255,255,0))}
+html[data-theme=light] .sd3.c .sd3hd{background:linear-gradient(#faf9f5 calc(100% - 14px),rgba(250,249,245,0))}
+.sd3hd>*{pointer-events:auto}
+.sd3tt{position:absolute;top:var(--sd3t);height:44px;display:flex;align-items:center;white-space:nowrap}
+/* ChatGPT: «ChatGPT» x 33, кап 73..89 → SF Pro Display Bold 22.7 */
+.sd3.g .sd3tt{left:33px;font:700 21.8px/44px var(--sd3fd);letter-spacing:0}
+/* Claude: словесный знак «Claude» 78×19.3 в x 15.3, y 71.3 (значок из кадра) */
+.sd3.c .sd3tt{left:15.3px}
+.sd3.c .sd3tt svg{fill:currentColor;margin-top:.6px}
+.sd3hb{position:absolute;top:var(--sd3t);width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sd3hb svg{fill:currentColor}
+.sd3.g .sd3hb{left:242px;background:linear-gradient(#232323,#1d1d1d 40%);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.22)}
+.sd3.c .sd3hb{background:linear-gradient(#2f2f2f,#2a2a2a 45%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 .5px rgba(0,0,0,.5)}
+.sd3.c .sd3hb.gift{left:204.2px}.sd3.c .sd3hb.srch{left:260.3px}
+html[data-theme=light] .sd3 .sd3hb{background:rgba(255,255,255,.8);box-shadow:inset 0 1px 0 #fff,0 0 0 .5px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
+.sd3.c .sd3hb svg{fill:#d5d4c8}
+/* ---------- строки ---------- */
+.sd3ls{padding:calc(var(--sd3t) + 49.7px) 0 140px}
+.sd3.c .sd3ls{padding-top:calc(var(--sd3t) + 55px)}
+.sd3r{position:relative;display:flex;align-items:center;height:48px;margin:0 11.3px;border-radius:10px;cursor:pointer;font-size:17px;line-height:22px;white-space:nowrap}
+.sd3r>b{font-weight:400;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.sd3r>svg{flex:none;fill:currentColor}
+.sd3r.on{background:#1e1e1e}
+html[data-theme=light] .sd3.g .sd3r.on{background:#ececec}
+.sd3r:active{background:#1e1e1e}
+/* ChatGPT: значок x 33.3, текст x 70 (разделы) / 72 (чаты с ○); недавние без значка — текст x 33 */
+.sd3.g .sd3r>svg{margin-left:22px;margin-right:14.7px}
+.sd3.g .sd3r.ch>svg{margin-right:16.7px}
+.sd3.g .sd3r.rc{padding-left:21.7px}
+.sd3.g .sd3r>b{margin-right:32.7px}
+.sd3.g .sd3r.see{color:#8e8e8e}
+/* секции «Pinned»/«Recents»: SF 17 Semibold белые, кап на 64 pt ниже прошлой строки */
+.sd3sh{height:48px;margin-top:12.6px;padding-left:32px;display:flex;align-items:center;font-weight:600;font-size:17px}
+.sd3sh.first{margin-top:12.6px}
+/* Claude: шаг 50 pt, значок 18 pt (x 25..47), текст x 61, выбранный ряд 288×48 r15 #393939, секции #BDBCAF 15.5 pt */
+.sd3.c .sd3r{height:50px;margin:0 16px;border-radius:15px;letter-spacing:-.65px}
+.sd3.c .sd3r>svg{margin-left:9px;margin-right:14.3px;fill:#fafaf8}
+.sd3.c .sd3r.on{height:48px;margin-top:1px;margin-bottom:1px;background:#393939}
+.sd3.c .sd3r:active{background:#393939}
+.sd3.c .sd3r>b{margin-right:16px}
+.sd3.c .sd3sh{height:39px;margin-top:3px;padding-left:25.3px;font-weight:400;font-size:15.5px;color:#bdbcaf;align-items:flex-end;padding-bottom:6px;box-sizing:border-box}
+.sd3.c .sd3r.see{color:#bdbcaf}
+.sd3dot{width:7.3px;height:7.3px;border-radius:50%;background:#256bcf;flex:none;margin-right:17px;margin-left:8px}
+.sd3.g .sd3dot{background:#2f5bef;margin-right:24px}
+.sd3.g .sd3r>b:not(:last-child){margin-right:0}
+.sd3ag{flex:none;font-size:13px;color:#8e8e8e;margin-left:6px}
+.sd3.c .sd3ag{color:#9c9a92}
+.sd3.g .sd3ag{margin-right:24px}
+.sd3.g .sd3ag+.sd3dot{margin-left:8px}
+.sd3emp{padding:14px 33px;color:#8e8e8e;font-size:15px}
+.sd3.c .sd3emp{padding-left:25px;color:#9c9a92}
+/* ---------- низ: «✎ Chat» + аватар (ChatGPT), аватар + «+ New session» (Claude); список гаснет под ними ---------- */
+.sd3ft{position:absolute;left:0;right:0;bottom:0;height:calc(var(--sd3b) + 96px);z-index:2;pointer-events:none}
+.sd3.g .sd3ft{background:linear-gradient(rgba(0,0,0,0) 35%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.75))}
+.sd3.c .sd3ft{background:linear-gradient(rgba(18,18,18,0),rgba(18,18,18,.9) 50%,#121212)}
+html[data-theme=light] .sd3.g .sd3ft{background:linear-gradient(rgba(255,255,255,0),#fff 55%)}
+html[data-theme=light] .sd3.c .sd3ft{background:linear-gradient(rgba(250,249,245,0),#faf9f5 55%)}
+.sd3ft>*{pointer-events:auto;position:absolute;bottom:var(--sd3b);cursor:pointer}
+.sd3new{display:flex;align-items:center;height:48px;border-radius:24px;font-size:17px;white-space:nowrap}
+.sd3new svg{fill:currentColor;flex:none}
+.sd3.g .sd3new{left:34px;width:112.7px;background:#2f5bef;color:#fff;font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.22)}
+.sd3.g .sd3new svg{margin-left:20.3px;margin-right:13.4px}
+.sd3.c .sd3new{bottom:calc(var(--sd3b) - 6px);left:150.7px;width:140.6px;background:#fafaf8;color:#020200;font-weight:400;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.sd3.c .sd3new svg{margin-left:13.3px;margin-right:11.7px}
+.sd3av{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center}
+.sd3.g .sd3av{left:238.7px;background:linear-gradient(#232323,#1d1d1d 40%);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.22)}
+.sd3.g .sd3av i{width:30px;height:30px;border-radius:15px;background:#d464a4;color:#fff;font:500 12px/30px var(--sd3f);text-align:center;font-style:normal;letter-spacing:0}
+.sd3.c .sd3av{left:28.7px;width:46px;height:46px;bottom:calc(var(--sd3b) - 5px);background:#2d2d2d;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.sd3.c .sd3av i{font:600 15px/1 var(--sd3f);font-style:normal;color:#f9f9f7;letter-spacing:0}
+/* ---------- главный экран отъезжает (ChatGPT 310 pt, Claude 320.3 pt), затемнён, левые углы скруглены ---------- */
+.sd3main{will-change:transform;overflow:hidden}
+.sd3main::after{content:'';position:absolute;inset:0;z-index:200;pointer-events:none;opacity:var(--sd3dim,0);border-radius:inherit}
+#g3.sd3main::after{background:rgba(39,39,39,.53)}
+#cl3.sd3main::after{background:rgba(31,31,31,.67)}
+html[data-theme=light] .sd3main::after{background:rgba(0,0,0,.18)!important}
+.sd3cv{position:fixed;top:0;bottom:0;right:0;z-index:35;display:none;touch-action:pan-y}
+.sd3cv.on{display:block}
+/* ---------- экран «Недавние» / поиск (кадры 0182.39, 0199.47) ---------- */
+.sd3rc{position:fixed;inset:0;z-index:36;display:none;font-family:var(--sd3f);letter-spacing:-.43px;-webkit-tap-highlight-color:transparent}
+.sd3rc.on{display:block}
+.sd3rc.c{background:#0e0e0e;color:#fafaf8}
+.sd3rc.g{background:#000;color:#fff}
+html[data-theme=light] .sd3rc.c{background:#faf9f5;color:#141413}
+html[data-theme=light] .sd3rc.g{background:#fff;color:#0d0d0d}
+.sd3rc .sd3sc{padding:calc(var(--sd3t) + 52px) 0 150px;box-sizing:border-box}
+.sd3rh{position:absolute;left:0;right:0;top:0;height:calc(var(--sd3t) + 54px);z-index:2;pointer-events:none}
+.sd3rc.c .sd3rh{background:linear-gradient(#0e0e0e calc(100% - 12px),rgba(14,14,14,0))}
+.sd3rc.g .sd3rh{background:linear-gradient(#000 calc(100% - 12px),rgba(0,0,0,0))}
+html[data-theme=light] .sd3rc .sd3rh{background:linear-gradient(var(--sd3lbg,#fff) calc(100% - 12px),rgba(255,255,255,0))}
+.sd3rh>*{pointer-events:auto}
+.sd3rh .sd3hb{left:16px;background:linear-gradient(#292929,#252525 45%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.sd3rh .sd3hb.dots{left:auto;right:16px}
+.sd3rh .sd3hb svg{fill:#d2d3c6}
+.sd3rc.g .sd3rh .sd3hb{background:linear-gradient(#232323,#1d1d1d 40%);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.22)}
+.sd3rc.g .sd3rh .sd3hb svg{fill:#fff}
+.sd3rt{position:absolute;left:70px;right:70px;top:var(--sd3t);height:44px;text-align:center;font:600 17px/44px var(--sd3f)}
+.sd3rr{display:flex;align-items:flex-start;min-height:71.1px;box-sizing:border-box;padding:14.3px 16px 0 0;cursor:pointer;position:relative}
+.sd3rr:active{background:rgba(255,255,255,.06)}
+.sd3rr>svg{flex:none;fill:#d2d3c6;margin:-1px 16.7px 0 26px}
+.sd3rc.g .sd3rr>svg{fill:#fff}
+.sd3rr>div{flex:1;min-width:0}
+.sd3rc.c .sd3rr b{letter-spacing:-.65px}
+.sd3rr b{display:block;font-weight:400;font-size:17px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:.5px}
+.sd3rr small{display:block;font-size:15px;line-height:20px;color:#8f8c86;margin-top:4.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sd3rc.g .sd3rr small{color:#8e8e8e}
+.sd3rr .sd3dot{margin:1px 4px 0 14px}
+.sd3rr.sel>svg{opacity:0}
+.sd3rr .sd3ck{position:absolute;left:24px;top:14px;width:22px;height:22px;border-radius:11px;border:1.5px solid #8f8c86;box-sizing:border-box}
+.sd3rr.pick .sd3ck{background:#d97757;border-color:#d97757}
+.sd3rc.g .sd3rr.pick .sd3ck{background:#2f5bef;border-color:#2f5bef}
+.sd3rnew{position:absolute;right:24.3px;bottom:calc(var(--sd3b) + 60px);height:42px;border-radius:21px;display:flex;align-items:center;padding:0 17px 0 14px;font-size:17px;cursor:pointer;z-index:3}
+.sd3rc.c .sd3rnew{background:#fafaf8;color:#020200;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.sd3rc.g .sd3rnew{background:#2f5bef;color:#fff;font-weight:600}
+.sd3rnew svg{fill:currentColor;margin-right:11px}
+.sd3sb{position:absolute;left:28.7px;right:28.7px;bottom:calc(var(--sd3b) - 5px);height:47px;border-radius:23.5px;display:flex;align-items:center;z-index:3;
+ background:linear-gradient(#2f2f2f,#292929 50%);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 6px 20px rgba(0,0,0,.4)}
+.sd3rc.g .sd3sb{background:linear-gradient(#232323,#1d1d1d 40%);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.22)}
+html[data-theme=light] .sd3sb{background:rgba(255,255,255,.85)!important;box-shadow:0 0 0 .5px rgba(0,0,0,.1),0 6px 20px rgba(0,0,0,.08)!important}
+.sd3sb svg{fill:#fff;flex:none;margin:0 11.7px 0 12.3px}
+.sd3sb input{flex:1;min-width:0;background:none;border:0;outline:0;color:inherit;font:17px var(--sd3f);letter-spacing:-.43px;padding:0;height:44px}
+.sd3sb input::placeholder{color:#8f8c86}
+.sd3sb .sd3sx{display:none;width:30px;height:30px;margin-right:9px;border-radius:15px;align-items:center;justify-content:center;cursor:pointer}
+.sd3sb.has .sd3sx{display:flex}
+.sd3sb .sd3sx svg{margin:0;fill:#8f8c86}
+.sd3rc.kb .sd3rnew{display:none}
+.sd3none{text-align:center;padding:180px 40px 0}
+.sd3none b{display:block;font-size:20px;font-weight:600;margin-bottom:8px}
+.sd3none span{color:#8f8c86;font-size:15px}
+.sd3selbar{position:absolute;left:16px;right:16px;bottom:calc(var(--sd3b) + 2px);height:48px;display:none;gap:10px;z-index:4}
+.sd3rc.selm .sd3selbar{display:flex}
+.sd3rc.selm .sd3sb,.sd3rc.selm .sd3rnew{display:none}
+.sd3selbar div{flex:1;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:17px;background:#2a2a2a;cursor:pointer}
+.sd3selbar div.del{color:#ff6961}
+/* ---------- меню (поповер как «…»: стекло r32, кап 17) ---------- */
+#sd3veil{position:fixed;inset:0;z-index:60}
+#sd3veil.dim{background:rgba(0,0,0,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.sd3pop{position:fixed;z-index:61;border-radius:32px;font-family:var(--sd3f);font-size:17px;letter-spacing:-.43px;line-height:22px;min-width:220px;overflow:hidden;
+ box-shadow:0 0 0 .5px rgba(255,255,255,.12) inset,0 12px 40px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(30px) saturate(1.6);backdrop-filter:blur(30px) saturate(1.6)}
+.sd3pop.g{background:rgba(34,33,35,.96);color:#f7f6f9}
+.sd3pop.c{background:rgba(44,44,44,.94);color:#fafaf8;border-radius:30px}
+html[data-theme=light] .sd3pop{background:rgba(250,250,250,.9)!important;color:#0d0d0d!important}
+.sd3pop .sd3mi{display:flex;align-items:center;height:48px;padding:0 24px 0 20px;cursor:pointer;white-space:nowrap}
+.sd3pop .sd3mi:active{background:rgba(255,255,255,.08)}
+.sd3pop .sd3mi svg{fill:currentColor;flex:none;margin-right:14px}
+.sd3pop.c{padding:9px 0 8px;background:rgba(48,48,48,.9)}
+.sd3pop.c .sd3mi{height:42px;padding-left:28.7px}
+.sd3pop.c .sd3mi svg{fill:#e8e8e4;margin-right:14.3px}
+.sd3pop.c .sd3sep{margin:10.25px 24px}
+.sd3pop .sd3mi.red{color:#ff5b5f}.sd3pop.c .sd3mi.red{color:#ef5a55}
+.sd3pop .sd3mi.red svg{fill:currentColor}
+.sd3pop .sd3mi{position:relative}
+.sd3pop .sd3mi .sd3ckm{position:absolute;left:18px;width:14px;display:flex}
+.sd3pop.c.flt .sd3mi{padding-left:42.7px}
+.sd3pop.c.flt .sd3ckm{left:20px}
+.sd3pop .sd3mi .sd3ckm svg{margin:0;fill:#fff}
+.sd3pop .sd3sep{height:.5px;margin:6px 24px;background:rgba(255,255,255,.16)}
+.sd3pop .sd3mh{padding:14px 22px 6px;font-size:13px;color:#9a9a9a}
+.sd3pv{position:fixed;z-index:61;left:26.7px;right:26.7px;border-radius:26px;background:#1f1f1f;color:#fafaf8;padding:17px 16px 16px;overflow:hidden;box-sizing:border-box;
+ box-shadow:0 12px 40px rgba(0,0,0,.5);font-family:var(--sd3f)}
+.sd3pv b{display:block;font-weight:600;font-size:17px;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sd3pv div{font:var(--clss,17px)/27px var(--clserif,Georgia,serif);color:#e8e6e0;white-space:pre-wrap;max-height:calc(100% - 80px);overflow:hidden;
+ -webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+.sd3pv.g div{font:16px/1.45 var(--sd3f);color:#e6e6e6}
+.sd3pv small{position:absolute;left:16px;bottom:24px;color:#8f8c86;font-size:13px}
+/* ---------- Настройки (кадры 0405.63 / 0410.21): лист снизу, карточки r26 #1e1e1e, строки 54 pt ---------- */
+.sd3set{position:fixed;inset:0;z-index:40;display:none;font-family:var(--sd3f);letter-spacing:-.43px;-webkit-tap-highlight-color:transparent}
+.sd3set.on{display:block}
+.sd3set.g{background:#000;color:#fff}
+.sd3set.c{background:#151515;color:#fafaf8}
+html[data-theme=light] .sd3set{background:#f2f2f7!important;color:#0d0d0d!important}
+.sd3set .sd3sc{padding:calc(var(--sd3t) + 104px) 0 calc(var(--sd3b) + 40px);box-sizing:border-box}
+.sd3sth{position:absolute;left:0;right:0;top:0;height:calc(var(--sd3t) + 80px);z-index:2;pointer-events:none}
+.sd3set.g .sd3sth{background:linear-gradient(#000 calc(100% - 12px),rgba(0,0,0,0))}
+.sd3set.c .sd3sth{background:linear-gradient(#151515 calc(100% - 12px),rgba(21,21,21,0))}
+.sd3sth>*{pointer-events:auto}
+.sd3sth .sd3hb{top:calc(var(--sd3t) + 26px);left:16.7px;background:linear-gradient(#232323,#1d1d1d 40%);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.22)}
+.sd3sth .sd3hb.inf{left:auto;right:16.7px}
+.sd3sth .sd3hb svg{fill:#fff}
+.sd3sth .sd3rt{top:calc(var(--sd3t) + 26px)}
+.sd3card{margin:0 16.3px 33px;border-radius:26px;background:#1e1e1e;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);overflow:hidden}
+.sd3card.pr{margin-bottom:49px}
+.sd3set.c .sd3card{background:#262624;border-radius:22px}
+html[data-theme=light] .sd3card{background:#fff!important;box-shadow:none}
+.sd3promo{display:flex;align-items:center;min-height:92px;box-sizing:border-box;padding:15px 23.7px 15px 24.4px;gap:12px}
+.sd3promo div{flex:1;min-width:0}
+.sd3promo b{display:block;font-weight:500;font-size:17px;line-height:22px}
+.sd3promo span{display:block;font-size:15px;line-height:18px;color:#a8a8a8;margin-top:4px}
+.sd3promo i{flex:none;font-style:normal;background:#fff;color:#000;border-radius:20px;height:40px;line-height:40px;padding:0 17.3px;font-size:17px;font-weight:500;cursor:pointer}
+.sd3sr{display:flex;align-items:center;min-height:53.9px;cursor:pointer;position:relative;padding-right:18px}
+.sd3sr:active{background:rgba(255,255,255,.06)}
+.sd3sr>svg:first-child{flex:none;fill:currentColor;margin:0 15px 0 0;position:relative;left:15.6px;width:24px}
+.sd3sr>div{flex:1;min-width:0;padding:15.8px 0 15.8px 11px}
+.sd3sr>div b{display:block;font-weight:400;font-size:17px;line-height:22px}
+.sd3sr>div span{display:block;font-size:15px;color:#9c9c9c;line-height:18px;margin-top:1px}
+.sd3sr.two>div{padding-top:13.6px;padding-bottom:14px}
+.sd3sr em{font-style:normal;color:#8e8e8e;margin-right:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
+.sd3sr .sd3chv{fill:#5f5f5f;flex:none;margin-right:-1.7px}
+.sd3sr+.sd3sr:before{content:'';position:absolute;left:50px;right:0;top:0;height:.5px;background:rgba(255,255,255,.1)}
+.sd3sr.red{color:#ff4c4c}
+.sd3sr.red>svg:first-child{fill:#ff4c4c}
+.sd3sav{width:24px;height:24px;border-radius:12px;background:#d464a4;color:#fff;font:500 9.5px/24px var(--sd3f);text-align:center;flex:none;position:relative;left:17.3px;margin-right:15px;letter-spacing:0}
+.sd3ver{text-align:center;color:#6f6f6f;font-size:13px;margin-top:-12px}
+
+/* вход во вкладку «Чат»: пока открывается последний чат, старый список не показываем */
+body.sd3ent #hcroot>*{visibility:hidden}
+
+/* агенты сверху меню (gpt17-agents): размер значка как у пунктов (≈21–22 pt), состояние серым справа */
+.sd3ai{flex:none;width:22px;height:22px;display:block}
+.sd3.g .sd3ai{margin-left:22px;margin-right:14px}
+.sd3.c .sd3ai{margin-left:9px;margin-right:14px}
+.sd3ai-h{border-radius:6px;background:#000 url(logo-portrait.png) center 1px/92% no-repeat;box-shadow:0 0 0 .5px rgba(255,255,255,.25)}
+.sd3 .sd3ai-c{fill:#d97757!important}
+.sd3ai-x{fill:currentColor;width:21px;height:21px;margin-left:22.5px!important}
+.sd3.c .sd3ai-x{margin-left:9.5px!important}
+.sd3 .sd3r.sd3ag8>b{flex:0 1 auto;margin-right:10px!important}
+.sd3as{flex:1;min-width:0;text-align:right;font-size:15px;color:#8e8e8e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:16px}
+.sd3.c .sd3as{color:#9c9a92;margin-right:12px}
+.sd3as+.sd3dot{margin-left:-8px}
+.sd3.g .sd3as+.sd3dot{margin-right:16px}
+.sd3gap{height:8px}
+
+/* «Все сессии»: заголовок папки (строка-раскрывашка в стиле секций), значок папки из кадра, число справа */
+.sd3fh{display:flex;align-items:center;height:48px;padding:0 18px 0 26px;cursor:pointer;font-size:17px;font-weight:600;position:relative}
+.sd3fh:active{background:rgba(255,255,255,.06)}
+.sd3fh svg{fill:currentColor;flex:none;margin-right:16px;opacity:.9}
+.sd3fh b{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sd3fh span{color:#8f8c86;font-weight:400;font-size:15px;margin:0 10px 0 8px}
+.sd3rc.g .sd3fh span{color:#8e8e8e}
+.sd3fch{font-style:normal;color:#8f8c86;font-weight:400;transition:transform .2s;display:inline-block}
+.sd3fh.on .sd3fch{transform:rotate(90deg)}
+.sd3fh .sd3dot{margin:0}
+.sd3fh+.sd3fh{border-top:.5px solid rgba(255,255,255,.08)}
+.sd3rr .sd3ai{margin:-1px 16.7px 0 26px!important}
+.sd3fold svg{opacity:.95}
+
+/* фильтр: отметка ✓ слева от значка в обоих видах (раньше в виде ChatGPT ✓ ложилась поверх значка) */
+.sd3pop.flt .sd3mi{padding-left:44px}
+.sd3pop.flt .sd3ckm{left:18px}
+.sd3pop .sd3mi .sd3ai{margin:0 14px 0 0!important;width:22px;height:22px}
+.sd3pop .sd3mi .sd3ai-x{width:21px;height:21px}
+.sd3pop .sd3mi>span{white-space:nowrap}
+.sd3pop .sd3mi svg.sd3ai-c,.sd3 .sd3r svg.sd3ai-c{fill:#d97757!important}
+.sd3pop.c{background:rgba(44,44,44,.985)!important}.sd3pop.g{background:rgba(34,33,35,.985)!important}

@@ -1,0 +1,250 @@
+/* Экран чата Claude iOS с нуля (как gpt3 для ChatGPT). Числа — замеры стоп-кадров записей IMG_3212/3213
+   (3 px = 1 pt, CSS px = pt), спецификация tools/panel-tests/gpt2/ref/claude-video-spec.txt (§ в комментариях). */
+:root{--clbg:#151515;--clfg:#fafaf8;--clsub:#9c9a92;--clsub2:#bdbcaf;--clph:#8f8c86;--clact:#8c8a84;--clacc:#bd5636;--club:#272725;--clut:#f9f9f7;
+ --clgl:#2f2f2f;--clcomp:#2d2d2d;--clbtn:#3b3b3b;--clchip:#393939;--clcard:#2a2a2a;--clred:#ff6961;
+ --clsans:'SF Pro Text',-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Roboto,sans-serif;
+ /* ответ Claude — шрифт с засечками; New York Medium 17.03 pt повторяет длины строк кадра 3213_0131.50 с RMS 0.9 pt (лучший из 9);
+    на телефоне берётся системный ui-serif (= New York), размер подгоняется замером длины строки (claude.js serifFit) */
+ --clserif:'New York Medium','New York',ui-serif,Georgia,'Times New Roman',serif;--clss:17.03px}
+html[data-theme=light]{--clbg:#faf9f5;--clfg:#141413;--clsub:#6b6a65;--clsub2:#6b6a65;--clph:#8f8c86;--clact:#73726c;--club:#f0eee6;--clut:#141413;
+ --clgl:#f4f3ee;--clcomp:#fff;--clbtn:#f0eee6;--clchip:#f0eee6;--clcard:#fff}
+body.cl3on #hcroot>:not(#cl3){display:none!important}
+body.cl3on .nav,body.cl3on #ptr{display:none!important}
+body.cl3on{background:var(--clbg)}
+.cl3{position:fixed;inset:0;z-index:30;background:var(--clbg);color:var(--clfg);font-family:var(--clsans);font-size:17px;line-height:23.7px;
+ -webkit-font-smoothing:antialiased;letter-spacing:-.43px;-webkit-text-size-adjust:100%;overflow:hidden}
+.cl3 *{box-sizing:border-box}
+.clv{fill:currentColor;display:block;flex:none}
+/* стекло кнопок шапки (§2): #2f2f2f, верхний блик #696969→#393939, тёмные бока, мягкая тень */
+.clgl{background:linear-gradient(#353535,var(--clgl) 30%);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 1px 0 0 rgba(0,0,0,.55),inset -1px 0 0 rgba(0,0,0,.55),0 6px 15px rgba(0,0,0,.35);
+ -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3)}
+html[data-theme=light] .clgl{background:rgba(255,255,255,.82);box-shadow:inset 0 1px 0 #fff,0 0 0 .5px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
+/* ---------- шапка (§2): круги 44, верх 59, ☰ x16; в чате [ноутбук x222] + пилюля 99×44 [✎ | …] x278–377 ---------- */
+.clhd{position:absolute;left:16px;right:16px;top:var(--g3t,calc(env(safe-area-inset-top,0px) + 6px));height:44px;display:flex;align-items:center;z-index:3;pointer-events:none}
+.clhd>*{pointer-events:auto}
+.clsp{flex:1}
+.cl44{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:#d8d7cb;flex:none}
+.clpill{width:99px;height:44px;border-radius:22px;display:flex;align-items:center;margin-left:12px;color:#d8d7cb;position:relative}
+.clpill i{position:absolute;top:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.clpill i:first-child{left:1.3px}.clpill i:last-child{right:0}
+.clhd.clempty .clpill,.clhd.clempty .cl44[data-cl=pc]{display:none}.clhd .clone{display:none}.clhd.clempty .clone{display:flex}
+.cl44:active,.clpill i:active,.clplus:active,.clmic:active,.clgo:active,.clact i:active{opacity:.55}
+/* под строкой состояния лента гаснет (как у gpt3) */
+.cltop{position:absolute;left:0;right:0;top:0;height:max(0px,calc(var(--g3t,0px) - 11px));z-index:3;pointer-events:none;background:linear-gradient(rgba(21,21,21,.9) calc(100% - 4px),rgba(21,21,21,0))}
+/* ---------- лента ---------- */
+.clf{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
+.clf::-webkit-scrollbar{display:none}
+.cll{padding:calc(var(--g3t,0px) + 44px + 22px) 16px 120px;min-height:100%}
+.cllt>:last-child{margin-bottom:0}
+/* пузырь (§4): #272725, r 24, поля 16 / 12.15 (1 строка = 48), SF 17 #f9f9f7 шаг 23.7, макс. 318, справа 16 */
+.clum{display:flex;flex-direction:column;align-items:flex-end;margin:0 0 35px}
+.club{max-width:318px;background:var(--club);color:var(--clut);border-radius:24px;padding:12.15px 16px;line-height:23.7px;overflow-wrap:anywhere;white-space:normal}
+.club p{margin:0}.club p+p{margin-top:8px}.club a{color:inherit}
+.club pre,.club code{white-space:pre-wrap;font-size:15px}
+/* фото в сообщении (§4): 140×140, r 14, зазор 8, справа 16 */
+.cluim:last-child{margin-bottom:0}
+.clwk>.clv:first-child{margin-right:4px}
+.cluim{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;margin-bottom:8px;max-width:318px}
+.cluim img{width:140px;height:140px;object-fit:cover;border-radius:14px;display:block}
+.cluim0{display:flex;align-items:center;gap:6px;color:var(--clsub);font-size:15px;margin-bottom:6px}
+/* ответ (§4): serif ~17 pt, шаг 27.1 (кадр 3213_0131.50: 240.7→268.0→294.7→322.3→349.0), абзац +18, левый край 16 */
+.clta{margin:0 0 30px}
+.cla{font-family:var(--clserif);font-size:var(--clss);line-height:27.1px;letter-spacing:0;color:var(--clfg);overflow-wrap:anywhere}
+.cla>*:first-child{margin-top:0}.cla>*:last-child{margin-bottom:0}
+.cla .hcsp{height:18px}.cla .hcsp+.hcsp{height:0}
+.cla p{margin:0 0 18px}
+.cla b,.cla strong{font-weight:600}
+.cla .hch,.cla h1,.cla h2,.cla h3,.cla h4{font:600 calc(var(--clss) + 3px)/30px var(--clserif);letter-spacing:0;color:var(--clfg);text-transform:none;margin:6px 0 8px}
+/* список (кадр 3213_0131.50): пункты через 44.4 pt (строка 27.1 + 17.3), маркер • x 26.3, текст x 40.7 */
+.cla ul,.cla ol{margin:0;padding-left:24.7px}
+.cla ul{list-style:none}
+.cla ul>li{position:relative}
+.cla ul>li::before{content:'';position:absolute;left:-14.4px;top:11px;width:5.3px;height:5.3px;border-radius:3px;background:currentColor}
+.cla li{margin:0 0 17.3px;padding:0}.cla li:last-child{margin-bottom:0}
+.cla ol>li::marker{color:var(--clfg)}
+.cla .hcsp+ul,.cla .hcsp+ol{margin-top:0}
+.cla a{color:var(--clfg);text-decoration:underline;text-decoration-color:rgba(250,250,248,.4)}
+.cla code{font:14.5px/1.4 ui-monospace,'SF Mono',Menlo,Consolas,monospace;background:#262624;border-radius:5px;padding:1px 5px}
+.cla pre,.cla .hcpre{background:#1f1e1d;border:1px solid #30302e;border-radius:12px;padding:12px 14px;margin:0 0 18px;overflow-x:auto;font:13px/19px ui-monospace,'SF Mono',Menlo,Consolas,monospace;color:#c2c0b6;white-space:pre}
+.cla pre code{background:none;padding:0;font:inherit}
+.cla table{border-collapse:collapse;font:15px/20px var(--clsans);margin:0 0 18px;display:block;overflow-x:auto}
+.cla th,.cla td{border-bottom:1px solid #30302e;padding:8px 12px 8px 0;text-align:left}
+.cla blockquote{margin:0 0 18px;padding-left:14px;border-left:3px solid #3a3a38;color:#c2c0b6}
+/* хвост при стриминге (3213_0130.19: нижние строки проявляются) */
+.clfw{animation:clfi 440ms cubic-bezier(.3,.6,.5,1) both}
+@keyframes clfi{from{opacity:0}to{opacity:1}}
+/* значки под ответом (§4): 16 pt, шаг 32, первый x 18, #8c8a84, на 24 ниже текста; дисклеймер 13.5 pt #7f7e7b на 33 ниже */
+.clact{display:flex;margin:13px 0 0 -6px;color:var(--clact)}
+.clact i{width:32px;height:30px;display:flex;align-items:center;justify-content:center}
+.clact i.on,.clact i.ok{color:var(--clfg)}
+.cldis{color:#7f7e7b;font-size:13.5px;line-height:18px;letter-spacing:-.1px;margin:22.3px 0 0}
+/* «N шагов ›», статус «думаю» (§4): точки #cd6b4e, текст ~16 pt с бегущим бликом, шеврон #8b8b85 */
+/* 3213_0053.62: строка ◷ по центру 263.7 = низ фото +42.7; текст ответа (верх букв) +39.3 ниже центра */
+.clwk{display:inline-flex;align-items:center;gap:0;color:var(--clsub);font-size:16px;line-height:22px;margin:0 0 21px;padding-left:4px;cursor:pointer;letter-spacing:-.3px}
+.clwk .clv{color:#8b8b85;transition:transform .25s}.clwk.on .clv-chev{transform:rotate(90deg)}
+.cltl{margin:-8px 0 16px;border-left:2px solid #2c2c2a;padding-left:12px}
+.clto{font-size:14px;line-height:20px;color:var(--clsub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px;cursor:pointer;padding:3px 0}
+.clto b{font-weight:500;color:#c2c0b6}.clto.bad b{color:var(--clred)}
+.clpre{background:#1f1e1d;border-radius:12px;padding:10px 12px;margin:4px 0 8px;font:12px/17px ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:0;color:#c2c0b6;white-space:pre-wrap;max-height:240px;overflow:auto}
+.clth{display:flex;align-items:center;height:24px;gap:0;margin:-4.7px 0 14px;color:var(--clsub);font-size:16px;letter-spacing:-.3px;cursor:pointer}
+.cldots{width:13px;display:flex;align-items:center;gap:1px;margin:0 0 0 5.3px;flex:none}
+.cldots i{width:3.7px;height:3.7px;border-radius:2px;background:#cd6b4e;animation:clsp 1.2s ease-in-out infinite}
+.cldots i:nth-child(2){animation-delay:.2s}.cldots i:nth-child(3){animation-delay:.4s}
+@keyframes clsp{0%,100%{opacity:.25;transform:scale(.7)}40%{opacity:1;transform:scale(1.15)}}
+.clth span{background:linear-gradient(90deg,#60605d 0%,#7c7c78 30%,#b6b6ae 50%,#7c7c78 70%,#60605d 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:clsh 2.25s linear infinite;
+ margin-left:14.7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes clsh{from{background-position:100% 0}to{background-position:-50% 0}}
+.clth .clv{color:#8b8b85;margin-left:9px}
+.clload{padding:30px 0 0 1.7px}
+/* вопрос после ответа — блок «Вопрос / текст / ответ» (3212_0108.73) */
+.clqa{background:#1d1d1d;border-radius:14px;padding:10px 14px;margin:0 0 16px;font-size:15px;line-height:20px;color:#c2c0b6}
+.clqa b{display:block;font-weight:400;color:var(--clsub);font-size:14px}
+/* ошибка (§4, 3213_0147.01): #1d1d1d, обводка #2f2f2f, r 13, текст 15 #bebdb3 */
+.clerr{display:flex;gap:10px;align-items:flex-start;background:#1d1d1d;border:1px solid #2f2f2f;border-radius:13px;padding:10px 14px;color:#bebdb3;font-size:15px;line-height:18.3px;margin:0 0 16px}
+.clerr i{flex:none;width:18px;height:18px;border:1.5px solid #8c8a84;border-radius:50%;font:600 11px/15px var(--clsans);text-align:center;font-style:normal;color:#8c8a84;margin-top:0}
+.clolder{text-align:center;color:var(--clsub);font-size:15px;padding:4px 0 18px}
+/* ---------- пустой чат (кадр 3212_0009.79): искра 36×35 #d56b4d, приветствие serif ~24.5 pt #bdbdb1 по центру ---------- */
+.clhi{position:absolute;left:0;right:0;display:none;flex-direction:column;align-items:center;z-index:1;pointer-events:none}
+.clhi.on{display:flex}
+.clhi .clv{color:#d56b4d}
+.clhi b{font:400 24.6px/30px var(--clserif);color:#bdbdb1;margin-top:20px;letter-spacing:-.2px}
+/* ---------- «вниз» (§4): круг 40, стекло #1a1a1a, по центру, ~20 над полем ---------- */
+.cldn{position:absolute;left:50%;width:40px;height:40px;margin-left:-20px;border-radius:20px;display:flex;align-items:center;justify-content:center;z-index:3;color:#f2f2f0;
+ background:rgba(26,26,26,.82);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 4px 12px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+ opacity:0;transform:scale(.6);pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.3,1.3,.5,1)}
+.cldn.on{opacity:1;transform:none;pointer-events:auto}
+/* ---------- поле (§3.1): пилюля 361×52 r26 #2d2d2d, x16, низ 818 (34 от края); блик сверху/снизу, тёмные бока ---------- */
+.clc{position:absolute;left:16px;right:16px;bottom:var(--g3b,max(env(safe-area-inset-bottom,0px),12px));z-index:4;border-radius:26px;background:linear-gradient(#333 0,var(--clcomp) 2px);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.27),inset 0 -1px 0 rgba(255,255,255,.17),inset 1px 0 0 rgba(0,0,0,.9),inset -1px 0 0 rgba(0,0,0,.9);
+ -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+ /* ширина при уходе клавиатуры (3212 35.83–35.99, anim_cl kbd_hide): 159 мс cubic-bezier(.5,.2,.1,.9) с задержкой 27 мс от начала её ухода */
+ transition:left .159s cubic-bezier(.5,.2,.1,.9) 27ms,right .159s cubic-bezier(.5,.2,.1,.9) 27ms,bottom .37s cubic-bezier(.25,.2,.15,1),border-radius .15s}
+/* ширина при появлении клавиатуры (3213 114.17–114.30, anim_cl kbd_show): 129 мс cubic-bezier(0,.4,.6,1) */
+body.hckb .clc{transition:left .129s cubic-bezier(0,.4,.6,1),right .129s cubic-bezier(0,.4,.6,1),bottom .37s cubic-bezier(.2,.2,.15,1.05),border-radius .15s}
+/* клавиатура (§3.3): карточка x8 ширина 378, r 23, 8 над клавиатурой */
+body.hckb .clc{left:8px;right:8px;bottom:8px;border-radius:23px}
+.clrow{display:flex;align-items:center;height:52px;padding:0 8px}
+.clplus,.clmic{width:36px;height:36px;border-radius:18px;flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.clplus{background:var(--clbtn);color:#f9f9f9}
+.clmic{background:#3c3c3c;color:#bcbbae;margin-left:auto}
+.clgo{width:36px;height:36px;border-radius:18px;flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:8px;transition:background .25s}
+.clgo[data-i=voice]{background:#f9f9f7;color:#141413}
+.clgo[data-i=up]{background:var(--clacc);color:#fffefe}
+.clgo[data-i=stop]{background:#3c3c3c;color:#f8f8f6}
+.clgo .clv{transition:transform .28s cubic-bezier(.3,1.4,.5,1),opacity .2s}
+.clta2{flex:1;min-width:0;display:flex;align-items:center;padding:0 0 0 16px;height:100%}
+.cl3 #hcin{display:block;width:100%;border:0;outline:none;background:none;resize:none;color:var(--clfg);font:17px/23.7px var(--clsans);letter-spacing:-.43px;padding:14.15px 0;margin:0;
+ caret-color:#bcbcb4;min-height:52px;max-height:none;box-shadow:none;border-radius:0;-webkit-appearance:none;overflow-y:auto;scrollbar-width:none}
+.cl3 #hcin::placeholder{color:var(--clph);opacity:1}
+.clchip{display:none}
+.clhide{display:none!important}
+/* карточка (§3.2/3.3): текст сверху (поля 13.7), ниже ряд «+ · чип модели · 🎤 · ↑» высотой 36 + 8 снизу; 1 строка = 98.7 */
+.clc.clcard .clrow{flex-wrap:wrap;height:auto;padding:0 8px 8px}
+.clc.clcard .clta2{order:-1;flex:0 0 100%;padding:0 6px 0 5.7px;height:auto}
+.clc.clcard #hcin{padding:15.5px 0 15.5px;min-height:0}
+.clc.clcard .clchip{display:flex;align-items:center;height:36px;border-radius:18px;background:var(--clchip);padding:0 15.5px;margin-left:8px;color:#fafaf9;
+ /* 3213_0135.68: чип 60–200 pt, «Opus 5.5» 76.7–129, «Medium» 135–183 → SF 12.7 px (замер на стенде: 15 px даёт 62 pt) */font:12.7px/18px var(--clsans);letter-spacing:0;white-space:nowrap;cursor:pointer;max-width:170px;overflow:hidden}
+.clchip em{font-style:normal;color:#8e8b84;margin-left:5px}
+/* фото в поле (§3.2): 79×79 r15, зазор 5, сверху 8; ✕ — белый круг 24 с чёрным × */
+.clth2:empty{display:none}
+.cl3 #hcthumbs{display:flex;gap:5px;overflow-x:auto;padding:8px 9px 0;scrollbar-width:none}
+.cl3 #hcthumbs:empty{display:none}
+.cl3 .hcth{position:relative;width:79px;height:79px;flex:none;border-radius:15px;overflow:hidden;margin:0}
+.cl3 .hcth img{width:100%;height:100%;object-fit:cover;display:block;border-radius:15px}
+.cl3 .hcth span{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:12px;background:#f7f7f5;display:flex;align-items:center;justify-content:center;color:#000}
+.cl3 .hcth span svg{width:12px;height:12px}
+/* ---------- диктовка (§3.4): × круг 36 #2c2c2c, волна 33 бара 3/6 pt белые, ■ круг 36 #3a3a3a, ↑ #bd5636; текст #9e9c93, хвост гаснет ~40 pt ---------- */
+.cldict{display:none}
+.clc.clrec .clrow{display:none}
+.clc.clrec .clrow.clghost{display:flex;position:absolute;left:0;right:0;bottom:0;pointer-events:none}
+.clc.clrec .cldict{display:flex;align-items:center;height:52px;padding:0 8px}
+.cldx,.clds{width:36px;height:36px;border-radius:18px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer}
+.cldx{background:#2c2c2c}
+.clds{background:#3a3a3a;margin:0 8px 0 0}
+.clds i.sq{width:12px;height:12px;border-radius:2px;background:#fff}
+.clwv{flex:1;height:36px;margin:0 16px 0 18px;color:#fafaf8;display:flex;align-items:center;cursor:pointer;min-width:0}
+.clwv canvas{width:100%;height:36px;display:block}
+.clwv span{color:var(--clsub);font-size:15px}
+.clhl{display:none;color:#9e9c93;font-size:15px;margin-left:12px;white-space:nowrap}
+.clc.clhold .clhl{display:block}.clc.clhold .cldx{display:none}
+body.hckb .clc.clrec.clhold .clrow{display:flex;height:auto;padding:0 8px}body.hckb .clc.clrec.clhold .clrow>:not(.clta2){display:none}
+body.hckb .clc.clrec.clhold .clta2{padding:0 6px 0 5.7px}body.hckb .clc.clrec.clhold #hcin{padding:15.5px 0 7px;min-height:0;height:46px!important}
+/* удержание 🎤 (3213_0083.14): карточка раздута 3.3–390 pt и светлее; слева круг 36.7 #484848 с квадратом 12 #949087;
+   «Отпусти…» с x 61, 15 pt #949087; волна 274–333; ■ скрыт; ↑ 44.7 pt ярко-оранжевая #fe703e */
+.clhq{display:none;width:36.7px;height:36.7px;border-radius:50%;background:#484848;flex:none;margin:0 0 0 0.3px;position:relative}.clc.clhold .clhq{display:block}
+.clhq::after{content:'';position:absolute;left:12.35px;top:12.35px;width:12px;height:12px;border-radius:3px;background:#949087}
+.clc.clhold .clhl{margin-left:15.7px;color:#949087;font-size:15px}.clc.clhold .clds{display:none}
+.clc.clhold{transform:scale(1.026);background:#3a3a3a}
+.clc.clhold .clwv{flex:0 0 59px;margin:0 7px 0 auto}
+.clc.clhold .clgo[data-i=up]{width:44.7px;height:44.7px;border-radius:50%;background:#fe703e;margin-right:-4.3px}
+.cltr{display:none;padding:14px 16px 0 16px;color:#9e9c93;max-height:160px;overflow:hidden;white-space:pre-wrap;
+ -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 40px),rgba(0,0,0,.35));mask-image:linear-gradient(90deg,#000 calc(100% - 40px),rgba(0,0,0,.35))}
+.clc.clrec .cltr.on{display:block}
+.clspin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:clrot .8s linear infinite}
+@keyframes clrot{to{transform:rotate(360deg)}}
+/* ---------- карточка вопроса/разрешения (§4, 3212_0059.41): вместо поля, x16 w361 r23 #2a2a2a ---------- */
+.clq{position:absolute;left:16px;right:16px;bottom:var(--g3b,12px);z-index:5;background:var(--clcard);border-radius:23px;padding:20px 0 16px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 1px 0 0 rgba(0,0,0,.6),inset -1px 0 0 rgba(0,0,0,.6),0 -8px 30px rgba(0,0,0,.35);max-height:calc(100% - var(--g3t,0px) - 70px);display:flex;flex-direction:column}
+.clqh{display:flex;align-items:flex-start;padding:0 16px 0 24px;gap:12px}
+.clqh b{flex:0 1 200px;margin-right:auto;font-weight:400;font-size:20px;line-height:27.7px;color:#f0eeed;letter-spacing:-.4px;padding-top:4px}
+.clqx{width:44px;height:44px;border-radius:22px;background:#424242;display:flex;align-items:center;justify-content:center;color:#f0eeed;flex:none;cursor:pointer;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.clqb{overflow:auto;padding:16px 0 0}/* заголовок → первый вариант 82.4 pt */
+.clqo{margin:0 24px;padding:13px 61px 13px 0;/* 3212_0059.41: текст 40–292 pt, справа место под отметку; шаг строк 72 */border-bottom:1px solid #595959;cursor:pointer}
+.clqo b{display:block;font-weight:400;font-size:16px;line-height:22px;color:#f0eeed}
+.clqo span{display:block;font-size:13px;line-height:22px;color:#bdbcb0;margin-top:0}
+.clqo.on b{color:#fff}.clqo.on{box-shadow:inset 3px 0 0 var(--clacc);padding-left:12px;margin-left:12px}
+.clqo.bad b{color:var(--clred)}
+.clqpre{margin:8px 24px 4px;background:#1f1e1d;border-radius:12px;padding:10px 12px;font:13px/18px ui-monospace,'SF Mono',Menlo,Consolas,monospace;color:#c2c0b6;white-space:pre-wrap;max-height:160px;overflow:auto;letter-spacing:0}
+.clqd{margin:0 24px;color:#bdbcb0;font-size:15px;line-height:20px}
+.clqi{display:flex;align-items:center;margin:4px 16px 0 24px;gap:8px;min-height:54px}
+.clqi input{flex:1;border:0;outline:none;background:none;color:#f0eeed;font:17px var(--clsans);letter-spacing:-.43px;padding:0}
+.clqi input::placeholder{color:#bdbcb0}
+.clqi .clmic{width:44px;height:44px;border-radius:22px;background:#3a3a3a;margin:0}
+.clqbt{display:flex;justify-content:flex-end;gap:8px;padding:14px 16px 0}/* «Свой ответ» → кнопки 48 pt */
+.clqbt div{height:43px;border-radius:22px;padding:0 20px;min-width:115px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;cursor:pointer}
+.clqbt .clsk{border:1px solid #434343;color:#f0eeed}
+.clqbt .clsb{background:#bfbfbf;color:#4d4d4d}.clqbt .clsb.on{background:#f8f8f6;color:#161614}
+/* ---------- меню (§6): стекло 250 × N, r 33, строки 42, значок 20 #b8b7ab в 30 от края, текст 17 #f1f1f1 в 65 ---------- */
+#clveil{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0);transition:background .2s}
+#clveil.dim{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.clpop{position:fixed;z-index:61;border-radius:33px;background:linear-gradient(rgba(44,44,44,.94),rgba(37,37,37,.94));color:#f1f1f1;font-family:var(--clsans);font-size:17px;letter-spacing:-.43px;line-height:22px;
+ -webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 1px 0 0 rgba(0,0,0,.6),inset -1px 0 0 rgba(0,0,0,.6),0 12px 40px rgba(0,0,0,.45);padding:9px 0;overflow:hidden}
+.clpop.out{opacity:0;transform:scale(.92);transition:opacity .16s,transform .18s}
+.clmh{color:#8e8c86;font-size:14px;line-height:18px;padding:6px 22px 6px 30px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.clmi{display:flex;align-items:center;height:42px;padding:0 20px 0 0;cursor:pointer;white-space:nowrap}
+.clmi>.clv,.clmi>.clck{margin-left:30px;color:#b8b7ab}
+.clmi span{position:absolute;left:65px;right:18px;overflow:hidden;text-overflow:ellipsis}
+.clmi{position:relative}
+.clmi:active{background:rgba(255,255,255,.08)}
+.clmi.bad,.clmi.bad>.clv{color:var(--clred)}
+.clck{width:20px;height:20px;flex:none;display:block}
+/* поднятый пузырь при долгом нажатии остаётся резким над затемнением */
+.cllift{position:relative;z-index:62}
+/* превью увеличено как в iOS: строка 25.7 pt вместо 23.7, ширина строки ×1.05 (3213_0169.13) → раскладка 329, масштаб 1.06 к правому краю */
+.clliftc{position:fixed;z-index:62;max-width:329px;transform:scale(1.06);transform-origin:100% 0;font:17px/23.7px var(--clsans);letter-spacing:-.43px;-webkit-font-smoothing:antialiased;margin:0;box-shadow:0 10px 40px rgba(0,0,0,.35);animation:cllf .25s cubic-bezier(.3,1.2,.5,1)}
+@keyframes cllf{from{transform:scale(1)}to{transform:scale(1.06)}}
+.cl3 .cllift .club{visibility:hidden}
+/* ---------- лист «+» (§5): плавающий, поля 8, верх 403.7, низ 843.7, фон #151515, r 37.5 / 46, ручка 57×4 ---------- */
+#clsv{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.33);animation:clsvin .23s linear}
+@keyframes clsvin{from{background:rgba(0,0,0,0)}}
+.clsh{position:fixed;left:8px;right:8px;bottom:8.3px;height:440px;z-index:61;background:var(--clbg);border-radius:37.5px 37.5px 46px 46px;padding:0 0 16px;color:var(--clfg);font-family:var(--clsans);letter-spacing:-.43px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 -10px 40px rgba(0,0,0,.4);max-height:calc(100% - 70px);overflow:auto}
+.clsh.out{transform:translateY(110%);transition:transform .15s cubic-bezier(.4,0,1,1)}
+.clgrab{width:57px;height:4px;border-radius:2px;background:#515054;margin:5.7px auto 0}
+.clshh{display:flex;align-items:center;height:67px;/* 3213_0013.21: ✕ и заголовок по центру 440 = верх листа + 36.3 */padding:0 16px 0 14.5px;position:relative}
+.clshh b{position:absolute;left:0;right:0;text-align:center;font-weight:600;font-size:17px;pointer-events:none}
+.clshh .clqx{width:44px;height:44px;background:#2d2d2d;position:relative;z-index:1}
+.clshh label{margin-left:auto;color:#bdbbaf;font-size:17px;cursor:pointer;position:relative;z-index:1}
+/* полоса фото (§5): 100 pt, r 23.5; плитка «Фото» открывает выбор, дальше уже выбранные снимки */
+.clstrip{display:flex;gap:2px;height:100px;margin:5.3px 16px 16px;/* полоса 486.3–586, первая строка по центру 628 */border-radius:23.5px;overflow-x:auto;scrollbar-width:none}
+.clstrip>*{flex:none;width:98px;height:100px;object-fit:cover;background:#1d1d1d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#bcbbae;font-size:15px;cursor:pointer}
+.clgrp{background:#1d1d1d;border-radius:23.5px;margin:0 16px 16px;overflow:hidden}
+.clsr{display:flex;align-items:center;height:53.5px;/* шаг строк 53.5 (628/681/735) */padding:0 16px 0 21px;position:relative;cursor:pointer;color:#f9f9f7;font-size:17px}
+.clsr+.clsr::before{content:'';position:absolute;left:58px;right:0;top:0;height:1px;background:#2f2f2f}
+.clsr .clv{color:#bcbbae;width:22px}
+.clsr>span{margin-left:15px;flex:1}
+.clsr em{font-style:normal;color:#bebdb4;margin-right:8px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.clsr .clv-chev{color:#7d7b78;width:auto;transform:scale(.75)}
+.clsr:active{background:rgba(255,255,255,.05)}
+@media (prefers-reduced-motion:reduce){.clc,.cldn,.clwk .clv,.clgo .clv{transition:none}.clth span{animation:none;color:var(--clsub);background:none}.cldots i{animation:none;opacity:1}}
