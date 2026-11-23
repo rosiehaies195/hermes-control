@@ -39,8 +39,8 @@
   var d=Math.floor(h/24);return d==1?'Вчера':d<7?d+' дн назад':d<14?'На прошлой неделе':new Date(ts*1000).toLocaleDateString('ru',{day:'numeric',month:'long'})}
  function waits(x){return !!(x.wait||x.stc=='blocked')}
  /* ---------- главный экран (тот, что отъезжает) ---------- */
- function main(){return $i('cl3')||$i('g3')}
- function sty(){var s=st();return s&&s.kind=='claude'?'c':'g'}
+ function main(){return $i('cl3')||$i('g3')||$i('g4')}/* gpt18: на Пульте отъезжает #g4 */
+ function sty(){var s=st();if(!$i('cl3')&&!$i('g3'))return 'g';return s&&s.kind=='claude'?'c':'g'}
  /* кривые по реальным pts кадров (fit_spring.py): ChatGPT 316.93–317.23 с записи 3214 — 309 мс cubic-bezier(.25,1,.3,1) RMS 0.004;
     Claude 10.19–10.51 с записи 3213 — пружина response 0.19, damping 1.0 (256 мс до 1 px) RMS 0.003 */
  var EZ={g:{d:309,e:'cubic-bezier(.25,1,.3,1)'},c:{d:256,e:'linear(0, 0.049, 0.158, 0.286, 0.412, 0.526, 0.625, 0.706, 0.773, 0.825, 0.867, 0.899, 0.924, 0.943, 0.957, 0.968, 0.976, 0.983, 0.987, 0.991, 0.993, 0.995, 0.996, 0.997, 1)'}};

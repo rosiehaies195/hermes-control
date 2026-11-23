@@ -1,0 +1,247 @@
+/* gpt18 — панель вне чата в стиле ChatGPT iOS. Числа — замеры кадров (3 px = 1 pt, CSS px = pt):
+   Scheduled 3214_0353.23 (шапка: ☰ 44 at x16 y59, заголовок 17/600 по центру, сегменты: выбранный #393939),
+   Settings 0405.63 (карточка r26 #1e1e1e, кромка rgba(255,255,255,.1), строка 54, текст x66.7, шеврон #525153; «Upgrade» белая),
+   Code 3213_0252.82 (подписи секций серым 17 at x24; синяя точка), вопрос Claude 3212_0059.41 (как .clq экрана чата Claude),
+   карточка ChatGPT — как .g3card экрана чата gpt3. Нижняя панель — iOS 26 (плавающая капсула glass.css) в монохроме ChatGPT.
+   Классы — только с приставкой g4; базовые компоненты перекрашены ТОЛЬКО внутри .g4sk. */
+:root{--g4bg:#000;--g4fg:#fff;--g4sub:#9b9b9b;--g4card:#1e1e1e;--g4edge:rgba(255,255,255,.1);--g4sep:rgba(255,255,255,.08);--g4pl:#2f2f2f;--g4plt:#fff;
+ --g4blue:#3b82f6;--g4red:#ff5b5f;--g4ok:#34c759;--g4ch:#525153;--g4seg:#393939;
+ --g4f:'SF Pro Text',-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Roboto,sans-serif}
+html[data-theme=light]{--g4bg:#f2f2f7;--g4fg:#0d0d0d;--g4sub:#8a8a8e;--g4card:#fff;--g4edge:rgba(0,0,0,0);--g4sep:rgba(0,0,0,.08);--g4pl:#ececec;--g4plt:#0d0d0d;--g4ch:#c4c4c7;--g4seg:#fff}
+body.g4on{background:var(--g4bg)}
+body.g4on #ptr{display:none}
+.g4{position:fixed;inset:0;z-index:4;background:var(--g4bg);color:var(--g4fg);font-family:var(--g4f);font-size:17px;line-height:22px;letter-spacing:-.43px;
+ -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.g4 *{box-sizing:border-box}
+.g4v{fill:currentColor;display:block;flex:none}
+/* ---------- шапка ---------- */
+.g4top{position:absolute;left:0;right:0;top:0;height:calc(var(--g3t) + 56px);z-index:3;pointer-events:none;
+ background:linear-gradient(var(--g4bg) calc(100% - 22px),color-mix(in srgb,var(--g4bg) 0%,transparent))}
+.g4hd{position:absolute;left:16px;right:16px;top:var(--g3t);height:44px;display:flex;align-items:center;z-index:4;pointer-events:none}
+.g4hd>*{pointer-events:auto}
+.g4b44{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--g4fg);cursor:pointer;flex:none}
+.g4b44 .g4v{width:20px;height:12px}
+.g4bk svg{width:24px;height:24px;stroke-width:2.2;margin-left:-2px}
+.g4tt{position:absolute;left:64px;right:110px;top:0;height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;margin-left:23px}
+.g4tt b{font-weight:600;font-size:17px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.g4tt small{font-size:12px;line-height:14px;color:var(--g4sub);letter-spacing:-.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.g4cap{margin-left:auto;height:44px;border-radius:22px;display:flex;align-items:center;padding:0 2px;color:var(--g4fg)}
+.g4cap i{width:44px;height:44px;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;font-style:normal}
+.g4cap svg{width:21px;height:21px;stroke-width:1.9}
+.g4hdot{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:4px;background:var(--g4red);box-shadow:0 0 0 2px #1d1d1d}
+.g4b44:active,.g4cap i:active{opacity:.55}
+/* ---------- лента ---------- */
+.g4f{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
+.g4f::-webkit-scrollbar{display:none}
+.g4l{padding:calc(var(--g3t) + 44px + 22px) 0 calc(110px + env(safe-area-inset-bottom,0px));min-height:100%}
+.g4sh{display:flex;align-items:baseline;gap:6px;padding:0 32px;margin:22px 0 9px;font-size:15px;line-height:20px;color:var(--g4sub);letter-spacing:-.24px}
+.g4sh span{color:var(--g4sub);opacity:.8}
+.g4home>.g4sh:first-child{margin-top:4px}
+.g4card{margin:0 16.3px 12px;border-radius:26px;background:var(--g4card);box-shadow:inset 0 0 0 1px var(--g4edge);overflow:hidden}
+html[data-theme=light] .g4card{box-shadow:0 0 0 .5px rgba(0,0,0,.04)}
+.g4r{display:flex;align-items:center;min-height:54px;position:relative;padding:0 16px 0 0}
+.g4r.tap{cursor:pointer}
+.g4r.tap:active{background:rgba(255,255,255,.06)}
+html[data-theme=light] .g4r.tap:active{background:rgba(0,0,0,.05)}
+.g4r+.g4r::before{content:'';position:absolute;left:51.4px;right:0;top:0;height:1px;background:var(--g4sep)}
+.g4r>.g4ai,.g4r>.g4pi{margin:0 12.7px 0 15.7px}
+.g4rt{flex:1;min-width:0;padding:15px 0;display:flex;flex-direction:column}
+.g4rt b{font-weight:400;font-size:17px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4rt span{font-size:15px;line-height:19px;color:var(--g4sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.24px;margin-top:1px}
+.g4rt em{font-style:normal}
+.g4rt em.wait{color:var(--g4blue)}.g4rt em.bad{color:var(--g4red)}
+.g4ch{flex:none;margin-left:10px;color:var(--g4ch);display:flex}
+.g4ch .g4v{width:7px;height:11px}
+.g4dot{flex:none;width:8px;height:8px;border-radius:4px;background:var(--g4blue);margin:0 2px 0 10px;font-style:normal}
+.g4dot.bad{background:var(--g4red)}
+.g4pl{flex:none;margin-left:10px;height:32px;line-height:32px;padding:0 13px;border-radius:16px;background:var(--g4pl);color:var(--g4plt);font-size:15px;font-weight:500;
+ letter-spacing:-.24px;white-space:nowrap;cursor:pointer}
+.g4pl.w{background:#fff;color:#000;height:39.4px;line-height:39.4px;border-radius:20px;padding:0 17.3px;font-size:17px;letter-spacing:-.43px}
+html[data-theme=light] .g4pl.w{background:#0d0d0d;color:#fff}
+.g4pl:active{opacity:.6}
+.g4ai{flex:none;width:22px;height:22px;display:block}
+.g4ai-h{border-radius:6px;background:#000 url(logo-portrait.png) center 1px/92% no-repeat;box-shadow:0 0 0 .5px rgba(255,255,255,.25)}
+svg.g4ai-c{fill:#d97757}
+svg.g4ai-x{fill:currentColor;width:21px;height:21px}
+.g4ai-s{display:flex;align-items:center;justify-content:center;color:var(--g4fg)}
+.g4ai-s svg{width:21px;height:21px;stroke-width:1.9}
+.g4pi{flex:none;width:22px;display:flex;justify-content:center;color:var(--g4fg)}
+.g4promo{display:flex;align-items:center;gap:12px;min-height:92px;padding:15px 18px 15px 22px}
+.g4promo[data-a]{cursor:pointer}
+.g4promo>div:first-child{flex:1;min-width:0}
+/* кнопка плашки — по тексту, не растягивается (была на всю ширину: правило выше цепляло и её) */
+.g4promo>.g4pl{flex:none;width:auto;text-align:center}
+.g4promo b{display:block;font-weight:500;font-size:17px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4promo span{display:block;font-size:15px;line-height:18px;color:#a8a8a8;margin-top:4px;letter-spacing:-.24px}
+html[data-theme=light] .g4promo span{color:var(--g4sub)}
+.g4promo .g4pl{margin-left:0}
+.g4promo .g4pl.w{font-size:15px;padding:0 14px;height:36px;line-height:36px;letter-spacing:-.24px}
+.g4home>.g4promo:first-child{margin-top:2px}
+.g4calm{display:flex;align-items:flex-start;gap:14px;padding:14px 32px 6px 30px;color:var(--g4fg)}
+.g4calm>.g4v{width:22px;height:22px;color:var(--g4ok)}
+.g4calm b{display:block;font-weight:500;font-size:17px;line-height:22px}
+.g4calm span{display:block;font-size:15px;line-height:19px;color:var(--g4sub);letter-spacing:-.24px;margin-top:2px}
+
+/* ---------- вопрос Claude (3212_0059.41 / .clq экрана Claude): #2a2a2a r23, вопрос 20 pt, варианты списком с линией #595959 ---------- */
+.g4qs{display:flex;flex-direction:column;gap:12px;margin:0 16.3px 12px}
+.g4cq{background:var(--clcard,#2a2a2a);border-radius:23px;padding:16px 0 14px;color:#f0eeed;font-family:var(--clsans,var(--g4f));letter-spacing:-.43px}
+html[data-theme=light] .g4cq{background:#fff;color:#141413;box-shadow:0 0 0 .5px rgba(0,0,0,.06)}
+.g4cqm{display:flex;align-items:center;gap:8px;padding:0 20px 0 24px;font-size:13px;line-height:18px;color:#bdbcb0;letter-spacing:-.08px}
+.g4cqm .g4ai{width:16px;height:16px}
+.g4cqm span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4cqm em{font-style:normal;flex:none}
+.g4cqh{padding:8px 24px 6px;font-weight:400;font-size:20px;line-height:27.7px;letter-spacing:-.4px;word-break:break-word}
+.g4cqd{margin:0 24px 6px;color:#bdbcb0;font-size:15px;line-height:20px}
+.g4cqpre{margin:6px 24px 6px;background:#1f1e1d;border-radius:12px;padding:10px 12px;font:13px/18px ui-monospace,'SF Mono',Menlo,Consolas,monospace;color:#c2c0b6;white-space:pre-wrap;max-height:160px;overflow:auto;letter-spacing:0}
+html[data-theme=light] .g4cqpre{background:#f0eee6;color:#3d3d3a}
+.g4cqo{margin:0 24px;padding:13px 0;border-bottom:1px solid #595959;cursor:pointer}
+html[data-theme=light] .g4cqo{border-bottom-color:#e3dfd3}
+.g4cqo b{display:block;font-weight:400;font-size:16px;line-height:22px}
+.g4cqo span{display:block;font-size:13px;line-height:18px;color:#bdbcb0;margin-top:1px}
+.g4cqo.rec span:first-of-type{color:#e0a084}
+.g4cqo.bad b{color:var(--clred,#ff6961)}
+.g4cqo.bad{border-bottom:0}
+.g4cq .auto b,.g4gq .auto b,.g4cq .auto .mono,.g4gq .auto .mono{font-family:inherit!important;font-weight:500;letter-spacing:0}
+.g4cqo:active{opacity:.6}
+.g4cqi{display:flex;align-items:center;margin:2px 24px 0;min-height:50px;border-bottom:1px solid #595959}
+html[data-theme=light] .g4cqi{border-bottom-color:#e3dfd3}
+.g4cqi input{flex:1;border:0;outline:none;background:none;color:inherit;font:17px var(--clsans,var(--g4f));letter-spacing:-.43px;padding:0;min-width:0}
+.g4cqi input::placeholder{color:#bdbcb0}
+.g4cqb{display:flex;justify-content:flex-end;gap:8px;padding:14px 16px 2px}
+.g4cqb div{height:43px;border-radius:22px;padding:0 20px;min-width:115px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;cursor:pointer}
+.g4cqsk{border:1px solid #434343;color:#f0eeed}
+.g4cqsb{background:#bfbfbf;color:#4d4d4d}.g4cqsb.on{background:#f8f8f6;color:#161614}
+html[data-theme=light] .g4cqsk{border-color:#e3dfd3;color:#141413}
+html[data-theme=light] .g4cqsb{background:#e8e6dc;color:#8f8c86}html[data-theme=light] .g4cqsb.on{background:#141413;color:#fff}
+.g4cq .auto,.g4gq .auto{margin:12px 24px 0;font-size:13px;line-height:17px;color:#bdbcb0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:none;border:0;padding:0}
+.g4gq .auto{margin:12px 0 0;color:var(--g4sub)}
+.g4cq .auto .bar,.g4gq .auto .bar{flex:1 1 100%;height:3px;border-radius:2px;background:#3d3d3a;overflow:hidden;order:3}
+.g4gq .auto .bar{background:var(--g4pl)}
+.g4cq .auto .bar i{display:block;height:100%;background:#d97757}.g4gq .auto .bar i{display:block;height:100%;background:#fff}
+.g4cq .auto a{color:#e0a084;cursor:pointer}.g4gq .auto a{color:var(--g4fg);text-decoration:underline;cursor:pointer}
+/* ---------- вопрос Codex / Hermes (как .g3card экрана чата ChatGPT): #1e1e1e r20, пилюли 44 r22 #2f2f2f, «Ответить» белая ---------- */
+.g4gq{background:var(--g4card);border-radius:20px;padding:16px;box-shadow:inset 0 0 0 1px var(--g4edge)}
+.g4gqk{display:flex;align-items:center;gap:8px;font-size:17px;line-height:22px}
+.g4gqk .g4ai{width:20px;height:20px}
+.g4gqk b{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4gqk em{font-style:normal;color:var(--g4sub);font-size:15px;flex:none}
+.g4gqp{margin:2px 0 0 28px;font-size:13px;line-height:17px;color:var(--g4sub)}
+.g4gqq{color:#d8d8d8;font-size:16px;line-height:22px;margin:8px 0 12px;white-space:pre-wrap;word-break:break-word}
+html[data-theme=light] .g4gqq{color:#3c3c3c}
+.g4gqpre{background:#121212;border-radius:12px;padding:10px 12px;margin:0 0 12px;font:13px/18px ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:0;color:#a5abb9;white-space:pre-wrap;max-height:180px;overflow:auto}
+html[data-theme=light] .g4gqpre{background:#f4f4f4;color:#3c3c3c}
+.g4gqo{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.g4gqi input{width:100%;height:44px;border-radius:22px;border:0;background:#2a2a2a;color:var(--g4fg);font:16px var(--g4f);letter-spacing:-.3px;padding:0 16px;margin-bottom:10px;outline:none}
+html[data-theme=light] .g4gqi input{background:#f0f0f0}
+.g4gqb{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.g4gpb{height:44px;border-radius:22px;background:var(--g4pl);color:var(--g4fg);display:flex;align-items:center;justify-content:center;padding:0 18px;font-weight:600;font-size:16px;letter-spacing:-.3px;cursor:pointer}
+.g4gpb.pri,.g4gpb.rec{background:#fff;color:#000}
+html[data-theme=light] .g4gpb.pri,html[data-theme=light] .g4gpb.rec{background:#0d0d0d;color:#fff}
+.g4gpb.dis{opacity:.45}
+.g4gpb:active{opacity:.6}
+/* быстрые фразы под полем «Свой ответ» — только пока поле в фокусе */
+.g4tpl{display:none;flex-wrap:wrap;gap:6px}
+.g4typ .g4tpl{display:flex}
+.g4cq .g4tpl{margin:10px 24px 0}.g4gq .g4tpl{margin:-2px 0 10px}
+.g4tpl i{font-style:normal;height:30px;line-height:30px;padding:0 12px;border-radius:15px;font-size:14px;letter-spacing:-.15px;cursor:pointer;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.g4cq .g4tpl i{background:#3a3a37;color:#f0eeed}.g4gq .g4tpl i{background:var(--g4pl);color:var(--g4fg)}
+html[data-theme=light] .g4cq .g4tpl i{background:#f0eee6;color:#141413}
+.g4tpl i:active{opacity:.6}
+/* раскрытая боевая карточка (qfull) — в карточке ChatGPT */
+.g4sk .qf93{margin:0 16.3px 12px;border-radius:20px;background:var(--g4card);padding:8px 6px}
+
+/* ---------- базовые экраны (Проекты, экран проекта, Мозг, Ещё, Журнал, Настройки, Система) в облике ChatGPT Settings ---------- */
+.g4sk{--bg:var(--g4bg);--s1:var(--g4card);--s2:var(--g4pl);--bar:var(--g4card);--line:var(--g4sep);--line2:rgba(255,255,255,.12);--tx:var(--g4fg);--mut:var(--g4sub);--dim:#8e8e8e;
+ --gold:#fff;--amber:#fff;--on-gold:#000;--g-on:var(--g4seg);--glow:transparent;--font:var(--g4f);--cl-s:var(--g4card);--cl-line:var(--g4sep);--cl-tx:var(--g4fg);--cl-mut:var(--g4sub);
+ font-family:var(--g4f)}
+html[data-theme=light] .g4sk{--line2:rgba(0,0,0,.1);--gold:#0d0d0d;--amber:#0d0d0d;--on-gold:#fff;--dim:#8a8a8e}
+/* шапки базы и кнопки «‹ Назад» — их заменяет шапка каркаса */
+.g4sk .hd,.g4sk>.back,.g4sk .bm86,.g4sk .sec>.back,.g4sk>div>.back{display:none!important}
+.g4sk .sec{padding:0 16.3px;margin-top:22px}
+.g4sk>.sec:first-child,.g4sk>.hd+.sec{margin-top:0}
+.g4sk .sh{font:400 15px/20px var(--g4f)!important;text-transform:none!important;letter-spacing:-.24px!important;color:var(--g4sub)!important;margin:0 0 9px 15.7px!important;min-height:20px}
+.g4sk .sh a{color:var(--g4fg)!important;font-weight:500;text-transform:none;letter-spacing:-.24px}
+.g4sk .sh .sum{color:var(--g4sub);text-transform:none;letter-spacing:-.24px;font-size:15px}
+.g4sk .grp{background:var(--g4card)!important;border:0!important;border-radius:26px!important;box-shadow:inset 0 0 0 1px var(--g4edge)}
+html[data-theme=light] .g4sk .grp{box-shadow:0 0 0 .5px rgba(0,0,0,.04)}
+.g4sk .row,.g4sk .rw86,.g4sk .row2{min-height:54px;padding:12px 16px 12px 16px;border-top:1px solid var(--g4sep)!important;border-bottom:0!important;gap:12.7px}
+.g4sk .grp>.row:first-child,.g4sk .grp>.rw86:first-child,.g4sk .grp>.row2:first-child,.g4sk .grp>:first-child{border-top:0!important}
+.g4sk .row:active,.g4sk .rw86.tap:active,.g4sk .row2:active{background:rgba(255,255,255,.06)}
+.g4sk .n,.g4sk .n2{font:400 17px/22px var(--g4f)!important;letter-spacing:-.43px;color:var(--g4fg)}
+.g4sk .d,.g4sk .d2{font-size:15px!important;line-height:19px;color:var(--g4sub)!important;letter-spacing:-.24px}
+.g4sk .mono{letter-spacing:0}
+.g4sk .chev{border-color:var(--g4ch)!important;width:8px;height:8px;border-width:0 2px 2px 0!important}
+.g4sk .cv86{color:var(--g4ch)}
+.g4sk .ri86{background:transparent!important;color:var(--g4fg)!important;width:24px;border-radius:0}
+.g4sk .ri86 svg{width:22px;height:22px;stroke-width:1.8}
+/* переключатель iOS: 51×31, зелёный #34c759 */
+.g4sk .sw{width:51px!important;height:31px!important;border-radius:16px!important;border:0!important;background:rgba(120,120,128,.32)!important}
+.g4sk .sw:after{width:27px!important;height:27px!important;left:2px!important;top:2px!important;border-radius:50%!important;background:#fff!important;box-shadow:0 3px 8px rgba(0,0,0,.15),0 1px 1px rgba(0,0,0,.16)}
+.g4sk .sw.on{background:var(--g4ok)!important}
+.g4sk .sw.on:after{left:22px!important}
+html[data-theme=light] .g4sk .sw{background:rgba(120,120,128,.16)!important}
+.g4sk .sw.on{background:var(--g4ok)!important}
+/* сегменты (Scheduled: Active / Paused / Completed): текст серым, выбранный — пилюля #393939 */
+.g4sk .seg{border:0!important;background:transparent;padding:0;gap:4px}
+.g4sk .seg span{border:0!important;background:transparent!important;color:var(--g4sub)!important;font:500 15px var(--g4f)!important;letter-spacing:-.24px;border-radius:18px!important;min-height:34px;padding:0 14px!important}
+.g4sk .seg span.on{color:var(--g4fg)!important;background:var(--g4seg)!important}
+.g4sk .hs88 .seg span.on{background:transparent!important}
+.g4sk .sl88{border-radius:18px!important;background:var(--g4seg)!important;box-shadow:none!important}
+.g4sk .pmbar{margin:0 0 6px}
+/* кнопки: пилюли; главная — белая */
+.g4sk .btn{border-radius:25px!important;border:0!important;background:var(--g4pl)!important;color:var(--g4fg)!important;font:600 16px var(--g4f)!important;letter-spacing:-.3px;box-shadow:none!important}
+.g4sk .btn.sm{font-size:15px!important}
+.g4sk .btn.pri{background:#fff!important;color:#000!important}
+html[data-theme=light] .g4sk .btn.pri{background:#0d0d0d!important;color:#fff!important}
+.g4sk .btn.danger{color:var(--g4red)!important}
+.g4sk .in{background:var(--g4card)!important;border:0!important;border-radius:22px!important;color:var(--g4fg)!important;font:16px var(--g4f)!important;letter-spacing:-.3px;box-shadow:inset 0 0 0 1px var(--g4edge)}
+.g4sk textarea.in{border-radius:18px!important}
+.g4sk .chips span{border-radius:18px;border:0!important;background:var(--g4pl)!important;color:var(--g4fg)}
+.g4sk .prog{background:var(--g4pl)!important;height:4px;border-radius:2px}
+.g4sk .prog i{background:var(--g4fg)!important;box-shadow:none!important;border-radius:2px}
+/* «?» у заголовка (Лимит расхода): аккуратный кружок 17 pt */
+.g4sk .gq{display:inline-flex!important;align-items:center;justify-content:center;width:17px;height:17px;border-radius:9px;margin-left:6px;vertical-align:1px;
+ background:var(--g4pl)!important;color:var(--g4sub)!important;border:0!important;font:600 11px/1 var(--g4f)!important;letter-spacing:0!important;padding:0!important;cursor:pointer}
+/* заголовки секций базы: без «⋮⋮», линии и стрелки ▾, всё одним шрифтом */
+.g4sk .sh>span::before,.g4sk .sh>span::after,.g4sk .sh.col::before{display:none!important;content:none!important}
+.g4sk .sh *,.g4sk .sh .mono{font-family:var(--g4f)!important;letter-spacing:-.24px!important;text-transform:none!important}
+/* серия сворачиваемых секций = одна карточка со строками 54 pt; справа значение серым и шеврон */
+.g4colg{margin:22px 16.3px 0;border-radius:26px;background:var(--g4card);box-shadow:inset 0 0 0 1px var(--g4edge);overflow:hidden}
+html[data-theme=light] .g4colg{box-shadow:0 0 0 .5px rgba(0,0,0,.04)}
+.g4colg>.sec{padding:0!important;margin:0!important}
+.g4colg>.sec+.sec{border-top:1px solid var(--g4sep)}
+.g4colg .sh.col{margin:0!important;min-height:54px;padding:0 18px 0 16px;color:var(--g4fg)!important;font-size:17px!important;line-height:22px!important;letter-spacing:-.43px!important}
+.g4colg .sh.col>span:first-child{font-size:17px;letter-spacing:-.43px!important;color:var(--g4fg);flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4colg .sh.col .sum{font-size:17px!important;color:var(--g4sub)!important;margin-left:10px;white-space:nowrap;flex:none;max-width:55%;overflow:hidden;text-overflow:ellipsis}
+.g4colg .sh.col::after{border-color:var(--g4ch)!important;width:8px!important;height:8px!important;border-width:0 2px 2px 0!important;margin-left:10px!important}
+.g4colg .sh.col:active{background:rgba(255,255,255,.06)}
+.g4colg .grp{background:transparent!important;box-shadow:none!important;border-radius:0!important;border-top:1px solid var(--g4sep)!important;margin:0!important}
+.g4sk .mr86{margin-top:0}
+/* плитки агентов на «Проектах» — карточки */
+.g4sk .ags86>div{background:var(--g4card)!important;border:0!important;border-radius:20px!important;box-shadow:inset 0 0 0 1px var(--g4edge)}
+.g4sk .ags86>div.on{box-shadow:inset 0 0 0 1.5px var(--g4fg)}
+.g4sk .ags86 b{font:600 15px var(--g4f);letter-spacing:-.24px}
+/* прочие базовые плашки/карточки */
+.g4sk .alert,.g4sk .card,.g4sk .qcard{background:var(--g4card)!important;border:0!important;border-radius:20px!important;box-shadow:inset 0 0 0 1px var(--g4edge)!important}
+.g4sk .reader{font-family:var(--g4f)}
+.g4sk .qb8{background:var(--g4blue)}
+
+/* ---------- нижняя навигация: плавающая капсула iOS 26, монохром ChatGPT, значки бокового меню ---------- */
+body.g4nav.gl87.g86 .nav{background:linear-gradient(#232323,rgba(29,29,29,.86) 40%);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.12),0 12px 32px rgba(0,0,0,.6);
+ -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);font-family:var(--g4f)}
+body.g4nav .gb87,body.g4nav.gl87.g86 .nav:after{display:none}
+body.g4nav.gl87.g86 .nav div{color:rgba(255,255,255,.55)}
+body.g4nav.gl87.g86 .nav div.on,body.g4nav.gl87.g86 .nav div.hov{color:#fff}
+body.g4nav .ln87>span{background:rgba(255,255,255,.12);box-shadow:none}
+body.g4nav.gl87.g86 .nav div i{height:23px;display:flex;align-items:center;justify-content:center}
+body.g4nav.gl87.g86 .nav div i .g4ni{width:24px;height:24px;display:block}
+body.g4nav.gl87.g86 .nav div.on i .g4ni{stroke-width:2.1}
+.sd3 svg.g4sdi{width:22px;height:22px;fill:none!important;stroke:currentColor}
+.sd3.g4side .sd3hb.srch{display:none}
+body.g4nav.lc87 .lb87,body.g4nav .lb87{font:500 10.5px/14px var(--g4f);letter-spacing:.05px;text-transform:none}
+body.g4nav .bg87{background:var(--g4blue);font-family:var(--g4f);box-shadow:0 0 0 2px #1d1d1d}
+body.g4nav .bg87.bad{background:var(--g4red)}
+html[data-theme=light] body.g4nav.gl87.g86 .nav{background:rgba(255,255,255,.82);box-shadow:inset 0 1px 0 #fff,0 0 0 .5px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.12)}
+html[data-theme=light] body.g4nav.gl87.g86 .nav div{color:rgba(0,0,0,.45)}
+html[data-theme=light] body.g4nav.gl87.g86 .nav div.on{color:#0d0d0d}
+html[data-theme=light] body.g4nav .ln87>span{background:rgba(0,0,0,.07)}

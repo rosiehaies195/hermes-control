@@ -1971,6 +1971,254 @@ body.sd3ent #hcroot>*{visibility:hidden}
 .sd3pop .sd3mi svg.sd3ai-c,.sd3 .sd3r svg.sd3ai-c{fill:#d97757!important}
 .sd3pop.c{background:rgba(44,44,44,.985)!important}.sd3pop.g{background:rgba(34,33,35,.985)!important}
 
+/* gpt18 — панель вне чата в стиле ChatGPT iOS. Числа — замеры кадров (3 px = 1 pt, CSS px = pt):
+   Scheduled 3214_0353.23 (шапка: ☰ 44 at x16 y59, заголовок 17/600 по центру, сегменты: выбранный #393939),
+   Settings 0405.63 (карточка r26 #1e1e1e, кромка rgba(255,255,255,.1), строка 54, текст x66.7, шеврон #525153; «Upgrade» белая),
+   Code 3213_0252.82 (подписи секций серым 17 at x24; синяя точка), вопрос Claude 3212_0059.41 (как .clq экрана чата Claude),
+   карточка ChatGPT — как .g3card экрана чата gpt3. Нижняя панель — iOS 26 (плавающая капсула glass.css) в монохроме ChatGPT.
+   Классы — только с приставкой g4; базовые компоненты перекрашены ТОЛЬКО внутри .g4sk. */
+:root{--g4bg:#000;--g4fg:#fff;--g4sub:#9b9b9b;--g4card:#1e1e1e;--g4edge:rgba(255,255,255,.1);--g4sep:rgba(255,255,255,.08);--g4pl:#2f2f2f;--g4plt:#fff;
+ --g4blue:#3b82f6;--g4red:#ff5b5f;--g4ok:#34c759;--g4ch:#525153;--g4seg:#393939;
+ --g4f:'SF Pro Text',-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Roboto,sans-serif}
+html[data-theme=light]{--g4bg:#f2f2f7;--g4fg:#0d0d0d;--g4sub:#8a8a8e;--g4card:#fff;--g4edge:rgba(0,0,0,0);--g4sep:rgba(0,0,0,.08);--g4pl:#ececec;--g4plt:#0d0d0d;--g4ch:#c4c4c7;--g4seg:#fff}
+body.g4on{background:var(--g4bg)}
+body.g4on #ptr{display:none}
+.g4{position:fixed;inset:0;z-index:4;background:var(--g4bg);color:var(--g4fg);font-family:var(--g4f);font-size:17px;line-height:22px;letter-spacing:-.43px;
+ -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.g4 *{box-sizing:border-box}
+.g4v{fill:currentColor;display:block;flex:none}
+/* ---------- шапка ---------- */
+.g4top{position:absolute;left:0;right:0;top:0;height:calc(var(--g3t) + 56px);z-index:3;pointer-events:none;
+ background:linear-gradient(var(--g4bg) calc(100% - 22px),color-mix(in srgb,var(--g4bg) 0%,transparent))}
+.g4hd{position:absolute;left:16px;right:16px;top:var(--g3t);height:44px;display:flex;align-items:center;z-index:4;pointer-events:none}
+.g4hd>*{pointer-events:auto}
+.g4b44{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--g4fg);cursor:pointer;flex:none}
+.g4b44 .g4v{width:20px;height:12px}
+.g4bk svg{width:24px;height:24px;stroke-width:2.2;margin-left:-2px}
+.g4tt{position:absolute;left:64px;right:110px;top:0;height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;margin-left:23px}
+.g4tt b{font-weight:600;font-size:17px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.g4tt small{font-size:12px;line-height:14px;color:var(--g4sub);letter-spacing:-.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.g4cap{margin-left:auto;height:44px;border-radius:22px;display:flex;align-items:center;padding:0 2px;color:var(--g4fg)}
+.g4cap i{width:44px;height:44px;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;font-style:normal}
+.g4cap svg{width:21px;height:21px;stroke-width:1.9}
+.g4hdot{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:4px;background:var(--g4red);box-shadow:0 0 0 2px #1d1d1d}
+.g4b44:active,.g4cap i:active{opacity:.55}
+/* ---------- лента ---------- */
+.g4f{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
+.g4f::-webkit-scrollbar{display:none}
+.g4l{padding:calc(var(--g3t) + 44px + 22px) 0 calc(110px + env(safe-area-inset-bottom,0px));min-height:100%}
+.g4sh{display:flex;align-items:baseline;gap:6px;padding:0 32px;margin:22px 0 9px;font-size:15px;line-height:20px;color:var(--g4sub);letter-spacing:-.24px}
+.g4sh span{color:var(--g4sub);opacity:.8}
+.g4home>.g4sh:first-child{margin-top:4px}
+.g4card{margin:0 16.3px 12px;border-radius:26px;background:var(--g4card);box-shadow:inset 0 0 0 1px var(--g4edge);overflow:hidden}
+html[data-theme=light] .g4card{box-shadow:0 0 0 .5px rgba(0,0,0,.04)}
+.g4r{display:flex;align-items:center;min-height:54px;position:relative;padding:0 16px 0 0}
+.g4r.tap{cursor:pointer}
+.g4r.tap:active{background:rgba(255,255,255,.06)}
+html[data-theme=light] .g4r.tap:active{background:rgba(0,0,0,.05)}
+.g4r+.g4r::before{content:'';position:absolute;left:51.4px;right:0;top:0;height:1px;background:var(--g4sep)}
+.g4r>.g4ai,.g4r>.g4pi{margin:0 12.7px 0 15.7px}
+.g4rt{flex:1;min-width:0;padding:15px 0;display:flex;flex-direction:column}
+.g4rt b{font-weight:400;font-size:17px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4rt span{font-size:15px;line-height:19px;color:var(--g4sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.24px;margin-top:1px}
+.g4rt em{font-style:normal}
+.g4rt em.wait{color:var(--g4blue)}.g4rt em.bad{color:var(--g4red)}
+.g4ch{flex:none;margin-left:10px;color:var(--g4ch);display:flex}
+.g4ch .g4v{width:7px;height:11px}
+.g4dot{flex:none;width:8px;height:8px;border-radius:4px;background:var(--g4blue);margin:0 2px 0 10px;font-style:normal}
+.g4dot.bad{background:var(--g4red)}
+.g4pl{flex:none;margin-left:10px;height:32px;line-height:32px;padding:0 13px;border-radius:16px;background:var(--g4pl);color:var(--g4plt);font-size:15px;font-weight:500;
+ letter-spacing:-.24px;white-space:nowrap;cursor:pointer}
+.g4pl.w{background:#fff;color:#000;height:39.4px;line-height:39.4px;border-radius:20px;padding:0 17.3px;font-size:17px;letter-spacing:-.43px}
+html[data-theme=light] .g4pl.w{background:#0d0d0d;color:#fff}
+.g4pl:active{opacity:.6}
+.g4ai{flex:none;width:22px;height:22px;display:block}
+.g4ai-h{border-radius:6px;background:#000 url(logo-portrait.png) center 1px/92% no-repeat;box-shadow:0 0 0 .5px rgba(255,255,255,.25)}
+svg.g4ai-c{fill:#d97757}
+svg.g4ai-x{fill:currentColor;width:21px;height:21px}
+.g4ai-s{display:flex;align-items:center;justify-content:center;color:var(--g4fg)}
+.g4ai-s svg{width:21px;height:21px;stroke-width:1.9}
+.g4pi{flex:none;width:22px;display:flex;justify-content:center;color:var(--g4fg)}
+.g4promo{display:flex;align-items:center;gap:12px;min-height:92px;padding:15px 18px 15px 22px}
+.g4promo[data-a]{cursor:pointer}
+.g4promo>div:first-child{flex:1;min-width:0}
+/* кнопка плашки — по тексту, не растягивается (была на всю ширину: правило выше цепляло и её) */
+.g4promo>.g4pl{flex:none;width:auto;text-align:center}
+.g4promo b{display:block;font-weight:500;font-size:17px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4promo span{display:block;font-size:15px;line-height:18px;color:#a8a8a8;margin-top:4px;letter-spacing:-.24px}
+html[data-theme=light] .g4promo span{color:var(--g4sub)}
+.g4promo .g4pl{margin-left:0}
+.g4promo .g4pl.w{font-size:15px;padding:0 14px;height:36px;line-height:36px;letter-spacing:-.24px}
+.g4home>.g4promo:first-child{margin-top:2px}
+.g4calm{display:flex;align-items:flex-start;gap:14px;padding:14px 32px 6px 30px;color:var(--g4fg)}
+.g4calm>.g4v{width:22px;height:22px;color:var(--g4ok)}
+.g4calm b{display:block;font-weight:500;font-size:17px;line-height:22px}
+.g4calm span{display:block;font-size:15px;line-height:19px;color:var(--g4sub);letter-spacing:-.24px;margin-top:2px}
+
+/* ---------- вопрос Claude (3212_0059.41 / .clq экрана Claude): #2a2a2a r23, вопрос 20 pt, варианты списком с линией #595959 ---------- */
+.g4qs{display:flex;flex-direction:column;gap:12px;margin:0 16.3px 12px}
+.g4cq{background:var(--clcard,#2a2a2a);border-radius:23px;padding:16px 0 14px;color:#f0eeed;font-family:var(--clsans,var(--g4f));letter-spacing:-.43px}
+html[data-theme=light] .g4cq{background:#fff;color:#141413;box-shadow:0 0 0 .5px rgba(0,0,0,.06)}
+.g4cqm{display:flex;align-items:center;gap:8px;padding:0 20px 0 24px;font-size:13px;line-height:18px;color:#bdbcb0;letter-spacing:-.08px}
+.g4cqm .g4ai{width:16px;height:16px}
+.g4cqm span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4cqm em{font-style:normal;flex:none}
+.g4cqh{padding:8px 24px 6px;font-weight:400;font-size:20px;line-height:27.7px;letter-spacing:-.4px;word-break:break-word}
+.g4cqd{margin:0 24px 6px;color:#bdbcb0;font-size:15px;line-height:20px}
+.g4cqpre{margin:6px 24px 6px;background:#1f1e1d;border-radius:12px;padding:10px 12px;font:13px/18px ui-monospace,'SF Mono',Menlo,Consolas,monospace;color:#c2c0b6;white-space:pre-wrap;max-height:160px;overflow:auto;letter-spacing:0}
+html[data-theme=light] .g4cqpre{background:#f0eee6;color:#3d3d3a}
+.g4cqo{margin:0 24px;padding:13px 0;border-bottom:1px solid #595959;cursor:pointer}
+html[data-theme=light] .g4cqo{border-bottom-color:#e3dfd3}
+.g4cqo b{display:block;font-weight:400;font-size:16px;line-height:22px}
+.g4cqo span{display:block;font-size:13px;line-height:18px;color:#bdbcb0;margin-top:1px}
+.g4cqo.rec span:first-of-type{color:#e0a084}
+.g4cqo.bad b{color:var(--clred,#ff6961)}
+.g4cqo.bad{border-bottom:0}
+.g4cq .auto b,.g4gq .auto b,.g4cq .auto .mono,.g4gq .auto .mono{font-family:inherit!important;font-weight:500;letter-spacing:0}
+.g4cqo:active{opacity:.6}
+.g4cqi{display:flex;align-items:center;margin:2px 24px 0;min-height:50px;border-bottom:1px solid #595959}
+html[data-theme=light] .g4cqi{border-bottom-color:#e3dfd3}
+.g4cqi input{flex:1;border:0;outline:none;background:none;color:inherit;font:17px var(--clsans,var(--g4f));letter-spacing:-.43px;padding:0;min-width:0}
+.g4cqi input::placeholder{color:#bdbcb0}
+.g4cqb{display:flex;justify-content:flex-end;gap:8px;padding:14px 16px 2px}
+.g4cqb div{height:43px;border-radius:22px;padding:0 20px;min-width:115px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;cursor:pointer}
+.g4cqsk{border:1px solid #434343;color:#f0eeed}
+.g4cqsb{background:#bfbfbf;color:#4d4d4d}.g4cqsb.on{background:#f8f8f6;color:#161614}
+html[data-theme=light] .g4cqsk{border-color:#e3dfd3;color:#141413}
+html[data-theme=light] .g4cqsb{background:#e8e6dc;color:#8f8c86}html[data-theme=light] .g4cqsb.on{background:#141413;color:#fff}
+.g4cq .auto,.g4gq .auto{margin:12px 24px 0;font-size:13px;line-height:17px;color:#bdbcb0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:none;border:0;padding:0}
+.g4gq .auto{margin:12px 0 0;color:var(--g4sub)}
+.g4cq .auto .bar,.g4gq .auto .bar{flex:1 1 100%;height:3px;border-radius:2px;background:#3d3d3a;overflow:hidden;order:3}
+.g4gq .auto .bar{background:var(--g4pl)}
+.g4cq .auto .bar i{display:block;height:100%;background:#d97757}.g4gq .auto .bar i{display:block;height:100%;background:#fff}
+.g4cq .auto a{color:#e0a084;cursor:pointer}.g4gq .auto a{color:var(--g4fg);text-decoration:underline;cursor:pointer}
+/* ---------- вопрос Codex / Hermes (как .g3card экрана чата ChatGPT): #1e1e1e r20, пилюли 44 r22 #2f2f2f, «Ответить» белая ---------- */
+.g4gq{background:var(--g4card);border-radius:20px;padding:16px;box-shadow:inset 0 0 0 1px var(--g4edge)}
+.g4gqk{display:flex;align-items:center;gap:8px;font-size:17px;line-height:22px}
+.g4gqk .g4ai{width:20px;height:20px}
+.g4gqk b{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4gqk em{font-style:normal;color:var(--g4sub);font-size:15px;flex:none}
+.g4gqp{margin:2px 0 0 28px;font-size:13px;line-height:17px;color:var(--g4sub)}
+.g4gqq{color:#d8d8d8;font-size:16px;line-height:22px;margin:8px 0 12px;white-space:pre-wrap;word-break:break-word}
+html[data-theme=light] .g4gqq{color:#3c3c3c}
+.g4gqpre{background:#121212;border-radius:12px;padding:10px 12px;margin:0 0 12px;font:13px/18px ui-monospace,'SF Mono',Menlo,Consolas,monospace;letter-spacing:0;color:#a5abb9;white-space:pre-wrap;max-height:180px;overflow:auto}
+html[data-theme=light] .g4gqpre{background:#f4f4f4;color:#3c3c3c}
+.g4gqo{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.g4gqi input{width:100%;height:44px;border-radius:22px;border:0;background:#2a2a2a;color:var(--g4fg);font:16px var(--g4f);letter-spacing:-.3px;padding:0 16px;margin-bottom:10px;outline:none}
+html[data-theme=light] .g4gqi input{background:#f0f0f0}
+.g4gqb{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.g4gpb{height:44px;border-radius:22px;background:var(--g4pl);color:var(--g4fg);display:flex;align-items:center;justify-content:center;padding:0 18px;font-weight:600;font-size:16px;letter-spacing:-.3px;cursor:pointer}
+.g4gpb.pri,.g4gpb.rec{background:#fff;color:#000}
+html[data-theme=light] .g4gpb.pri,html[data-theme=light] .g4gpb.rec{background:#0d0d0d;color:#fff}
+.g4gpb.dis{opacity:.45}
+.g4gpb:active{opacity:.6}
+/* быстрые фразы под полем «Свой ответ» — только пока поле в фокусе */
+.g4tpl{display:none;flex-wrap:wrap;gap:6px}
+.g4typ .g4tpl{display:flex}
+.g4cq .g4tpl{margin:10px 24px 0}.g4gq .g4tpl{margin:-2px 0 10px}
+.g4tpl i{font-style:normal;height:30px;line-height:30px;padding:0 12px;border-radius:15px;font-size:14px;letter-spacing:-.15px;cursor:pointer;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.g4cq .g4tpl i{background:#3a3a37;color:#f0eeed}.g4gq .g4tpl i{background:var(--g4pl);color:var(--g4fg)}
+html[data-theme=light] .g4cq .g4tpl i{background:#f0eee6;color:#141413}
+.g4tpl i:active{opacity:.6}
+/* раскрытая боевая карточка (qfull) — в карточке ChatGPT */
+.g4sk .qf93{margin:0 16.3px 12px;border-radius:20px;background:var(--g4card);padding:8px 6px}
+
+/* ---------- базовые экраны (Проекты, экран проекта, Мозг, Ещё, Журнал, Настройки, Система) в облике ChatGPT Settings ---------- */
+.g4sk{--bg:var(--g4bg);--s1:var(--g4card);--s2:var(--g4pl);--bar:var(--g4card);--line:var(--g4sep);--line2:rgba(255,255,255,.12);--tx:var(--g4fg);--mut:var(--g4sub);--dim:#8e8e8e;
+ --gold:#fff;--amber:#fff;--on-gold:#000;--g-on:var(--g4seg);--glow:transparent;--font:var(--g4f);--cl-s:var(--g4card);--cl-line:var(--g4sep);--cl-tx:var(--g4fg);--cl-mut:var(--g4sub);
+ font-family:var(--g4f)}
+html[data-theme=light] .g4sk{--line2:rgba(0,0,0,.1);--gold:#0d0d0d;--amber:#0d0d0d;--on-gold:#fff;--dim:#8a8a8e}
+/* шапки базы и кнопки «‹ Назад» — их заменяет шапка каркаса */
+.g4sk .hd,.g4sk>.back,.g4sk .bm86,.g4sk .sec>.back,.g4sk>div>.back{display:none!important}
+.g4sk .sec{padding:0 16.3px;margin-top:22px}
+.g4sk>.sec:first-child,.g4sk>.hd+.sec{margin-top:0}
+.g4sk .sh{font:400 15px/20px var(--g4f)!important;text-transform:none!important;letter-spacing:-.24px!important;color:var(--g4sub)!important;margin:0 0 9px 15.7px!important;min-height:20px}
+.g4sk .sh a{color:var(--g4fg)!important;font-weight:500;text-transform:none;letter-spacing:-.24px}
+.g4sk .sh .sum{color:var(--g4sub);text-transform:none;letter-spacing:-.24px;font-size:15px}
+.g4sk .grp{background:var(--g4card)!important;border:0!important;border-radius:26px!important;box-shadow:inset 0 0 0 1px var(--g4edge)}
+html[data-theme=light] .g4sk .grp{box-shadow:0 0 0 .5px rgba(0,0,0,.04)}
+.g4sk .row,.g4sk .rw86,.g4sk .row2{min-height:54px;padding:12px 16px 12px 16px;border-top:1px solid var(--g4sep)!important;border-bottom:0!important;gap:12.7px}
+.g4sk .grp>.row:first-child,.g4sk .grp>.rw86:first-child,.g4sk .grp>.row2:first-child,.g4sk .grp>:first-child{border-top:0!important}
+.g4sk .row:active,.g4sk .rw86.tap:active,.g4sk .row2:active{background:rgba(255,255,255,.06)}
+.g4sk .n,.g4sk .n2{font:400 17px/22px var(--g4f)!important;letter-spacing:-.43px;color:var(--g4fg)}
+.g4sk .d,.g4sk .d2{font-size:15px!important;line-height:19px;color:var(--g4sub)!important;letter-spacing:-.24px}
+.g4sk .mono{letter-spacing:0}
+.g4sk .chev{border-color:var(--g4ch)!important;width:8px;height:8px;border-width:0 2px 2px 0!important}
+.g4sk .cv86{color:var(--g4ch)}
+.g4sk .ri86{background:transparent!important;color:var(--g4fg)!important;width:24px;border-radius:0}
+.g4sk .ri86 svg{width:22px;height:22px;stroke-width:1.8}
+/* переключатель iOS: 51×31, зелёный #34c759 */
+.g4sk .sw{width:51px!important;height:31px!important;border-radius:16px!important;border:0!important;background:rgba(120,120,128,.32)!important}
+.g4sk .sw:after{width:27px!important;height:27px!important;left:2px!important;top:2px!important;border-radius:50%!important;background:#fff!important;box-shadow:0 3px 8px rgba(0,0,0,.15),0 1px 1px rgba(0,0,0,.16)}
+.g4sk .sw.on{background:var(--g4ok)!important}
+.g4sk .sw.on:after{left:22px!important}
+html[data-theme=light] .g4sk .sw{background:rgba(120,120,128,.16)!important}
+.g4sk .sw.on{background:var(--g4ok)!important}
+/* сегменты (Scheduled: Active / Paused / Completed): текст серым, выбранный — пилюля #393939 */
+.g4sk .seg{border:0!important;background:transparent;padding:0;gap:4px}
+.g4sk .seg span{border:0!important;background:transparent!important;color:var(--g4sub)!important;font:500 15px var(--g4f)!important;letter-spacing:-.24px;border-radius:18px!important;min-height:34px;padding:0 14px!important}
+.g4sk .seg span.on{color:var(--g4fg)!important;background:var(--g4seg)!important}
+.g4sk .hs88 .seg span.on{background:transparent!important}
+.g4sk .sl88{border-radius:18px!important;background:var(--g4seg)!important;box-shadow:none!important}
+.g4sk .pmbar{margin:0 0 6px}
+/* кнопки: пилюли; главная — белая */
+.g4sk .btn{border-radius:25px!important;border:0!important;background:var(--g4pl)!important;color:var(--g4fg)!important;font:600 16px var(--g4f)!important;letter-spacing:-.3px;box-shadow:none!important}
+.g4sk .btn.sm{font-size:15px!important}
+.g4sk .btn.pri{background:#fff!important;color:#000!important}
+html[data-theme=light] .g4sk .btn.pri{background:#0d0d0d!important;color:#fff!important}
+.g4sk .btn.danger{color:var(--g4red)!important}
+.g4sk .in{background:var(--g4card)!important;border:0!important;border-radius:22px!important;color:var(--g4fg)!important;font:16px var(--g4f)!important;letter-spacing:-.3px;box-shadow:inset 0 0 0 1px var(--g4edge)}
+.g4sk textarea.in{border-radius:18px!important}
+.g4sk .chips span{border-radius:18px;border:0!important;background:var(--g4pl)!important;color:var(--g4fg)}
+.g4sk .prog{background:var(--g4pl)!important;height:4px;border-radius:2px}
+.g4sk .prog i{background:var(--g4fg)!important;box-shadow:none!important;border-radius:2px}
+/* «?» у заголовка (Лимит расхода): аккуратный кружок 17 pt */
+.g4sk .gq{display:inline-flex!important;align-items:center;justify-content:center;width:17px;height:17px;border-radius:9px;margin-left:6px;vertical-align:1px;
+ background:var(--g4pl)!important;color:var(--g4sub)!important;border:0!important;font:600 11px/1 var(--g4f)!important;letter-spacing:0!important;padding:0!important;cursor:pointer}
+/* заголовки секций базы: без «⋮⋮», линии и стрелки ▾, всё одним шрифтом */
+.g4sk .sh>span::before,.g4sk .sh>span::after,.g4sk .sh.col::before{display:none!important;content:none!important}
+.g4sk .sh *,.g4sk .sh .mono{font-family:var(--g4f)!important;letter-spacing:-.24px!important;text-transform:none!important}
+/* серия сворачиваемых секций = одна карточка со строками 54 pt; справа значение серым и шеврон */
+.g4colg{margin:22px 16.3px 0;border-radius:26px;background:var(--g4card);box-shadow:inset 0 0 0 1px var(--g4edge);overflow:hidden}
+html[data-theme=light] .g4colg{box-shadow:0 0 0 .5px rgba(0,0,0,.04)}
+.g4colg>.sec{padding:0!important;margin:0!important}
+.g4colg>.sec+.sec{border-top:1px solid var(--g4sep)}
+.g4colg .sh.col{margin:0!important;min-height:54px;padding:0 18px 0 16px;color:var(--g4fg)!important;font-size:17px!important;line-height:22px!important;letter-spacing:-.43px!important}
+.g4colg .sh.col>span:first-child{font-size:17px;letter-spacing:-.43px!important;color:var(--g4fg);flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4colg .sh.col .sum{font-size:17px!important;color:var(--g4sub)!important;margin-left:10px;white-space:nowrap;flex:none;max-width:55%;overflow:hidden;text-overflow:ellipsis}
+.g4colg .sh.col::after{border-color:var(--g4ch)!important;width:8px!important;height:8px!important;border-width:0 2px 2px 0!important;margin-left:10px!important}
+.g4colg .sh.col:active{background:rgba(255,255,255,.06)}
+.g4colg .grp{background:transparent!important;box-shadow:none!important;border-radius:0!important;border-top:1px solid var(--g4sep)!important;margin:0!important}
+.g4sk .mr86{margin-top:0}
+/* плитки агентов на «Проектах» — карточки */
+.g4sk .ags86>div{background:var(--g4card)!important;border:0!important;border-radius:20px!important;box-shadow:inset 0 0 0 1px var(--g4edge)}
+.g4sk .ags86>div.on{box-shadow:inset 0 0 0 1.5px var(--g4fg)}
+.g4sk .ags86 b{font:600 15px var(--g4f);letter-spacing:-.24px}
+/* прочие базовые плашки/карточки */
+.g4sk .alert,.g4sk .card,.g4sk .qcard{background:var(--g4card)!important;border:0!important;border-radius:20px!important;box-shadow:inset 0 0 0 1px var(--g4edge)!important}
+.g4sk .reader{font-family:var(--g4f)}
+.g4sk .qb8{background:var(--g4blue)}
+
+/* ---------- нижняя навигация: плавающая капсула iOS 26, монохром ChatGPT, значки бокового меню ---------- */
+body.g4nav.gl87.g86 .nav{background:linear-gradient(#232323,rgba(29,29,29,.86) 40%);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.12),0 12px 32px rgba(0,0,0,.6);
+ -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);font-family:var(--g4f)}
+body.g4nav .gb87,body.g4nav.gl87.g86 .nav:after{display:none}
+body.g4nav.gl87.g86 .nav div{color:rgba(255,255,255,.55)}
+body.g4nav.gl87.g86 .nav div.on,body.g4nav.gl87.g86 .nav div.hov{color:#fff}
+body.g4nav .ln87>span{background:rgba(255,255,255,.12);box-shadow:none}
+body.g4nav.gl87.g86 .nav div i{height:23px;display:flex;align-items:center;justify-content:center}
+body.g4nav.gl87.g86 .nav div i .g4ni{width:24px;height:24px;display:block}
+body.g4nav.gl87.g86 .nav div.on i .g4ni{stroke-width:2.1}
+.sd3 svg.g4sdi{width:22px;height:22px;fill:none!important;stroke:currentColor}
+.sd3.g4side .sd3hb.srch{display:none}
+body.g4nav.lc87 .lb87,body.g4nav .lb87{font:500 10.5px/14px var(--g4f);letter-spacing:.05px;text-transform:none}
+body.g4nav .bg87{background:var(--g4blue);font-family:var(--g4f);box-shadow:0 0 0 2px #1d1d1d}
+body.g4nav .bg87.bad{background:var(--g4red)}
+html[data-theme=light] body.g4nav.gl87.g86 .nav{background:rgba(255,255,255,.82);box-shadow:inset 0 1px 0 #fff,0 0 0 .5px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.12)}
+html[data-theme=light] body.g4nav.gl87.g86 .nav div{color:rgba(0,0,0,.45)}
+html[data-theme=light] body.g4nav.gl87.g86 .nav div.on{color:#0d0d0d}
+html[data-theme=light] body.g4nav .ln87>span{background:rgba(0,0,0,.07)}
+
 </style>
 </head>
 <body>
@@ -2269,7 +2517,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=106;
+var VER=107;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -4824,8 +5072,8 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
   var d=Math.floor(h/24);return d==1?'Вчера':d<7?d+' дн назад':d<14?'На прошлой неделе':new Date(ts*1000).toLocaleDateString('ru',{day:'numeric',month:'long'})}
  function waits(x){return !!(x.wait||x.stc=='blocked')}
  /* ---------- главный экран (тот, что отъезжает) ---------- */
- function main(){return $i('cl3')||$i('g3')}
- function sty(){var s=st();return s&&s.kind=='claude'?'c':'g'}
+ function main(){return $i('cl3')||$i('g3')||$i('g4')}/* gpt18: на Пульте отъезжает #g4 */
+ function sty(){var s=st();if(!$i('cl3')&&!$i('g3'))return 'g';return s&&s.kind=='claude'?'c':'g'}
  /* кривые по реальным pts кадров (fit_spring.py): ChatGPT 316.93–317.23 с записи 3214 — 309 мс cubic-bezier(.25,1,.3,1) RMS 0.004;
     Claude 10.19–10.51 с записи 3213 — пружина response 0.19, damping 1.0 (256 мс до 1 px) RMS 0.003 */
  var EZ={g:{d:309,e:'cubic-bezier(.25,1,.3,1)'},c:{d:256,e:'linear(0, 0.049, 0.158, 0.286, 0.412, 0.526, 0.625, 0.706, 0.773, 0.825, 0.867, 0.899, 0.924, 0.943, 0.957, 0.968, 0.976, 0.983, 0.987, 0.991, 0.993, 0.995, 0.996, 0.997, 1)'}};
@@ -5155,6 +5403,193 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
   paint:paint,load:load,SD:SD,all:all,pinned:pinned,openChat:openChat,
   /* для сверки со стоп-кадром: позиция экрана в pt и мгновенная отрисовка */
   at:function(x){SD.pos=x;setPos(main(),x);cover()}};
+})();
+
+/* gpt18 Пульт: значки экрана Code (Claude iOS) из стоп-кадров записи (3 px = 1 pt), potrace (hermes-brain tools/panel-tests/gpt3/vectorize_g4.py). Размер — в pt, как в кадре. */
+window.G4V={cc_clock:[22.0,22.0,"M9.96 20.96C9.76 20.94 9.41 20.88 9.17 20.82C8.93 20.76 8.58 20.69 8.40 20.67C8.21 20.64 7.98 20.57 7.87 20.52C7.77 20.47 7.56 20.39 7.41 20.35C7.27 20.32 7.08 20.24 7.00 20.19C6.91 20.14 6.76 20.06 6.65 20.02C6.53 19.99 6.34 19.89 6.21 19.81C6.08 19.73 5.96 19.67 5.93 19.67C5.90 19.67 5.83 19.62 5.76 19.57C5.70 19.52 5.57 19.43 5.48 19.38C5.13 19.18 4.34 18.54 3.90 18.10C3.48 17.69 3.32 17.50 2.77 16.79C2.45 16.36 2.04 15.66 1.89 15.29C1.84 15.17 1.76 15.00 1.72 14.92C1.67 14.84 1.59 14.64 1.55 14.48C1.50 14.32 1.42 14.08 1.36 13.96C1.30 13.83 1.23 13.56 1.19 13.35C1.16 13.15 1.09 12.81 1.05 12.60C0.86 11.78 0.86 10.30 1.04 9.44C1.09 9.21 1.16 8.86 1.19 8.67C1.23 8.48 1.32 8.17 1.40 7.98C1.48 7.79 1.54 7.60 1.54 7.56C1.54 7.49 1.87 6.73 2.02 6.46C2.19 6.13 2.57 5.50 2.66 5.38C2.72 5.31 2.84 5.15 2.92 5.04C3.66 4.01 4.93 2.91 6.02 2.33C6.16 2.26 6.30 2.17 6.34 2.14C6.37 2.11 6.51 2.05 6.64 2.00C6.77 1.96 6.93 1.88 7.00 1.84C7.06 1.79 7.26 1.71 7.43 1.67C7.61 1.62 7.85 1.53 7.97 1.48C8.10 1.42 8.38 1.35 8.63 1.31C8.87 1.28 9.21 1.21 9.40 1.16C9.85 1.05 11.55 1.00 12.04 1.10C12.21 1.13 12.57 1.20 12.83 1.25C13.10 1.30 13.42 1.37 13.54 1.40C13.92 1.49 14.68 1.76 14.84 1.87C14.92 1.92 15.09 1.99 15.20 2.02C15.31 2.06 15.45 2.12 15.51 2.17C15.57 2.21 15.71 2.29 15.81 2.34C15.91 2.38 16.05 2.46 16.11 2.52C16.18 2.57 16.30 2.65 16.40 2.68C16.49 2.72 16.62 2.81 16.69 2.87C16.76 2.93 16.85 3.01 16.90 3.04C17.13 3.20 17.61 3.62 17.96 3.97C18.30 4.31 18.50 4.54 19.09 5.26C19.16 5.35 19.26 5.50 19.30 5.60C19.35 5.69 19.42 5.81 19.46 5.85C19.50 5.90 19.58 6.03 19.63 6.15C19.68 6.26 19.76 6.41 19.81 6.48C19.86 6.55 19.93 6.68 19.96 6.77C19.99 6.86 20.06 7.03 20.13 7.15C20.19 7.27 20.28 7.48 20.31 7.63C20.35 7.78 20.42 8.01 20.48 8.13C20.53 8.25 20.61 8.54 20.65 8.77C20.68 9.00 20.75 9.36 20.79 9.56C20.92 10.17 20.92 10.22 20.92 11.06C20.92 11.76 20.91 11.93 20.81 12.38C20.75 12.66 20.68 13.07 20.64 13.29C20.61 13.51 20.52 13.81 20.46 13.96C20.39 14.11 20.32 14.33 20.29 14.46C20.27 14.59 20.19 14.78 20.13 14.89C20.06 14.99 19.98 15.15 19.96 15.24C19.94 15.32 19.88 15.45 19.83 15.52C19.78 15.59 19.70 15.74 19.64 15.85C19.50 16.15 19.28 16.49 19.13 16.67C19.07 16.75 18.98 16.87 18.95 16.94C18.91 17.01 18.85 17.10 18.81 17.13C18.77 17.16 18.67 17.28 18.58 17.40C18.28 17.81 17.42 18.61 16.87 19.00C16.74 19.09 16.62 19.19 16.60 19.21C16.59 19.23 16.51 19.28 16.42 19.32C16.34 19.35 16.22 19.42 16.17 19.48C16.11 19.53 15.96 19.62 15.83 19.68C15.71 19.73 15.58 19.81 15.55 19.85C15.52 19.89 15.40 19.94 15.28 19.98C15.17 20.01 14.98 20.09 14.86 20.16C14.74 20.23 14.55 20.30 14.44 20.33C14.32 20.36 14.12 20.43 13.98 20.50C13.83 20.57 13.59 20.64 13.40 20.67C13.21 20.69 12.88 20.76 12.67 20.82C12.00 20.99 10.95 21.04 9.96 20.96ZM11.88 19.46C12.14 19.42 12.46 19.37 12.58 19.36C12.93 19.32 13.21 19.25 13.38 19.16C13.46 19.12 13.68 19.05 13.86 19.00C14.03 18.95 14.23 18.88 14.30 18.83C14.36 18.78 14.52 18.71 14.64 18.67C14.77 18.62 14.94 18.54 15.01 18.48C15.09 18.43 15.19 18.36 15.25 18.34C15.35 18.30 15.77 18.01 16.28 17.63C16.61 17.37 17.43 16.55 17.61 16.28C17.69 16.16 17.86 15.91 18.00 15.73C18.13 15.55 18.25 15.38 18.25 15.35C18.25 15.33 18.31 15.20 18.39 15.07C18.47 14.94 18.55 14.79 18.56 14.74C18.58 14.69 18.65 14.52 18.73 14.38C18.80 14.23 18.88 14.04 18.90 13.96C18.91 13.88 18.98 13.68 19.04 13.52C19.11 13.36 19.18 13.12 19.20 12.98C19.47 11.41 19.48 10.95 19.27 9.52C19.20 8.99 19.14 8.74 19.05 8.52C18.98 8.36 18.91 8.15 18.90 8.05C18.88 7.96 18.82 7.81 18.76 7.72C18.70 7.63 18.63 7.48 18.60 7.37C18.57 7.27 18.51 7.13 18.46 7.08C18.42 7.02 18.33 6.88 18.27 6.75C17.93 6.08 17.20 5.18 16.51 4.61C15.78 3.99 15.29 3.66 14.71 3.39C14.58 3.34 14.38 3.24 14.25 3.17C14.12 3.11 13.92 3.03 13.80 3.00C13.67 2.98 13.45 2.90 13.30 2.84C13.09 2.75 12.85 2.70 12.31 2.62C11.29 2.48 10.60 2.47 9.80 2.58C8.76 2.72 8.66 2.74 8.46 2.85C8.36 2.90 8.19 2.96 8.08 2.98C7.91 3.00 7.42 3.21 7.04 3.42C6.96 3.46 6.79 3.55 6.67 3.61C6.54 3.67 6.40 3.75 6.35 3.79C6.31 3.83 6.18 3.93 6.07 4.01C5.97 4.08 5.76 4.23 5.63 4.32C5.31 4.55 4.46 5.40 4.27 5.68C4.19 5.80 4.04 6.01 3.94 6.15C3.84 6.28 3.70 6.49 3.64 6.60C3.58 6.72 3.49 6.87 3.44 6.94C3.39 7.01 3.33 7.11 3.31 7.17C3.30 7.22 3.21 7.41 3.12 7.58C3.03 7.75 2.96 7.94 2.96 8.00C2.96 8.06 2.90 8.22 2.83 8.37C2.77 8.51 2.69 8.76 2.66 8.91C2.64 9.06 2.57 9.44 2.51 9.75C2.36 10.55 2.36 11.55 2.51 12.27C2.57 12.55 2.64 12.91 2.66 13.07C2.68 13.24 2.75 13.47 2.80 13.57C2.86 13.68 2.93 13.86 2.95 13.98C3.03 14.31 3.59 15.43 3.83 15.73C3.88 15.80 3.96 15.91 4.01 15.99C4.35 16.48 4.50 16.66 4.94 17.08C5.40 17.52 5.69 17.76 6.04 18.00C6.12 18.06 6.26 18.16 6.34 18.22C6.42 18.28 6.51 18.33 6.53 18.33C6.56 18.33 6.67 18.40 6.79 18.48C6.90 18.55 7.07 18.64 7.16 18.67C7.24 18.70 7.41 18.77 7.52 18.84C7.64 18.90 7.85 18.98 7.99 19.02C8.13 19.05 8.31 19.12 8.39 19.16C8.49 19.23 8.73 19.28 9.23 19.36C9.62 19.42 10.01 19.48 10.10 19.50C10.43 19.56 11.38 19.55 11.88 19.46ZM13.44 13.41C13.21 13.27 12.91 13.09 12.77 13.01C12.63 12.93 12.49 12.84 12.46 12.81C12.42 12.78 12.30 12.71 12.19 12.65C12.07 12.59 11.92 12.50 11.85 12.45C11.77 12.40 11.59 12.28 11.44 12.19C10.63 11.70 10.40 11.52 10.30 11.33L10.21 11.15L10.21 8.25C10.21 4.95 10.19 5.15 10.56 4.95C10.85 4.79 11.03 4.80 11.32 4.97C11.44 5.04 11.56 5.15 11.58 5.21C11.61 5.28 11.63 6.19 11.63 7.83C11.63 9.22 11.64 10.40 11.65 10.47C11.68 10.60 12.12 10.98 12.30 11.02C12.37 11.04 12.48 11.10 12.56 11.17C12.64 11.24 12.76 11.32 12.84 11.35C12.92 11.39 13.04 11.46 13.11 11.51C13.18 11.57 13.30 11.65 13.40 11.68C13.49 11.72 13.61 11.80 13.67 11.85C13.72 11.91 13.85 11.99 13.94 12.02C14.03 12.06 14.16 12.14 14.22 12.19C14.28 12.25 14.40 12.32 14.48 12.36C14.56 12.39 14.69 12.52 14.77 12.64C14.97 12.93 14.97 13.11 14.77 13.38C14.68 13.49 14.58 13.60 14.54 13.63C14.50 13.65 14.33 13.67 14.16 13.67C13.86 13.67 13.85 13.66 13.44 13.41Z"],cc_filter:[18.0,18.0,"M7.52 16.96C7.27 16.90 6.77 16.61 6.57 16.42C6.44 16.30 6.31 16.11 6.20 15.88L6.03 15.52L6.00 14.33C5.98 13.68 5.97 12.34 5.96 11.35L5.96 9.56L5.76 9.31C5.65 9.17 5.51 9.01 5.46 8.95C5.40 8.90 5.19 8.64 4.98 8.40C4.77 8.15 4.25 7.54 3.81 7.04C3.38 6.55 2.85 5.92 2.63 5.66C2.42 5.40 2.18 5.11 2.10 5.02C1.94 4.83 1.70 4.53 1.51 4.30C1.44 4.21 1.33 4.03 1.27 3.91C1.22 3.79 1.13 3.62 1.08 3.54C1.02 3.42 1.00 3.32 1.00 3.00C1.00 2.60 1.00 2.59 1.20 2.21C1.49 1.63 1.72 1.42 2.27 1.25C2.49 1.18 2.80 1.10 2.96 1.08C3.12 1.05 5.66 1.04 9.17 1.05L15.10 1.06L15.53 1.19C15.76 1.27 15.99 1.35 16.04 1.37C16.26 1.49 16.57 1.86 16.75 2.23C16.93 2.59 16.94 2.61 16.94 3.00C16.93 3.38 16.93 3.41 16.75 3.75C16.65 3.94 16.52 4.16 16.46 4.23C16.40 4.31 16.27 4.47 16.17 4.60C16.06 4.74 15.90 4.93 15.81 5.04C15.72 5.15 15.50 5.42 15.31 5.65C15.03 5.99 14.68 6.40 13.56 7.67C13.50 7.75 13.38 7.89 13.32 7.98C13.25 8.07 13.00 8.36 12.77 8.62C12.40 9.04 12.29 9.17 12.07 9.48C12.01 9.55 12.00 9.96 11.98 12.19C11.95 15.24 11.94 15.43 11.82 15.68C11.76 15.78 11.70 15.92 11.67 16.01C11.59 16.26 11.24 16.58 10.81 16.79L10.44 16.98L9.04 16.99C8.27 16.99 7.59 16.98 7.52 16.96ZM10.15 15.49C10.21 15.44 10.32 15.34 10.39 15.26L10.50 15.11L10.50 12.51C10.50 9.28 10.52 9.10 10.90 8.60C10.98 8.49 11.24 8.19 11.47 7.92C11.71 7.66 11.93 7.40 11.96 7.35C12.05 7.22 12.27 6.96 12.98 6.14C13.32 5.75 13.77 5.23 13.98 4.98C14.38 4.50 14.91 3.87 15.14 3.60C15.35 3.36 15.47 3.10 15.45 2.92C15.44 2.79 15.42 2.76 15.24 2.68C14.91 2.51 14.21 2.49 8.39 2.51C4.17 2.52 2.98 2.54 2.84 2.58C2.66 2.64 2.46 2.83 2.46 2.94C2.46 3.08 2.74 3.54 3.03 3.87C3.19 4.07 3.40 4.30 3.47 4.40C3.55 4.49 3.71 4.67 3.82 4.81C4.00 5.03 4.41 5.50 4.85 6.01C4.94 6.12 5.09 6.28 5.17 6.37C5.25 6.46 5.38 6.61 5.47 6.71C5.55 6.81 5.77 7.07 5.95 7.28C7.02 8.53 7.11 8.65 7.25 8.94C7.38 9.22 7.42 9.88 7.42 12.31C7.42 13.57 7.43 14.73 7.45 14.88C7.48 15.11 7.51 15.20 7.61 15.32C7.81 15.57 7.89 15.58 9.02 15.57C9.91 15.56 10.03 15.55 10.15 15.49Z"],cc_plus:[15.0,15.0,"M7.33 13.97C7.16 13.91 7.09 13.85 6.99 13.69L6.90 13.52L6.89 10.93C6.88 9.09 6.87 8.31 6.83 8.25C6.81 8.20 6.74 8.14 6.68 8.12C6.62 8.10 5.55 8.08 4.05 8.08L1.52 8.08L1.30 7.97C1.13 7.89 1.06 7.83 1.01 7.71C0.92 7.49 0.98 7.27 1.18 7.11L1.34 6.98L3.97 6.96C5.90 6.94 6.63 6.92 6.69 6.89C6.90 6.77 6.89 6.87 6.89 4.11C6.90 1.67 6.90 1.51 6.97 1.36C7.09 1.13 7.22 1.04 7.46 1.04C7.62 1.04 7.69 1.07 7.79 1.15C8.05 1.37 8.04 1.29 8.04 4.12L8.04 6.70L8.14 6.82L8.24 6.94L10.92 6.96C13.52 6.98 13.61 6.98 13.72 7.06C14.01 7.28 14.04 7.67 13.78 7.89C13.71 7.95 13.58 8.02 13.50 8.04C13.41 8.07 12.35 8.08 10.85 8.08C9.48 8.08 8.31 8.10 8.26 8.11C8.04 8.17 8.04 8.17 8.04 10.93C8.04 13.34 8.04 13.49 7.96 13.65C7.92 13.75 7.84 13.86 7.78 13.89C7.67 13.96 7.43 14.01 7.33 13.97Z"],cc_laptop:[22.0,18.0,"M3.66 16.95C3.50 16.93 3.21 16.85 3.00 16.77C2.79 16.69 2.61 16.62 2.59 16.62C2.55 16.62 2.41 16.52 2.04 16.22C1.97 16.16 1.78 15.97 1.64 15.80C1.45 15.57 1.37 15.45 1.35 15.32C1.34 15.22 1.28 15.03 1.23 14.90C1.07 14.49 1.04 14.25 1.04 13.15C1.03 12.00 1.04 11.93 1.28 11.75C1.48 11.62 1.76 11.58 2.50 11.59C2.89 11.59 3.22 11.58 3.25 11.56C3.28 11.55 3.35 11.46 3.42 11.36L3.54 11.20L3.54 8.07C3.54 3.92 3.60 2.85 3.85 2.53C3.90 2.46 3.98 2.33 4.02 2.25C4.09 2.10 4.52 1.67 4.59 1.67C4.61 1.67 4.69 1.61 4.77 1.54C4.90 1.43 5.26 1.27 5.75 1.11C5.85 1.08 7.17 1.06 10.10 1.05L14.30 1.04L14.42 1.16C14.51 1.25 14.54 1.33 14.54 1.43C14.54 1.51 14.58 1.69 14.62 1.83C14.73 2.17 14.73 2.27 14.61 2.39L14.51 2.49L10.44 2.50C8.21 2.50 6.28 2.52 6.16 2.54C5.75 2.61 5.49 2.73 5.30 2.96C5.20 3.07 5.11 3.21 5.09 3.26C5.06 3.33 5.04 4.99 5.04 7.40C5.03 11.30 5.03 11.43 5.11 11.50C5.19 11.58 5.36 11.58 11.02 11.58C16.69 11.59 16.85 11.58 16.93 11.51C17.00 11.43 17.01 11.31 17.01 8.20C17.02 6.43 17.04 4.95 17.06 4.91C17.11 4.79 17.28 4.77 17.43 4.85C17.50 4.90 17.70 4.94 17.91 4.96C18.27 5.00 18.44 5.07 18.49 5.21C18.51 5.25 18.51 6.58 18.50 8.16C18.49 9.75 18.49 11.10 18.51 11.16C18.53 11.23 18.61 11.35 18.68 11.44L18.82 11.58L19.56 11.58C20.41 11.58 20.61 11.62 20.81 11.82C21.05 12.05 21.06 12.14 21.01 13.42C20.97 14.48 20.96 14.58 20.86 14.85C20.81 15.01 20.74 15.22 20.71 15.31C20.60 15.75 19.81 16.50 19.25 16.70C19.10 16.76 18.88 16.84 18.75 16.89L18.52 16.98L11.23 16.98C7.21 16.99 3.81 16.97 3.66 16.95ZM18.54 15.44C18.76 15.35 18.91 15.25 19.08 15.08C19.40 14.77 19.50 14.47 19.54 13.79C19.57 13.25 19.54 13.12 19.39 13.05C19.25 12.98 2.93 12.98 2.70 13.04C2.61 13.07 2.52 13.12 2.50 13.17C2.47 13.22 2.47 13.44 2.50 13.80C2.54 14.48 2.65 14.78 2.94 15.06C3.16 15.28 3.26 15.34 3.67 15.48L3.98 15.58L11.10 15.57L18.23 15.56L18.54 15.44Z"],cc_ring:[12.0,12.0,"M5.36 10.95C4.69 10.86 3.74 10.48 3.19 10.09C1.99 9.25 1.20 7.91 1.04 6.43C0.97 5.80 1.04 5.21 1.28 4.50C1.46 3.97 1.72 3.44 1.98 3.09C2.23 2.75 2.81 2.18 3.14 1.94C4.12 1.25 5.50 0.89 6.60 1.04C7.37 1.15 8.27 1.49 8.88 1.91C9.20 2.14 9.91 2.84 10.12 3.16C10.56 3.81 10.91 4.77 11.01 5.56C11.12 6.58 10.77 7.87 10.12 8.84C9.91 9.16 9.20 9.87 8.90 10.07C7.79 10.81 6.53 11.13 5.36 10.95ZM6.46 9.48C7.28 9.35 7.79 9.12 8.35 8.63C8.88 8.18 9.22 7.60 9.42 6.84C9.54 6.37 9.55 6.27 9.53 5.90C9.46 4.61 8.81 3.53 7.74 2.93C7.39 2.73 7.02 2.62 6.46 2.52C6.13 2.46 6.01 2.46 5.73 2.50C5.20 2.57 4.63 2.74 4.34 2.91C3.47 3.41 2.93 4.10 2.66 5.05C2.54 5.46 2.52 5.58 2.52 6.00C2.52 6.89 2.85 7.74 3.44 8.37C4.04 9.00 4.62 9.31 5.56 9.48C5.95 9.55 6.04 9.55 6.46 9.48Z"],cc_nocloud:[17.67,18.0,"M15.94 16.79C15.69 16.63 1.34 2.31 1.04 1.92C0.87 1.71 0.83 1.63 0.85 1.55C0.89 1.40 1.12 1.10 1.23 1.05C1.37 0.99 1.70 0.99 1.82 1.05C2.00 1.16 16.84 16.02 16.90 16.16C17.00 16.39 16.92 16.57 16.61 16.80C16.39 16.96 16.20 16.95 15.94 16.79ZM3.33 15.92C2.78 15.88 2.10 15.65 1.82 15.42C1.70 15.32 1.59 15.23 1.57 15.22C1.44 15.14 1.13 14.65 1.10 14.49C1.09 14.39 1.03 14.22 0.98 14.10C0.89 13.90 0.88 13.84 0.87 12.83C0.86 11.94 0.87 11.75 0.93 11.65C1.09 11.34 1.33 11.25 2.00 11.25C2.27 11.25 2.54 11.23 2.60 11.21C2.84 11.12 2.83 11.16 2.84 8.84C2.84 6.45 2.83 6.54 3.15 6.32C3.41 6.14 3.62 6.15 3.91 6.33C4.03 6.41 4.15 6.52 4.17 6.57C4.19 6.63 4.21 7.61 4.21 8.80C4.21 11.09 4.22 11.18 4.42 11.23C4.48 11.24 5.49 11.25 6.67 11.26C8.78 11.27 8.82 11.27 8.98 11.36C9.18 11.47 9.25 11.60 9.25 11.85C9.25 12.08 9.15 12.22 8.91 12.31C8.75 12.38 8.45 12.38 5.57 12.38L2.41 12.38L2.31 12.48C2.21 12.57 2.21 12.60 2.21 13.07C2.21 13.34 2.23 13.69 2.25 13.85C2.28 14.12 2.30 14.15 2.49 14.34C2.60 14.46 2.73 14.57 2.77 14.60C2.83 14.63 4.05 14.65 7.52 14.67C12.80 14.69 12.38 14.66 12.62 15.03C12.69 15.14 12.75 15.27 12.75 15.32C12.75 15.43 12.49 15.80 12.34 15.87C12.24 15.93 11.73 15.94 7.98 15.94C5.64 15.94 3.55 15.93 3.33 15.92ZM16.02 13.84C15.70 13.65 15.59 13.36 15.64 12.90C15.70 12.48 15.56 12.38 14.95 12.38C14.77 12.38 14.58 12.36 14.51 12.33C14.35 12.27 13.80 11.72 13.70 11.52C13.63 11.36 13.63 11.19 13.63 8.19C13.62 5.51 13.61 4.99 13.56 4.81C13.44 4.39 13.37 4.33 12.87 4.23C12.63 4.18 12.07 4.17 9.51 4.17L6.44 4.17L6.22 4.04C5.96 3.89 5.88 3.78 5.88 3.59C5.88 3.42 6.08 3.11 6.24 3.05C6.33 3.01 7.26 3.00 9.88 3.01C13.04 3.02 13.41 3.03 13.52 3.09C14.03 3.37 14.17 3.46 14.34 3.63C14.44 3.74 14.61 3.97 14.71 4.15L14.90 4.48L14.92 7.76L14.94 11.04L15.03 11.13C15.12 11.22 15.17 11.23 15.80 11.25C16.54 11.28 16.76 11.33 16.86 11.54C16.94 11.69 16.94 13.50 16.86 13.59C16.84 13.63 16.74 13.72 16.65 13.79C16.46 13.94 16.22 13.96 16.02 13.84Z"],cc_search:[16.0,16.0,"M14.05 14.80C13.94 14.71 13.25 14.04 12.52 13.32L11.21 12.00L11.01 12.00C10.84 12.00 10.76 12.03 10.52 12.19C10.37 12.29 10.22 12.38 10.20 12.38C10.17 12.38 10.09 12.42 10.01 12.48C9.94 12.54 9.77 12.62 9.64 12.67C9.50 12.71 9.31 12.80 9.20 12.86C9.08 12.92 8.85 12.99 8.63 13.02C8.43 13.05 8.12 13.11 7.94 13.14C7.51 13.22 6.84 13.22 6.43 13.15C6.25 13.11 5.93 13.05 5.72 13.02C5.48 12.98 5.24 12.91 5.09 12.84C4.96 12.77 4.75 12.69 4.62 12.65C4.49 12.61 4.36 12.55 4.33 12.51C4.30 12.48 4.17 12.40 4.06 12.35C3.94 12.30 3.83 12.23 3.81 12.21C3.80 12.18 3.68 12.09 3.56 12.02C3.33 11.87 2.47 11.03 2.21 10.71C2.13 10.61 2.03 10.45 1.99 10.36C1.95 10.26 1.87 10.15 1.83 10.10C1.78 10.05 1.71 9.92 1.67 9.80C1.63 9.68 1.55 9.53 1.51 9.47C1.46 9.40 1.38 9.19 1.34 8.99C1.29 8.80 1.22 8.53 1.17 8.40C0.96 7.80 0.98 6.35 1.20 5.62C1.27 5.41 1.35 5.14 1.37 5.03C1.40 4.91 1.46 4.77 1.50 4.70C1.55 4.64 1.62 4.48 1.67 4.35C1.71 4.22 1.80 4.05 1.87 3.97C1.94 3.89 2.00 3.81 2.00 3.79C2.00 3.69 2.42 3.17 2.82 2.77C3.30 2.30 3.50 2.13 3.71 2.02C3.79 1.98 3.90 1.91 3.96 1.85C4.02 1.80 4.16 1.72 4.29 1.67C4.41 1.63 4.58 1.54 4.66 1.48C4.74 1.43 4.94 1.35 5.11 1.32C5.27 1.28 5.49 1.22 5.60 1.17C5.94 1.02 6.27 0.99 7.34 1.01C8.28 1.02 8.37 1.03 8.60 1.12C8.74 1.17 8.99 1.25 9.17 1.30C9.34 1.34 9.55 1.43 9.64 1.48C9.72 1.54 9.89 1.62 10.02 1.67C10.14 1.72 10.27 1.78 10.30 1.82C10.32 1.85 10.41 1.91 10.48 1.95C10.89 2.16 11.79 3.00 12.05 3.43C12.12 3.54 12.19 3.63 12.21 3.63C12.22 3.63 12.29 3.72 12.35 3.84C12.42 3.96 12.51 4.12 12.57 4.19C12.62 4.26 12.68 4.39 12.71 4.50C12.73 4.60 12.80 4.75 12.86 4.84C12.92 4.93 12.99 5.14 13.03 5.31C13.06 5.47 13.13 5.79 13.19 6.02C13.28 6.38 13.29 6.53 13.30 7.09C13.30 7.67 13.28 7.80 13.19 8.14C13.14 8.35 13.07 8.64 13.04 8.79C13.01 8.94 12.94 9.16 12.88 9.27C12.81 9.39 12.73 9.58 12.69 9.69C12.65 9.81 12.59 9.93 12.56 9.96C12.52 9.99 12.44 10.12 12.37 10.25C12.30 10.37 12.20 10.54 12.14 10.62C12.07 10.72 12.04 10.82 12.04 10.94C12.04 11.11 12.05 11.12 13.52 12.59C15.07 14.15 15.10 14.20 15.02 14.46C14.96 14.66 14.55 14.96 14.34 14.96C14.30 14.96 14.17 14.89 14.05 14.80ZM7.84 11.96C8.05 11.94 8.30 11.88 8.45 11.82C8.59 11.76 8.79 11.69 8.90 11.67C9.01 11.64 9.17 11.58 9.25 11.52C9.33 11.47 9.48 11.39 9.58 11.34C9.69 11.30 9.80 11.23 9.83 11.19C9.86 11.15 9.96 11.08 10.04 11.04C10.19 10.97 11.00 10.19 11.00 10.12C11.00 10.10 11.06 10.01 11.14 9.93C11.22 9.84 11.31 9.70 11.35 9.60C11.39 9.51 11.47 9.37 11.53 9.29C11.58 9.20 11.66 9.02 11.69 8.89C11.73 8.76 11.80 8.56 11.86 8.44C11.95 8.27 11.98 8.14 12.01 7.66C12.08 6.84 12.01 6.10 11.84 5.65C11.77 5.46 11.69 5.24 11.67 5.15C11.64 5.05 11.57 4.92 11.52 4.85C11.47 4.78 11.39 4.65 11.36 4.56C11.32 4.48 11.23 4.34 11.16 4.25C11.10 4.17 10.96 4.01 10.85 3.88C10.60 3.59 10.02 3.07 9.81 2.97C9.72 2.92 9.62 2.85 9.59 2.82C9.56 2.78 9.43 2.71 9.30 2.67C9.18 2.62 8.99 2.53 8.90 2.48C8.78 2.41 8.59 2.36 8.29 2.31C8.06 2.28 7.78 2.23 7.69 2.20C7.25 2.09 5.78 2.28 5.40 2.50C5.28 2.56 5.11 2.64 5.02 2.67C4.93 2.69 4.79 2.77 4.71 2.83C4.63 2.89 4.49 2.98 4.40 3.03C3.94 3.30 3.25 4.01 3.02 4.47C2.98 4.54 2.90 4.67 2.83 4.76C2.76 4.85 2.70 4.99 2.68 5.08C2.67 5.16 2.60 5.33 2.53 5.46C2.23 6.04 2.22 8.06 2.51 8.65C2.57 8.76 2.65 8.95 2.68 9.07C2.72 9.19 2.79 9.33 2.83 9.38C2.87 9.44 2.95 9.56 3.00 9.67C3.13 9.93 3.29 10.12 3.73 10.56C4.15 10.98 4.47 11.22 4.74 11.34C4.84 11.39 4.99 11.47 5.07 11.52C5.15 11.58 5.29 11.64 5.37 11.65C5.45 11.67 5.67 11.73 5.85 11.80C6.35 11.98 7.07 12.04 7.84 11.96Z"],cc_new:[14.67,15.0,"M7.17 13.91C7.11 13.88 7.01 13.75 6.95 13.63L6.83 13.40L6.83 10.93C6.83 8.49 6.83 8.45 6.75 8.33C6.70 8.26 6.62 8.18 6.57 8.16C6.50 8.12 5.86 8.10 3.94 8.08L1.40 8.06L1.22 7.97C1.02 7.86 0.96 7.75 0.96 7.48C0.96 7.27 1.07 7.11 1.29 7.02C1.42 6.96 1.75 6.95 3.83 6.95C5.18 6.96 6.30 6.94 6.39 6.92C6.48 6.90 6.61 6.82 6.68 6.75L6.81 6.62L6.83 4.07C6.86 1.29 6.85 1.40 7.09 1.17C7.22 1.05 7.49 1.05 7.64 1.17C7.90 1.38 7.89 1.27 7.91 4.03C7.91 6.20 7.92 6.56 7.98 6.67C8.11 6.92 8.04 6.91 10.81 6.93C13.20 6.95 13.35 6.96 13.52 7.04C13.74 7.14 13.79 7.22 13.79 7.52C13.79 7.71 13.77 7.77 13.69 7.85C13.47 8.07 13.36 8.08 10.75 8.08C8.50 8.08 8.34 8.09 8.21 8.16C8.13 8.20 8.03 8.29 7.98 8.35C7.91 8.45 7.90 8.55 7.90 10.97C7.90 13.22 7.89 13.50 7.83 13.63C7.71 13.89 7.39 14.02 7.17 13.91Z"],cc_all:[22.33,20.0,"M3.92 19.00C3.60 18.92 2.90 18.62 2.63 18.45C2.12 18.13 1.60 17.61 1.39 17.20C1.35 17.13 1.28 17.01 1.23 16.94C1.17 16.86 1.08 16.60 0.99 16.27C0.81 15.54 0.81 15.07 0.99 14.35C1.26 13.27 1.97 12.43 3.08 11.89C3.76 11.56 4.43 11.48 5.38 11.61C5.79 11.66 5.90 11.69 6.23 11.86C7.11 12.31 7.80 13.02 8.19 13.86C8.28 14.06 8.42 14.73 8.45 15.10C8.47 15.47 8.38 16.12 8.26 16.53C8.07 17.14 7.42 17.99 6.88 18.33C6.82 18.36 6.71 18.44 6.62 18.50C6.54 18.56 6.35 18.67 6.19 18.73C5.46 19.02 5.48 19.01 4.75 19.03C4.37 19.03 4.00 19.02 3.92 19.00ZM5.35 17.46C5.75 17.32 6.05 17.12 6.35 16.79C6.78 16.30 6.95 15.79 6.90 15.10C6.87 14.61 6.79 14.37 6.55 14.04C6.28 13.66 6.00 13.42 5.59 13.20L5.23 13.02L4.67 13.02L4.10 13.02L3.75 13.20C3.30 13.44 3.03 13.67 2.78 14.03C2.32 14.70 2.29 15.78 2.70 16.42C2.87 16.68 3.28 17.11 3.52 17.26C3.76 17.42 4.34 17.58 4.69 17.58C4.91 17.58 5.08 17.55 5.35 17.46ZM12.90 15.70C12.24 15.55 12.13 14.72 12.73 14.42L12.94 14.31L16.71 14.31C18.78 14.31 20.55 14.33 20.64 14.35C20.81 14.38 21.06 14.58 21.15 14.75C21.18 14.82 21.21 14.95 21.21 15.05C21.21 15.29 21.02 15.56 20.78 15.67C20.61 15.75 20.45 15.75 16.83 15.74C14.69 15.74 12.99 15.73 12.90 15.70ZM4.25 8.58C4.14 8.55 3.91 8.34 3.29 7.71C1.19 5.58 0.87 5.21 0.88 4.90C0.88 4.72 1.10 4.35 1.26 4.26C1.44 4.17 1.77 4.17 1.96 4.26C2.09 4.33 3.09 5.31 3.91 6.18C4.18 6.47 4.23 6.50 4.37 6.50C4.56 6.50 4.57 6.49 4.93 5.96C5.07 5.74 5.29 5.42 5.42 5.25C5.54 5.08 5.69 4.87 5.75 4.79C5.81 4.70 6.02 4.40 6.22 4.12C6.92 3.13 7.47 2.35 7.75 1.94C8.29 1.13 8.61 0.83 8.93 0.83C9.25 0.83 9.58 1.10 9.66 1.41C9.75 1.73 9.69 1.85 8.87 2.98C8.69 3.23 8.43 3.60 8.29 3.80C8.15 4.01 7.92 4.33 7.78 4.53C7.63 4.73 7.34 5.15 7.12 5.46C6.90 5.77 6.47 6.38 6.16 6.81C5.85 7.25 5.57 7.66 5.52 7.73C5.48 7.79 5.33 7.99 5.19 8.16C4.85 8.58 4.63 8.68 4.25 8.58ZM13.02 5.58C12.59 5.51 12.32 5.19 12.34 4.80C12.36 4.55 12.48 4.39 12.77 4.24L12.94 4.15L16.76 4.13C20.49 4.12 20.59 4.13 20.74 4.21C21.08 4.38 21.25 4.69 21.19 5.02C21.15 5.21 21.03 5.36 20.78 5.50L20.56 5.62L16.90 5.62C14.88 5.62 13.14 5.60 13.02 5.58Z"],cc_hand:[20.33,21.0,"M10.06 20.10C8.82 19.92 7.85 19.62 6.98 19.14C6.52 18.90 5.56 18.20 5.17 17.84C4.67 17.39 4.10 16.78 3.83 16.42C3.22 15.60 3.08 15.40 3.08 15.36C3.08 15.32 2.98 15.15 2.63 14.61C2.55 14.49 2.46 14.32 2.43 14.22C2.41 14.13 2.33 13.97 2.27 13.87C2.21 13.78 2.13 13.62 2.10 13.53C2.07 13.43 2.00 13.28 1.94 13.19C1.89 13.10 1.81 12.91 1.77 12.77C1.73 12.64 1.65 12.42 1.58 12.29C1.52 12.17 1.45 11.95 1.42 11.81C1.39 11.67 1.31 11.44 1.25 11.29C1.19 11.14 1.12 10.93 1.10 10.81C1.08 10.70 1.04 10.48 0.99 10.33C0.89 9.98 0.90 9.79 1.02 9.43C1.15 9.01 1.30 8.81 1.66 8.58C2.04 8.33 2.28 8.27 3.00 8.27C3.71 8.28 3.96 8.33 4.43 8.56C4.85 8.77 4.99 8.79 5.10 8.68C5.16 8.61 5.16 8.34 5.18 6.23L5.19 3.85L5.33 3.53C5.40 3.35 5.55 3.10 5.65 2.97C6.16 2.29 7.19 1.87 7.90 2.06C8.36 2.18 8.55 2.13 8.74 1.87C9.05 1.46 9.76 1.01 10.28 0.91C10.80 0.81 11.38 0.94 11.90 1.27C12.04 1.35 12.30 1.58 12.48 1.77C12.79 2.10 12.82 2.12 12.99 2.12C13.08 2.12 13.27 2.10 13.42 2.06C13.96 1.92 14.71 2.12 15.23 2.55C15.69 2.92 15.93 3.31 16.13 4.00C16.21 4.26 16.31 4.30 16.73 4.27C17.25 4.23 17.58 4.30 18.03 4.55C18.26 4.68 18.50 4.85 18.60 4.96C18.86 5.24 19.12 5.69 19.17 5.97C19.20 6.13 19.21 7.32 19.20 9.53C19.18 12.81 19.18 12.86 19.09 13.17C19.04 13.34 18.95 13.67 18.89 13.91C18.83 14.15 18.72 14.49 18.65 14.66C18.57 14.84 18.50 15.03 18.48 15.08C18.46 15.14 18.35 15.36 18.24 15.56C17.58 16.77 17.13 17.33 16.23 18.11C15.07 19.12 13.79 19.74 12.33 20.00C11.98 20.07 11.64 20.09 11.02 20.10C10.56 20.11 10.13 20.11 10.06 20.10ZM11.96 18.58C12.04 18.56 12.29 18.50 12.52 18.46C13.59 18.24 15.01 17.39 15.78 16.50C16.31 15.89 16.31 15.89 16.80 15.05C16.91 14.86 17.01 14.66 17.02 14.61C17.04 14.56 17.11 14.38 17.19 14.21C17.27 14.03 17.36 13.76 17.39 13.60C17.43 13.44 17.49 13.17 17.54 13.01C17.69 12.44 17.71 12.09 17.71 9.20C17.71 6.86 17.70 6.35 17.65 6.23C17.58 6.06 17.21 5.76 17.02 5.73C16.83 5.69 16.63 5.76 16.42 5.95C16.12 6.20 16.12 6.13 16.12 8.47C16.12 10.56 16.12 10.57 16.03 10.75C15.92 10.97 15.67 11.16 15.45 11.19C15.32 11.21 15.24 11.19 15.03 11.09C14.59 10.87 14.62 11.17 14.61 7.40L14.60 4.15L14.49 3.96C14.35 3.72 14.23 3.61 14.05 3.55C13.63 3.41 13.16 3.65 13.04 4.07C13.02 4.17 13.00 5.18 13.00 6.83C13.00 8.27 12.98 9.52 12.96 9.62C12.94 9.75 12.88 9.85 12.74 9.98C12.41 10.32 12.09 10.33 11.75 10.01C11.62 9.90 11.53 9.76 11.50 9.67C11.47 9.58 11.46 8.34 11.46 6.33C11.46 4.15 11.44 3.09 11.41 2.98C11.35 2.77 11.06 2.48 10.84 2.41C10.50 2.31 10.11 2.51 9.94 2.87C9.85 3.06 9.85 3.08 9.85 6.29C9.84 8.07 9.83 9.58 9.81 9.65C9.78 9.81 9.54 10.09 9.36 10.18C9.13 10.29 8.95 10.27 8.72 10.11C8.61 10.03 8.48 9.91 8.43 9.83L8.33 9.70L8.33 7.03C8.33 5.56 8.31 4.28 8.29 4.19C8.25 4.00 8.07 3.73 7.91 3.61C7.65 3.42 7.14 3.50 6.94 3.76C6.68 4.11 6.70 3.86 6.69 7.56C6.69 11.41 6.71 11.18 6.35 11.34C5.92 11.53 5.49 11.41 5.22 11.04C4.81 10.47 4.43 10.16 3.83 9.90C3.27 9.65 2.97 9.61 2.69 9.73C2.52 9.80 2.48 9.92 2.52 10.20C2.55 10.42 2.96 11.67 3.08 11.91C3.12 11.99 3.19 12.17 3.23 12.29C3.27 12.42 3.34 12.58 3.38 12.65C3.42 12.71 3.48 12.86 3.52 12.96C3.68 13.35 4.32 14.50 4.69 15.04C5.16 15.71 5.79 16.43 6.36 16.92C6.97 17.44 7.70 17.92 8.18 18.10C8.32 18.16 8.52 18.24 8.62 18.29C8.78 18.35 9.63 18.54 10.23 18.64C10.44 18.67 11.80 18.63 11.96 18.58Z"],cc_eye:[22.33,17.0,"M10.40 16.14C10.33 16.13 10.09 16.10 9.88 16.08C8.22 15.89 6.28 15.01 4.62 13.68C3.94 13.14 2.71 11.86 2.13 11.09C2.00 10.92 1.82 10.67 1.72 10.55C1.62 10.42 1.51 10.26 1.47 10.19C1.43 10.13 1.33 9.98 1.26 9.87C1.08 9.61 0.95 9.03 0.95 8.56C0.95 8.14 1.09 7.48 1.20 7.34C1.25 7.28 1.34 7.14 1.40 7.04C1.45 6.94 1.59 6.74 1.71 6.60C1.82 6.47 1.98 6.26 2.06 6.15C2.40 5.66 2.93 5.04 3.42 4.55C4.25 3.72 5.10 3.04 5.90 2.56C6.08 2.46 6.33 2.30 6.46 2.23C6.59 2.15 6.79 2.05 6.91 2.00C7.04 1.95 7.21 1.87 7.31 1.82C7.40 1.76 7.55 1.69 7.65 1.67C7.74 1.64 7.94 1.56 8.10 1.49C8.26 1.42 8.56 1.33 8.77 1.29C8.98 1.25 9.31 1.17 9.50 1.12C10.01 0.99 11.66 0.96 12.29 1.06C12.98 1.17 13.82 1.37 13.99 1.45C14.08 1.50 14.26 1.57 14.40 1.60C14.53 1.64 14.74 1.73 14.85 1.79C14.97 1.85 15.16 1.94 15.28 1.98C15.40 2.01 15.54 2.08 15.59 2.12C15.64 2.16 15.79 2.25 15.92 2.32C16.46 2.62 17.05 3.03 17.77 3.60C18.17 3.93 19.06 4.82 19.56 5.41C20.57 6.60 21.06 7.35 21.19 7.88C21.26 8.19 21.27 8.84 21.20 9.19C21.14 9.52 20.86 10.03 20.40 10.65C19.40 11.99 18.48 12.94 17.31 13.88C15.74 15.14 13.85 15.94 12.02 16.12C11.60 16.16 10.69 16.17 10.40 16.14ZM12.38 14.58C12.96 14.48 13.17 14.42 13.81 14.18C14.57 13.90 15.27 13.52 15.91 13.06C16.10 12.92 16.34 12.75 16.45 12.68C16.75 12.47 17.74 11.51 18.22 10.97C19.04 10.03 19.64 9.19 19.71 8.85C19.81 8.40 19.65 7.95 19.14 7.29C17.69 5.40 16.13 4.00 14.75 3.35C14.62 3.29 14.41 3.19 14.27 3.12C14.13 3.06 13.94 2.98 13.83 2.96C13.73 2.93 13.56 2.86 13.45 2.81C13.34 2.75 13.13 2.69 12.97 2.67C12.82 2.64 12.49 2.60 12.25 2.56C11.67 2.47 10.84 2.44 10.46 2.49C10.29 2.52 9.92 2.57 9.65 2.60C9.38 2.64 9.08 2.70 8.99 2.74C8.89 2.77 8.64 2.86 8.44 2.94C7.70 3.21 6.99 3.56 6.45 3.94C5.50 4.61 5.36 4.73 4.67 5.44C3.98 6.15 3.16 7.14 2.76 7.73C2.53 8.09 2.53 8.09 2.51 8.45C2.50 8.65 2.51 8.89 2.54 8.99C2.57 9.10 2.77 9.41 3.10 9.85C4.14 11.24 5.02 12.13 6.15 12.94C7.63 14.02 8.94 14.52 10.65 14.68C11.02 14.72 11.92 14.67 12.38 14.58ZM10.54 12.31C10.35 12.27 9.70 12.07 9.55 12.01C9.35 11.93 8.82 11.57 8.54 11.32C8.04 10.89 7.61 10.21 7.43 9.56C7.33 9.20 7.32 9.07 7.31 8.56C7.31 7.87 7.40 7.46 7.67 6.94C8.21 5.88 9.07 5.20 10.21 4.91C10.90 4.73 11.27 4.73 12.00 4.91C12.46 5.03 12.64 5.10 12.97 5.29C13.97 5.86 14.64 6.78 14.83 7.85C14.94 8.45 14.94 8.77 14.82 9.35C14.62 10.30 14.03 11.14 13.17 11.70C12.80 11.95 12.73 11.98 12.20 12.15C11.77 12.29 11.68 12.30 11.19 12.32C10.89 12.32 10.60 12.32 10.54 12.31ZM11.61 10.77C11.98 10.69 12.09 10.64 12.45 10.39C12.73 10.18 12.91 9.99 13.14 9.60C13.33 9.29 13.38 9.04 13.38 8.51C13.38 7.97 13.31 7.74 13.01 7.29C12.80 6.98 12.72 6.91 12.35 6.66C11.98 6.40 11.91 6.37 11.62 6.33C11.25 6.27 10.55 6.30 10.31 6.39C9.98 6.51 9.46 6.92 9.19 7.29C9.11 7.40 8.99 7.66 8.92 7.88C8.80 8.21 8.79 8.32 8.80 8.58C8.81 8.76 8.86 9.05 8.91 9.23C8.99 9.52 9.05 9.63 9.27 9.90C9.66 10.38 10.09 10.67 10.58 10.77C10.96 10.85 11.24 10.85 11.61 10.77Z"],cc_work:[22.33,22.33,"M10.08 21.19C9.87 21.16 9.57 21.10 9.44 21.07C9.30 21.03 9.01 20.97 8.80 20.94C8.58 20.90 8.35 20.84 8.29 20.81C8.24 20.78 8.00 20.69 7.77 20.61C7.54 20.53 7.20 20.40 7.02 20.31C6.48 20.06 5.44 19.42 4.99 19.06C4.42 18.61 3.56 17.74 3.20 17.25C2.80 16.72 2.20 15.74 2.10 15.48C2.07 15.41 2.00 15.24 1.93 15.10C1.86 14.96 1.77 14.73 1.73 14.58C1.69 14.44 1.62 14.23 1.56 14.13C1.51 14.02 1.44 13.79 1.42 13.60C1.39 13.42 1.32 13.09 1.27 12.88C1.12 12.32 1.07 11.65 1.10 10.75C1.11 10.19 1.14 9.87 1.21 9.58C1.26 9.37 1.33 8.97 1.38 8.71C1.43 8.44 1.51 8.15 1.56 8.04C1.62 7.93 1.70 7.71 1.73 7.55C1.77 7.40 1.84 7.20 1.90 7.11C1.96 7.02 2.04 6.85 2.09 6.72C2.13 6.60 2.21 6.44 2.26 6.36C2.32 6.29 2.40 6.15 2.44 6.06C2.47 5.97 2.54 5.86 2.58 5.81C2.62 5.77 2.70 5.65 2.75 5.56C2.80 5.47 2.90 5.31 2.98 5.21C3.06 5.11 3.22 4.89 3.34 4.73C3.86 4.05 4.83 3.18 5.71 2.61C6.25 2.25 7.27 1.73 7.65 1.63C7.78 1.59 8.01 1.51 8.15 1.45C8.28 1.39 8.58 1.30 8.81 1.25C9.04 1.20 9.35 1.14 9.50 1.10C10.27 0.94 11.34 0.91 11.64 1.06C11.82 1.15 12.04 1.49 12.04 1.67C12.04 2.09 11.67 2.37 11.02 2.44C10.66 2.47 9.61 2.61 9.27 2.67C9.13 2.70 8.91 2.76 8.77 2.81C8.63 2.87 8.41 2.95 8.27 2.99C7.54 3.23 6.65 3.73 5.85 4.35C5.22 4.83 4.21 6.01 3.85 6.67C3.78 6.79 3.70 6.93 3.68 6.98C3.51 7.27 3.27 7.81 3.21 8.02C3.17 8.16 3.09 8.36 3.05 8.46C3.00 8.57 2.89 9.02 2.81 9.46C2.66 10.22 2.65 10.32 2.65 11.08C2.65 11.80 2.66 11.96 2.76 12.48C2.82 12.80 2.89 13.17 2.92 13.30C2.94 13.43 3.00 13.64 3.06 13.76C3.11 13.88 3.19 14.09 3.23 14.23C3.27 14.37 3.34 14.56 3.40 14.67C3.45 14.77 3.54 14.96 3.60 15.08C4.14 16.23 5.39 17.62 6.58 18.38C7.21 18.78 8.02 19.19 8.42 19.29C8.52 19.32 8.74 19.39 8.90 19.44C9.06 19.50 9.50 19.59 9.90 19.65C11.29 19.86 12.80 19.75 13.94 19.36C16.23 18.58 17.96 17.08 19.04 14.93C19.22 14.58 19.38 14.21 19.39 14.12C19.41 14.02 19.47 13.82 19.54 13.67C19.61 13.51 19.68 13.25 19.71 13.08C19.73 12.91 19.79 12.56 19.83 12.29C19.88 12.03 19.92 11.63 19.94 11.42C19.97 10.78 20.19 10.44 20.57 10.39C20.86 10.35 21.03 10.40 21.21 10.59C21.48 10.87 21.52 11.02 21.46 11.72C21.44 12.04 21.39 12.42 21.36 12.56C21.32 12.70 21.26 13.05 21.21 13.33C21.16 13.68 21.09 13.95 21.01 14.13C20.94 14.27 20.86 14.48 20.83 14.58C20.76 14.86 20.47 15.52 20.26 15.89C19.10 17.95 17.50 19.42 15.36 20.40C15.17 20.48 14.93 20.58 14.81 20.61C14.70 20.65 14.49 20.72 14.35 20.78C14.22 20.84 13.92 20.92 13.69 20.96C13.46 21.00 13.14 21.07 12.98 21.10C12.26 21.26 10.88 21.30 10.08 21.19Z"],cc_done:[22.33,22.33,"M10.11 21.25C9.97 21.23 9.71 21.17 9.52 21.13C9.34 21.08 9.02 21.01 8.82 20.98C8.61 20.94 8.32 20.86 8.17 20.80C8.02 20.73 7.84 20.66 7.77 20.65C7.50 20.59 6.45 20.09 5.99 19.80C4.72 19.01 3.51 17.80 2.64 16.49C2.54 16.33 2.43 16.14 2.39 16.05C2.36 15.97 2.28 15.83 2.23 15.75C2.17 15.67 2.10 15.51 2.06 15.40C2.02 15.29 1.95 15.13 1.90 15.05C1.84 14.96 1.78 14.79 1.75 14.67C1.72 14.54 1.65 14.32 1.58 14.17C1.52 14.02 1.43 13.67 1.38 13.40C1.33 13.12 1.26 12.79 1.23 12.67C1.12 12.26 1.06 11.25 1.12 10.49C1.14 10.12 1.19 9.72 1.22 9.62C1.26 9.51 1.33 9.18 1.38 8.89C1.43 8.59 1.51 8.26 1.57 8.13C1.62 8.01 1.70 7.79 1.73 7.65C1.77 7.51 1.85 7.31 1.90 7.21C1.96 7.11 2.04 6.92 2.09 6.80C2.13 6.68 2.20 6.53 2.24 6.47C2.29 6.41 2.38 6.24 2.46 6.10C2.68 5.67 2.81 5.46 2.92 5.34C2.98 5.28 3.14 5.08 3.27 4.90C3.79 4.21 5.21 2.92 5.77 2.64C5.84 2.60 5.92 2.55 5.96 2.52C6.05 2.44 6.58 2.16 7.17 1.88C7.36 1.79 7.61 1.69 7.73 1.66C7.84 1.63 8.04 1.56 8.17 1.51C8.29 1.45 8.80 1.32 9.29 1.22C10.12 1.05 10.25 1.04 11.02 1.01C11.94 0.99 12.46 1.03 13.11 1.19C13.34 1.24 13.62 1.30 13.75 1.31C13.88 1.33 14.11 1.39 14.27 1.46C14.43 1.52 14.67 1.60 14.81 1.64C14.95 1.68 15.17 1.77 15.29 1.84C15.42 1.90 15.54 1.96 15.56 1.96C15.63 1.96 16.51 2.42 16.60 2.50C16.65 2.54 16.75 2.61 16.83 2.65C17.17 2.82 18.32 3.79 18.78 4.29C19.11 4.65 19.77 5.52 19.97 5.84C20.28 6.36 20.50 6.76 20.55 6.91C20.57 6.99 20.64 7.15 20.69 7.26C20.74 7.36 20.81 7.54 20.84 7.65C20.87 7.76 20.93 7.96 20.99 8.08C21.08 8.30 21.27 9.13 21.39 9.92C21.49 10.50 21.51 11.14 21.46 11.73C21.41 12.42 21.16 13.73 21.02 14.11C20.96 14.27 20.87 14.52 20.83 14.67C20.74 14.96 20.21 16.05 19.99 16.39C19.12 17.78 17.90 18.99 16.58 19.80C15.97 20.17 15.09 20.60 14.83 20.65C14.75 20.66 14.58 20.72 14.46 20.78C14.33 20.84 13.83 20.97 13.33 21.07L12.44 21.26L11.40 21.27C10.82 21.28 10.24 21.27 10.11 21.25ZM12.36 19.73C13.26 19.61 13.42 19.58 14.08 19.36C14.48 19.22 14.60 19.17 15.23 18.87C15.98 18.52 16.95 17.79 17.54 17.15C18.04 16.60 18.71 15.72 18.71 15.60C18.71 15.58 18.77 15.46 18.85 15.35C18.93 15.24 19.00 15.13 19.00 15.11C19.00 15.09 19.08 14.90 19.18 14.69C19.28 14.48 19.38 14.25 19.40 14.17C19.41 14.09 19.48 13.87 19.55 13.69C19.61 13.51 19.70 13.18 19.73 12.96C19.76 12.74 19.82 12.41 19.85 12.23C19.95 11.70 19.97 10.88 19.90 10.40C19.71 9.07 19.66 8.81 19.54 8.54C19.48 8.39 19.41 8.21 19.40 8.12C19.38 8.04 19.29 7.82 19.20 7.62C19.03 7.26 19.01 7.21 18.76 6.75C18.11 5.55 16.67 4.16 15.44 3.53C14.80 3.20 14.36 3.01 14.13 2.96C14.00 2.93 13.80 2.86 13.68 2.80C13.54 2.74 13.30 2.69 12.97 2.65C12.70 2.61 12.35 2.57 12.19 2.55C11.63 2.47 11.23 2.45 10.85 2.50C9.68 2.63 9.15 2.71 8.91 2.81C8.76 2.87 8.53 2.95 8.39 2.98C8.13 3.04 7.95 3.12 7.15 3.53C6.49 3.86 5.74 4.43 5.16 5.01C4.70 5.47 4.09 6.25 3.86 6.69C3.53 7.28 3.25 7.89 3.21 8.07C3.18 8.17 3.14 8.31 3.11 8.37C3.00 8.58 2.92 8.86 2.87 9.21C2.85 9.40 2.79 9.72 2.74 9.92C2.61 10.42 2.61 11.75 2.74 12.34C2.79 12.55 2.85 12.89 2.87 13.09C2.90 13.28 2.98 13.57 3.04 13.73C3.10 13.89 3.19 14.13 3.23 14.27C3.27 14.41 3.33 14.58 3.38 14.65C3.42 14.71 3.48 14.86 3.52 14.96C3.64 15.26 4.24 16.20 4.61 16.65C5.42 17.65 6.60 18.55 7.71 19.04C8.42 19.35 9.17 19.58 9.78 19.67C11.09 19.86 11.31 19.86 12.36 19.73ZM10.10 15.48C10.03 15.45 9.90 15.36 9.81 15.29C9.66 15.16 8.18 13.56 7.65 12.96C7.52 12.81 7.26 12.53 7.08 12.35C6.90 12.16 6.69 11.90 6.60 11.77C6.46 11.56 6.44 11.50 6.44 11.29C6.44 11.01 6.52 10.86 6.77 10.72C6.98 10.60 7.28 10.60 7.49 10.70C7.66 10.79 8.05 11.18 8.96 12.18C9.89 13.20 10.10 13.42 10.21 13.42C10.27 13.42 10.37 13.35 10.48 13.23C10.67 13.02 10.76 12.90 11.97 11.14C12.18 10.85 12.42 10.50 12.52 10.38C12.62 10.25 12.75 10.06 12.81 9.96C12.87 9.86 13.06 9.57 13.23 9.33C13.41 9.09 13.69 8.69 13.86 8.44C14.17 7.97 14.63 7.32 14.80 7.11C15.08 6.75 15.52 6.65 15.82 6.87C16.14 7.10 16.23 7.37 16.11 7.71C16.06 7.84 15.39 8.86 14.84 9.65C14.53 10.08 13.50 11.55 13.26 11.91C13.13 12.10 12.75 12.64 12.42 13.12C12.09 13.59 11.66 14.20 11.48 14.48C10.81 15.46 10.52 15.67 10.10 15.48Z"],cc_arch:[20.33,20.33,"M5.92 19.29C5.33 19.27 5.23 19.25 4.78 19.11C4.50 19.03 4.26 18.94 4.23 18.93C3.95 18.77 3.49 18.43 3.35 18.29C3.10 18.01 2.82 17.59 2.71 17.31C2.44 16.60 2.45 16.68 2.41 15.44C2.39 14.80 2.38 12.73 2.38 10.84C2.38 7.02 2.40 7.28 2.08 7.06C1.77 6.86 1.51 6.55 1.31 6.12L1.12 5.73L1.11 4.23L1.10 2.73L1.29 2.31C1.56 1.72 1.79 1.50 2.38 1.25L2.81 1.06L9.96 1.05C15.14 1.04 17.21 1.05 17.50 1.08C18.32 1.18 18.92 1.59 19.23 2.25C19.44 2.70 19.47 2.97 19.45 4.39C19.44 5.59 19.43 5.61 19.32 5.93C19.14 6.44 18.92 6.74 18.54 7.00C18.40 7.09 18.27 7.21 18.24 7.26C18.20 7.33 18.18 8.32 18.16 11.85C18.14 16.79 18.15 16.52 17.88 17.22C17.69 17.71 17.18 18.39 16.84 18.59C16.76 18.64 16.62 18.73 16.54 18.80C16.46 18.86 16.16 18.99 15.87 19.08C15.41 19.24 15.29 19.26 14.79 19.29C14.15 19.33 6.90 19.33 5.92 19.29ZM14.98 17.77C15.52 17.68 15.70 17.60 16.03 17.28C16.34 16.98 16.42 16.84 16.55 16.37L16.64 16.02L16.64 11.81C16.65 7.72 16.64 7.59 16.57 7.50C16.52 7.46 16.41 7.40 16.32 7.37C16.21 7.34 14.35 7.34 10.16 7.36L4.16 7.39L4.05 7.48L3.94 7.58L3.94 11.92L3.94 16.27L4.08 16.62C4.20 16.92 4.27 17.02 4.50 17.26C5.10 17.86 5.18 17.86 11.17 17.84C13.98 17.83 14.63 17.82 14.98 17.77ZM8.46 11.42C8.13 11.35 7.87 11.13 7.79 10.84C7.71 10.54 7.89 10.21 8.20 10.07C8.39 9.98 8.46 9.98 10.16 9.97C11.84 9.95 11.94 9.96 12.21 10.04C12.49 10.12 12.61 10.22 12.72 10.45C12.92 10.83 12.66 11.28 12.17 11.42C12.00 11.46 8.69 11.47 8.46 11.42ZM17.58 5.76C17.89 5.59 17.92 5.48 17.91 4.40C17.91 3.15 17.88 2.91 17.73 2.75C17.65 2.67 17.54 2.61 17.40 2.58C17.25 2.55 15.14 2.54 10.15 2.55C3.19 2.56 3.10 2.56 2.96 2.65C2.88 2.69 2.78 2.78 2.73 2.85C2.65 2.96 2.65 3.01 2.65 4.16C2.65 4.82 2.66 5.40 2.68 5.47C2.69 5.53 2.78 5.63 2.86 5.70L3.01 5.81L4.79 5.83C5.76 5.85 9.00 5.86 11.98 5.86L17.40 5.85L17.58 5.76Z"],cc_check:[12.67,12.33,"M4.81 11.26C4.60 11.16 4.25 10.84 4.03 10.55C3.81 10.27 3.67 10.09 3.35 9.70C3.22 9.54 3.06 9.34 3.00 9.26C2.89 9.13 2.67 8.85 2.39 8.49C2.30 8.38 2.11 8.14 1.96 7.95C1.81 7.77 1.63 7.54 1.56 7.46C0.99 6.80 0.90 6.36 1.26 5.97C1.36 5.87 1.49 5.76 1.56 5.72C1.73 5.63 2.19 5.63 2.35 5.72C2.53 5.81 2.88 6.19 3.35 6.81C3.58 7.11 3.99 7.63 4.26 7.97C4.53 8.31 4.80 8.66 4.86 8.75C5.08 9.11 5.24 9.08 5.52 8.62C5.64 8.44 5.77 8.23 5.82 8.16C5.87 8.08 5.95 7.95 6.00 7.85C6.05 7.76 6.16 7.60 6.23 7.50C6.31 7.39 6.39 7.26 6.41 7.21C6.44 7.15 6.52 7.02 6.59 6.91C6.67 6.80 6.79 6.61 6.88 6.48C6.96 6.35 7.11 6.10 7.23 5.92C7.34 5.74 7.47 5.53 7.52 5.46C7.66 5.22 7.84 4.94 8.28 4.26C8.51 3.90 8.82 3.41 8.96 3.18C9.11 2.95 9.36 2.55 9.52 2.29C10.01 1.52 10.14 1.35 10.38 1.21C11.01 0.85 11.77 1.30 11.70 1.98C11.67 2.22 11.46 2.64 11.12 3.17C10.98 3.38 10.71 3.80 10.52 4.08C10.33 4.37 10.06 4.79 9.92 5.02C9.63 5.48 8.99 6.47 8.25 7.59C7.99 8.00 7.58 8.62 7.35 8.98C6.02 11.04 5.96 11.12 5.61 11.27C5.40 11.36 5.02 11.35 4.81 11.26Z"],cc_sclock:[18.0,18.0,"M8.10 16.95C7.92 16.93 7.62 16.87 7.44 16.81C7.25 16.76 6.96 16.68 6.79 16.65C6.61 16.62 6.38 16.54 6.26 16.49C6.15 16.43 5.97 16.35 5.85 16.32C5.73 16.28 5.58 16.21 5.53 16.17C5.47 16.12 5.33 16.05 5.20 16.00C5.07 15.95 4.93 15.88 4.89 15.83C4.85 15.78 4.74 15.71 4.66 15.67C4.58 15.63 4.44 15.55 4.36 15.48C3.88 15.09 3.35 14.60 3.14 14.37C3.00 14.22 2.85 14.05 2.79 13.99C2.66 13.85 2.46 13.57 2.36 13.38C2.32 13.30 2.23 13.17 2.17 13.10C2.10 13.02 2.03 12.89 2.00 12.81C1.97 12.72 1.91 12.59 1.85 12.52C1.80 12.45 1.73 12.29 1.69 12.17C1.65 12.04 1.57 11.84 1.50 11.71C1.44 11.58 1.36 11.34 1.33 11.17C1.30 10.99 1.24 10.70 1.18 10.52C0.98 9.85 0.97 8.17 1.16 7.54C1.21 7.39 1.28 7.09 1.33 6.87C1.37 6.64 1.46 6.38 1.51 6.28C1.57 6.19 1.64 6.02 1.67 5.92C1.69 5.81 1.77 5.64 1.83 5.54C1.90 5.44 1.98 5.28 2.02 5.19C2.05 5.11 2.13 4.98 2.19 4.91C2.25 4.84 2.32 4.72 2.36 4.64C2.42 4.48 2.48 4.41 3.00 3.80C3.49 3.25 4.37 2.47 4.67 2.34C4.75 2.31 4.87 2.23 4.95 2.16C5.02 2.10 5.15 2.03 5.23 2.01C5.31 1.98 5.45 1.91 5.55 1.84C5.65 1.77 5.81 1.69 5.92 1.67C6.02 1.64 6.22 1.56 6.36 1.50C6.50 1.43 6.77 1.35 6.96 1.31C7.15 1.28 7.44 1.22 7.60 1.17C8.31 0.96 9.76 0.97 10.53 1.19C10.73 1.24 11.02 1.31 11.18 1.33C11.34 1.36 11.57 1.43 11.70 1.50C11.83 1.56 12.02 1.64 12.12 1.67C12.23 1.69 12.39 1.77 12.48 1.83C12.57 1.89 12.71 1.97 12.80 2.00C12.88 2.02 13.00 2.09 13.07 2.14C13.13 2.19 13.26 2.28 13.36 2.33C13.78 2.58 14.08 2.83 14.69 3.44C15.04 3.80 15.33 4.11 15.33 4.13C15.33 4.14 15.40 4.24 15.48 4.34C15.56 4.43 15.66 4.58 15.69 4.66C15.73 4.75 15.80 4.86 15.85 4.92C15.91 4.97 16.00 5.12 16.05 5.25C16.11 5.38 16.20 5.55 16.26 5.63C16.32 5.72 16.38 5.86 16.39 5.95C16.41 6.03 16.48 6.22 16.55 6.36C16.61 6.50 16.70 6.76 16.73 6.94C16.76 7.12 16.84 7.46 16.90 7.69C17.09 8.45 17.08 9.74 16.88 10.41C16.83 10.55 16.76 10.84 16.73 11.05C16.69 11.26 16.62 11.51 16.56 11.62C16.51 11.73 16.44 11.91 16.40 12.04C16.36 12.17 16.28 12.34 16.23 12.43C16.17 12.52 16.09 12.66 16.06 12.75C16.03 12.84 15.95 12.99 15.88 13.07C15.81 13.16 15.73 13.30 15.69 13.38C15.65 13.47 15.61 13.55 15.58 13.56C15.56 13.58 15.46 13.70 15.37 13.83C15.19 14.07 13.94 15.33 13.88 15.33C13.86 15.33 13.75 15.41 13.64 15.50C13.53 15.59 13.42 15.67 13.39 15.67C13.36 15.67 13.25 15.73 13.14 15.82C13.04 15.90 12.88 15.99 12.80 16.02C12.71 16.05 12.57 16.12 12.48 16.18C12.39 16.24 12.25 16.31 12.15 16.34C12.06 16.36 11.88 16.44 11.75 16.50C11.61 16.57 11.35 16.65 11.13 16.69C10.92 16.72 10.65 16.79 10.53 16.84C10.16 16.98 8.95 17.04 8.10 16.95ZM10.23 15.66C10.51 15.63 10.73 15.58 10.92 15.50C11.07 15.44 11.29 15.36 11.42 15.34C11.54 15.31 11.72 15.24 11.81 15.18C11.89 15.12 12.04 15.05 12.14 15.02C12.23 14.98 12.35 14.91 12.41 14.86C12.46 14.81 12.60 14.72 12.71 14.67C12.82 14.61 13.02 14.48 13.15 14.38C13.42 14.17 14.38 13.22 14.38 13.17C14.38 13.14 14.43 13.06 14.50 12.99C14.57 12.91 14.65 12.78 14.69 12.70C14.72 12.62 14.79 12.49 14.85 12.43C14.91 12.36 14.99 12.22 15.02 12.12C15.06 12.02 15.13 11.87 15.19 11.78C15.25 11.70 15.31 11.53 15.34 11.41C15.37 11.29 15.44 11.06 15.50 10.89C15.66 10.49 15.72 9.97 15.72 9.00C15.72 8.01 15.66 7.50 15.50 7.13C15.44 6.98 15.37 6.78 15.35 6.69C15.32 6.51 14.90 5.60 14.83 5.56C14.81 5.55 14.75 5.46 14.70 5.36C14.65 5.27 14.56 5.13 14.50 5.06C14.44 4.99 14.31 4.82 14.21 4.69C13.81 4.18 12.99 3.45 12.65 3.30C12.56 3.26 12.45 3.19 12.42 3.15C12.39 3.12 12.27 3.05 12.15 3.00C12.03 2.96 11.86 2.88 11.77 2.82C11.69 2.76 11.51 2.69 11.38 2.66C11.26 2.64 11.02 2.56 10.86 2.50C10.16 2.22 7.89 2.21 7.22 2.49C7.06 2.55 6.81 2.63 6.65 2.67C6.50 2.71 6.30 2.79 6.22 2.84C6.13 2.90 5.98 2.98 5.88 3.02C5.77 3.06 5.65 3.12 5.60 3.17C5.56 3.21 5.44 3.28 5.33 3.33C5.08 3.46 4.88 3.64 4.26 4.25C3.67 4.84 3.46 5.08 3.36 5.29C3.32 5.37 3.24 5.50 3.18 5.57C3.13 5.65 3.05 5.78 3.02 5.87C2.99 5.97 2.91 6.10 2.86 6.18C2.80 6.26 2.73 6.42 2.71 6.54C2.68 6.67 2.60 6.90 2.53 7.06C2.43 7.29 2.40 7.46 2.35 7.91C2.24 9.04 2.31 10.44 2.51 10.90C2.57 11.03 2.65 11.26 2.68 11.41C2.72 11.56 2.79 11.74 2.85 11.83C2.91 11.91 3.00 12.08 3.05 12.21C3.11 12.34 3.18 12.46 3.21 12.48C3.23 12.50 3.29 12.59 3.33 12.68C3.41 12.87 3.50 12.97 4.03 13.55C4.55 14.11 5.02 14.51 5.36 14.68C5.48 14.74 5.59 14.81 5.61 14.84C5.62 14.86 5.75 14.94 5.89 15.01C6.03 15.07 6.21 15.16 6.29 15.21C6.45 15.29 6.95 15.46 7.40 15.58C7.97 15.74 9.23 15.78 10.23 15.66ZM11.34 11.00C11.22 10.96 11.08 10.89 11.03 10.84C10.98 10.79 10.85 10.72 10.74 10.67C10.63 10.62 10.48 10.54 10.40 10.48C10.33 10.43 10.20 10.35 10.11 10.32C10.02 10.28 9.90 10.21 9.83 10.15C9.76 10.09 9.64 10.03 9.56 10.00C9.47 9.97 9.32 9.89 9.22 9.81C9.13 9.74 8.99 9.66 8.92 9.65C8.81 9.62 8.54 9.36 8.42 9.17C8.35 9.07 8.37 4.58 8.43 4.47C8.51 4.32 8.78 4.05 8.88 4.02C9.04 3.97 9.23 4.04 9.41 4.22C9.50 4.32 9.60 4.45 9.62 4.52C9.66 4.60 9.67 5.25 9.66 6.60L9.66 8.55L9.82 8.72C9.91 8.81 10.06 8.92 10.17 8.97C10.27 9.02 10.41 9.10 10.48 9.15C10.55 9.20 10.70 9.28 10.81 9.33C10.93 9.38 11.06 9.46 11.10 9.50C11.15 9.54 11.27 9.61 11.38 9.66C11.61 9.76 12.05 10.09 12.16 10.24C12.24 10.35 12.26 10.45 12.25 10.59C12.25 10.70 12.00 10.96 11.85 11.03C11.67 11.10 11.61 11.10 11.34 11.00Z"]};
+
+/* gpt18 — панель вне чата в стиле ChatGPT iOS (runbook panel-gpt, gpt18-home-plan / gpt18-g4b).
+   v1 (Пульт) пользователь принял словами «задумка неплохая» и попросил: так же нижнюю навигацию, «Проекты», «Мозг», «Ещё»,
+   а вопросы Claude/Codex/Hermes — плашками в стиле своего агента.
+   Каркас #g4 на ВСЕХ вкладках, кроме «Чата»: шапка как ChatGPT Scheduled (3214_0353.23: ☰ 44 pt, заголовок по центру, капсула справа),
+   на вложенных страницах вместо ☰ — круг «‹»; содержимое базы переносится в ленту #g4f (узлы переносятся, не копируются — обработчики
+   базы остаются), базовые компоненты перекрашены в карточки ChatGPT Settings (0405.63) стилями g4_home.css (.g4sk).
+   Пульт рисуется свой (плашки, сбои, вопросы, «ждёт тебя», проекты). Вопросы и разрешения (qAlert — Пульт и экран проекта):
+   Claude — карточка вопроса Claude iOS (3212_0059.41, как в экране чата Claude), Codex/Hermes — карточка ChatGPT (как в экране чата gpt3).
+   Нижняя навигация (glass.js) — монохром ChatGPT и значки бокового меню. Данные и действия — базы (data-a, send). */
+(function(){
+ var W=window,D=document;
+ function $i(id){return D.getElementById(id)}
+ function E(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ var OAI='M13.7958 23.893C13.003 23.893 12.2498 23.7423 11.5362 23.441C10.8226 23.1398 10.1883 22.7195 9.6333 22.1804C9.03072 22.3865 8.40436 22.4896 7.75421 22.4896C6.69177 22.4896 5.70862 22.228 4.80476 21.7047C3.90089 21.1814 3.17146 20.4678 2.61645 19.5639C2.0773 18.6601 1.80773 17.6531 1.80773 16.5431C1.80773 16.0833 1.87116 15.5838 1.99802 15.0446C1.36373 14.4579 0.872151 13.784 0.52329 13.0228C0.17443 12.2458 0 11.4371 0 10.5966C0 9.74035 0.182359 8.91578 0.547076 8.12291C0.911794 7.33005 1.41923 6.64818 2.06938 6.07732C2.73538 5.4906 3.50446 5.08624 4.37661 4.86424C4.55104 3.96038 4.91576 3.15165 5.47076 2.43808C6.04162 1.70864 6.73935 1.13778 7.56392 0.725489C8.3885 0.3132 9.26858 0.107056 10.2042 0.107056C10.997 0.107056 11.7502 0.2577 12.4638 0.558988C13.1774 0.860277 13.8117 1.28049 14.3667 1.81964C14.9693 1.6135 15.5956 1.51042 16.2458 1.51042C17.3082 1.51042 18.2914 1.77207 19.1952 2.29536C20.0991 2.81865 20.8206 3.53223 21.3598 4.43609C21.9148 5.33996 22.1923 6.3469 22.1923 7.45691C22.1923 7.91677 22.1288 8.41627 22.002 8.95542C22.6363 9.54214 23.1278 10.224 23.4767 11.001C23.8256 11.7622 24 12.563 24 13.4034C24 14.2597 23.8176 15.0843 23.4529 15.8771C23.0882 16.67 22.5728 17.3598 21.9068 17.9465C21.2567 18.5174 20.4955 18.9138 19.6234 19.1358C19.449 20.0397 19.0763 20.8484 18.5055 21.562C17.9504 22.2914 17.2607 22.8623 16.4361 23.2745C15.6115 23.6868 14.7314 23.893 13.7958 23.893ZM7.96829 20.6581C8.71358 20.6581 9.37166 20.4916 9.94252 20.1586L14.2478 17.6849C14.4222 17.5739 14.5094 17.4232 14.5094 17.2329V15.5679L9.20515 18.6125C8.71358 18.8979 8.222 18.8979 7.73043 18.6125L3.63925 16.2577C3.63925 16.2736 3.63925 16.2973 3.63925 16.3291C3.63925 16.3608 3.63925 16.4004 3.63925 16.448C3.63925 17.225 3.82161 17.9386 4.18632 18.5887C4.5669 19.223 5.09019 19.7225 5.75619 20.0872C6.4222 20.4678 7.15956 20.6581 7.96829 20.6581ZM8.18236 16.781C8.2775 16.8444 8.36472 16.8761 8.444 16.8761C8.52329 16.8603 8.61051 16.8286 8.70565 16.781L10.1566 15.9723L4.87612 12.8801C4.38454 12.6105 4.13875 12.1824 4.13875 11.5957V6.90983C3.44103 7.27455 2.88603 7.78991 2.47374 8.45591C2.0773 9.10606 1.87909 9.82757 1.87909 10.6204C1.87909 11.3657 2.06145 12.0793 2.42616 12.7612C2.80674 13.4272 3.29832 13.9346 3.90089 14.2835L8.18236 16.781ZM13.7721 22.0377C14.5808 22.0377 15.3102 21.8553 15.9604 21.4906C16.6105 21.1259 17.1179 20.6264 17.4827 19.9921C17.8632 19.3578 18.0535 18.6521 18.0535 17.8751V12.9277C18.0535 12.7215 17.9663 12.5709 17.7919 12.4757L16.3409 11.5957V17.7324C16.3409 18.3191 16.0951 18.7473 15.6036 19.0169L11.5362 21.3717C12.2339 21.8157 12.9792 22.0377 13.7721 22.0377ZM14.5094 13.4985V10.5015L12.0119 9.07435L9.49058 10.5015V13.4985L12.0119 14.9257L14.5094 13.4985ZM7.65907 6.26761C7.65907 5.68089 7.90486 5.25274 8.39643 4.98317L12.4638 2.62836C11.7661 2.18436 11.0208 1.96236 10.2279 1.96236C9.43508 1.96236 8.71358 2.14472 8.06343 2.50943C7.41328 2.87415 6.89792 3.37365 6.51734 4.00795C6.15263 4.64224 5.97027 5.34789 5.97027 6.12489V11.0486C5.97027 11.2389 6.05748 11.3974 6.23191 11.5243L7.65907 12.4044V6.26761ZM19.885 17.0902C20.5669 16.7413 21.106 16.2339 21.5025 15.5679C21.9148 14.9019 22.1209 14.1725 22.1209 13.3796C22.1209 12.6343 21.9306 11.9287 21.55 11.2627C21.1853 10.5808 20.7017 10.0654 20.0991 9.71657L15.8176 7.24283C15.7225 7.1794 15.6353 7.15562 15.556 7.17147C15.4767 7.17147 15.3895 7.19526 15.2943 7.24283L13.8434 8.02777L19.1477 11.1437C19.4014 11.2864 19.5837 11.4609 19.6947 11.667C19.8216 11.8573 19.885 12.1031 19.885 12.4044V17.0902ZM14.7948 5.33996C15.2864 5.03867 15.778 5.03867 16.2696 5.33996L20.3608 7.74234C20.3608 7.69476 20.3608 7.64719 20.3608 7.59962C20.3608 6.87019 20.1784 6.1804 19.8137 5.53025C19.4648 4.86424 18.9574 4.33302 18.2914 3.93659C17.6412 3.54016 16.888 3.34194 16.0317 3.34194C15.2864 3.34194 14.6283 3.50844 14.0575 3.84145L9.75223 6.31518C9.5778 6.42618 9.49058 6.57683 9.49058 6.76711V8.43213L14.7948 5.33996Z';
+ /* значки: G4V — экран Code (vectorize_g4.py), SDV — боковое меню, G3V — чат ChatGPT, CLV — чат Claude */
+ function sv(set,n,c){var v=W[set]&&W[set][n];if(!v)return '';return '<svg class="g4v'+(c?' '+c:'')+'" width="'+v[0]+'" height="'+v[1]+'" viewBox="0 0 '+v[0]+' '+v[1]+'" aria-hidden="true"><path d="'+v[2]+'"/></svg>'}
+ function gv(n,c){return sv('G4V',n,c)||sv('SDV',n,c)}
+ function ai(k){if(k=='hermes')return '<i class="g4ai g4ai-h"></i>';
+  if(k=='claude'){var v=W.CLV&&CLV.spark;return v?'<svg class="g4ai g4ai-c" viewBox="0 0 '+v[0]+' '+v[1]+'" aria-hidden="true"><path d="'+v[2]+'"/></svg>':'<i class="g4ai"></i>'}
+  if(k=='codex')return '<svg class="g4ai g4ai-x" viewBox="0 0 24 24" aria-hidden="true"><path d="'+OAI+'"/></svg>';
+  return '<span class="g4ai g4ai-s">'+IC('activity')+'</span>'}
+ function pill(a,t,x,pid,cls){return '<div class="g4pl'+(cls?' '+cls:'')+'" data-a="'+a+'"'+(x!=null?' data-x="'+E(x)+'"':'')+(pid?' data-pid="'+E(pid)+'"':'')+'>'+t+'</div>'}
+ function sec(t,n){return '<div class="g4sh">'+t+(n!=null?'<span>'+n+'</span>':'')+'</div>'}
+ function row(o){return '<div class="g4r'+(o.tap?' tap':'')+'"'+(o.a?' data-a="'+o.a+'"':'')+(o.x!=null?' data-x="'+E(o.x)+'"':'')+'>'+(o.ic||'')+
+  '<div class="g4rt"><b>'+o.t+'</b>'+(o.d?'<span>'+o.d+'</span>':'')+'</div>'+(o.dot?'<i class="g4dot '+o.dot+'"></i>':'')+(o.r||'')+(o.chev?'<i class="g4ch">'+gv('s_chev')+'</i>':'')+'</div>'}
+
+ /* ---------- шапка: заголовок по вкладке/странице, ☰ или «‹» ---------- */
+ var TT={home:'Пульт',prj:'Проекты',br:'Мозг',more:'Ещё',j:'Журнал',set:'Настройки',q:'Пульт'};
+ function title(){var p=U.page||'';
+  if(p=='prj8'||p=='proj'){var x=W.prjById8&&prjById8(U.pid86||U.pid8||U.pid);return x?x.n:'Проект'}
+  if(p=='sys')return 'Система';if(p=='glos')return 'Словарь';if(p=='nowedit')return 'Сейчас';if(p.indexOf('sess:')==0)return 'Сессия';
+  if(p.indexOf('doc:')==0){var f=p.slice(4).split('/').pop().replace(/\.md$/,'');return f=='now'?'Сейчас':f||'Мозг'}
+  return TT[U.tab]||'Hermes'}
+ function sub(){var st=status(),s='';
+  if(DIAG)s=DIAG;else if(U.cached)s='кэш · '+ago(S.ts);else if(API&&U.offline)s='нет связи с ПК';else if(!API&&S.ts)s='данные '+ago(S.ts);
+  else if(st.c!='ok'&&!S.stopped&&!S.pend.length&&!S.fails)s=st.t.toLowerCase();return s}
+ function isSub(){return !!U.page||U.tab=='j'||U.tab=='set'}
+ function hdr(){var hb=hBad().length,s=sub();
+  return '<div class="g4top"></div><div class="g4hd">'+(isSub()?'<div class="g3gl g4b44 g4bk" data-g4="back" role="button" aria-label="Назад">'+IC('chevron-left')+'</div>'
+   :'<div class="g3gl g4b44" data-g4="side" role="button" aria-label="Меню">'+sv('G3V','side')+'</div>')+
+   '<div class="g4tt"><b>'+E(title())+'</b>'+(s?'<small>'+E(s)+'</small>':'')+'</div>'+
+   '<div class="g3gl g4cap">'+(S.health&&S.health.length?'<i data-a="sys" role="button" aria-label="Система">'+IC('activity')+(hb?'<em class="g4hdot"></em>':'')+'</i>':'')+
+   '<i data-a="refresh" role="button" aria-label="Обновить">'+IC('refresh-cw')+'</i></div></div>'}
+
+ /* ---------- плашки сверху: карточка «Do more with ChatGPT» ---------- */
+ function promo(t,d,btn,a){return '<div class="g4card g4promo"'+(a?' data-a="'+a+'"':'')+'><div><b>'+t+'</b><span>'+d+'</span></div>'+(btn||'')+'</div>'}
+ function banners(){var h='';
+  if(S.stopped)h+=promo('Всё остановлено','Автопилот и уведомления выключены',pill('resume','Запустить всё',null,null,'w'));
+  if(S.pv&&S.pv>VER)h+=promo('Новая версия','Telegram держит старую страницу в кэше',pill('upd','Обновить',null,null,'w'));
+  if(U.cached&&!API)h+=promo('ПК недоступен','Показаны данные '+(S.ts?ago(S.ts):'')+' из кэша. Действия не дойдут');
+  else if(U.offline&&API)h+=promo('Нет связи с ПК','Данные '+(S.ts?ago(S.ts):'')+'. Повторяю каждые 15 с');
+  else if(stale())h+=promo('Данные '+ago(S.ts),'Снимок кнопки «Панель». Live — кнопка меню «Hermes»',pill('refresh','Обновить',null,null,'w'));
+  return h}
+ /* ---------- сбои ---------- */
+ function faults(){var bad=hBad(),hk=function(k){return bad.filter(function(h){return h.k==k})[0]},f=S.log.filter(function(e){return e.k=='fail'})[0],R=[];
+  var win=hk('claude');if(S.fails||win)R.push(row({ic:ai('claude'),t:win?'Окно не отвечает':'Start не прошёл ×'+S.fails,d:E(win?(win.d||''):(f?f.x:'кликер не смог нажать')),
+   r:win&&win.fix?pill('fix',E(win.fl||'Перезапустить'),win.k):pill('heal','Проверить')}));
+  var gw=hk('gateway'),jb=(S.cj||[]).filter(function(j){return j.on&&!j.ok});
+  if(gw)R.push(row({ic:ai('hermes'),t:'Бот не отвечает',d:E(gw.d||'gateway'),r:gw.fix?pill('fix',E(gw.fl||'Перезапустить'),gw.k):pill('sys','Система')}));
+  else if(jb.length)R.push(row({ic:ai('hermes'),t:'Сбой задачи',d:E(cronName86(jb[0]))+(jb.length>1?' и ещё '+(jb.length-1):''),r:pill('sys','Система')}));
+  var rest=bad.filter(function(h){return h.k!='claude'&&h.k!='gateway'});
+  if(rest.length){var fx=rest.filter(function(x){return x.fix})[0];R.push(row({ic:ai('sys'),t:'Система',d:E(rest.map(function(x){return x.n}).join(', ')),r:fx?pill('fix',E(fx.fl||'Перезапустить'),fx.k):pill('sys','Открыть')}))}
+  return R.length?sec('Сбои',R.length)+'<div class="g4card">'+R.join('')+'</div>':''}
+
+ /* ---------- вопросы и разрешения в стиле агента ---------- */
+ U.g4qt=U.g4qt||{};
+ function when(q){return q.ts?ago(q.ts).replace(/ назад$/,''):''}
+ function prjOf(q){var p=W.prjById8&&prjById8(q.pid);return p&&proj8().length>1&&!(U.page=='prj8'||U.page=='proj')?p.n:''}
+ function optOf(o,d){var s=String(o),m=s.match(/^(.*?)\s*\((Recommended|рекомендуется)\)\s*$/i);return {t:m?m[1]:s,rec:!!m,d:d||''}}
+ /* быстрые фразы (Настройки → «Быстрые фразы»): видны, пока поле «Свой ответ» в фокусе; тап подставляет фразу */
+ function tpls(q){var L=(S.tpl||[]).slice(0,8);return L.length?'<div class="g4tpl">'+L.map(function(x,i){return '<i data-g4="tpl" data-q="'+E(q.id)+'" data-x="'+i+'">'+E(x)+'</i>'}).join('')+'</div>':''}
+ /* Claude iOS (3212_0059.41): тёплая карточка r23, вопрос 20 pt, варианты списком с линиями (заголовок + пояснение), «Свой ответ…», Пропустить / Ответить */
+ function qClaude(q){var pj=prjOf(q),t=U.g4qt[q.id]||'';
+  var h='<div class="g4cq" data-g4q="'+E(q.id)+'"><div class="g4cqm">'+ai('claude')+'<span>'+(q.perm?'Claude просит разрешение':'Claude спрашивает')+(pj?' · '+E(pj):'')+'</span><em>'+when(q)+'</em></div>';
+  if(q.perm){
+   h+='<div class="g4cqh">Разрешить?</div>'+(q.cmd?'<pre class="g4cqpre">'+E(q.cmd)+'</pre>':'<div class="g4cqd">'+E(q.q)+'</div>')+
+    '<div class="g4cqo" data-a="quick" data-q="'+E(q.id)+'" data-x="0"><b>'+E(q.o[0]=='Allow'?'Разрешить':q.o[0])+'</b><span>Один раз · подтверждение удержанием</span></div>'+
+    '<div class="g4cqo bad" data-a="quick" data-q="'+E(q.id)+'" data-x="1"><b>'+E(q.o[1]=='Deny'?'Отклонить':q.o[1])+'</b></div>'+autoLine(q)+'</div>';
+   return h}
+  h+='<div class="g4cqh">'+E(q.q)+'</div>'+q.o.map(function(o,i){var x=optOf(o,q.od&&q.od[i]),rec=x.rec||i===q.rec;
+   return '<div class="g4cqo'+(rec?' rec':'')+'" data-a="quick" data-q="'+E(q.id)+'" data-x="'+i+'"><b>'+E(x.t)+'</b>'+(x.d||rec?'<span>'+(rec?'Рекомендует Claude'+(x.d?' · ':''):'')+E(x.d)+'</span>':'')+'</div>'}).join('')+
+   '<div class="g4cqi"><input class="g4qin" data-q="'+E(q.id)+'" placeholder="Свой ответ…" value="'+E(t)+'" autocomplete="off"></div>'+tpls(q)+
+   '<div class="g4cqb"><div class="g4cqsk" data-a="qskip" data-q="'+E(q.id)+'">Пропустить</div><div class="g4cqsb'+(t.trim()?' on':'')+'" data-g4="qsend" data-q="'+E(q.id)+'">Ответить</div></div>'+autoLine(q)+'</div>';
+  return h}
+ /* ChatGPT (экран чата gpt3): карточка #1e1e1e r20, «Codex спрашивает», варианты пилюлями, поле «Свой ответ», Пропустить / Ответить (белая) */
+ function qGpt(q){var ag=q.ag=='hermes'?'hermes':'codex',nm=ag=='hermes'?'Hermes':'Codex',pj=prjOf(q),t=U.g4qt[q.id]||'';
+  var h='<div class="g4gq" data-g4q="'+E(q.id)+'"><div class="g4gqk">'+ai(ag)+'<b>'+(q.perm?'Нужно разрешение':nm+' спрашивает')+'</b><em>'+when(q)+'</em></div>'+(pj?'<div class="g4gqp">'+E(pj)+'</div>':'');
+  if(q.perm){
+   h+=(q.cmd?'<div class="g4gqq">'+E(q.q.replace(q.cmd,'').replace(/[:\s]+$/,'')||nm+' хочет выполнить')+'</div><pre class="g4gqpre">'+E(q.cmd)+'</pre>':'<div class="g4gqq">'+E(q.q)+'</div>')+
+    '<div class="g4gqb"><div class="g4gpb" data-a="quick" data-q="'+E(q.id)+'" data-x="1">'+E(q.o[1]=='Deny'?'Отклонить':q.o[1])+'</div><div class="g4gpb pri" data-a="quick" data-q="'+E(q.id)+'" data-x="0">'+E(q.o[0]=='Allow'?'Разрешить':q.o[0])+'</div></div>'+autoLine(q)+'</div>';
+   return h}
+  h+='<div class="g4gqq">'+E(q.q)+'</div><div class="g4gqo">'+q.o.map(function(o,i){var x=optOf(o),rec=x.rec||i===q.rec;
+   return '<div class="g4gpb'+(rec?' rec':'')+'" data-a="quick" data-q="'+E(q.id)+'" data-x="'+i+'">'+E(x.t)+'</div>'}).join('')+'</div>'+
+   '<div class="g4gqi"><input class="g4qin" data-q="'+E(q.id)+'" placeholder="Свой ответ" value="'+E(t)+'" autocomplete="off"></div>'+tpls(q)+
+   '<div class="g4gqb">'+(ag!='hermes'?'<div class="g4gpb" data-a="qskip" data-q="'+E(q.id)+'">Пропустить</div>':'')+'<div class="g4gpb pri'+(t.trim()?'':' dis')+'" data-g4="qsend" data-q="'+E(q.id)+'">Ответить</div></div>'+autoLine(q)+'</div>';
+  return h}
+ var qa0=qAlert;
+ qAlert=function(q){if(U.qopen93==q.id)return qa0(q);return (q.ag||'claude')=='claude'?qClaude(q):qGpt(q)};
+ function questions(){var P=S.pend;return P.length?sec('Вопросы',P.length)+'<div class="g4qs">'+P.map(qAlert).join('')+'</div>':''}
+
+ /* ---------- «Ждёт тебя» ---------- */
+ function waits(){if(S.stopped||typeof wsub35!='function')return {h:'',urgent:false};
+  var L=proj8().filter(function(p){return wsub35(p)});if(!L.length)return {h:'',urgent:false};
+  var rank={bad:0,card:1,end:2,pause:3};L.sort(function(a,b){return rank[a.wait.k]-rank[b.wait.k]});
+  var R=L.map(function(p){var w=p.wait,k=w.k,ag=w.ag||'claude';
+   var btn=k=='card'?pill('clnext','Нажать',null,p.id):k=='pause'?pill('unp35','Снять',ag,p.id):'';
+   var sb=k=='card'&&p.cls&&p.cls.card?'«'+E(p.cls.card.title)+'» — нажать?':E(w.t);
+   return '<div class="g4r tap" data-a="po86" data-x="'+E(p.id)+'">'+ai(ag)+'<div class="g4rt"><b>'+E(p.n)+'</b><span>'+sb+'</span></div>'+
+    (btn?btn:'<i class="g4dot '+(k=='bad'?'bad':'wait')+'"></i>')+'</div>'});
+  return {h:sec('Ждёт тебя',L.length)+'<div class="g4card">'+R.join('')+'</div>',urgent:L.some(function(p){return p.wait.k!='pause'})}}
+ function projects(){var L=proj8(),bd=L.filter(function(p){return p.st=='bad'}).length,w=L.filter(function(p){return p.st=='wait'}).length,wk=L.filter(function(p){return p.st=='work'}).length,id=L.length-w-wk-bd;
+  var parts=[bd?'<em class="bad">'+bd+' '+(bd==1?'сбой':bd<5?'сбоя':'сбоев')+'</em>':'',w?'<em class="wait">'+w+' '+(w==1?'ждёт':'ждут')+'</em>':'',wk?wk+' '+(wk==1?'работает':'работают'):'',id?id+' '+(id==1?'свободен':'свободны'):''].filter(Boolean).join(' · ')||'нет проектов';
+  return sec('Проекты',L.length)+'<div class="g4card">'+row({tap:1,a:'tab',x:'prj',ic:'<i class="g4pi">'+gv('g_projects')+'</i>',t:parts,
+   d:w||bd?E(L.filter(waiting8).map(function(p){return p.n}).join(', ')):'Все проекты и их агенты',chev:1})+'</div>'}
+ function calm(){return '<div class="g4calm">'+gv('cc_done')+'<div><b>Всё спокойно</b><span>Вопросов и сбоев нет</span></div></div>'}
+ home=function(){var fl=faults(),q=questions(),wt=waits();
+  var c=!S.pend.length&&!fl&&!S.stopped&&!wt.urgent?calm():'';
+  return '<div class="g4home">'+banners()+fl+q+c+wt.h+projects()+'</div>'};
+
+ /* ---------- каркас: всё, что нарисовала база на #scr, переезжает в ленту #g4f ---------- */
+ var last={k:'',y:0};
+ function chatTab(){return U.tab=='hc'||U.page=='hcchat'}
+ function wrap(keep,y0){var sc=$i('scr');if(!sc||W.LOADING||chatTab()){D.body.classList.remove('g4on');return}
+  var k=U.tab+'/'+(U.page||''),y=last.k==k&&keep?(y0!=null?y0:last.y):0;
+  var g=D.createElement('div');g.className='g4';g.id='g4';
+  g.innerHTML='<div class="g4f" id="g4f"><div class="g4l g4sk" id="g4l"></div></div>'+hdr();
+  var l=g.querySelector('#g4l');while(sc.firstChild)l.appendChild(sc.firstChild);
+  colGroups(l);sc.appendChild(g);D.body.classList.add('g4on');
+  var f=$i('g4f');f.scrollTop=y;last.k=k;last.y=y;
+  f.addEventListener('scroll',function(){last.y=f.scrollTop},{passive:true});
+  if(W.SD3&&SD3.SD&&SD3.SD.on&&SD3.at)SD3.at(SD3.SD.pos||0)}
+ /* сворачиваемые секции базы (colSec: «Ночью не беспокоить», «Токены»…) идут подряд голыми заголовками — собираем каждую серию в одну
+    карточку со строками, как группа ChatGPT Settings; раскрытое тело остаётся внутри той же карточки */
+ function colGroups(l){var runs=[],cur=null;
+  [].forEach.call(l.querySelectorAll('.sec'),function(s){var h=s.firstElementChild;if(!h||!h.classList.contains('col'))return;
+   if(cur&&cur[cur.length-1].nextElementSibling===s)cur.push(s);else{cur=[s];runs.push(cur)}});
+  runs.forEach(function(r){var c=D.createElement('div');c.className='g4colg';r[0].parentNode.insertBefore(c,r[0]);r.forEach(function(s){c.appendChild(s)})})}
+ /* пока печатаешь свой ответ в карточке вопроса — опрос не перерисовывает экран (иначе поле теряет фокус) */
+ var hold=0;
+ function typing(){var a=D.activeElement;return a&&a.classList&&a.classList.contains('g4qin')}
+ var _r=render;render=function(keep){if(keep&&typing()){hold=1;return}hold=0;var f0=$i('g4f'),y0=f0?f0.scrollTop:null;_r.apply(this,arguments);wrap(keep,y0)};
+ D.addEventListener('focusout',function(e){if(e.target.classList&&e.target.classList.contains('g4qin')&&hold)setTimeout(function(){if(!typing()&&hold){hold=0;render(true)}},250)});
+ D.addEventListener('input',function(e){var t=e.target;if(!t.classList||!t.classList.contains('g4qin'))return;U.g4qt[t.dataset.q]=t.value;
+  var b=t.closest('[data-g4q]');b=b&&b.querySelector('[data-g4=qsend]');if(b){b.classList.toggle('on',!!t.value.trim());b.classList.toggle('dis',!t.value.trim())}},true);
+ D.addEventListener('keydown',function(e){var t=e.target;if(e.key=='Enter'&&t.classList&&t.classList.contains('g4qin')){e.preventDefault();sendOwn(t.dataset.q)}},true);
+ function sendOwn(id){var t=(U.g4qt[id]||'').trim();if(!t){try{toast('Напиши ответ')}catch(e){}return}
+  delete U.g4qt[id];try{D.activeElement&&D.activeElement.blur()}catch(e){}send({a:'ans',q:id,k:'o',t:t})}
+ /* клики каркаса */
+ D.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-g4]');if(!b)return;var a=b.dataset.g4;
+  if(a=='side'){e.preventDefault();e.stopPropagation();if(W.SD3)SD3.open();return}
+  if(a=='back'){e.preventDefault();e.stopPropagation();try{haptic('sel')}catch(x){}if(U.page){back()}else{U.tab='more';U.page=null;render()}return}
+  if(a=='qsend'){e.preventDefault();e.stopPropagation();sendOwn(b.dataset.q);return}
+  if(a=='tpl'){e.preventDefault();e.stopPropagation();var id=b.dataset.q,v=(S.tpl||[])[+b.dataset.x]||'',c=b.closest('[data-g4q]'),inp=c&&c.querySelector('.g4qin');
+   U.g4qt[id]=v;if(inp){inp.value=v;inp.focus();inp.dispatchEvent(new Event('input',{bubbles:true}))}}},true);
+ /* фразы видны, пока поле в фокусе (без перерисовки: класс на карточке); тап по фразе не уводит фокус */
+ D.addEventListener('focusin',function(e){var t=e.target;if(t.classList&&t.classList.contains('g4qin')){var c=t.closest('[data-g4q]');if(c)c.classList.add('g4typ')}});
+ D.addEventListener('focusout',function(e){var t=e.target;if(t.classList&&t.classList.contains('g4qin')){var c=t.closest('[data-g4q]');setTimeout(function(){if(c&&!(D.activeElement&&c.contains(D.activeElement)&&D.activeElement.classList.contains('g4qin')))c.classList.remove('g4typ')},200)}});
+ D.addEventListener('pointerdown',function(e){if(e.target.closest&&e.target.closest('[data-g4=tpl]'))e.preventDefault()},true);
+ /* «потянуть вниз = обновить» базы смотрит на прокрутку окна — у каркаса своя: только от верха ленты */
+ D.addEventListener('touchstart',function(e){var f=$i('g4f');if(f&&f.contains(e.target)&&f.scrollTop>0)W.PY=null},{passive:true});
+ /* нижняя панель едет вместе с экраном, когда открыто боковое меню */
+ var MO=new MutationObserver(function(){var g=$i('g4'),n=$i('nav');if(!n)return;var t=g&&g.style.transform||'';n.style.transform=t;n.style.transition=t?'none':''});
+ setInterval(function(){var g=$i('g4');if(g&&!g.__g4w){g.__g4w=1;MO.observe(g,{attributes:true,attributeFilter:['style']})}},300);
+ /* ---------- нижняя навигация: один набор чистых линейных значков 24×24, штрих 1.8 (как SF Symbols / значки ChatGPT).
+    Значки «Пульт»/«Мозг», вырезанные из кадров (Remote / Library), на 21 pt выходили кривыми — пользователь 23.11 ---------- */
+ var NP={home:'<path d="M3.34 19a10 10 0 1 1 17.32 0"/><path d="m12 14 4-4"/><circle cx="12" cy="14" r="1.2" fill="currentColor" stroke="none"/>',
+  prj:'<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+  hc:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+  br:'<rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/>',
+  more:'<circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/>'};
+ function nic(k,c){return NP[k]?'<svg class="g4ni'+(c?' '+c:'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+NP[k]+'</svg>':''}
+ function navIc(){var n=$i('nav');if(!n)return;[].forEach.call(n.querySelectorAll('[data-x]'),function(el){var i=el.querySelector('i');if(!i||i.__g4)return;
+  var h=nic(el.dataset.x);if(h){i.innerHTML=h;i.__g4=1}})}
+ /* боковое меню: те же значки у «Пульт» и «Мозг»; на экранах вне чата в шапке меню нет кружка поиска
+    (пользователь: выглядел обрезанным; поиск есть в «Все сессии» / «Все чаты») */
+ function sideFix(){var m=$i('sd3');if(!m)return;var on=m.classList.contains('on')&&!!$i('g4');if(m.classList.contains('g4side')!=on)m.classList.toggle('g4side',on);
+  ['home','br'].forEach(function(k){[].forEach.call(m.querySelectorAll('[data-sd=tab][data-x='+k+']'),function(r){var v=r.querySelector('svg');if(v&&!v.classList.contains('g4ni'))v.outerHTML=nic(k,'g4sdi')})})}
+ var SMO=new MutationObserver(sideFix);
+ setInterval(function(){var m=$i('sd3');if(m&&!m.__g4o){m.__g4o=1;SMO.observe(m,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});sideFix()}},300);
+ if(typeof nav86=='function'){var n0=nav86;nav86=function(){n0.apply(this,arguments);navIc();D.body.classList.add('g4nav')}}
+ setTimeout(function(){navIc();D.body.classList.add('g4nav')},0);
+ W.G4={wrap:wrap,title:title,qClaude:qClaude,qGpt:qGpt,main:function(){return $i('g4')}};
 })();
 
 </script>
