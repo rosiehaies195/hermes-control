@@ -90,10 +90,11 @@ html[data-theme=light] .sd3.c .sd3ft{background:linear-gradient(rgba(250,249,245
 .sd3.c .sd3av i{font:600 15px/1 var(--sd3f);font-style:normal;color:#f9f9f7;letter-spacing:0}
 /* ---------- главный экран отъезжает (ChatGPT 310 pt, Claude 320.3 pt), затемнён, левые углы скруглены ---------- */
 .sd3main{will-change:transform;overflow:hidden}
-.sd3main::after{content:'';position:absolute;inset:0;z-index:200;pointer-events:none;opacity:var(--sd3dim,0);border-radius:inherit}
-#g3.sd3main::after{background:rgba(39,39,39,.53)}
-#cl3.sd3main::after{background:rgba(31,31,31,.67)}
-html[data-theme=light] .sd3main::after{background:rgba(0,0,0,.18)!important}
+/* cb4: затемнение — настоящий узел, а не ::after с переменной: смена custom property на корне чата пересчитывала стили всех потомков каждый кадр */
+.sd3main>.sd3dm{display:block;position:absolute;inset:0;z-index:200;pointer-events:none;opacity:0;border-radius:inherit;margin:0;padding:0}
+#g3.sd3main>.sd3dm{background:rgba(39,39,39,.53)}
+#cl3.sd3main>.sd3dm{background:rgba(31,31,31,.67)}
+html[data-theme=light] .sd3main>.sd3dm{background:rgba(0,0,0,.18)!important}
 .sd3cv{position:fixed;top:0;bottom:0;right:0;z-index:35;display:none;touch-action:pan-y}
 .sd3cv.on{display:block}
 /* ---------- экран «Недавние» / поиск (кадры 0182.39, 0199.47) ---------- */

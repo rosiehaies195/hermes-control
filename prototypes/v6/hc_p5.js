@@ -193,10 +193,13 @@ function openSess(id,fresh){if(st.kind!='hermes')return openAgent(id,fresh);var 
 function reload(){if(!st.sid)return Promise.resolve();var id=st.sid;return J(base()+'/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id)return;st.msgs=fromHistory(d.m);paint()})}
 function leave(){ccStop();st.view='list';U.page=null;st.sessions=null;render();loadList()}
 function newChat(){if(!live()){toast('Чат — в live-режиме');return}
+ if(st.newBusy&&Date.now()-st.newBusy<20000){toast('Чат уже создаётся…');return}
  projSheet()}
+/* cb2: окно «Проект» ещё на экране? Поздний ответ списка не должен открывать его заново поверх уже созданного чата */
+function psOn(){return !!document.querySelector('#sheet.on [data-hc=newnone]')}
 function projSheet(){var ps=st.projs;
  if(!ps){sheet('<div class="hcsh"><b>Проект</b></div><div class="hint2">'+(st.perr?E(st.perr):'Загружаю список…')+'</div><div class="btn" data-hc="newnone">Без проекта</div>');
-  J('/projects').then(function(d){st.projs=d.p||[];st.perr='';projSheet()}).catch(function(e){st.perr='Не удалось: '+E(e.message);st.projs=null;doNew('','')});return}
+  J('/projects').then(function(d){st.projs=d.p||[];st.perr='';if(psOn())projSheet();else window.cbDiag&&cbDiag('newchat_late_list',{})}).catch(function(e){st.perr='Не удалось: '+E(e.message);st.projs=null;if(psOn())doNew('','')});return}
  if(!ps.length){doNew('','');return}
  var last=LS.get('hcproj','');
  var h='<div class="hcsh"><b>Проект для нового чата</b></div><div class="hcml">'+
@@ -204,10 +207,10 @@ function projSheet(){var ps=st.projs;
   ps.map(function(p,i){var on=last==p.path;return '<div class="hcmi'+(on?' on':'')+'" data-hc="newproj" data-i="'+i+'">'+(on?IC('check'):'<i></i>')+'<b>'+E(p.name)+'</b><span>'+E(p.path)+'</span></div>'}).join('')+
   '</div><div class="btn" data-hc="close">Отмена</div>';
  sheet(h)}
-function doNew(cwd,pname){unsheet();LS.set('hcproj',cwd||'');var k=st.kind;
- J('/new',{method:'POST',body:{agent:k,cwd:cwd||'',pname:pname||''}}).then(function(d){if(st.kind!=k)return;
+function doNew(cwd,pname){unsheet();if(st.newBusy&&Date.now()-st.newBusy<20000){window.cbDiag&&cbDiag('newchat_dup',{});return}st.newBusy=Date.now();var t0n=Date.now();LS.set('hcproj',cwd||'');var k=st.kind;toast('Создаю чат…');
+ J('/new',{method:'POST',body:{agent:k,cwd:cwd||'',pname:pname||''}}).then(function(d){st.newBusy=0;window.cbDiag&&cbDiag('newchat',{ag:k,ms:Date.now()-t0n,ok:1,late:st.kind!=k?1:0});if(st.kind!=k){toast('Чат создан — он в списке '+(KN[k]||k));return}
   if(k=='hermes'&&!st.all){st.all=true;LS.set('hcall',true)}
-  st.msgs=[];st.sessions=[d.s];if(k=='hermes'){openSess(d.s.id,true)}else openAgent(d.s.id,true);st.title=d.s.t||'Новый чат';st.rw=false;st.src=d.s.src;paint();if(cwd)toast('Проект: '+E(pname));setTimeout(function(){var t=document.getElementById('hcin');if(t)t.focus()},120)}).catch(function(e){toast(E(e.message))})}
+  st.msgs=[];st.sessions=[d.s];if(k=='hermes'){openSess(d.s.id,true)}else openAgent(d.s.id,true);st.title=d.s.t||'Новый чат';st.rw=false;st.src=d.s.src;paint();if(cwd)toast('Проект: '+E(pname));setTimeout(function(){var t=document.getElementById('hcin');if(t)t.focus()},120)}).catch(function(e){st.newBusy=0;window.cbDiag&&cbDiag('newchat',{ag:k,ms:Date.now()-t0n,ok:0,err:String(e&&e.message).slice(0,50)});toast(E(e.message))})}
 
 /* ---------- ход со стримом ---------- */
 function ctl(d,n){var id=d.request_id||d.prompt_id||d.id;if(!id)return null;

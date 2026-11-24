@@ -47,7 +47,9 @@
    /* «Type or hold to talk» / «Reply or hold to talk» / в фокусе «Chat with Claude» / «Reply to Claude» */
    var ph=kb?(em?'Написать Claude':'Ответить Claude'):(s.imgs&&s.imgs.length?'Написать или удерживать':'Пиши или удерживай');if(ta.placeholder!=ph)ta.placeholder=ph}}
  /* ---------- лента ---------- */
- function md(t){try{return HC.md(t)}catch(e){return E(t)}}
+ /* cb5: разметка одного и того же текста не пересчитывается на каждом токене стрима */
+ var MDC=Object.create(null),MDN=0;function md(t){var k=String(t==null?'':t),v=MDC[k];if(v!==undefined)return v;try{v=HC.md(k)}catch(e){v=E(k)}
+  if(k.length<30000){if(++MDN>300){MDC=Object.create(null);MDN=1}MDC[k]=v}return v}
  function txt(b){if(!b)return '';if(b.k=='u')return b.t||'';return (b.parts||[]).filter(function(p){return p.p=='t'}).map(function(p){return p.t}).join('\n\n')}
  function toolName(p){var a={};try{a=JSON.parse(p.a||'{}')}catch(e){}var x=a.command||a.cmd||a.path||a.file_path||a.query||a.url||a.pattern||a.description||'';
   return '<b>'+E(p.n||'действие')+'</b>'+(x?' <span>'+E(String(x).replace(/\s+/g,' ').slice(0,90))+'</span>':'')}
@@ -97,14 +99,21 @@
   if(opened)h+='</div>';
   if(s.loadingMsgs&&!s.msgs.length)h+='<div class="clth clload"><div class="cldots"><i></i><i></i><i></i></div><span>Загружаю</span></div>';
   return h}
- function feed(){var f=$i('clf'),l=$i('cll');if(!f||!l)return;var nh=feedHtml();if(l.__h===nh)return;
+ /* cb5: список обновляем по верхним узлам: неизменившиеся остаются как есть (без пересоздания и перекладки), меняется только последний обмен */
+ function setList(l,nh,first){
+  if(!first&&l.__ok){var t=D.createElement('template');t.innerHTML=nh;var nk=t.content;
+   if(nk.childNodes.length===nk.children.length){var arr=Array.prototype.slice.call(nk.children),ok=l.children,ch=[];
+    for(var i=0;i<arr.length;i++){var nn=arr[i],oh=nn.outerHTML,on=ok[i];nn.__oh=oh;if(on&&on.__oh===oh)continue;if(on)l.replaceChild(nn,on);else l.appendChild(nn);ch.push(nn)}
+    while(l.children.length>arr.length)l.removeChild(l.lastElementChild);return ch}}
+  l.innerHTML=nh;l.__ok=1;for(var j=0;j<l.children.length;j++)l.children[j].__oh=l.children[j].outerHTML;return null}
+ function feed(){var f=$i('clf'),l=$i('cll');if(!f||!l)return;var _t0=performance.now(),nh=feedHtml();if(l.__h===nh)return;
   var sl=W.getSelection&&W.getSelection(),selin=sl&&!sl.isCollapsed&&sl.rangeCount&&l.contains(sl.anchorNode);if(selin&&!G.stick)return;
   var s=st(),key=s.kind+':'+s.sid,first=l.__sid!==key,prevN=l.querySelectorAll('.clum').length;
-  var sc0=f.scrollTop;l.__h=nh;l.__sid=key;l.innerHTML=nh;if(!first&&f.scrollTop!=sc0)f.scrollTop=sc0;
-  shrink(l);var nowN=l.querySelectorAll('.clum').length;fadeTail(l,first);ltFit();
+  var sc0=f.scrollTop;l.__h=nh;l.__sid=key;var ch=setList(l,nh,first);if(!first&&f.scrollTop!=sc0)f.scrollTop=sc0;
+  if(ch)ch.forEach(shrink);else shrink(l);var nowN=l.querySelectorAll('.clum').length;fadeTail(l,first);ltFit();
   if(first||G.stick||(nowN>prevN&&G.fly))f.scrollTop=f.scrollHeight;
   if(G.fly&&nowN>prevN)flyIn(l.querySelectorAll('.clum')[nowN-1]);else flyKeep(l);if(nowN>prevN)G.fly=null;G.stick=false;
-  dnUpd()}
+  var _d=performance.now()-_t0;if(_d>45&&W.cbDiag)cbDiag('feed_slow',{ms:Math.round(_d),kids:l.children.length,nodes:l.getElementsByTagName('*').length});dnUpd()}
  /* пузырь обтягивает самую длинную строку (у Claude 2-строчный пузырь 310.6 pt при максимуме 318) */
  function shrink(l){l.querySelectorAll('.club').forEach(function(b){if(b.offsetHeight<60)return;var mx=0,mn=1e9,w=D.createTreeWalker(b,NodeFilter.SHOW_TEXT,null),n;
   /* только строки текста: прямоугольники блоков разметки (div абзаца) всегда во всю ширину */
@@ -195,10 +204,12 @@
    for(var e=0;e<WV.hist.length;e++){var n=a-3-6*e-WV.ph;if(n<-3)break;var l=WV.hist[WV.hist.length-1-e],m=2.7+l*22.3;
     x.beginPath();if(x.roundRect)x.roundRect(n,(o-m)/2,3,m,1.5);else x.rect(n,(o-m)/2,3,m);x.fill()}}}
   WV.raf=requestAnimationFrame(wframe)}
- function abortRec(){G.sendAfter=false;G.voice=false;if(!W.VC||!VC.rec)return;var r=VC.rec;r.ondataavailable=null;
+ function abortRec(){G.sendAfter=false;G.voice=false;/* cb3: × работает и пока идёт «Распознаю…» */if(W.VC&&VC.busy&&!VC.rec){vcCancelBusy();draw();return}if(!W.VC||!VC.rec)return;var r=VC.rec;r.ondataavailable=null;
   r.onstop=function(){try{VC.stream.getTracks().forEach(function(t){t.stop()})}catch(e){}clearInterval(VC.tick);clearTimeout(VC.timer);VC.rec=null;VC.seq++;VC.busy=false;vcSet('');vcUi()};try{r.stop()}catch(e){r.onstop()}}
- function sendAfter(){G.sendAfter=true;draw();if(VC.rec)vcStop();var n=0;(function w(){if(W.VC&&(VC.rec||VC.busy)&&n++<600)return setTimeout(w,100);var ok=G.sendAfter;G.sendAfter=false;G.voice=false;
-   if(ok&&has())doSend();draw()})()}
+ function sendAfter(){var sid0=st().sid,g0=W.VC?VC.gen:0;G.sendAfter=true;draw();if(VC.rec)vcStop();var n=0;(function w(){if(W.VC&&(VC.rec||VC.busy)&&n++<3000)return setTimeout(w,100);
+    /* cb3: отправляем только в тот чат, где диктовали, и только если не отменили; ждать можно сколько нужно (раньше сдавались на 60 с) */
+    var ok=G.sendAfter&&(!W.VC||VC.gen==g0)&&st().sid==sid0;G.sendAfter=false;G.voice=false;
+    if(ok&&has()){doSend();T('Отправлено голосом')}draw()})()}
  function doSend(){var ta=$i('hcin'),s=st();if(ta){G.flyY=ta.getBoundingClientRect().top+2}G.fly=1;G.stick=true;
   if(s.imgs&&s.imgs.length)G.sent.push({ts:Date.now()/1000,n:s.imgs.length,u:s.imgs.slice()});
   var sb=$i('hcsend');if(sb)sb.click()}

@@ -46,14 +46,14 @@
  var EZ={g:{d:309,e:'cubic-bezier(.25,1,.3,1)'},c:{d:256,e:'linear(0, 0.049, 0.158, 0.286, 0.412, 0.526, 0.625, 0.706, 0.773, 0.825, 0.867, 0.899, 0.924, 0.943, 0.957, 0.968, 0.976, 0.983, 0.987, 0.991, 0.993, 0.995, 0.996, 0.997, 1)'}};
  var RAD={g:'55px',c:'55px'};
  function setPos(m,x){if(!m)return;var k=x/SD.X;m.classList.add('sd3main');m.style.transform=x?'translateX('+x+'px)':'';m.style.borderTopLeftRadius=m.style.borderBottomLeftRadius=x>0.5?Math.min(55,x*0.6).toFixed(1)+'px':'';
-  m.style.setProperty('--sd3dim',Math.max(0,Math.min(1,k)).toFixed(3));var p=$i('sd3');if(p){/* меню видно только слева от края чата: по стеку базы оно оказывается ПОВЕРХ экрана чата и просвечивало при закрытии */
+  var dm=m.__dm;if(!dm||dm.parentNode!==m){dm=m.__dm=D.createElement('i');dm.className='sd3dm';m.appendChild(dm)}dm.style.opacity=Math.max(0,Math.min(1,k)).toFixed(3);var p=$i('sd3');if(p){/* меню видно только слева от края чата: по стеку базы оно оказывается ПОВЕРХ экрана чата и просвечивало при закрытии */
    p.style.clipPath='inset(0 '+Math.max(0,SD.X-x).toFixed(2)+'px 0 0)';p.style.opacity=(0.6+0.4*Math.min(1,k)).toFixed(3);if(SD.sty=='g'){var pl=p.querySelector('.sd3pl');if(pl)pl.style.transform='translateX('+(-47.3*(1-Math.min(1,k))).toFixed(2)+'px)'}}}
- function animTo(x,cb,dur,ease){var m=main(),from=SD.pos||0,ez=ease?{d:dur,e:ease}:EZ[SD.sty],t0=performance.now(),d=dur||ez.d;if(SD.anim)cancelAnimationFrame(SD.anim);
+ function animTo(x,cb,dur,ease){var m=main(),jk={l:performance.now(),mx:0,n:0},from=SD.pos||0,ez=ease?{d:dur,e:ease}:EZ[SD.sty],t0=performance.now(),d=dur||ez.d;if(SD.anim)cancelAnimationFrame(SD.anim);
   /* одна кривая на все свойства: считаем прогресс по той же функции времени, что и CSS (WAAPI-анимация-носитель) */
   var probe=D.createElement('i');probe.style.cssText='position:fixed;left:0;top:0;width:0;height:0;pointer-events:none';B.appendChild(probe);
   var a=probe.animate?probe.animate([{left:'0px'},{left:'1000px'}],{duration:d,easing:ez.e,fill:'forwards'}):null;
-  function step(){var p=a?parseFloat(getComputedStyle(probe).left)/1000:Math.min(1,(performance.now()-t0)/d);var v=from+(x-from)*p;SD.pos=v;setPos(main(),v);cover();
-   if((a&&a.playState=='finished')||(!a&&p>=1)){probe.remove();SD.anim=null;SD.pos=x;setPos(main(),x);cover();cb&&cb();return}SD.anim=requestAnimationFrame(step)}
+  function step(){var nw=performance.now();if(jk.n++){jk.mx=Math.max(jk.mx,nw-jk.l)}jk.l=nw;var p=a?parseFloat(getComputedStyle(probe).left)/1000:Math.min(1,(performance.now()-t0)/d);var v=from+(x-from)*p;SD.pos=v;setPos(main(),v);cover();
+   if((a&&a.playState=='finished')||(!a&&p>=1)){if(jk.mx>60&&W.cbDiag)cbDiag('sd_jank',{max:Math.round(jk.mx),n:jk.n,x:Math.round(x),nodes:D.getElementsByTagName('*').length});probe.remove();SD.anim=null;SD.pos=x;setPos(main(),x);cover();cb&&cb();return}SD.anim=requestAnimationFrame(step)}
   SD.anim=requestAnimationFrame(step);SD.cur={probe:probe,a:a}}
  function cover(){var c=$i('sd3cv');if(!c)return;var on=SD.on&&(SD.pos||0)>0;c.classList.toggle('on',on);if(on)c.style.left=Math.round(SD.pos)+'px'}
  /* ---------- разметка меню ---------- */
@@ -108,7 +108,7 @@
   return {name:n,nick:u.username?'@'+u.username:n,ini:(ini||n.slice(0,2)).toUpperCase(),ini1:(n[0]||'Я').toUpperCase()}}
  function pane(){var p=$i('sd3');if(!p){p=D.createElement('div');p.id='sd3';p.className='sd3';B.appendChild(p);
    var c=D.createElement('div');c.id='sd3cv';c.className='sd3cv';B.appendChild(c)}return p}
- function paint(){if(!SD.on)return;var p=pane(),sc=$i('sd3sc'),top=sc?sc.scrollTop:0;p.className='sd3 on '+SD.sty;p.innerHTML=sideHtml();var s2=$i('sd3sc');if(s2)s2.scrollTop=top;if(SD.rc)rcPaint()}
+ function paint(){if(!SD.on)return;if(SW&&SW.go){SD.dirty=1;return}/* cb1: не трогаем узлы под пальцем */var p=pane(),sc=$i('sd3sc'),top=sc?sc.scrollTop:0;p.className='sd3 on '+SD.sty;p.innerHTML=sideHtml();var s2=$i('sd3sc');if(s2)s2.scrollTop=top;if(SD.rc)rcPaint()}
  /* ---------- открыть / закрыть ---------- */
  function open(o){o=o||{};var m=main();if(!m&&!o.fx)return;closePop();
   SD.fx=o.fx||null;SD.sty=o.sty||(SD.fx&&SD.fx.sty)||sty();SD.X=SD.sty=='c'?320.3:310;SD.on=true;
@@ -116,7 +116,7 @@
   paint();load();haptic();if(o.instant){SD.pos=SD.X;setPos(main(),SD.X);cover();return}
   if(SD.pos==null)SD.pos=0;animTo(SD.X)}
  function close(o,cb){o=o||{};if(!SD.on){cb&&cb();return}
-  var fin=function(){SD.on=false;SD.pos=0;var m=main();var pp=$i('sd3');if(pp){pp.style.opacity='';pp.style.clipPath=''}if(m){m.classList.remove('sd3main');m.style.transform='';m.style.borderTopLeftRadius=m.style.borderBottomLeftRadius='';m.style.removeProperty('--sd3dim')}
+  var fin=function(){SD.on=false;SD.pos=0;var m=main();var pp=$i('sd3');if(pp){pp.style.opacity='';pp.style.clipPath=''}if(m){m.classList.remove('sd3main');m.style.transform='';m.style.borderTopLeftRadius=m.style.borderBottomLeftRadius='';if(m.__dm)m.__dm.style.opacity='0'}
    var p=$i('sd3');if(p)p.className='sd3';cover();cb&&cb()};
   if(o.instant){if(SD.anim)cancelAnimationFrame(SD.anim);fin();return}
   /* закрытие: мягкий старт без рывка первого кадра (кривая открытия стартует резко — на закрытии это выглядело скачком);
@@ -324,19 +324,28 @@
  /* ---------- свайп: вправо по экрану чата — открыть, влево по меню/краю — закрыть (палец ведёт экран) ---------- */
  var SW=null;
  function swOk(t){return !(t.closest&&t.closest('textarea,input,pre,code,table,.g3th,.clth,.g3pop,.clpop,.g3dict,.cldict,[data-g3=mic],[data-cl=mic],.g3c,.clc,.clsheet'))}
- D.addEventListener('touchstart',function(e){if(e.touches.length!=1){SW=null;return}var t=e.touches[0],tg2=e.target,m=main();
+ D.addEventListener('touchstart',function(e){if(e.touches.length!=1){swFin();return}var t=e.touches[0],tg2=e.target,m=main();
   var inMain=m&&m.contains(tg2)&&!SD.on,inSide=SD.on&&(tg2.closest&&tg2.closest('#sd3,#sd3cv'));
-  if(!(inMain&&swOk(tg2))&&!inSide){SW=null;return}if($i('sd3veil')||SD.rc){SW=null;return}
-  SW={x:t.clientX,y:t.clientY,t:performance.now(),p0:SD.on?(SD.pos||SD.X):0,go:false,open:inMain,lx:t.clientX,lt:performance.now(),v:0}},{passive:true,capture:true});
- D.addEventListener('touchmove',function(e){if(!SW)return;var t=e.touches[0],dx=t.clientX-SW.x,dy=t.clientY-SW.y;
+  if(!(inMain&&swOk(tg2))&&!inSide){swFin();return}if($i('sd3veil')||SD.rc){swFin();return}swFin();
+  SW={x:t.clientX,y:t.clientY,t:performance.now(),p0:SD.on?(SD.pos||SD.X):0,go:false,open:inMain,lx:t.clientX,lt:performance.now(),v:0,tg:tg2,ev:performance.now()};
+  /* cb1: если узел под пальцем удалят (перерисовка), события придут на него, а не на document */
+  try{tg2.addEventListener('touchmove',swMove,{passive:false});tg2.addEventListener('touchend',swEnd);tg2.addEventListener('touchcancel',swEnd)}catch(x){}},{passive:true,capture:true});
+ function swMove(e){if(!SW||e.__sw)return;e.__sw=1;SW.ev=performance.now();var t=e.touches[0],dx=t.clientX-SW.x,dy=t.clientY-SW.y;
   if(!SW.go){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)<Math.abs(dy)*1.2||(SW.open&&dx<0)||(!SW.open&&dx>0&&SW.p0>=SD.X)){SW=null;return}
    SW.go=true;SD.drag=true;if(SW.open){SD.fx=null;SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.on=true;paint();load();try{D.activeElement&&D.activeElement.blur&&D.activeElement.blur()}catch(x){}}
    if(SD.anim){cancelAnimationFrame(SD.anim);SD.anim=null}}
   e.preventDefault();var now=performance.now();SW.v=(t.clientX-SW.lx)/Math.max(1,now-SW.lt);SW.lx=t.clientX;SW.lt=now;
-  var x=Math.max(0,Math.min(SD.X,SW.p0+dx));SD.pos=x;setPos(main(),x);cover()},{passive:false,capture:true});
- function swEnd(){if(!SW)return;var s=SW;SW=null;if(!s.go)return;setTimeout(function(){SD.drag=false},50);
+  var x=Math.max(0,Math.min(SD.X,SW.p0+dx));SD.pos=x;setPos(main(),x);cover()}
+ D.addEventListener('touchmove',swMove,{passive:false,capture:true});
+ function swFin(){if(SW&&SW.go)swEnd();else swDrop()}
+ function swDrop(){if(SW&&SW.tg){try{SW.tg.removeEventListener('touchmove',swMove);SW.tg.removeEventListener('touchend',swEnd);SW.tg.removeEventListener('touchcancel',swEnd)}catch(x){}}SW=null}
+ function swEnd(e){if(e){if(e.__swe)return;e.__swe=1;if(e.target&&e.target.isConnected===false)W.cbDiag&&cbDiag('sd_detached',{pos:Math.round(SD.pos||0)})}if(!SW)return;var s=SW;swDrop();if(!s.go)return;setTimeout(function(){SD.drag=false;if(SD.dirty){SD.dirty=0;paint()}},50);
   var x=SD.pos||0,openIt=s.v>0.35?true:s.v<-0.35?false:x>SD.X*0.5;if(openIt){haptic();animTo(SD.X)}else close(s.v<-0.35?{flick:Math.abs(s.v)}:{})}
  D.addEventListener('touchend',swEnd,{capture:true});D.addEventListener('touchcancel',swEnd,{capture:true});
+ /* cb1: сторож — палец потерян (событий нет >1.2 с) или меню осталось на полпути без жеста и анимации: довести до края */
+ setInterval(function(){if(SW&&SW.go&&performance.now()-SW.ev>1200){W.cbDiag&&cbDiag('sd_stuck',{why:'lost-touch',pos:Math.round(SD.pos||0)});swEnd()}
+  if(!SW&&SD.drag&&!SD.anim){W.cbDiag&&cbDiag('sd_stuck',{why:'drag-flag',pos:Math.round(SD.pos||0)});SD.drag=false}
+  if(SD.on&&!SD.anim&&!SD.drag&&!SW&&!SD.fx&&SD.pos>2&&SD.pos<SD.X-2){W.cbDiag&&cbDiag('sd_stuck',{why:'half-open',pos:Math.round(SD.pos)});if(SD.pos>SD.X*0.5)animTo(SD.X);else close()}},500);
  /* экран чата пропал (ушли в другую вкладку, база перерисовала список) — меню закрыть */
  var MO=new MutationObserver(function(){if(SD.on&&!main()&&!SD.fx){SD.on=false;SD.pos=0;var p=$i('sd3');if(p)p.className='sd3';cover()}});
  MO.observe(B,{childList:true,subtree:false});
