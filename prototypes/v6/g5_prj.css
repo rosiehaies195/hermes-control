@@ -1,0 +1,27 @@
+/* g5 «Проекты» — пилюли агентов (ChatGPT: серая пилюля, выбранная белая), группы как «Sessions» Claude Code */
+.g4sk .chp5{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:4px 0 22px;padding:0 16px}
+.g4sk .chp5::-webkit-scrollbar{display:none}
+.g4sk .chp5>div{flex:none;display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:18px;background:var(--g4pl);color:var(--g4plt);font:500 15px/20px var(--g4f);letter-spacing:-.24px;cursor:pointer}
+.g4sk .chp5>div.on{background:var(--g4fg);color:var(--g4bg)}
+.g4sk .chp5>div:active{opacity:.7}
+.g4sk .chp5 b{font-weight:500}
+.g4sk .chp5 small{font:400 15px/20px var(--g4f);color:var(--g4sub)}
+.g4sk .chp5>div.on small{color:inherit;opacity:.55}
+.g4sk .chp5 .tl86.s{width:22px;height:22px;min-width:22px;border-radius:7px}
+.g4sk .chp5 .dot{width:7px;height:7px;margin:0 0 0 -1px;flex:none}
+.g4sk .pl5{margin-bottom:22px}
+/* строки: серая точка «свободен» — шум (у Claude Code у свободной сессии нет метки), время шрифтом системы, «авто» тихой подписью */
+.g4sk .pl5 .n2 .dot:not(.wait):not(.bad):not(.ok){display:none}
+.g4sk .pl5 .fr2{font:400 15px/20px var(--g4f)!important;letter-spacing:-.24px;color:var(--g4sub)!important}
+.g4sk .pl5 .au86{font:400 13px/16px var(--g4f)!important;letter-spacing:-.08px!important;text-transform:none!important;color:var(--g4sub)!important;border:0!important;background:var(--g4pl)!important;border-radius:6px;padding:1px 6px!important;margin-left:6px}
+.g4sk .mo5 .n2{color:var(--g4fg);font-weight:400}
+.g4sk .mo5{min-height:48px}
+.g4sk .ad5 .n2{font-weight:400}
+/* экран проекта: карточка состояния */
+.g4sk .pcs5{margin-top:6px!important}
+.g4sk .pc5 .hd5 .n2{display:flex;align-items:center;gap:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g4sk .pc5 .hd5 .n2 .dot{flex:none;margin:0}
+.g4sk .pc5 .ms5{align-items:flex-start}
+.g4sk .pc5 .vl5{flex:none;color:var(--g4sub);font:400 17px/22px var(--g4f);letter-spacing:-.43px;margin-left:10px;white-space:nowrap}
+.g4sk .pc5 .pg5{height:4px;border-radius:2px;background:var(--g4pl);margin-top:9px;overflow:hidden}
+.g4sk .pc5 .pg5 i{display:block;height:100%;border-radius:2px;background:var(--g4fg)}
