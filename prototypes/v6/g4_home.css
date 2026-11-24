@@ -211,8 +211,9 @@ html[data-theme=light] .g4colg{box-shadow:0 0 0 .5px rgba(0,0,0,.04)}
 .g4colg>.sec{padding:0!important;margin:0!important}
 .g4colg>.sec+.sec{border-top:1px solid var(--g4sep)}
 .g4colg .sh.col{margin:0!important;min-height:54px;padding:0 18px 0 16px;color:var(--g4fg)!important;font-size:17px!important;line-height:22px!important;letter-spacing:-.43px!important}
-.g4colg .sh.col>span:first-child{font-size:17px;letter-spacing:-.43px!important;color:var(--g4fg);flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.g4colg .sh.col .sum{font-size:17px!important;color:var(--g4sub)!important;margin-left:10px;white-space:nowrap;flex:none;max-width:55%;overflow:hidden;text-overflow:ellipsis}
+.g4colg .sh.col>span:first-child{font-size:17px;letter-spacing:-.43px!important;color:var(--g4fg);flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* fx5: заголовок («Свободны · 12») целиком, сводка справа берёт только остаток и режется многоточием */
+.g4colg .sh.col .sum{font-size:17px!important;color:var(--g4sub)!important;margin-left:10px;white-space:nowrap;flex:1 1 0;min-width:0;max-width:none;text-align:right;overflow:hidden;text-overflow:ellipsis}
 .g4colg .sh.col::after{border-color:var(--g4ch)!important;width:8px!important;height:8px!important;border-width:0 2px 2px 0!important;margin-left:10px!important}
 .g4colg .sh.col:active{background:rgba(255,255,255,.06)}
 .g4colg .grp{background:transparent!important;box-shadow:none!important;border-radius:0!important;border-top:1px solid var(--g4sep)!important;margin:0!important}
@@ -245,3 +246,64 @@ html[data-theme=light] body.g4nav.gl87.g86 .nav{background:rgba(255,255,255,.82)
 html[data-theme=light] body.g4nav.gl87.g86 .nav div{color:rgba(0,0,0,.45)}
 html[data-theme=light] body.g4nav.gl87.g86 .nav div.on{color:#0d0d0d}
 html[data-theme=light] body.g4nav .ln87>span{background:rgba(0,0,0,.07)}
+/* fx1 (проход пользователем 23.11): Система — схема «Как всё работает» одной карточкой ChatGPT, без бирюзовых кромок и моноширинного статуса */
+.g4sk .ph{padding:4px 16px 10px!important;gap:0!important}.g4sk .ph .logo{display:none!important}
+.g4sk .ph h2{font-size:22px!important;line-height:28px!important;font-weight:700!important;letter-spacing:-.26px!important}.g4sk .ph .d{color:var(--g4sub)!important;font-size:15px!important}
+.g4sk .chain{background:var(--g4card)!important;border-radius:26px!important;box-shadow:inset 0 0 0 1px var(--g4edge);overflow:hidden;padding:0!important;gap:0!important}
+.g4sk .chain .ca{display:none!important}
+.g4sk .chain .cn{background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;min-height:54px;padding:0 16px!important;margin:0!important;display:flex;align-items:center;gap:14px}
+.g4sk .chain .cn+.ca+.cn,.g4sk .chain .cn+.cn{border-top:.5px solid var(--g4sep)!important}
+.g4sk .chain .ci{background:none!important;border:0!important;box-shadow:none!important;width:24px!important;height:24px!important;color:var(--g4fg)!important}
+.g4sk .chain .t .n{font-size:17px!important;font-weight:400!important}
+.g4sk .chain .cs{font-family:var(--g4f)!important;font-size:15px!important;letter-spacing:-.2px!important;color:var(--g4sub)!important;white-space:nowrap;background:none!important;border:0!important;padding:0!important;display:flex;align-items:center;gap:6px;text-transform:none!important;width:auto!important;max-width:none!important;flex:none!important;text-align:right!important}
+.g4sk .chain .cs:before{content:'';width:7px;height:7px;border-radius:50%;background:var(--g4ok);flex:none}
+.g4sk .chain .cn.warn .cs:before{background:#d29922}.g4sk .chain .cn.bad .cs:before{background:var(--g4red)}
+/* fx1: Мозг → «Сейчас» — пункты с точками, вровень с заголовком строки */
+.g4sk .pll{list-style:none!important;padding:2px 0 0!important;margin:0!important}
+.g4sk .pll li{position:relative;padding-left:12px!important;margin:2px 0 0!important;font-size:15px!important;line-height:20px!important;color:var(--g4sub)!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.g4sk .pll li:before{content:'';position:absolute;left:1px;top:8px;width:4px;height:4px;border-radius:50%;background:var(--g4sub)}
+/* fx1: боковое меню вне чата — список уходит под «Чат»/аватар в затемнение (было: строки просвечивали под кнопками) */
+.sd3.g.g4side .sd3ft{background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.85) 40%,#000 70%)!important}
+html[data-theme=light] .sd3.g.g4side .sd3ft{background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.9) 40%,#fff 70%)!important}
+/* fx2 (проход 23.11): листы (#sheet) на экранах вне чата — лист ChatGPT iOS: тёмная подложка r34, ручка, заголовок по центру,
+   действия — строки одной карточки (белые значки, без синего), главная кнопка белая капсула, «Отмена» — серая капсула */
+body.g4on .sheet{background:#171717!important;border:0!important;border-radius:34px 34px 0 0!important;box-shadow:0 -1px 0 rgba(255,255,255,.08),0 -20px 60px rgba(0,0,0,.6)!important;
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important;color:var(--g4fg)!important;font-family:var(--g4f)!important;letter-spacing:-.3px;
+ padding:8px 16px calc(16px + env(safe-area-inset-bottom))!important;max-height:calc(100% - var(--g3t,0px) - 24px)!important;overscroll-behavior:contain}
+html[data-theme=light] body.g4on .sheet{background:#f2f2f7!important;box-shadow:0 -20px 60px rgba(0,0,0,.18)!important}
+body.g4on .sheet .gr{width:36px!important;height:5px!important;border-radius:3px!important;background:rgba(255,255,255,.3)!important;margin:0 auto 14px!important}
+html[data-theme=light] body.g4on .sheet .gr{background:rgba(0,0,0,.2)!important}
+body.g4on .sheet h3{font-size:17px!important;line-height:22px!important;font-weight:600!important;text-align:center;margin:0 0 6px!important}
+body.g4on .sheet>p{font-size:15px!important;line-height:20px!important;color:var(--g4sub)!important;text-align:center;margin:0 8px 16px!important}
+body.g4on .sheet .ma86{background:var(--g4card)!important;border:0!important;border-radius:0!important;margin:0!important;padding:14px 16px!important;gap:14px!important;align-items:center!important;box-shadow:none!important}
+body.g4on .sheet .ma86:first-of-type,body.g4on .sheet h3+p+.ma86,body.g4on .sheet .gr+h3+p+.ma86{border-top-left-radius:22px!important;border-top-right-radius:22px!important}
+body.g4on .sheet .ma86+.ma86{box-shadow:inset 0 .5px 0 var(--g4sep)!important}
+body.g4on .sheet .ma86:not(:has(+.ma86)){border-bottom-left-radius:22px!important;border-bottom-right-radius:22px!important;margin-bottom:12px!important}
+body.g4on .sheet .ma86>svg,body.g4on .sheet .ma86>.ic{color:var(--g4fg)!important;width:22px!important;height:22px!important;flex:none}
+body.g4on .sheet .ma86 b{font-size:17px!important;line-height:22px!important;font-weight:400!important}
+body.g4on .sheet .ma86 small{font-size:14px!important;line-height:18px!important;color:var(--g4sub)!important;margin-top:2px!important}
+body.g4on .sheet .ma86.on{box-shadow:inset 0 0 0 1.5px var(--g4fg)!important}
+body.g4on .sheet .tgt{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--g4sub);font-size:15px;margin:-6px 0 12px}
+body.g4on .sheet .tgt b{color:var(--g4fg);font-weight:500}
+body.g4on .sheet textarea.in,body.g4on .sheet input.in{background:var(--g4card)!important;border:0!important;box-shadow:inset 0 0 0 1px var(--g4edge)!important;border-radius:22px!important;
+ color:var(--g4fg)!important;font:17px/22px var(--g4f)!important;padding:14px 16px!important;width:100%}
+body.g4on .sheet .chips span{background:var(--g4pl)!important;border:0!important;color:var(--g4plt)!important;border-radius:18px!important;font:15px/20px var(--g4f)!important;padding:8px 14px!important}
+body.g4on .sheet p[style]{text-align:left;font-size:13px!important;line-height:17px!important;margin:12px 4px 0!important}
+body.g4on .sheet .btn{min-height:50px!important;border-radius:25px!important;font:600 17px/22px var(--g4f)!important;border:0!important;box-shadow:none!important;
+ background:var(--g4pl)!important;color:var(--g4plt)!important;margin-top:10px!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+body.g4on .sheet .btn.pri{background:var(--g4fg)!important;color:var(--g4bg)!important}
+body.g4on .sheet .btn.pri.dis{opacity:.35}
+body.g4on .sheet .btn.hold{background:var(--g4fg)!important;color:var(--g4bg)!important;overflow:hidden;position:relative}
+body.g4on .sheet .btn.hold>i{background:rgba(0,0,0,.18)!important}
+body.g4on .sheet .tgt{background:none!important;border:0!important;box-shadow:none!important;padding:0!important}
+body.g4on .sheet .tgt img{width:18px;height:18px}
+/* «Написать Claude» на низком экране (окно Telegram на ПК 384×591): поле ниже, быстрые фразы одной прокручиваемой строкой */
+body.g4on .sheet textarea.in{min-height:96px;height:96px;resize:none}
+body.g4on .sheet .chips{display:flex!important;flex-wrap:nowrap!important;gap:8px!important;overflow-x:auto;margin:10px -16px 0!important;padding:0 16px!important;scrollbar-width:none}
+body.g4on .sheet .chips::-webkit-scrollbar{display:none}
+body.g4on .sheet .chips span{flex:none;white-space:nowrap;margin:0!important}
+/* fx4: Настройки — подсказка «умолчания для новых проектов» сноской под карточкой (iOS group footer), в теле раздела не дублируем */
+body.g4on .nt35{display:none!important}
+.g4ftn{margin:8px 32.3px 0;font-size:13px;line-height:18px;letter-spacing:-.08px;color:var(--g4sub)}
+.g4colg .grp>.sh.g4add{margin:0!important;min-height:48px;padding:0 16px!important;justify-content:flex-start!important;border-top:1px solid var(--g4sep)}
+.g4colg .grp>.sh.g4add a{font-size:17px;letter-spacing:-.43px!important;font-weight:400;color:var(--g4fg)!important}

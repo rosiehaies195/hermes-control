@@ -2184,8 +2184,9 @@ html[data-theme=light] .g4colg{box-shadow:0 0 0 .5px rgba(0,0,0,.04)}
 .g4colg>.sec{padding:0!important;margin:0!important}
 .g4colg>.sec+.sec{border-top:1px solid var(--g4sep)}
 .g4colg .sh.col{margin:0!important;min-height:54px;padding:0 18px 0 16px;color:var(--g4fg)!important;font-size:17px!important;line-height:22px!important;letter-spacing:-.43px!important}
-.g4colg .sh.col>span:first-child{font-size:17px;letter-spacing:-.43px!important;color:var(--g4fg);flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.g4colg .sh.col .sum{font-size:17px!important;color:var(--g4sub)!important;margin-left:10px;white-space:nowrap;flex:none;max-width:55%;overflow:hidden;text-overflow:ellipsis}
+.g4colg .sh.col>span:first-child{font-size:17px;letter-spacing:-.43px!important;color:var(--g4fg);flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* fx5: заголовок («Свободны · 12») целиком, сводка справа берёт только остаток и режется многоточием */
+.g4colg .sh.col .sum{font-size:17px!important;color:var(--g4sub)!important;margin-left:10px;white-space:nowrap;flex:1 1 0;min-width:0;max-width:none;text-align:right;overflow:hidden;text-overflow:ellipsis}
 .g4colg .sh.col::after{border-color:var(--g4ch)!important;width:8px!important;height:8px!important;border-width:0 2px 2px 0!important;margin-left:10px!important}
 .g4colg .sh.col:active{background:rgba(255,255,255,.06)}
 .g4colg .grp{background:transparent!important;box-shadow:none!important;border-radius:0!important;border-top:1px solid var(--g4sep)!important;margin:0!important}
@@ -2218,6 +2219,67 @@ html[data-theme=light] body.g4nav.gl87.g86 .nav{background:rgba(255,255,255,.82)
 html[data-theme=light] body.g4nav.gl87.g86 .nav div{color:rgba(0,0,0,.45)}
 html[data-theme=light] body.g4nav.gl87.g86 .nav div.on{color:#0d0d0d}
 html[data-theme=light] body.g4nav .ln87>span{background:rgba(0,0,0,.07)}
+/* fx1 (проход пользователем 23.11): Система — схема «Как всё работает» одной карточкой ChatGPT, без бирюзовых кромок и моноширинного статуса */
+.g4sk .ph{padding:4px 16px 10px!important;gap:0!important}.g4sk .ph .logo{display:none!important}
+.g4sk .ph h2{font-size:22px!important;line-height:28px!important;font-weight:700!important;letter-spacing:-.26px!important}.g4sk .ph .d{color:var(--g4sub)!important;font-size:15px!important}
+.g4sk .chain{background:var(--g4card)!important;border-radius:26px!important;box-shadow:inset 0 0 0 1px var(--g4edge);overflow:hidden;padding:0!important;gap:0!important}
+.g4sk .chain .ca{display:none!important}
+.g4sk .chain .cn{background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;min-height:54px;padding:0 16px!important;margin:0!important;display:flex;align-items:center;gap:14px}
+.g4sk .chain .cn+.ca+.cn,.g4sk .chain .cn+.cn{border-top:.5px solid var(--g4sep)!important}
+.g4sk .chain .ci{background:none!important;border:0!important;box-shadow:none!important;width:24px!important;height:24px!important;color:var(--g4fg)!important}
+.g4sk .chain .t .n{font-size:17px!important;font-weight:400!important}
+.g4sk .chain .cs{font-family:var(--g4f)!important;font-size:15px!important;letter-spacing:-.2px!important;color:var(--g4sub)!important;white-space:nowrap;background:none!important;border:0!important;padding:0!important;display:flex;align-items:center;gap:6px;text-transform:none!important;width:auto!important;max-width:none!important;flex:none!important;text-align:right!important}
+.g4sk .chain .cs:before{content:'';width:7px;height:7px;border-radius:50%;background:var(--g4ok);flex:none}
+.g4sk .chain .cn.warn .cs:before{background:#d29922}.g4sk .chain .cn.bad .cs:before{background:var(--g4red)}
+/* fx1: Мозг → «Сейчас» — пункты с точками, вровень с заголовком строки */
+.g4sk .pll{list-style:none!important;padding:2px 0 0!important;margin:0!important}
+.g4sk .pll li{position:relative;padding-left:12px!important;margin:2px 0 0!important;font-size:15px!important;line-height:20px!important;color:var(--g4sub)!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.g4sk .pll li:before{content:'';position:absolute;left:1px;top:8px;width:4px;height:4px;border-radius:50%;background:var(--g4sub)}
+/* fx1: боковое меню вне чата — список уходит под «Чат»/аватар в затемнение (было: строки просвечивали под кнопками) */
+.sd3.g.g4side .sd3ft{background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.85) 40%,#000 70%)!important}
+html[data-theme=light] .sd3.g.g4side .sd3ft{background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.9) 40%,#fff 70%)!important}
+/* fx2 (проход 23.11): листы (#sheet) на экранах вне чата — лист ChatGPT iOS: тёмная подложка r34, ручка, заголовок по центру,
+   действия — строки одной карточки (белые значки, без синего), главная кнопка белая капсула, «Отмена» — серая капсула */
+body.g4on .sheet{background:#171717!important;border:0!important;border-radius:34px 34px 0 0!important;box-shadow:0 -1px 0 rgba(255,255,255,.08),0 -20px 60px rgba(0,0,0,.6)!important;
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important;color:var(--g4fg)!important;font-family:var(--g4f)!important;letter-spacing:-.3px;
+ padding:8px 16px calc(16px + env(safe-area-inset-bottom))!important;max-height:calc(100% - var(--g3t,0px) - 24px)!important;overscroll-behavior:contain}
+html[data-theme=light] body.g4on .sheet{background:#f2f2f7!important;box-shadow:0 -20px 60px rgba(0,0,0,.18)!important}
+body.g4on .sheet .gr{width:36px!important;height:5px!important;border-radius:3px!important;background:rgba(255,255,255,.3)!important;margin:0 auto 14px!important}
+html[data-theme=light] body.g4on .sheet .gr{background:rgba(0,0,0,.2)!important}
+body.g4on .sheet h3{font-size:17px!important;line-height:22px!important;font-weight:600!important;text-align:center;margin:0 0 6px!important}
+body.g4on .sheet>p{font-size:15px!important;line-height:20px!important;color:var(--g4sub)!important;text-align:center;margin:0 8px 16px!important}
+body.g4on .sheet .ma86{background:var(--g4card)!important;border:0!important;border-radius:0!important;margin:0!important;padding:14px 16px!important;gap:14px!important;align-items:center!important;box-shadow:none!important}
+body.g4on .sheet .ma86:first-of-type,body.g4on .sheet h3+p+.ma86,body.g4on .sheet .gr+h3+p+.ma86{border-top-left-radius:22px!important;border-top-right-radius:22px!important}
+body.g4on .sheet .ma86+.ma86{box-shadow:inset 0 .5px 0 var(--g4sep)!important}
+body.g4on .sheet .ma86:not(:has(+.ma86)){border-bottom-left-radius:22px!important;border-bottom-right-radius:22px!important;margin-bottom:12px!important}
+body.g4on .sheet .ma86>svg,body.g4on .sheet .ma86>.ic{color:var(--g4fg)!important;width:22px!important;height:22px!important;flex:none}
+body.g4on .sheet .ma86 b{font-size:17px!important;line-height:22px!important;font-weight:400!important}
+body.g4on .sheet .ma86 small{font-size:14px!important;line-height:18px!important;color:var(--g4sub)!important;margin-top:2px!important}
+body.g4on .sheet .ma86.on{box-shadow:inset 0 0 0 1.5px var(--g4fg)!important}
+body.g4on .sheet .tgt{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--g4sub);font-size:15px;margin:-6px 0 12px}
+body.g4on .sheet .tgt b{color:var(--g4fg);font-weight:500}
+body.g4on .sheet textarea.in,body.g4on .sheet input.in{background:var(--g4card)!important;border:0!important;box-shadow:inset 0 0 0 1px var(--g4edge)!important;border-radius:22px!important;
+ color:var(--g4fg)!important;font:17px/22px var(--g4f)!important;padding:14px 16px!important;width:100%}
+body.g4on .sheet .chips span{background:var(--g4pl)!important;border:0!important;color:var(--g4plt)!important;border-radius:18px!important;font:15px/20px var(--g4f)!important;padding:8px 14px!important}
+body.g4on .sheet p[style]{text-align:left;font-size:13px!important;line-height:17px!important;margin:12px 4px 0!important}
+body.g4on .sheet .btn{min-height:50px!important;border-radius:25px!important;font:600 17px/22px var(--g4f)!important;border:0!important;box-shadow:none!important;
+ background:var(--g4pl)!important;color:var(--g4plt)!important;margin-top:10px!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+body.g4on .sheet .btn.pri{background:var(--g4fg)!important;color:var(--g4bg)!important}
+body.g4on .sheet .btn.pri.dis{opacity:.35}
+body.g4on .sheet .btn.hold{background:var(--g4fg)!important;color:var(--g4bg)!important;overflow:hidden;position:relative}
+body.g4on .sheet .btn.hold>i{background:rgba(0,0,0,.18)!important}
+body.g4on .sheet .tgt{background:none!important;border:0!important;box-shadow:none!important;padding:0!important}
+body.g4on .sheet .tgt img{width:18px;height:18px}
+/* «Написать Claude» на низком экране (окно Telegram на ПК 384×591): поле ниже, быстрые фразы одной прокручиваемой строкой */
+body.g4on .sheet textarea.in{min-height:96px;height:96px;resize:none}
+body.g4on .sheet .chips{display:flex!important;flex-wrap:nowrap!important;gap:8px!important;overflow-x:auto;margin:10px -16px 0!important;padding:0 16px!important;scrollbar-width:none}
+body.g4on .sheet .chips::-webkit-scrollbar{display:none}
+body.g4on .sheet .chips span{flex:none;white-space:nowrap;margin:0!important}
+/* fx4: Настройки — подсказка «умолчания для новых проектов» сноской под карточкой (iOS group footer), в теле раздела не дублируем */
+body.g4on .nt35{display:none!important}
+.g4ftn{margin:8px 32.3px 0;font-size:13px;line-height:18px;letter-spacing:-.08px;color:var(--g4sub)}
+.g4colg .grp>.sh.g4add{margin:0!important;min-height:48px;padding:0 16px!important;justify-content:flex-start!important;border-top:1px solid var(--g4sep)}
+.g4colg .grp>.sh.g4add a{font-size:17px;letter-spacing:-.43px!important;font-weight:400;color:var(--g4fg)!important}
 
 </style>
 </head>
@@ -2517,7 +2579,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=107;
+var VER=108;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -3522,6 +3584,25 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
   if(stale&&isApi)return Promise.resolve(new Response(JSON.stringify({error:'expired',text:MSG}),{status:401,headers:{'Content-Type':'application/json'}}));
   return of(u,o).then(function(r){if(isApi&&r.status==401){r.clone().json().then(function(j){if(j&&j.error=='expired'){stale=true;banner()}}).catch(function(){})}return r})}})();
 
+/* fx4: самовосстановление связи. Если первый /api/state при открытии не ответил за 10 с (ПК только проснулся, Funnel
+   поднимается), база делает API=null навсегда: «ПК недоступен», опроса нет, «Обновить» шлёт sendData (из кнопки меню
+   Telegram это ничего не делает) — живой экран возвращал только «Reload Page». Теперь: адрес API помним, каждые 15 с
+   (и по «Обновить») пробуем снова; при успехе — живой режим и обычный опрос, как после нормального старта. */
+(function(){if(window.MOCK||window.__rc)return;window.__rc=1;
+ var A0=HP.get('api');if(!A0)return;var busy=0,live=0;
+ function startPoll(){if(live)return;live=1;setInterval(poll,15000);document.addEventListener('visibilitychange',function(){poll()});
+  setInterval(function(){if(S.pend&&S.pend.length)loadSnap()},5000)}
+ function retry(manual){if(API||busy||(window.__panelStale&&__panelStale()))return Promise.resolve();busy=1;API=A0;
+  return api('/api/state').then(function(r){return r.json()}).then(function(d){S=d;norm();U.cached=0;U.offline=0;DIAG='';busy=0;
+   try{LS.set('last',S)}catch(e){}if(window.LOADING)boot();else{startPoll();render(true)}if(manual)toast('<b>'+IC('check')+'</b> Связь с ПК восстановлена')},
+  function(){API=null;busy=0;if(manual)toast('ПК пока не отвечает — пробую снова каждые 15 с')})}
+ /* нормальный старт тоже запускает опрос в boot(): отмечаем, чтобы не завести второй */
+ var b0=boot;boot=function(){if(API)live=1;return b0.apply(this,arguments)};
+ var r0=refresh;refresh=function(){if(!API)return retry(1);return r0.apply(this,arguments)};
+ setInterval(function(){if(!API&&!document.hidden)retry(0)},15000);
+ document.addEventListener('visibilitychange',function(){if(!API&&!document.hidden)retry(0)});
+ window.__rcRetry=retry})();
+
 /* v8.5 «Проекты» по модели проект × агент (решение 20.11); основа — v8.3 (прототип H на реальных данных).
    Стиль Hermes не меняется: КАПС-заголовки .sh, боевые карточки вопросов qAlert/qChips, шапка hd().
    Новое: список проектов (S.prj от tv_multi.py), фильтр Claude/Codex/Hermes на главной и во «Вопросах»,
@@ -4185,8 +4266,9 @@ function nextTxt35(p,ag,a){if(ag=='codex')return 'Открывает следу�
  var al0=autoLine;autoLine=function(q){var p=q&&q.pid&&prjById8(q.pid),a=p&&am35(p,'claude');if(!a||!a.ans)return al0(q);if(pz35(a))return '';
   var keep=S.auto;S.auto=a.ans;try{return al0(q)}finally{S.auto=keep}};
  /* Настройки: общий «Автоответ» = умолчания для новых проектов */
- ['settings','settingsT'].forEach(function(n){var f=window[n];if(!f)return;window[n]=function(){var h=f.apply(this,arguments),note='<div class="row"><div class="t"><div class="d">Это значения по умолчанию для новых проектов. У каждого проекта свои: Проекты → проект → Claude → «Сам отвечает на вопросы».</div></div></div>';
-  return h.replace(/(<span>(?:Автоответ|Отвечать за меня)<\/span>[\s\S]*?<div class="grp">)/,function(m){return m.replace(/<span>(Автоответ|Отвечать за меня)<\/span>/,'<span>$1 · по умолчанию</span>')+note})}});
+ ['settings','settingsT'].forEach(function(n){var f=window[n];if(!f)return;window[n]=function(){var h=f.apply(this,arguments),note='<div class="row nt35"><div class="t"><div class="d">Это значения по умолчанию для новых проектов. У каждого проекта свои: Проекты → проект → Claude → «Сам отвечает на вопросы».</div></div></div>';
+  /* только в тело СВОЕГО раздела: у свёрнутого тела нет — раньше подсказка уезжала в соседний раскрытый блок */
+  return h.replace(/(<span>(?:Автоответ|Отвечать за меня)<\/span>(?:(?!<div class="sec)[\s\S])*?<div class="grp">)/,function(m){return m.replace(/<span>(Автоответ|Отвечать за меня)<\/span>/,'<span>$1 · по умолчанию</span>')+note})}});
 })();
 
 function pauseSheet35(pid,app){var p=prjById8(pid);if(!p)return;var n=Math.round(nowS()),d=new Date();d.setHours(9,0,0,0);if(d.getTime()/1000<=n+60)d.setDate(d.getDate()+1);
@@ -5104,7 +5186,8 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
   if(k=='claude'){var v=W.CLV&&CLV.spark;return v?'<svg class="sd3ai sd3ai-c" viewBox="0 0 '+v[0]+' '+v[1]+'" aria-hidden="true"><path d="'+v[2]+'"/></svg>':'<i class="sd3ai"></i>'}
   return '<svg class="sd3ai sd3ai-x" viewBox="0 0 24 24" aria-hidden="true"><path d="'+OAI+'"/></svg>'}
  function agState(k){var L=SD.L[k]||[],w=L.filter(waits).length,lv=L.filter(function(x){return x.live&&!waits(x)}).length;
-  return w?{t:'ждёт ответа'+(w>1?' · '+w:''),dot:1}:lv?{t:'идёт'+(lv>1?' · '+lv:'')+' сейчас'}:{t:''}}
+  /* fx1: «ждёт ответа · 12» путали с вопросами (на Пульте «вопросов нет»): это чаты, где агент закончил и ход за тобой */
+  return w?{t:'твой ход'+(w>1?' · '+w:''),dot:1}:lv?{t:'идёт'+(lv>1?' · '+lv:'')+' сейчас'}:{t:''}}
  function agRows(){var s=st(),cur=s&&s.kind;return ['hermes','claude','codex'].map(function(k){var a=agState(k);
   return '<div class="sd3r sd3ag8'+(k==cur?' on':'')+'" data-sd="agent" data-k="'+k+'">'+agIc(k)+'<b>'+KN[k]+'</b>'+(a.t?'<span class="sd3as">'+E(a.t)+'</span>':'')+(a.dot?'<i class="sd3dot"></i>':'')+'</div>'}).join('')+'<div class="sd3r sd3ag8 sd3fold" data-sd="all">'+ic(SD.sty=='g'?'g_projects':'c_projects')+'<b>Все сессии</b><span class="sd3as">по папкам</span></div><div class="sd3gap"></div>'}
  function lastOf(k){var M=lsg('sd3lastk',{})||{},L=SD.L[k]||[],id=M[k];if(id&&L.some(function(x){return x.id==id}))return id;
@@ -5544,7 +5627,17 @@ window.G4V={cc_clock:[22.0,22.0,"M9.96 20.96C9.76 20.94 9.41 20.88 9.17 20.82C8.
  function colGroups(l){var runs=[],cur=null;
   [].forEach.call(l.querySelectorAll('.sec'),function(s){var h=s.firstElementChild;if(!h||!h.classList.contains('col'))return;
    if(cur&&cur[cur.length-1].nextElementSibling===s)cur.push(s);else{cur=[s];runs.push(cur)}});
-  runs.forEach(function(r){var c=D.createElement('div');c.className='g4colg';r[0].parentNode.insertBefore(c,r[0]);r.forEach(function(s){c.appendChild(s)})})}
+  runs.forEach(function(r){var c=D.createElement('div');c.className='g4colg';r[0].parentNode.insertBefore(c,r[0]);r.forEach(function(s){c.appendChild(s)})});
+  ftn(l)}
+ /* Настройки: «Отвечать за меня · по умолчанию» в строке не влезал рядом с «выкл», а подсказка sw35 живёт в теле раздела —
+    в g4 строка короткая, а «это умолчания для новых проектов» — подпись под карточкой (сноска группы iOS), видна и в свёрнутом виде */
+ function ftn(l){if(U.tab!='set')return;
+  /* «+ разово» внутри «Когда работать»: пустая строка с ссылкой у самого края → строка-действие «+ Разовое действие» под переключателем */
+  [].forEach.call(l.querySelectorAll('.g4colg .grp>.sh>a[data-a=atsheet]'),function(a){var sh=a.parentNode;sh.classList.add('g4add');a.textContent='+ Разовое действие';sh.parentNode.appendChild(sh)});
+  [].forEach.call(l.querySelectorAll('.g4colg .sh.col>span:first-child'),function(sp){
+   if(!/^(Автоответ|Отвечать за меня)( · по умолчанию)?$/.test(sp.textContent.trim()))return;sp.textContent=sp.textContent.replace(' · по умолчанию','');
+   var g=sp.closest('.g4colg');if(!g||(g.nextElementSibling&&g.nextElementSibling.classList.contains('g4ftn')))return;
+   var f=D.createElement('div');f.className='g4ftn';f.textContent='«'+sp.textContent.trim()+'» — значения по умолчанию для новых проектов. У каждого проекта свои: Проекты → проект → Claude.';g.parentNode.insertBefore(f,g.nextSibling)})}
  /* пока печатаешь свой ответ в карточке вопроса — опрос не перерисовывает экран (иначе поле теряет фокус) */
  var hold=0;
  function typing(){var a=D.activeElement;return a&&a.classList&&a.classList.contains('g4qin')}
@@ -5584,7 +5677,16 @@ window.G4V={cc_clock:[22.0,22.0,"M9.96 20.96C9.76 20.94 9.41 20.88 9.17 20.82C8.
  /* боковое меню: те же значки у «Пульт» и «Мозг»; на экранах вне чата в шапке меню нет кружка поиска
     (пользователь: выглядел обрезанным; поиск есть в «Все сессии» / «Все чаты») */
  function sideFix(){var m=$i('sd3');if(!m)return;var on=m.classList.contains('on')&&!!$i('g4');if(m.classList.contains('g4side')!=on)m.classList.toggle('g4side',on);
-  ['home','br'].forEach(function(k){[].forEach.call(m.querySelectorAll('[data-sd=tab][data-x='+k+']'),function(r){var v=r.querySelector('svg');if(v&&!v.classList.contains('g4ni'))v.outerHTML=nic(k,'g4sdi')})})}
+  ['home','br'].forEach(function(k){[].forEach.call(m.querySelectorAll('[data-sd=tab][data-x='+k+']'),function(r){var v=r.querySelector('svg');if(v&&!v.classList.contains('g4ni'))v.outerHTML=nic(k,'g4sdi')})});
+  /* fx1: меню, открытое вне чата, — меню панели: заголовок «Hermes», выделен текущий раздел, а не агент последнего чата */
+  if(!on)return;var tt=m.querySelector('.sd3tt');if(tt&&tt.textContent!='Hermes'&&!tt.querySelector('svg'))tt.textContent='Hermes';
+  var cur=U.page?'':({home:'home',q:'home',prj:'prj',br:'br',j:'j',set:'set'})[U.tab]||'';
+  [].forEach.call(m.querySelectorAll('.sd3ag8.on'),function(r){r.classList.remove('on')});
+  [].forEach.call(m.querySelectorAll('[data-sd=tab].sd3nv'),function(r){var o=r.dataset.x==cur;if(r.classList.contains('on')!=o)r.classList.toggle('on',o)})}
+ /* fx1: в «Чате» фон страницы под нижней панелью = фон экрана чата (был холодно-синий --bg базы под тёплым Claude) */
+ function bgSync(){var r=$i('hcroot'),de=D.documentElement,c='';if(!$i('g4')&&r&&r.getClientRects().length){c=getComputedStyle(r).backgroundColor;if(c=='rgba(0, 0, 0, 0)'||c=='transparent')c=''}
+  if(de.style.backgroundColor!=c){de.style.backgroundColor=c;D.body.style.backgroundColor=c}}
+ new MutationObserver(bgSync).observe(D.body,{attributes:true,attributeFilter:['class']});setInterval(bgSync,1000);
  var SMO=new MutationObserver(sideFix);
  setInterval(function(){var m=$i('sd3');if(m&&!m.__g4o){m.__g4o=1;SMO.observe(m,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});sideFix()}},300);
  if(typeof nav86=='function'){var n0=nav86;nav86=function(){n0.apply(this,arguments);navIc();D.body.classList.add('g4nav')}}

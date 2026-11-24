@@ -71,7 +71,8 @@
   if(k=='claude'){var v=W.CLV&&CLV.spark;return v?'<svg class="sd3ai sd3ai-c" viewBox="0 0 '+v[0]+' '+v[1]+'" aria-hidden="true"><path d="'+v[2]+'"/></svg>':'<i class="sd3ai"></i>'}
   return '<svg class="sd3ai sd3ai-x" viewBox="0 0 24 24" aria-hidden="true"><path d="'+OAI+'"/></svg>'}
  function agState(k){var L=SD.L[k]||[],w=L.filter(waits).length,lv=L.filter(function(x){return x.live&&!waits(x)}).length;
-  return w?{t:'ждёт ответа'+(w>1?' · '+w:''),dot:1}:lv?{t:'идёт'+(lv>1?' · '+lv:'')+' сейчас'}:{t:''}}
+  /* fx1: «ждёт ответа · 12» путали с вопросами (на Пульте «вопросов нет»): это чаты, где агент закончил и ход за тобой */
+  return w?{t:'твой ход'+(w>1?' · '+w:''),dot:1}:lv?{t:'идёт'+(lv>1?' · '+lv:'')+' сейчас'}:{t:''}}
  function agRows(){var s=st(),cur=s&&s.kind;return ['hermes','claude','codex'].map(function(k){var a=agState(k);
   return '<div class="sd3r sd3ag8'+(k==cur?' on':'')+'" data-sd="agent" data-k="'+k+'">'+agIc(k)+'<b>'+KN[k]+'</b>'+(a.t?'<span class="sd3as">'+E(a.t)+'</span>':'')+(a.dot?'<i class="sd3dot"></i>':'')+'</div>'}).join('')+'<div class="sd3r sd3ag8 sd3fold" data-sd="all">'+ic(SD.sty=='g'?'g_projects':'c_projects')+'<b>Все сессии</b><span class="sd3as">по папкам</span></div><div class="sd3gap"></div>'}
  function lastOf(k){var M=lsg('sd3lastk',{})||{},L=SD.L[k]||[],id=M[k];if(id&&L.some(function(x){return x.id==id}))return id;

@@ -134,7 +134,17 @@
  function colGroups(l){var runs=[],cur=null;
   [].forEach.call(l.querySelectorAll('.sec'),function(s){var h=s.firstElementChild;if(!h||!h.classList.contains('col'))return;
    if(cur&&cur[cur.length-1].nextElementSibling===s)cur.push(s);else{cur=[s];runs.push(cur)}});
-  runs.forEach(function(r){var c=D.createElement('div');c.className='g4colg';r[0].parentNode.insertBefore(c,r[0]);r.forEach(function(s){c.appendChild(s)})})}
+  runs.forEach(function(r){var c=D.createElement('div');c.className='g4colg';r[0].parentNode.insertBefore(c,r[0]);r.forEach(function(s){c.appendChild(s)})});
+  ftn(l)}
+ /* Настройки: «Отвечать за меня · по умолчанию» в строке не влезал рядом с «выкл», а подсказка sw35 живёт в теле раздела —
+    в g4 строка короткая, а «это умолчания для новых проектов» — подпись под карточкой (сноска группы iOS), видна и в свёрнутом виде */
+ function ftn(l){if(U.tab!='set')return;
+  /* «+ разово» внутри «Когда работать»: пустая строка с ссылкой у самого края → строка-действие «+ Разовое действие» под переключателем */
+  [].forEach.call(l.querySelectorAll('.g4colg .grp>.sh>a[data-a=atsheet]'),function(a){var sh=a.parentNode;sh.classList.add('g4add');a.textContent='+ Разовое действие';sh.parentNode.appendChild(sh)});
+  [].forEach.call(l.querySelectorAll('.g4colg .sh.col>span:first-child'),function(sp){
+   if(!/^(Автоответ|Отвечать за меня)( · по умолчанию)?$/.test(sp.textContent.trim()))return;sp.textContent=sp.textContent.replace(' · по умолчанию','');
+   var g=sp.closest('.g4colg');if(!g||(g.nextElementSibling&&g.nextElementSibling.classList.contains('g4ftn')))return;
+   var f=D.createElement('div');f.className='g4ftn';f.textContent='«'+sp.textContent.trim()+'» — значения по умолчанию для новых проектов. У каждого проекта свои: Проекты → проект → Claude.';g.parentNode.insertBefore(f,g.nextSibling)})}
  /* пока печатаешь свой ответ в карточке вопроса — опрос не перерисовывает экран (иначе поле теряет фокус) */
  var hold=0;
  function typing(){var a=D.activeElement;return a&&a.classList&&a.classList.contains('g4qin')}
@@ -174,7 +184,16 @@
  /* боковое меню: те же значки у «Пульт» и «Мозг»; на экранах вне чата в шапке меню нет кружка поиска
     (пользователь: выглядел обрезанным; поиск есть в «Все сессии» / «Все чаты») */
  function sideFix(){var m=$i('sd3');if(!m)return;var on=m.classList.contains('on')&&!!$i('g4');if(m.classList.contains('g4side')!=on)m.classList.toggle('g4side',on);
-  ['home','br'].forEach(function(k){[].forEach.call(m.querySelectorAll('[data-sd=tab][data-x='+k+']'),function(r){var v=r.querySelector('svg');if(v&&!v.classList.contains('g4ni'))v.outerHTML=nic(k,'g4sdi')})})}
+  ['home','br'].forEach(function(k){[].forEach.call(m.querySelectorAll('[data-sd=tab][data-x='+k+']'),function(r){var v=r.querySelector('svg');if(v&&!v.classList.contains('g4ni'))v.outerHTML=nic(k,'g4sdi')})});
+  /* fx1: меню, открытое вне чата, — меню панели: заголовок «Hermes», выделен текущий раздел, а не агент последнего чата */
+  if(!on)return;var tt=m.querySelector('.sd3tt');if(tt&&tt.textContent!='Hermes'&&!tt.querySelector('svg'))tt.textContent='Hermes';
+  var cur=U.page?'':({home:'home',q:'home',prj:'prj',br:'br',j:'j',set:'set'})[U.tab]||'';
+  [].forEach.call(m.querySelectorAll('.sd3ag8.on'),function(r){r.classList.remove('on')});
+  [].forEach.call(m.querySelectorAll('[data-sd=tab].sd3nv'),function(r){var o=r.dataset.x==cur;if(r.classList.contains('on')!=o)r.classList.toggle('on',o)})}
+ /* fx1: в «Чате» фон страницы под нижней панелью = фон экрана чата (был холодно-синий --bg базы под тёплым Claude) */
+ function bgSync(){var r=$i('hcroot'),de=D.documentElement,c='';if(!$i('g4')&&r&&r.getClientRects().length){c=getComputedStyle(r).backgroundColor;if(c=='rgba(0, 0, 0, 0)'||c=='transparent')c=''}
+  if(de.style.backgroundColor!=c){de.style.backgroundColor=c;D.body.style.backgroundColor=c}}
+ new MutationObserver(bgSync).observe(D.body,{attributes:true,attributeFilter:['class']});setInterval(bgSync,1000);
  var SMO=new MutationObserver(sideFix);
  setInterval(function(){var m=$i('sd3');if(m&&!m.__g4o){m.__g4o=1;SMO.observe(m,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});sideFix()}},300);
  if(typeof nav86=='function'){var n0=nav86;nav86=function(){n0.apply(this,arguments);navIc();D.body.classList.add('g4nav')}}

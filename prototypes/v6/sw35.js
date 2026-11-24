@@ -44,8 +44,9 @@ function nextTxt35(p,ag,a){if(ag=='codex')return 'Открывает следу�
  var al0=autoLine;autoLine=function(q){var p=q&&q.pid&&prjById8(q.pid),a=p&&am35(p,'claude');if(!a||!a.ans)return al0(q);if(pz35(a))return '';
   var keep=S.auto;S.auto=a.ans;try{return al0(q)}finally{S.auto=keep}};
  /* Настройки: общий «Автоответ» = умолчания для новых проектов */
- ['settings','settingsT'].forEach(function(n){var f=window[n];if(!f)return;window[n]=function(){var h=f.apply(this,arguments),note='<div class="row"><div class="t"><div class="d">Это значения по умолчанию для новых проектов. У каждого проекта свои: Проекты → проект → Claude → «Сам отвечает на вопросы».</div></div></div>';
-  return h.replace(/(<span>(?:Автоответ|Отвечать за меня)<\/span>[\s\S]*?<div class="grp">)/,function(m){return m.replace(/<span>(Автоответ|Отвечать за меня)<\/span>/,'<span>$1 · по умолчанию</span>')+note})}});
+ ['settings','settingsT'].forEach(function(n){var f=window[n];if(!f)return;window[n]=function(){var h=f.apply(this,arguments),note='<div class="row nt35"><div class="t"><div class="d">Это значения по умолчанию для новых проектов. У каждого проекта свои: Проекты → проект → Claude → «Сам отвечает на вопросы».</div></div></div>';
+  /* только в тело СВОЕГО раздела: у свёрнутого тела нет — раньше подсказка уезжала в соседний раскрытый блок */
+  return h.replace(/(<span>(?:Автоответ|Отвечать за меня)<\/span>(?:(?!<div class="sec)[\s\S])*?<div class="grp">)/,function(m){return m.replace(/<span>(Автоответ|Отвечать за меня)<\/span>/,'<span>$1 · по умолчанию</span>')+note})}});
 })();
 
 function pauseSheet35(pid,app){var p=prjById8(pid);if(!p)return;var n=Math.round(nowS()),d=new Date();d.setHours(9,0,0,0);if(d.getTime()/1000<=n+60)d.setDate(d.getDate()+1);
