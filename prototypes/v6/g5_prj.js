@@ -33,3 +33,14 @@ window.prjPage86=function(){var h=_pp5.apply(this,arguments),p=prjById8(U.pid86)
 document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.target.closest('[data-a]');if(!el||el.dataset.a!='pg5')return;
  ev.stopPropagation();ev.preventDefault();U.pg=U.pg||{};U.pg.idle=!U.pg.idle;render(true)},true);
 })();
+
+/* s2-6 (видео 0:06–0:13): при входе Face ID спрашивался ДВАЖДЫ — «Открыть по Face ID» на экране блокировки, затем ещё раз
+   из boot(), когда пришёл свежий /api/state; между ними на секунду был виден старый Пульт v5 из кэша (кэш рисуется базой
+   до загрузки модулей). Теперь: после успешного входа повторная проверка 2 мин не нужна; кэш сразу перерисован новыми модулями.
+   Последний модуль в кортеже make_app — поэтому здесь. */
+(function(){var W=window;if(typeof W.lockCheck!='function'||typeof W.lockHide!='function')return;
+ var _lc=W.lockCheck,_lh=W.lockHide,okAt=0;
+ W.lockHide=function(){var r=_lh.apply(this,arguments);try{if(!LOCK.on){var first=!okAt;okAt=Date.now();if(first)render(true)}}catch(e){}return r};
+ W.lockCheck=function(){try{if(okAt&&Date.now()-okAt<120000&&!LOCK.on){W.bioDiag&&bioDiag('lock_skip');return}}catch(e){}return _lc.apply(this,arguments)};
+ try{if(typeof S!='undefined'&&S&&typeof LOADING!='undefined'&&!LOADING)render(true)}catch(e){}
+})();

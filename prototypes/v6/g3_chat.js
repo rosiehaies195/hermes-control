@@ -75,7 +75,10 @@
   if(ta&&slot&&ta.parentNode!==slot){slot.appendChild(ta);ta.setAttribute('rows','1')}
   [fl,sb,ch].forEach(function(n){if(n&&hide&&n.parentNode!==hide)hide.appendChild(n)});
   if(th&&th.parentNode!==$i('g3th'))$i('g3th').appendChild(th);
-  if(ta){var ph='Спросить '+(NM[st().kind]||'');if(ta.placeholder!=ph)ta.placeholder=ph}}
+  if(ta){var ph='Спросить '+(NM[st().kind]||'');if(ta.placeholder!=ph)ta.placeholder=ph}
+  /* s2-5: сессия только для чтения (cron, Telegram) — поля нет: вместо пустой пилюли кнопка копии, подсказки пустого чата не показываем */
+  var g=$i('g3'),rb=slot&&slot.querySelector('.g3rob');if(g&&g.classList.contains('g3ro')!=!ta)g.classList.toggle('g3ro',!ta);
+  if(!ta&&slot&&!rb)slot.innerHTML='<div class="g3rob" data-hc="fork" role="button">Продолжить здесь (копия)</div>';else if(ta&&rb)rb.remove()}
  /* ---------- лента ---------- */
  /* cb5: разметка одного и того же текста не пересчитывается на каждом токене стрима */
  var MDC=Object.create(null),MDN=0;function md(t){var k=String(t==null?'':t),v=MDC[k];if(v!==undefined)return v;try{v=HC.md(k)}catch(e){v=E(k)}
@@ -192,7 +195,7 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  function dnUpd(){var f=$i('g3f'),b=$i('g3dn');if(!f||!b)return;b.classList.toggle('on',f.scrollHeight-f.scrollTop-f.clientHeight>200)}
  /* ---------- подсказки пустого чата (кадр 01) ---------- */
  var SG=[['photo','Что сделано и что осталось?'],['edit','Продолжи по плану проекта'],['shield','Проверь, всё ли работает']];
- function suggest(){var s=st(),g=$i('g3sg');if(!g)return;var empty=!s.msgs.length&&!s.loadingMsgs&&!(s.pend||[]).length&&!s.busy;
+ function suggest(){var s=st(),g=$i('g3sg');if(!g)return;var empty=!s.msgs.length&&!s.loadingMsgs&&!(s.pend||[]).length&&!s.busy&&!!$i('hcin');
   g.classList.toggle('on',empty);if(empty&&!g.firstChild)g.innerHTML=SG.map(function(x,i){return '<div data-g3="sg" data-i="'+i+'">'+ic(x[0])+'<span>'+E(x[1])+'</span></div>'}).join('')}
  /* ---------- поле ввода ---------- */
  function rec(){return !!(W.VC&&(VC.rec||VC.busy))}

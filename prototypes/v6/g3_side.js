@@ -75,16 +75,16 @@
   return w?{t:'твой ход'+(w>1?' · '+w:''),dot:1}:lv?{t:'идёт'+(lv>1?' · '+lv:'')+' сейчас'}:{t:''}}
  function agRows(){var s=st(),cur=s&&s.kind;return ['hermes','claude','codex'].map(function(k){var a=agState(k);
   return '<div class="sd3r sd3ag8'+(k==cur?' on':'')+'" data-sd="agent" data-k="'+k+'">'+agIc(k)+'<b>'+KN[k]+'</b>'+(a.t?'<span class="sd3as">'+E(a.t)+'</span>':'')+(a.dot?'<i class="sd3dot"></i>':'')+'</div>'}).join('')+'<div class="sd3r sd3ag8 sd3fold" data-sd="all">'+ic(SD.sty=='g'?'g_projects':'c_projects')+'<b>Все сессии</b><span class="sd3as">по папкам</span></div><div class="sd3gap"></div>'}
- function lastOf(k){var M=lsg('sd3lastk',{})||{},L=SD.L[k]||[],id=M[k];if(id&&L.some(function(x){return x.id==id}))return id;
+ function lastOf(k){var M=lsg('sd3lastk',{})||{},L=(SD.L[k]||[]).filter(function(x){return x.src!='cron'}),id=M[k];if(id&&L.some(function(x){return x.id==id}))return id;
   var a=L.slice().sort(function(x,y){return (y.ts||0)-(x.ts||0)})[0];return a&&a.id}
- function goAgent(k){var s=st();if(s&&s.kind==k&&s.view=='chat'){close();return}var id=lastOf(k);
-  if(SD.L[k]==null){T('Загружаю чаты '+KN[k]+'…');load(true);return}
+ function goAgent(k,n){var s=st();if(s&&s.kind==k&&s.view=='chat'){close();return}var id=lastOf(k);
+  if(SD.L[k]==null){n=n||0;if(!n){T('Загружаю чаты '+KN[k]+'…');load(true)}if(n<40)setTimeout(function(){goAgent(k,n+1)},150);return}
   if(id)openChat(k,id);else newChat(k)}
  function sideHtml(){var g=SD.sty=='g',fx=SD.fx,s=st(),h='<div class="sd3sc" id="sd3sc"><div class="sd3pl"><div class="sd3ls">';
   if(!fx)h+=agRows();
  h+=navRows().map(function(n){var on=fx&&fx.navOn==n[2];return '<div class="sd3r sd3nv'+(on?' on':'')+'" data-sd="tab" data-x="'+n[0]+'">'+ic(n[1]||'')+'<b>'+E(n[2])+'</b></div>'}).join('');
   /* меню показывает чаты ТОЛЬКО выбранного агента (решение пользователя); все агенты вместе — экран «Все сессии» */
-  var ck=s&&s.kind,A=fx?null:all().filter(function(x){return x.k==ck}),P=fx?fx.pins:A.filter(pinned),R=fx?fx.rec:A.filter(function(x){return !pinned(x)});
+  var ck=s&&s.kind,A=fx?null:all().filter(function(x){return x.k==ck}),P=fx?fx.pins:A.filter(pinned),R=fx?fx.rec:A.filter(function(x){return !pinned(x)&&!(x.src=='cron'&&!isCur(x))});
   /* «Идёт сейчас» — только когда что-то идёт (как раньше в списке базы) */
   var LV=fx?[]:A.filter(function(x){return x.live&&!isCur(x)});if(LV.length){h+='<div class="sd3sh first">Идёт сейчас</div>'+LV.map(function(x){return chatRow(x,'ch')}).join('');P=P.filter(function(x){return LV.indexOf(x)<0});R=R.filter(function(x){return LV.indexOf(x)<0})}
   if(P.length){h+='<div class="sd3sh'+(LV.length?'':' first')+'">'+(fx&&fx.lp||'Закреплённые')+'</div>'+P.map(function(x){return chatRow(x,'ch')}).join('')}
@@ -134,7 +134,7 @@
   if(s.kind!=k)hcDo('kind',{v:k});
   if(L.length)HC.st.sessions=L;hcDo('open',{id:id});
   var X=SD.pos||SD.X;requestAnimationFrame(function(){var m=main();if(!m){close({instant:true});return}SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.pos=Math.min(X,SD.X);setPos(m,SD.pos);paint();close()})}
- function newChat(k){var s=st();closeAll();if(k&&s&&s.kind!=k)hcDo('kind',{v:k});hcDo('new')}
+ function newChat(k){var s=st();closeAll();if(W.HC&&HC.newChat&&s&&s.view=='chat'){HC.newChat(k||s.kind);return}if(k&&s&&s.kind!=k)hcDo('kind',{v:k});hcDo('new')}
  /* ---------- экран «Недавние»: все чаты, поиск, фильтр, выбор (кадры 3213_0182.39, 0199.47, 0208.37, 0212.40) ---------- */
  /* ---------- «Все сессии»: все агенты, сгруппированы по папкам проектов. У Hermes папки нет — группа по источнику ---------- */
  var HSRC={local:'ПК',gui:'ПК',cli:'ПК',desktop:'ПК',api_server:'панель',telegram:'Telegram',cron:'расписание'};
@@ -357,15 +357,15 @@
  function remember(){var s=st();if(s&&s.view=='chat'&&s.sid&&main()){var v={k:s.kind,id:s.sid},o=lsg('sd3last',null);if(!o||o.k!=v.k||o.id!=v.id){lss('sd3last',v);var M=lsg('sd3lastk',{})||{};M[v.k]=v.id;lss('sd3lastk',M)}}}
  setInterval(remember,1200);
  function entEnd(){ENT.on=0;clearTimeout(ENT.tm);B.classList.remove('sd3ent')}
- function entStart(){var s=st();if(!s||s.view=='chat')return;
+ function entStart(k0){var s=st();if(!s||s.view=='chat')return;
   /* ни разу не открывали чат (первый запуск) — показываем список базы: из чего выбирать */
-  if(!lsg('sd3last',null))return;ENT.on=1;ENT.t0=Date.now();B.classList.add('sd3ent');clearTimeout(ENT.tm);ENT.tm=setTimeout(entEnd,8000);
-  var L=lsg('sd3last',null),k=L&&KN[L.k]?L.k:s.kind;if(s.kind!=k)hcDo('kind',{v:k});entTick()}
+  if(!k0&&!lsg('sd3last',null))return;ENT.on=1;ENT.t0=Date.now();B.classList.add('sd3ent');clearTimeout(ENT.tm);ENT.tm=setTimeout(entEnd,8000);
+  var L=lsg('sd3last',null),k=KN[k0]?k0:(L&&KN[L.k]?L.k:s.kind);if(s.kind!=k)hcDo('kind',{v:k});entTick()}
  function entTick(){if(!ENT.on)return;var s=st();if(!s||!(W.U&&U.tab=='hc')){entEnd();return}if(s.view=='chat'){entEnd();return}
   if(s.lerr){entEnd();return}
   if(!s.sessions){setTimeout(entTick,120);return}
   var L=lsg('sd3last',null),id=L&&L.k==s.kind&&s.sessions.some(function(x){return x.id==L.id})?L.id:null;
-  if(!id){var a=s.sessions.slice().sort(function(x,y){return (y.ts||0)-(x.ts||0)})[0];id=a&&a.id}
+  if(!id){var a=s.sessions.filter(function(x){return x.src!='cron'}).sort(function(x,y){return (y.ts||0)-(x.ts||0)})[0];id=a&&a.id}
   if(!id){entEnd();return}
   hcDo('open',{id:id});setTimeout(function(){entEnd()},400)}
  /* нажатие вкладки «Чат» (нижняя панель или пункт меню) → вход */

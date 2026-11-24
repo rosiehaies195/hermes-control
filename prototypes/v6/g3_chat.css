@@ -208,3 +208,6 @@ body.g3dim .g3c.rec .g3dict{padding:0 10px 0 9.4px}body.g3dim .g3c .g3dx{margin-
 .g3pi span{flex:1}.g3pi em{font-style:normal;font-size:15px;color:#8e8e8e;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .g3pi:active{background:rgba(255,255,255,.06)}
 @media (prefers-reduced-motion:reduce){.g3c,.g3dn,.g3wk .g3i{transition:none}.g3think span{animation:none;color:var(--g3sub);background:none}}
+/* s2-5: сессия только для чтения — кнопка копии вместо поля */
+.g3ro .g3plus,.g3ro .g3mic,.g3ro .g3go,.g3ro .g3exp{display:none}
+.g3rob{flex:1;text-align:center;color:var(--g3ph);font-size:17px;line-height:22px;padding:11px 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

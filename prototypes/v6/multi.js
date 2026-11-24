@@ -117,5 +117,7 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-a
  else if(a=='agf8'){U.pf=(U.pf||'all')==x?'all':x;U.pe=null}
  else if(a=='pcx8'){toast('Codex пока не подключён: статус и вопросы не отслеживаются. Чаты Codex открываются во вкладке «Чат».');return}
  else if(a=='padd8'){toast('Проекты появляются сами: папка, где за 14 дней был чат Claude или Codex, или cron Hermes с именем проекта. Автопилот Claude пока у одного проекта (tv-miniapp); для остальных — следующий этап.');return}
- else if(a=='pchat8'){U.tab='hc';U.page=null;render();setTimeout(function(){if(window.HC&&HC.st.kind!=x){var b=document.querySelector('[data-hc=kind][data-v="'+x+'"]');if(b)b.click()}},0);return}
+ else if(a=='pchat8'){/* s2-2: сразу последний чат агента (как вход во вкладку «Чат»), а не старый экран списка */
+ if(window.SD3&&SD3.goAgent&&window.HC){var hv=HC.st.view=='chat';U.tab='hc';U.page=hv?'hcchat':null;render();setTimeout(function(){if(HC.st.view=='chat'){if(HC.st.kind!=x)SD3.goAgent(x)}else SD3.entry(x)},0);return}
+ U.tab='hc';U.page=null;render();setTimeout(function(){if(window.HC&&HC.st.kind!=x){var b=document.querySelector('[data-hc=kind][data-v="'+x+'"]');if(b)b.click()}},0);return}
  render(true)},true);
