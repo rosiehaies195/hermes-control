@@ -32,8 +32,13 @@
   if(p.indexOf('doc:')==0){var f=p.slice(4).split('/').pop().replace(/\.md$/,'');return f=='now'?'Сейчас':f||'Мозг'}
   return TT[U.tab]||'Hermes'}
  function sub(){var st=status(),s='';
-  if(DIAG)s=DIAG;else if(U.cached)s='кэш · '+ago(S.ts);else if(API&&U.offline)s='нет связи с ПК';else if(!API&&S.ts)s='данные '+ago(S.ts);
+  if(DIAG)s=DIAG;else if(U.cached&&cacheLate4())s='кэш · '+ago(S.ts);else if(API&&U.offline)s='нет связи с ПК';else if(!API&&S.ts)s='данные '+ago(S.ts);
   else if(st.c!='ok'&&!S.stopped&&!S.pend.length&&!S.fails)s=st.t.toLowerCase();return s}
+ /* s4-d (видео 4–8 с): при входе база рисует кэш, свежие данные приходят через ~4 с — подпись «кэш · 11 ч назад» пугает.
+    Тихо ждём до 8 с; не пришли — честно показываем «кэш · …» */
+ var T04=Date.now(),CT4=0;
+ function cacheLate4(){if(!API)return true;var a=Date.now()-T04;if(a>=8000)return true;
+  if(!CT4)CT4=setTimeout(function(){if(U.cached)render(true)},8050-a);return false}
  function isSub(){return !!U.page||U.tab=='j'||U.tab=='set'}
  function hdr(){var hb=hBad().length,s=sub();
   return '<div class="g4top"></div><div class="g4hd">'+(isSub()?'<div class="g3gl g4b44 g4bk" data-g4="back" role="button" aria-label="Назад">'+IC('chevron-left')+'</div>'
@@ -118,15 +123,23 @@
   return '<div class="g4home">'+banners()+fl+q+c+wt.h+projects()+'</div>'};
 
  /* ---------- каркас: всё, что нарисовала база на #scr, переезжает в ленту #g4f ---------- */
- var last={k:'',y:0};
+ var last={k:'',y:0},pos4={},top4=0;
+ /* s4-d: тап по активной вкладке = наверх (как в iOS); любой другой перерисовке того же экрана место не терять */
+ D.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-a=tab]');if(t&&t.dataset.x==U.tab&&!U.page)top4=1},true);
  function chatTab(){return U.tab=='hc'||U.page=='hcchat'}
  function wrap(keep,y0){var sc=$i('scr');if(!sc||W.LOADING||chatTab()){D.body.classList.remove('g4on');return}
-  var k=U.tab+'/'+(U.page||''),y=last.k==k&&keep?(y0!=null?y0:last.y):0;
+  /* s4-d (видео 385–387 с): тот же экран — место сохраняется ВСЕГДА (сворачивание секции, опрос, перерисовка без keep);
+     «назад» из вложенной страницы (статья Мозга, Система, Журнал/Настройки → Ещё) — прежнее место родителя; новая страница — сверху */
+  var k=U.tab+'/'+(U.page||''),pk=last.k,y,cy=y0!=null?y0:last.y;
+  if(pk==k&&!top4)y=cy;else if(pk&&pk!=k&&!U.page&&pos4[k]!=null&&(pk.indexOf(U.tab+'/')==0||k=='more/'&&/^(j|set)\/$/.test(pk)))y=pos4[k];else y=0;
+  if(pk&&pk!=k)pos4[pk]=cy;top4=0;
   var g=D.createElement('div');g.className='g4';g.id='g4';
   g.innerHTML='<div class="g4f" id="g4f"><div class="g4l g4sk" id="g4l"></div></div>'+hdr();
   var l=g.querySelector('#g4l');while(sc.firstChild)l.appendChild(sc.firstChild);
   colGroups(l);sc.appendChild(g);D.body.classList.add('g4on');
   var f=$i('g4f');f.scrollTop=y;last.k=k;last.y=y;
+  /* iOS WebKit может не принять scrollTop у только что вставленного прокручиваемого узла — повторить на следующем кадре */
+  if(y)requestAnimationFrame(function(){if(f.isConnected&&Math.abs(f.scrollTop-y)>1&&last.k==k&&Math.abs(last.y-y)<=1){f.scrollTop=y;last.y=f.scrollTop}});
   f.addEventListener('scroll',function(){last.y=f.scrollTop},{passive:true});
   if(W.SD3&&SD3.SD&&SD3.SD.on&&SD3.at)SD3.at(SD3.SD.pos||0)}
  /* сворачиваемые секции базы (colSec: «Ночью не беспокоить», «Токены»…) идут подряд голыми заголовками — собираем каждую серию в одну
@@ -186,7 +199,7 @@
  function sideFix(){var m=$i('sd3');if(!m)return;var on=m.classList.contains('on')&&!!$i('g4');if(m.classList.contains('g4side')!=on)m.classList.toggle('g4side',on);
   ['home','br'].forEach(function(k){[].forEach.call(m.querySelectorAll('[data-sd=tab][data-x='+k+']'),function(r){var v=r.querySelector('svg');if(v&&!v.classList.contains('g4ni'))v.outerHTML=nic(k,'g4sdi')})});
   /* fx1: меню, открытое вне чата, — меню панели: заголовок «Hermes», выделен текущий раздел, а не агент последнего чата */
-  if(!on)return;var tt=m.querySelector('.sd3tt');if(tt&&tt.textContent!='Hermes'&&!tt.querySelector('svg'))tt.textContent='Hermes';
+  if(!on)return;/*s4c-3b: заголовок меню вне чата = текущий агент (облик меню следует агенту), раньше всегда «Hermes»*/
   var cur=U.page?'':({home:'home',q:'home',prj:'prj',br:'br',j:'j',set:'set'})[U.tab]||'';
   [].forEach.call(m.querySelectorAll('.sd3ag8.on'),function(r){r.classList.remove('on')});
   [].forEach.call(m.querySelectorAll('[data-sd=tab].sd3nv'),function(r){var o=r.dataset.x==cur;if(r.classList.contains('on')!=o)r.classList.toggle('on',o)})}

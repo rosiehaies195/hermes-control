@@ -50,7 +50,7 @@
  /* значки из кадров видео (icons.js, размер в pt как в кадре) важнее нарисованных */
  function ic(n,c){var v=W.G3V&&G3V[n];if(v)return '<svg class="g3v g3v-'+n+(c?' '+c:'')+'" width="'+v[0]+'" height="'+v[1]+'" viewBox="0 0 '+v[0]+' '+v[1]+'" aria-hidden="true"><path d="'+v[2]+'"/></svg>';
   return '<svg class="g3i'+(c?' '+c:'')+'" viewBox="0 0 24 24" aria-hidden="true">'+(I[n]||'')+'</svg>'}
- var G={voice:false,sendAfter:false,hold:false,show:true,fb:{},spk:-1,sent:[],ed:null,open:{}};
+ var G={voice:false,sendAfter:false,hold:false,show:true,fb:{},spk:-1,sent:[],ed:null,open:{},atB:true};
  try{G.fb=JSON.parse(localStorage.getItem('g3fb')||'{}')}catch(e){}
  /* ---------- каркас экрана ---------- */
  function frame(){var r=root(),g=$i('g3');
@@ -58,7 +58,7 @@
   if(g)g.remove();
   g=D.createElement('div');g.id='g3';g.className='g3';
   g.innerHTML='<div class="g3f" id="g3f"><div class="g3l" id="g3l"></div></div>'+
-   '<div class="g3top"></div><div class="g3hd" id="g3hd"><div class="g3gl g3b44" data-g3="side" role="button" aria-label="Все чаты">'+ic('side')+'</div><div class="g3sp"></div>'+
+   '<div class="g3top"></div><div class="s4bf" id="s4bf"></div><div class="g3hd" id="g3hd"><div class="g3gl g3b44" data-g3="side" role="button" aria-label="Все чаты">'+ic('side')+'</div><div class="g3sp"></div>'+
    '<div class="g3gl g3cap"><i data-g3="new" role="button" aria-label="Новый чат">'+ic('pen')+'</i><i data-g3="menu" role="button" aria-label="Меню чата">'+ic('dots')+'</i></div></div>'+
    '<div class="g3dn g3gl" id="g3dn" data-g3="down" role="button" aria-label="Вниз">'+ic('down')+'</div>'+
    '<div class="g3sg" id="g3sg"></div><div class="g3tr" id="g3tr" data-g3="trtap"></div><div class="g3hold" id="g3hold">Отпусти, чтобы отправить</div>'+
@@ -66,7 +66,7 @@
    '<div class="g3ta" id="g3ta"></div><div class="g3mic" data-g3="mic" role="button" aria-label="Диктовка">'+ic('mic')+'</div><div class="g3go" id="g3go" data-g3="go" role="button"></div></div>'+
    '<div class="g3exp" data-g3="expand" role="button" aria-label="Развернуть поле">'+ic('expand')+'</div><div class="g3dict" id="g3dict"></div><div class="g3hide" id="g3hide"><input id="g3cam" type="file" accept="image/*" capture="environment"></div></div>';
   r.appendChild(g);
-  $i('g3f').addEventListener('scroll',dnUpd,{passive:true});
+  $i('g3f').addEventListener('scroll',function(){dnUpd();atBUpd()},{passive:true});/*s4b-4a*/
   /* поле едет вместе с клавиатурой (переход 0.33 с) — пересчитать отступы ленты, «вниз» и подсказки по его концу */
   $i('g3c').addEventListener('transitionend',function(e){if(e.target.id=='g3c')pad()});
   return g}
@@ -129,7 +129,7 @@
     '<div class="g3cin"><input id="hcclar" placeholder="'+(ops?'Свой ответ':'Ответ')+'"></div><div class="g3cbt">'+(s.kind!='hermes'?'<div class="g3pb" data-hc="clarskip" data-i="'+i+'">Пропустить</div>':'')+'<div class="g3pb pri" data-hc="clarify" data-i="'+i+'">Ответить</div></div></div>'}
   return '<div class="g3card"><div class="g3ck">'+ic('shield')+'Нужно разрешение'+(p.tool&&s.kind!='hermes'?' · '+E(p.tool):'')+'</div>'+(p.desc?'<div class="g3cq">'+E(p.desc)+'</div>':'')+(p.text?'<pre class="g3pre">'+E(p.text)+'</pre>':'')+
    '<div class="g3cbt"><div class="g3pb" data-hc="appr" data-c="deny" data-i="'+i+'">Отклонить</div><div class="g3pb" data-hc="appr" data-c="session" data-i="'+i+'">'+(s.kind=='hermes'?'На сессию':'Всегда')+'</div><div class="g3pb pri" data-hc="appr" data-c="once" data-i="'+i+'">Разрешить</div></div></div>'}
- function live(){var s=st(),sb=$i('hcsend');return !!(s.busy||s.cclive||(s.hpoll&&s.hpoll==s.sid)||(s.cur&&s.cur.live)||/*s3-1c-live*/(sb&&sb.classList.contains('stop')))}
+ function live(){var s=st(),sb=$i('hcsend');return !!((s.dsq&&s.sid&&s.dsq[s.sid])/*s4a-live*/||s.busy||s.cclive||(s.hpoll&&s.hpoll==s.sid)||(s.cur&&s.cur.live)||/*s3-1c-live*/(sb&&sb.classList.contains('stop')))}
  function feedHtml(){var s=st(),R=turns(),h='',lv=live();
   if(R.from>0)h+='<div class="g3older" data-hc="older">Показать более ранние ('+R.from+')</div>';
   /* последний ход (последнее сообщение пользователя и всё после него) — в обёртке высотой с экран:
@@ -137,13 +137,13 @@
   var lu=-1;R.L.forEach(function(t,k){if(t.u)lu=k});var opened=false;
   R.L.forEach(function(t,k){var last=k==R.L.length-1;
    if(k==lu){h+='<div class="g3lt" id="g3lt"'+(G.ltH?' style="min-height:'+G.ltH+'px"':'')+'>';opened=true}
-   if(t.u){h+='<div class="g3um" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="g3ub">'+md(t.u.t)+'</div>':'')+'</div>';
+   if(t.u){h+='<div class="g3um" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="g3ub">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+'</div>';
     if(last&&lv)h+='<div class="g3ta2 g3last">'+thinking({a:[]})+'</div>';return}
    h+=turnA(t,last&&lv,last)});
   (s.pend||[]).forEach(function(p,i){h+=pendHtml(p,i)});
   if(s.err)h+='<div class="g3err">'+E(s.err)+'</div>';
   if(opened)h+='</div>';
-  if(s.loadingMsgs&&!s.msgs.length)h+='<div class="g3think g3load"><span>Загружаю</span></div>';
+  if(s.loadingMsgs&&!s.msgs.length)h+='<div class="g3think g3load"><span>'+(s.creating&&s.creating==s.sid?'Создаю чат…':'Загружаю')/*s4a-ld*/+'</span></div>';
   return h}
  /* cb5: список обновляем по верхним узлам: неизменившиеся остаются как есть (без пересоздания и перекладки), меняется только последний обмен */
  function setList(l,nh,first){
@@ -160,9 +160,12 @@
   var sc0=f.scrollTop;l.__h=nh;l.__sid=key;setList(l,nh,first);if(!first&&f.scrollTop!=sc0)f.scrollTop=sc0;if(clar!=null){var c=$i('hcclar');if(c){c.value=clar;c.focus()}}
   var nowN=l.querySelectorAll('.g3um').length;fadeTail(l,first);ltFit();
   /* как ChatGPT: вниз только при открытии чата и после отправки; за стримингом ответа лента сама не едет */
-  if(first||G.stick||(nowN>prevN&&G.fly))f.scrollTop=f.scrollHeight;
+  /* s4b-2: после отправки верх своего сообщения встаёт под шапку и не срезается (длинное — тоже, видео 167.7);
+     s4b-4b: первое заполнение ленты (после «Загружаю») — вниз, как при открытии */
+  var full=s.msgs.length>0&&l.__full!==key;if(full)l.__full=key;
+  if(nowN>prevN&&G.fly){f.scrollTop=f.scrollHeight;ltTop(f,l,'g3lt')}else if(first||full||G.stick)f.scrollTop=f.scrollHeight;
   if(G.fly&&nowN>prevN)flyIn(l.querySelectorAll('.g3um')[nowN-1]);else flyKeep(l);if(nowN>prevN)G.fly=null;G.stick=false;
-  var _d=performance.now()-_t0;if(_d>45&&W.cbDiag)cbDiag('feed_slow',{ms:Math.round(_d),kids:l.children.length,nodes:l.getElementsByTagName('*').length});dnUpd()}
+  var _d=performance.now()-_t0;if(_d>45&&W.cbDiag)cbDiag('feed_slow',{ms:Math.round(_d),kids:l.children.length,nodes:l.getElementsByTagName('*').length});dnUpd();atBUpd()}
  /* затухание хвоста при стриминге (стоп-кадры 0063.44, 0105.80): каждое новое слово проявляется из прозрачности
    за 440 мс cubic-bezier(.3,.6,.5,1) (замер по реальным pts кадров 61.5–66.5 с: 0.11 на первом кадре, 0.53 через 100 мс,
    0.9 через 250 мс), слова одной порции — лесенкой 15 мс слева направо. База перерисовывает ответ целиком, поэтому
@@ -194,6 +197,12 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
   if(el&&el.animate)el.animate([{transform:'translateY('+a.dy+'px)'},{transform:'none'}],{duration:460,delay:-el2,easing:'cubic-bezier(.1,.4,0,1.05)'})}
  /* ---------- «вниз» ---------- */
  function dnUpd(){var f=$i('g3f'),b=$i('g3dn');if(!f||!b)return;b.classList.toggle('on',f.scrollHeight-f.scrollTop-f.clientHeight>200)}
+ /* s4b-4: «был внизу» помним по прокрутке и после перерисовки, а не по размерам после смены высоты экрана (клавиатура, фото в поле) */
+ function atBUpd(){var f=$i('g3f');if(f)G.atB=f.scrollHeight-f.scrollTop-f.clientHeight<60}
+ /* низ экрана чата: с клавиатурой iOS он выше низа окна (S4VV ниже) */
+ function rb(){var g=$i('g3');return g?g.getBoundingClientRect().bottom:innerHeight}
+ /* s4b-2: верх последнего хода (своё сообщение) — не выше места под шапкой; если ход длиннее экрана, верх не срезается */
+ function ltTop(f,l,id){var lt=$i(id);if(!lt)return;var pt=parseFloat(getComputedStyle(l).paddingTop)||0,d=lt.getBoundingClientRect().top-f.getBoundingClientRect().top-pt-8;if(d<0)f.scrollTop=Math.max(0,f.scrollTop+d)}
  /* ---------- подсказки пустого чата (кадр 01) ---------- */
  var SG=[['photo','Что сделано и что осталось?'],['edit','Продолжи по плану проекта'],['shield','Проверь, всё ли работает']];
  function suggest(){var s=st(),g=$i('g3sg');if(!g)return;var empty=!s.msgs.length&&!s.loadingMsgs&&!(s.pend||[]).length&&!s.busy&&!!$i('hcin');
@@ -213,16 +222,26 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
   var gi=stopS?'stop':hs?'up':'voice';if(go.dataset.i!=gi){go.dataset.i=gi;go.innerHTML=ic(gi);go.setAttribute('aria-label',gi=='stop'?'Остановить':gi=='up'?'Отправить':'Сказать и отправить')}
   grow(ta);var h1=c.offsetHeight;c.__h=h1;
   if(c.__k!==undefined&&c.__k!==k&&Math.abs(h1-h0)>2&&c.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)
-   c.animate([{height:h0+'px'},{height:h1+'px'}],{duration:350,easing:'cubic-bezier(.25,.35,.15,1.05)'});
+   c.animate([{height:h0+'px'},{height:h1+'px'}],{duration:350,easing:'cubic-bezier(.25,.35,.15,1.05)'}).onfinish=function(){pad()};/*s4b-2b*/
   c.__k=k;dict();pad()}
  /* рост до 248 pt (кадр 16): 1 строка 48, дальше прокрутка внутри */
  function grow(ta){var c=$i('g3c'),cs=getComputedStyle(ta),lh=parseFloat(cs.lineHeight)||24,full=c&&c.classList.contains('full');
   if(full){var av=c.clientHeight-(c.offsetHeight-ta.offsetHeight);ta.style.height='auto';ta.style.height=Math.max(lh,c.getBoundingClientRect().height-60)+'px';return}
   ta.style.height='auto';var sh=ta.scrollHeight,h=Math.min(8*lh+12,Math.max(lh,sh));if(ta.style.height!=h+'px')ta.style.height=h+'px';if(c)c.classList.toggle('tall',sh>8*lh+14)}
- function pad(){var c=$i('g3c'),l=$i('g3l'),f=$i('g3f');if(!c||!l)return;var top=c.getBoundingClientRect().top,tr=$i('g3tr'),h=Math.round(innerHeight-top+(tr&&tr.classList.contains('on')?tr.offsetHeight+8:0)+63);
-  if(l.style.paddingBottom!=h+'px'){var near=f.scrollHeight-f.scrollTop-f.clientHeight<60;l.style.paddingBottom=h+'px';ltFit();if(near)f.scrollTop=f.scrollHeight}
-  var dn=$i('g3dn');if(dn)dn.style.bottom=(innerHeight-top+15)+'px';
-  var sg=$i('g3sg');if(sg)sg.style.bottom=(innerHeight-top+13.6)+'px'}
+ /* s4b-2b: верх поля — по КОНЕЧНОЙ высоте: пока идёт анимация высоты (после отправки карточка → пилюля), край ещё старый,
+    и отступ ленты оставался большим до следующей перерисовки — пузырь срезался под шапкой и потом прыгал (видео 167.7–169.2) */
+ function cTop(c){var R=c.getBoundingClientRect(),an=c.getAnimations&&c.getAnimations().some(function(a){return a.playState=='running'&&!a.transitionProperty});return an&&c.__h?R.bottom-c.__h:R.top}
+ function pad(){var c=$i('g3c'),l=$i('g3l'),f=$i('g3f');if(!c||!l)return;var top=cTop(c),bot=rb(),tr=$i('g3tr'),h=Math.round(bot-top+(tr&&tr.classList.contains('on')?tr.offsetHeight+8:0)+63),keep=G.atB!==false;
+  /* s4b-4: был внизу — держим низ и когда меняется только высота экрана (клавиатура открылась/закрылась, видео 109, 243, 499);
+     высоту последнего хода (ltFit) пересчитываем при любой смене высоты ленты, не только отступа */
+  var near=keep||f.scrollHeight-f.scrollTop-f.clientHeight<60;if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();
+  if(near&&f.scrollHeight-f.scrollTop-f.clientHeight>1)f.scrollTop=f.scrollHeight;
+  var dn=$i('g3dn');if(dn)dn.style.bottom=(bot-top+15)+'px';
+  var sg=$i('g3sg');if(sg)sg.style.bottom=(bot-top+13.6)+'px';
+  /* s4b-1: подложка под полем — лента гаснет к низу и не просвечивает по бокам и под пилюлей (видео 475.2) */
+  var bf=$i('s4bf');if(bf)bf.style.height=Math.max(0,Math.round(bot-top+30))+'px';
+  var pp=$i('g3pop');if(pp&&pp.classList.contains('g3pp')){var r=c.getBoundingClientRect();pp.style.bottom=(innerHeight-r.bottom-8)+'px'}
+  dnUpd()}
  /* ---------- диктовка (кадры 26–29): та же пилюля «× · волна · ■ · ↑», живой текст — карточка над полем ---------- */
  function dict(){var d=$i('g3dict'),r=rec();if(!d)return;
   if(!r){if(d.dataset.k){d.dataset.k='';d.innerHTML=''}stopWave();trCard(false);holdLbl(false);return}
@@ -239,8 +258,8 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
      gh.removeAttribute('id');d.parentNode.appendChild(gh);var an=gh.animate([{opacity:1},{opacity:0}],{duration:55,easing:'ease-out',fill:'forwards'});an.onfinish=function(){gh.remove()}}}}
   trCard(G.show);holdLbl(G.hold);if(!busy)startWave();else stopWave()}
  function trCard(on){var t=$i('g3tr'),ta=$i('hcin');if(!t)return;var v=on&&ta&&rec()?ta.value.trim():'';t.classList.toggle('on',!!v);if(v&&t.textContent!==ta.value){t.textContent=ta.value;t.scrollTop=t.scrollHeight}
-  var c=$i('g3c');if(c)t.style.bottom=(innerHeight-c.getBoundingClientRect().top+8)+'px'}
- function holdLbl(on){var l=$i('g3hold'),c=$i('g3c');if(!l)return;l.classList.toggle('on',!!on);var cn=!!(on&&G.cancel);l.classList.toggle('cancel',cn);if(c)c.classList.toggle('cancel',cn);var tx=cn?'Отпусти, чтобы отменить':'Отпусти, чтобы отправить';if(l.textContent!=tx)l.textContent=tx;B.classList.toggle('g3dim',!!on);if(on&&c){var tp=c.getBoundingClientRect().top;l.style.bottom=(innerHeight-tp+27.6)+'px';B.style.setProperty('--g3sh',(innerHeight-tp+190)+'px')}}
+  var c=$i('g3c');if(c)t.style.bottom=(rb()-c.getBoundingClientRect().top+8)+'px'}
+ function holdLbl(on){var l=$i('g3hold'),c=$i('g3c');if(!l)return;l.classList.toggle('on',!!on);var cn=!!(on&&G.cancel);l.classList.toggle('cancel',cn);if(c)c.classList.toggle('cancel',cn);var tx=cn?'Отпусти, чтобы отменить':'Отпусти, чтобы отправить';if(l.textContent!=tx)l.textContent=tx;B.classList.toggle('g3dim',!!on);if(on&&c){var tp=c.getBoundingClientRect().top;l.style.bottom=(rb()-tp+27.6)+'px';B.style.setProperty('--g3sh',(rb()-tp+190)+'px')}}
  /* волна по видео: бары 2.3 pt, шаг 5 pt, 4…24 pt, #a6a6a6, затухание у краёв, едет влево 30 pt/с; уровень RMS раз в 100 мс, min(1,8·rms) */
  var WV=null;
  function startWave(){if(WV&&WV.on)return;WV={on:true,hist:[],lvl:0,env:0,ph:0,t0:0,raf:0,an:null,buf:null,last:0,ac:null};
@@ -261,7 +280,7 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  function sendAfter(){var sid0=st().sid,g0=W.VC?VC.gen:0;G.sendAfter=true;draw();if(VC.rec)vcStop();var n=0;(function w(){if(W.VC&&(VC.rec||VC.busy)&&n++<3000)return setTimeout(w,100);
     /* cb3: отправляем только в тот чат, где диктовали, и только если не отменили; ждать можно сколько нужно (раньше сдавались на 60 с) */
     var ok=G.sendAfter&&(!W.VC||VC.gen==g0)&&st().sid==sid0;G.sendAfter=false;G.voice=false;
-    if(ok&&has()){doSend();T('Отправлено голосом')}draw()})()}
+    if(ok&&has()){doSend();if(!has())T('Отправлено голосом')/*s4a-va*/}draw()})()}
  function doSend(){var ta=$i('hcin'),s=st();if(G.ed){editSend();return}
   if(ta){G.flyY=ta.getBoundingClientRect().top-12}G.fly=1;G.stick=true;
   if(s.imgs&&s.imgs.length)G.sent.push({ts:Date.now()/1000,n:s.imgs.length,u:s.imgs.slice()});
@@ -281,12 +300,16 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  function headMenu(){var s=st(),cap=D.querySelector('#g3hd .g3cap');if(!cap)return;var r=cap.getBoundingClientRect();
   var x='<div class="g3mh">'+E(s.title||'Новый чат')+'</div>'+
    (s.kind=='hermes'?mi('hc:pinmenu','pin',s.pin?'Открепить':'Закрепить'):'')+
-   (s.rw?mi('hc:rename','edit','Переименовать'):'')+mi('fwdlast','share','Переслать')+mi('hc:menu','more','Другие действия')+
+   (s.rw?mi('hc:rename','edit','Переименовать'):'')+mi('fwdlast','share','Переслать')+mi('hc:menu','more','Другие действия','','data-skip="'+(s.kind=='hermes'?'pin,':'')+(s.rw?'ren,del':'')+'"')/*s4c-8*/+
    (hDesk()?mi('arch','arch','В архив'):'')+(s.rw?mi('hc:del','trash','Удалить','bad'):'');
   pop(x,{top:(r.top-3)+'px',right:(innerWidth-r.right-2)+'px',width:'254px'},'top right','g3pm',{w:r.width,h:r.height})}
  function chipsOk(){var c=$i('hcchips');return !!(c&&c.children.length)}
  function cRect(){return $i('g3c').getBoundingClientRect()}
- function plusMenu(){var s=st(),r=cRect(),ml=s.msel&&s.msel.m?HC.pretty(s.msel.m):(s.models&&s.models.cur?HC.pretty(s.models.cur.model):'По умолчанию'),ef=EFF[(s.msel&&s.msel.e)||'']||'Авто';
+ /* s4b-3c: «+» при открытой клавиатуре (видео 243.0): клавиатура уходит, меню появляется у поля на его новом месте, а не поверх уходящей клавиатуры */
+ function plusMenu(){var ta=$i('hcin');if(B.classList.contains('hckb')&&ta&&D.activeElement===ta){var t0=Date.now(),h0=rb();ta.blur();
+   (function w(){if($i('g3pop'))return;var moved=Math.abs(rb()-h0)>40;if(!moved&&Date.now()-t0<450)return requestAnimationFrame(w);setTimeout(function(){if(!$i('g3pop')&&on())plusMenu1()},moved?80:0)})();return}
+  plusMenu1()}
+ function plusMenu1(){var s=st(),r=cRect(),ml=s.msel&&s.msel.m?HC.pretty(s.msel.m):(s.models&&s.models.cur?HC.pretty(s.models.cur.model):'По умолчанию'),ef=EFF[(s.msel&&s.msel.e)||'']||'Авто';
   var x='<label class="g3pi" for="g3cam" data-g3="pphoto"><i>'+ic('camera')+'</i><span>Камера</span></label><label class="g3pi" for="hcfile" data-g3="pphoto"><i>'+ic('photo')+'</i><span>Фото</span><em>до 20</em></label>'+
    (chipsOk()?'<div class="g3pi" data-g3="models"><i>'+ic('model')+'</i><span>Модель</span><em>'+E(ml)+'</em></div><div class="g3pi" data-g3="efforts"><i>'+ic('bulb')+'</i><span>Сила работы</span><em>'+E(ef)+'</em></div>':'');
   /* кадр 0255.99: меню растёт из «+» и накрывает поле: левый край 25.3, низ на 8 ниже поля */
@@ -381,10 +404,10 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
   switch(g){
    case 'side':if(W.SD3)SD3.open();else hcDo('back');break;   // gpt17: ☰ = боковое меню (side.js)
    case 'new':hcDo('new');break;
-   case 'menu':headMenu();break;
-   case 'plus':plusMenu();break;
-   case 'models':setTimeout(modelMenu,60);break;
-   case 'efforts':setTimeout(effortMenu,60);break;
+   case 'menu':W.G3.headMenu();break;
+   case 'plus':W.G3.plusMenu();break;
+   case 'models':setTimeout(function(){W.G3.modelMenu()},60);break;
+   case 'efforts':setTimeout(function(){(W.G3.effortMenu||effortMenu)()},60);break;
    case 'down':{var f=$i('g3f');f.scrollTo({top:f.scrollHeight,behavior:'smooth'});break}
    case 'mic':if(W.vcStart&&!rec()){G.voice=false;vcStart();comp()}break;
    case 'go':{if(rec())break;var sb=$i('hcsend');
@@ -413,11 +436,31 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
   try{var dt=new DataTransfer();for(var i=0;i<e.target.files.length;i++)dt.items.add(e.target.files[i]);f.files=dt.files;f.dispatchEvent(new Event('change',{bubbles:true}))}catch(x){T('Камера недоступна, выбери фото')}e.target.value=''},true);
  /* Ctrl/Cmd+Enter: отправка своим путём (анимация, изменение сообщения) */
  D.addEventListener('keydown',function(e){if(e.target.id=='hcin'&&on()&&e.key=='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();e.stopImmediatePropagation();if(has())doSend()}},true);
- W.G3={draw:draw,G:G,fade:FADE,
+ W.G3={draw:draw,G:G,fade:FADE,relayout:function(){if(on()){pad();dnUpd()}},
  /* для сверки со стоп-кадром: возраст слов последнего ответа в мс (по видео) → перерисовать хвост */
  fadeAt:function(ages){var l=$i('g3l');if(!l)return;var n=performance.now();FADE.b=ages.map(function(a){return n-a});l.__h=null;var s=st();FADE.key=s.kind+':'+s.sid+':'+((l.querySelector('.g3ta2.g3last')||{dataset:{}}).dataset.t||'');feed()},abort:abortRec,sendAfter:sendAfter,wave:function(){return WV},plusMenu:plusMenu,headMenu:headMenu,modelMenu:modelMenu,msgMenu:msgMenu,closePop:closePop,ic:ic,I:I};
  sched();
 })();
+/* s4b-3: клавиатура iOS в Telegram. Сначала клавиатура НАКРЫВАЕТ страницу (visualViewport уменьшается, iOS прокручивает
+   окно к полю), окно Mini App уменьшается только через ~0,5 с — поле всё это время было под клавиатурой, а прокрутка окна
+   сдвигала шапку (видео 226.7–227.4, 319–341.6). Экран чата (и открытый лист) держим в видимой области сразу по visualViewport,
+   прокрутку окна в чате сбрасываем. */
+(function(){var D=document,W=window,R=D.documentElement,vt=-1,kb=-1,shT=null;
+ function chat(){var b=D.body;return !!b&&(b.classList.contains('g3on')||b.classList.contains('cl3on'))}
+ function sheetFlip(){var s=D.querySelector('#sheet.on');if(!s){shT=null;return}var t=s.offsetTop;/* без transform — иначе идущая анимация удваивается */
+  /* s4b-3d: лист (напр. «Новый проект») с клавиатурой не прыгает рывком, а въезжает (видео 159) */
+  if(shT!=null&&Math.abs(t-shT)>24&&s.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)s.animate([{transform:'translateY('+Math.round(shT-t)+'px)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.32,.72,0,1)'});shT=t}
+ function upd(){var v=W.visualViewport,t=0,k=0;if(v&&!(v.scale&&Math.abs(v.scale-1)>.01)){t=Math.max(0,Math.round(v.offsetTop||0));k=Math.round(innerHeight-v.height-t);if(k<40)k=0}/*при щипке-зуме не трогаем*/
+  if(chat()&&(W.scrollY||W.scrollX))W.scrollTo(0,0);
+  if(t!==vt||k!==kb){vt=t;kb=k;R.style.setProperty('--s4vt',t+'px');R.style.setProperty('--s4kb',k+'px');if(R.classList.contains('s4kbv')!=(k>0||t>0))R.classList.toggle('s4kbv',k>0||t>0);
+   try{W.G3&&G3.relayout()}catch(e){}try{W.CL3&&CL3.relayout&&CL3.relayout()}catch(e){}}
+  sheetFlip()}
+ if(W.visualViewport){visualViewport.addEventListener('resize',upd);visualViewport.addEventListener('scroll',upd)}
+ W.addEventListener('resize',upd);
+ W.addEventListener('scroll',function(){if(chat()&&(W.scrollY||W.scrollX)){W.scrollTo(0,0);upd()}},{passive:true});
+ D.addEventListener('focusin',function(){var s=D.querySelector('#sheet.on');shT=s?s.offsetTop:null;setTimeout(upd,0)},true);
+ D.addEventListener('focusout',function(){setTimeout(upd,60)},true);
+ W.S4VV={upd:upd,kb:function(){return Math.max(0,kb)},top:function(){return Math.max(0,vt)}};upd()})();
 /* s3-5d: фото в чате. Тап по фото (своё сообщение у всех агентов, картинка MEDIA: в ответе) — на весь экран, тап — закрыть.
    Фото из истории Hermes и MEDIA: лежат на ПК: грузим их с подписью (/api/hc/file) в blob, кэш на сессию. */
 (function(){var D=document,C=Object.create(null),Q=Object.create(null),F=Object.create(null);/*s3-5f-F*/

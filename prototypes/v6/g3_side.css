@@ -13,7 +13,7 @@
 .sd3.c{width:320.3px;background:#121212;color:#fafaf8}
 html[data-theme=light] .sd3.g{background:#fff;color:#0d0d0d}
 html[data-theme=light] .sd3.c{background:#faf9f5;color:#141413}
-.sd3sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.sd3sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:none}/*s4c-6: без отскока (пустая полоса над списком «Все чаты»/«Все сессии» при быстрой прокрутке к началу)*/
 .sd3sc::-webkit-scrollbar{display:none}
 /* шапка стоит, список уходит под неё (0344.44: «Pinned» гаснет под «ChatGPT») */
 .sd3hd{position:absolute;left:0;right:0;top:0;height:calc(var(--sd3t) + 50px);z-index:2;pointer-events:none}

@@ -1,0 +1,103 @@
+/* s4-e: лист «Выбор модели» Claude, меню модели ChatGPT, меню «•••» Claude, лист настроек чата, черновик диктовки.
+   Числа — замеры видео Б (B1/B2, 576×1280: x/1.4656, y/1.5023 → pt) и В (C), см. s4/ref/*.md. CSS px = pt. */
+/* ---------- Claude: лист «Выбор модели» (B1 §4.1) ---------- */
+#g6sv{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.35)}
+.g6sh{position:fixed;left:8px;right:8px;bottom:8px;z-index:61;background:#141414;border-radius:38px;overflow:hidden;color:#fffffe;
+ font-family:var(--clsans);letter-spacing:-.43px;touch-action:none;transition:left .45s cubic-bezier(.2,.9,.25,1),right .45s cubic-bezier(.2,.9,.25,1),bottom .45s cubic-bezier(.2,.9,.25,1),border-radius .45s}
+.g6sh.g6full{left:0;right:0;bottom:0;border-radius:38px 38px 0 0}
+.g6grab{position:absolute;left:50%;top:6.6px;width:58px;height:4px;margin-left:-29px;border-radius:2px;background:#525255;z-index:3}
+.g6x{position:absolute;left:16px;top:17px;width:44px;height:44px;border-radius:22px;z-index:3;display:flex;align-items:center;justify-content:center;cursor:pointer;
+ background:#2c2c2c;color:#ededE7;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(255,255,255,.08)}
+.g6x:active{background:#6d6d6d}
+.g6pgs{position:absolute;inset:0;overflow:hidden}
+.g6pg{position:absolute;inset:0;background:#141414;overflow-y:auto;scrollbar-width:none;padding:0 16px 24px;box-sizing:border-box}
+.g6pg::-webkit-scrollbar{display:none}
+.g6pt{height:83px;line-height:78px;text-align:center;font-weight:600;font-size:17px;pointer-events:none}
+.g6ld{color:#c4c4be;font-size:15px;text-align:center;padding:20px}
+.g6card{background:#1d1d1d;border-radius:24.5px;overflow:hidden}
+.g6r2{position:relative;display:flex;align-items:center;height:71.5px;padding:0 18px 0 21px;cursor:pointer}
+.g6r2>div{flex:1;min-width:0}
+.g6r2 b{display:block;font-weight:400;font-size:17px;line-height:22px;color:#fffffe;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g6r2 span{display:block;font-size:15px;line-height:20px;color:#c4c4be;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g6r2+.g6r2::before,.g6r1+.g6r1::before{content:'';position:absolute;left:21px;right:17px;top:0;height:1px;background:#2d2d2d}
+.g6r2:active,.g6r1:active,.g6pill:active{background:rgba(255,255,255,.05)}
+.g6ck{flex:none;color:#5f92d7;margin-left:12px}
+.g6pill{display:flex;align-items:center;height:48.5px;border-radius:24.25px;margin-top:20px;padding:0 18px 0 21px;cursor:pointer;font-size:17px}
+.g6pill b{font-weight:400;flex:1;white-space:nowrap}
+.g6pill em{font-style:normal;color:#c9c9c2;margin:0 12px 0 8px;white-space:nowrap}
+.g6ch{flex:none;color:#595959}
+.g6bd{font-style:normal;flex:none;height:22px;line-height:22px;padding:0 9px;border-radius:11px;background:#2a2a2a;color:#c7c7c0;font-size:13px;font-weight:600;letter-spacing:-.08px;white-space:nowrap}
+.g6bd.g6warn{background:#3b2000;color:#fcb434}
+.g6r1{position:relative;display:flex;align-items:center;gap:8px;height:51.3px;padding:0 18px 0 21px;cursor:pointer;font-size:17px}
+.g6r1 b{font-weight:400}.g6r1 .g6ck{margin-left:auto}
+.g6effp .g6pt{height:86.5px;line-height:78px}
+.g6ft{font-size:15px;line-height:19px;color:#cbcac7;padding:11px 21px 0}
+html[data-theme=light] .g6sh,html[data-theme=light] .g6pg{background:#f5f4ef;color:#141413}
+html[data-theme=light] .g6card{background:#fff}html[data-theme=light] .g6r2 b{color:#141413}
+html[data-theme=light] .g6r2 span,html[data-theme=light] .g6ft,html[data-theme=light] .g6pill em{color:#6b6a65}
+html[data-theme=light] .g6x{background:#e8e6df;color:#141413}html[data-theme=light] .g6bd{background:#eeece6;color:#55544f}
+/* ---------- ChatGPT (Codex/Hermes): меню модели — стекло g3pop; уровни силы в том же меню ---------- */
+.g6mm{overflow-y:auto;scrollbar-width:none;padding:6px 0}
+.g6mm .g3mi{position:relative}
+.g6mm .g6two{height:54px}
+.g6mm .g6two span{display:flex;flex-direction:column;min-width:0}
+.g6mm .g6two b{font-weight:400;overflow:hidden;text-overflow:ellipsis}
+.g6mm .g6two small{font-size:13px;line-height:17px;color:#8e8e93;overflow:hidden;text-overflow:ellipsis}
+.g6mm em,.g6mm .g6rec{font-style:normal;color:#8e8e93;margin-left:auto;white-space:nowrap;font-size:15px}
+.g6mm .g6effr .g6ch{margin-left:10px;color:#8e8e93}
+.g6mm .g6back svg{width:19px;height:16px;color:#8e8e93}
+.g6sep{height:1px;background:rgba(255,255,255,.1);margin:6px 25px 6px 33px}
+html[data-theme=light] .g6sep{background:rgba(0,0,0,.1)}
+/* ---------- Claude «•••» (B1 §8, кадр 103.9): стекло #303030, 251 pt, шаг 42.5, текст x+63, значок x+29, без заголовка ---------- */
+.clpop.g6clm{border-radius:30px;padding:8px 0 10px;background:linear-gradient(rgba(50,50,50,.86),rgba(43,43,43,.86));
+ -webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 .5px 0 rgba(255,255,255,.16)}
+.clpop.g6clm .clmi{height:42.5px}
+.clpop.g6clm .clmi>.clv,.clpop.g6clm .clmi>.clck{margin-left:29px;color:#e9e8e3}
+.clpop.g6clm .clmi span{left:63px}
+.clpop.g6clm .g6sep{height:1px;background:rgba(255,255,255,.1);margin:10px 20px 10px 36px}
+#clhd .g6hid{opacity:0!important;transition:opacity .08s}
+html[data-theme=light] .clpop.g6clm{background:linear-gradient(rgba(250,250,248,.9),rgba(242,241,236,.9))}
+/* ---------- лист «Другие действия» в чате = настройки чата (B2: группа-карточка r26, строки 52/54 pt, сноски) ---------- */
+#sheet.g6set{background:#000!important;border:0!important;border-radius:38px 38px 0 0!important;box-shadow:0 -20px 60px rgba(0,0,0,.6)!important;padding:8px 16px calc(16px + env(safe-area-inset-bottom))!important;
+ font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;letter-spacing:-.43px}
+#sheet.g6set.g6setc{background:#141414!important;font-family:var(--clsans)}
+#sheet.g6set .hcsh{text-align:center;padding:14px 50px 12px!important;margin:0!important}
+#sheet.g6set .hcsh b{font-size:17px;line-height:22px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sheet.g6set .btn{display:flex!important;align-items:center;gap:16px;justify-content:flex-start!important;min-height:54.2px!important;margin:0!important;border:0!important;border-radius:0!important;
+ background:#1e1e1e!important;color:#fff!important;font-weight:400!important;font-size:17px!important;line-height:22px!important;padding:0 18px!important;box-shadow:none!important;text-align:left!important;position:relative}
+#sheet.g6set.g6setc .btn{min-height:51.9px!important;background:#1d1d1d!important}
+#sheet.g6set .btn svg{width:20px!important;height:20px!important;flex:none;color:#fff}
+#sheet.g6set.g6setc .btn svg{color:#cccac2}
+#sheet.g6set .btn+.btn::before{content:'';position:absolute;left:54px;right:0;top:0;height:1px;background:#2b2b2b}
+#sheet.g6set.g6setc .btn+.btn::before{background:#2e2e2e;right:16px}
+#sheet.g6set :not(.btn)+.btn{border-top-left-radius:26px!important;border-top-right-radius:26px!important;margin-top:16px!important}
+#sheet.g6set .btn:not(:has(+.btn)){border-bottom-left-radius:26px!important;border-bottom-right-radius:26px!important}
+#sheet.g6set .btn.bad{color:#ff453a!important}#sheet.g6set .btn.bad svg{color:#ff453a}
+#sheet.g6set.g6setc .btn.bad{color:#ffb1bb!important}#sheet.g6set.g6setc .btn.bad svg{color:#ffb1bb}
+#sheet.g6set .btn[data-hc=close]{justify-content:center!important;background:#2a2a2a!important;border-radius:26px!important;margin-top:18px!important;font-weight:600!important}
+#sheet.g6set .btn[data-hc=close]::before{display:none}
+#sheet.g6set .hint2{font-size:13px!important;line-height:17px!important;color:#8e8e93!important;margin:8px 18px 0!important;padding:0!important;background:none!important;border:0!important}
+#sheet.g6set.g6setc .hint2{color:#969693!important}
+#sheet.g6set .hint2+.btn{margin-top:16px!important}
+html[data-theme=light] #sheet.g6set{background:#f2f2f7!important}html[data-theme=light] #sheet.g6set .btn{background:#fff!important;color:#000!important}
+html[data-theme=light] #sheet.g6set .btn svg{color:#000}html[data-theme=light] #sheet.g6set .btn[data-hc=close]{background:#e5e5ea!important}
+/* ---------- черновик диктовки (C §2–§4) ---------- */
+#g3tr{display:none!important}
+.g6dz{display:none;padding:12px 17px 2px;max-height:194px;overflow:hidden;font-size:17px;line-height:24.2px;color:#b4b4b4;white-space:pre-wrap;word-wrap:break-word;
+ }
+.g3c.rec .g6dz.on{display:block}
+.g3c.rec:has(.g6dz.on){border-radius:20px}
+.g6k{color:#2f5bef;animation:g6kIn 215ms linear both,g6kTone 950ms cubic-bezier(.45,0,.55,1) 360ms forwards}
+@keyframes g6kIn{from{opacity:.4}to{opacity:1}}
+@keyframes g6kTone{from{color:#2f5bef}to{color:#b4b4b4}}
+.g6car{display:inline-block;width:2px;height:1.15em;margin-left:1px;vertical-align:-.2em;background:#2f5bef;border-radius:1px}
+.g6kc{animation:g6kcIn 280ms cubic-bezier(.2,.7,.3,1) both}
+@keyframes g6kcIn{from{opacity:0}to{opacity:1}}
+html[data-theme=light] .g6dz{color:#8e8e8e}
+@keyframes g6kToneL{from{color:#2f5bef}to{color:#8e8e8e}}
+html[data-theme=light] .g6k{animation-name:g6kIn,g6kToneL}
+#g3 textarea.vclive,#cl3 textarea.vclive,#hcin.vclive{font-style:normal!important}
+@media (prefers-reduced-motion:reduce){.g6k{animation:none;color:#b4b4b4}.g6kc{animation:none}}
+/* подсказки над полем гаснут при старте диктовки ≈400 мс (C §1, 1.37–1.60 с) */
+#g3sg{transition:opacity .4s ease-out}
+.g3:has(.g3c.rec) #g3sg{opacity:0;pointer-events:none}

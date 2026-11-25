@@ -25,10 +25,19 @@
   return fetch(String(W.API||'').replace(/\/$/,'')+'/api/hc'+p,{method:o.method||'GET',headers:h,body:o.body!==undefined?JSON.stringify(o.body):undefined})
    .then(function(r){if(r.ok)return r.json();return r.json().catch(function(){return{}}).then(function(j){throw new Error(j.text||j.error||('HTTP '+r.status))})})}
  function base(k){return k=='claude'?'/cc':k=='codex'?'/cx':''}
- function load(force){if(SD.fx)return;if(!force&&Date.now()-SD.loadT<4000)return;SD.loadT=Date.now();
-  [['hermes','/sessions?limit=100'+(lsg('hcall',false)||lsg('sd3all',false)?'&all=1':'')],['claude','/cc/sessions?limit=60'+(lsg('sd3all',false)?'&all=1':'')],['codex','/cx/sessions?limit=60']].forEach(function(a){
-   api(a[1]).then(function(d){SD.L[a[0]]=(d.s||[]).map(function(x){var y={};for(var q in x)y[q]=x[q];y.k=a[0];return y});SD.err[a[0]]='';paint()})
-    .catch(function(e){SD.err[a[0]]=e.message;if(!SD.L[a[0]])SD.L[a[0]]=[];paint()})})}
+ /* s4c-5a: списки чатов кэшируются (localStorage sd3L_<агент>) и рисуются сразу при запуске — «Недавние» и «твой ход» без мигания и без
+    «Загружаю чаты X…»; свежий ответ перерисовывает меню, только если что-то изменилось */
+ var LPATH={hermes:function(){return '/sessions?limit=100'+(lsg('hcall',false)||lsg('sd3all',false)?'&all=1':'')},claude:function(){return '/cc/sessions?limit=60'+(lsg('sd3all',false)?'&all=1':'')},codex:function(){return '/cx/sessions?limit=60'}};
+ ['hermes','claude','codex'].forEach(function(k){var c=lsg('sd3L_'+k,null);if(c&&c.length!=null)SD.L[k]=c});SD.ldT={};
+ function loadK(k){if(SD.fx)return;SD.ldT[k]=Date.now();
+  return api(LPATH[k]()).then(function(d){var L=(d.s||[]).filter(function(x){return !(x.new&&W.HC&&HC.phantom&&HC.phantom(k,x))})/*s4a-ph*/.map(function(x){var y={};for(var q in x)y[q]=x[q];y.k=k;return y}),j=JSON.stringify(L),same=SD.L[k]&&SD.lj&&SD.lj[k]==j;
+   SD.lj=SD.lj||{};SD.lj[k]=j;SD.L[k]=L;SD.err[k]='';if(!same)lss('sd3L_'+k,L);tsync(k);toastOff(k);if(!same)paint()})
+   .catch(function(e){SD.err[k]=e.message;if(!SD.L[k])SD.L[k]=[];paint()})}
+ function load(force){if(SD.fx)return;if(!force&&Date.now()-SD.loadT<4000)return;SD.loadT=Date.now();['hermes','claude','codex'].forEach(loadK)}
+ function toastOff(k){var t=$i('toast');if(t&&t.classList.contains('on')&&t.textContent.indexOf('Загружаю чаты '+KN[k])>=0)t.classList.remove('on')}
+ /* s4c-4: название открытого чата берём из свежего списка (автоназвание Hermes после первого ответа) — шапка и меню сразу одинаковые */
+ function tsync(k){var s=st();if(!s||s.kind!=k||!s.sid||s.view!='chat')return;var x=(SD.L[k]||[]).filter(function(y){return y.id==s.sid})[0];
+  if(x&&x.t&&x.t!=s.title){s.title=x.t;try{HC.paint()}catch(e){}}}
  function pinned(x){return x.k=='hermes'?!!x.pin:!!PINS[x.k+':'+x.id]}
  function all(){var r=[];['hermes','claude','codex'].forEach(function(k){(SD.L[k]||[]).forEach(function(x){r.push(x)})});
   /* текущий чат — всегда в списке (новый ещё не пришёл с сервера) */
@@ -40,7 +49,7 @@
  function waits(x){return !!(x.wait||x.stc=='blocked')}
  /* ---------- главный экран (тот, что отъезжает) ---------- */
  function main(){return $i('cl3')||$i('g3')||$i('g4')}/* gpt18: на Пульте отъезжает #g4 */
- function sty(){var s=st();if(!$i('cl3')&&!$i('g3'))return 'g';return s&&s.kind=='claude'?'c':'g'}
+ function sty(){var s=st();/*s4c-3: облик меню следует агенту и вне чата (Проекты, Пульт…)*/return s&&s.kind=='claude'?'c':'g'}
  /* кривые по реальным pts кадров (fit_spring.py): ChatGPT 316.93–317.23 с записи 3214 — 309 мс cubic-bezier(.25,1,.3,1) RMS 0.004;
     Claude 10.19–10.51 с записи 3213 — пружина response 0.19, damping 1.0 (256 мс до 1 px) RMS 0.003 */
  var EZ={g:{d:309,e:'cubic-bezier(.25,1,.3,1)'},c:{d:256,e:'linear(0, 0.049, 0.158, 0.286, 0.412, 0.526, 0.625, 0.706, 0.773, 0.825, 0.867, 0.899, 0.924, 0.943, 0.957, 0.968, 0.976, 0.983, 0.987, 0.991, 0.993, 0.995, 0.996, 0.997, 1)'}};
@@ -52,7 +61,7 @@
   /* одна кривая на все свойства: считаем прогресс по той же функции времени, что и CSS (WAAPI-анимация-носитель) */
   var probe=D.createElement('i');probe.style.cssText='position:fixed;left:0;top:0;width:0;height:0;pointer-events:none';B.appendChild(probe);
   var a=probe.animate?probe.animate([{left:'0px'},{left:'1000px'}],{duration:d,easing:ez.e,fill:'forwards'}):null;
-  function step(){var nw=performance.now();if(jk.n++){jk.mx=Math.max(jk.mx,nw-jk.l)}jk.l=nw;var p=a?parseFloat(getComputedStyle(probe).left)/1000:Math.min(1,(performance.now()-t0)/d);var v=from+(x-from)*p;SD.pos=v;setPos(main(),v);cover();
+  function step(){var nw=performance.now();if(jk.n++){jk.mx=Math.max(jk.mx,nw-jk.l)}jk.l=nw;if(!SD.on&&x>0){/*s4c-1c*/probe.remove();SD.anim=null;SD.pos=0;setPos(main(),0);cover();return}var p=a?parseFloat(getComputedStyle(probe).left)/1000:Math.min(1,(performance.now()-t0)/d);var v=from+(x-from)*p;SD.pos=v;setPos(main(),v);cover();
    if((a&&a.playState=='finished')||(!a&&p>=1)){if(jk.mx>60&&W.cbDiag)cbDiag('sd_jank',{max:Math.round(jk.mx),n:jk.n,x:Math.round(x),nodes:D.getElementsByTagName('*').length});probe.remove();SD.anim=null;SD.pos=x;setPos(main(),x);cover();cb&&cb();return}SD.anim=requestAnimationFrame(step)}
   SD.anim=requestAnimationFrame(step);SD.cur={probe:probe,a:a}}
  function cover(){var c=$i('sd3cv');if(!c)return;var on=SD.on&&(SD.pos||0)>0;c.classList.toggle('on',on);if(on)c.style.left=Math.round(SD.pos)+'px'}
@@ -128,13 +137,13 @@
  function closeAll(){rcClose(true);setClose(true);closePop();close({instant:true})}
  function hcDo(a,ds){var d=D.createElement('i');d.dataset.hc=a;for(var k in (ds||{}))d.dataset[k]=ds[k];d.style.display='none';($i('hcroot')||B).appendChild(d);d.click();if(d.parentNode)d.remove()}
  /* переход в чат: экран чата меняется под меню, потом отъезжает обратно (как в видео: тап по чату → экран едет влево) */
- function openChat(k,id){var s=st();if(!s||!k||!id)return;rcClose(true);setClose(true);closePop();
+ function openChat(k,id){var s=st();if(!s||!k||!id)return;mcPut();rcClose(true);setClose(true);closePop();
   if(s.view=='chat'&&s.kind==k&&s.sid==id){close();return}
   var L=(SD.L[k]||[]).map(function(x){var y={};for(var q in x)y[q]=x[q];if(k!='hermes')y.cc=true;return y});
   if(!(W.U&&U.tab=='hc')){U.tab='hc';U.page=null;render()}/*s3-4a: чат из меню на другой вкладке — сначала вкладка «Чат»*/
   if(s.kind!=k)hcDo('kind',{v:k});
   if(L.length)HC.st.sessions=L;hcDo('open',{id:id});
-  var X=SD.pos||SD.X;requestAnimationFrame(function(){var m=main();if(!m){close({instant:true});return}SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.pos=Math.min(X,SD.X);setPos(m,SD.pos);paint();close()})}
+  var X=SD.pos||SD.X;mcFill(k,id);requestAnimationFrame(function(){var m=main();if(!m){close({instant:true});return}if(!SD.on){/*s4c-1e*/SD.pos=0;setPos(m,0);cover();return}SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.pos=Math.min(X,SD.X);setPos(m,SD.pos);paint();close()})}
  function newChat(k){var s=st();closeAll();if(W.HC&&HC.newChat&&s&&s.view=='chat'){HC.newChat(k||s.kind);return}if(k&&s&&s.kind!=k)hcDo('kind',{v:k});hcDo('new')}
  /* ---------- экран «Недавние»: все чаты, поиск, фильтр, выбор (кадры 3213_0182.39, 0199.47, 0208.37, 0212.40) ---------- */
  /* ---------- «Все сессии»: все агенты, сгруппированы по папкам проектов. У Hermes папки нет — группа по источнику ---------- */
@@ -332,15 +341,21 @@
   /* cb1: если узел под пальцем удалят (перерисовка), события придут на него, а не на document */
   try{tg2.addEventListener('touchmove',swMove,{passive:false});tg2.addEventListener('touchend',swEnd);tg2.addEventListener('touchcancel',swEnd)}catch(x){}},{passive:true,capture:true});
  function swMove(e){if(!SW||e.__sw)return;e.__sw=1;SW.ev=performance.now();var t=e.touches[0],dx=t.clientX-SW.x,dy=t.clientY-SW.y;
-  if(!SW.go){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)<Math.abs(dy)*1.2||(SW.open&&dx<0)||(!SW.open&&dx>0&&SW.p0>=SD.X)){SW=null;return}
-   SW.go=true;SD.drag=true;if(SW.open){SD.fx=null;SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.on=true;paint();load();try{D.activeElement&&D.activeElement.blur&&D.activeElement.blur()}catch(x){}}
+  if(!SW.go){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;
+   /* s4c-1a: палец лёг на ЗАКРЫВАЮЩЕЕСЯ меню (на затемнённый край чата), а закрытие кончилось раньше, чем палец двинулся (видео 345–353):
+      меню уже закрыто, значит это жест открытия. Раньше экран ехал за пальцем при SD.on=false — чат сдвинут на 310/320, меню пустое (sd_blank) */
+   if(!SW.open&&!SD.on){if(dx<=0||SD.fx){swDrop();return}SW.open=true;SW.p0=SD.pos||0}
+   if(Math.abs(dx)<Math.abs(dy)*1.2||(SW.open&&dx<0)||(!SW.open&&dx>0&&SW.p0>=SD.X)){SW=null;return}
+   /* s4c-2: меню рисуется ДО захвата жеста (paint() при SW.go откладывается до отпускания) — с первого кадра свайпа пункты на месте, а не чёрная пустота */
+   if(SW.open){SD.fx=null;SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.on=true;SD.dirty=0;paint();load();try{D.activeElement&&D.activeElement.blur&&D.activeElement.blur()}catch(x){}}
+   SW.go=true;SD.drag=true;
    if(SD.anim){cancelAnimationFrame(SD.anim);SD.anim=null}}
   e.preventDefault();var now=performance.now();SW.v=(t.clientX-SW.lx)/Math.max(1,now-SW.lt);SW.lx=t.clientX;SW.lt=now;
   var x=Math.max(0,Math.min(SD.X,SW.p0+dx));SD.pos=x;setPos(main(),x);cover()}
  D.addEventListener('touchmove',swMove,{passive:false,capture:true});
  function swFin(){if(SW&&SW.go)swEnd();else swDrop()}
  function swDrop(){if(SW&&SW.tg){try{SW.tg.removeEventListener('touchmove',swMove);SW.tg.removeEventListener('touchend',swEnd);SW.tg.removeEventListener('touchcancel',swEnd)}catch(x){}}SW=null}
- function swEnd(e){if(e){if(e.__swe)return;e.__swe=1;if(e.target&&e.target.isConnected===false)W.cbDiag&&cbDiag('sd_detached',{pos:Math.round(SD.pos||0)})}if(!SW)return;var s=SW;swDrop();if(!s.go)return;setTimeout(function(){SD.drag=false;if(SD.dirty){SD.dirty=0;paint()}},50);
+ function swEnd(e){if(e){if(e.__swe)return;e.__swe=1;if(e.target&&e.target.isConnected===false)W.cbDiag&&cbDiag('sd_detached',{pos:Math.round(SD.pos||0)})}if(!SW)return;var s=SW;swDrop();if(!s.go)return;if(!SD.on&&main()&&!SD.fx){SD.on=true;paint()}/*s4c-1b: сдвиг экрана без меню не оставляем*/setTimeout(function(){SD.drag=false;if(SD.dirty){SD.dirty=0;paint()}},50);
   var x=SD.pos||0,openIt=s.v>0.35?true:s.v<-0.35?false:x>SD.X*0.5;if(openIt){haptic();animTo(SD.X)}else close(s.v<-0.35?{flick:Math.abs(s.v)}:{})}
  D.addEventListener('touchend',swEnd,{capture:true});D.addEventListener('touchcancel',swEnd,{capture:true});
  /* cb1: сторож — палец потерян (событий нет >1.2 с) или меню осталось на полпути без жеста и анимации: довести до края */
@@ -348,13 +363,31 @@
   if(!SW&&SD.drag&&!SD.anim){W.cbDiag&&cbDiag('sd_stuck',{why:'drag-flag',pos:Math.round(SD.pos||0)});SD.drag=false}
   if(SD.on&&!SD.anim&&!SD.drag&&!SW&&!SD.fx&&SD.pos>2&&SD.pos<SD.X-2){W.cbDiag&&cbDiag('sd_stuck',{why:'half-open',pos:Math.round(SD.pos)});if(SD.pos>SD.X*0.5)animTo(SD.X);else close()}},500);
  /* экран чата пропал (ушли в другую вкладку, база перерисовала список) — меню закрыть */
- var MO=new MutationObserver(function(){if(SD.on&&!main()&&!SD.fx){SD.on=false;SD.pos=0;var p=$i('sd3');if(p)p.className='sd3';cover()}});
+ var MO=new MutationObserver(function(){if(SD.on&&!main()&&!SD.fx){if(SD.anim){cancelAnimationFrame(SD.anim);SD.anim=null}if(SW)swDrop();SD.drag=false;/*s4c-1d*/SD.on=false;SD.pos=0;var p=$i('sd3');if(p)p.className='sd3';cover()}});
  MO.observe(B,{childList:true,subtree:false});
  /* ---------- вход во вкладку «Чат» = сразу последний чат (как ChatGPT/Claude), список агента больше не показывается ----------
     Последний открытый чат помним сами (sd3last: {k,id}) — у базы hcsid только для Hermes. Пока ищем чат, старый список скрыт
     (body.sd3ent); не нашли за 8 с, чатов нет или чат ещё ни разу не открывали — показываем список базы как запасной путь. HC.leave() из кода/тестов
     по-прежнему даёт список: вход срабатывает только по нажатию вкладки «Чат» и при запуске панели на ней. */
  var ENT={on:0,t0:0,tm:0};
+ /* s4c-5c: кэш последних сообщений чатов (до 6 чатов × 40 сообщений, localStorage sd3mc): чат из меню сразу показывает то, что было,
+    история с ПК заменяет его, когда придёт (раньше 0,5–1 с пустой экран «Загружаю», у Codex дольше) */
+ var MC=lsg('sd3mc',{})||{},MCo=lsg('sd3mco',[])||[],MCt=0,MCw=0;
+ function mcSave(){MCt=Date.now();MCw=0;lss('sd3mc',MC);lss('sd3mco',MCo)}
+ function mcPut(){var s=st();if(!s||s.view!='chat'||!s.sid||s.loadingMsgs||s.busy||!s.msgs||!s.msgs.length)return;var key=s.kind+':'+s.sid,M=s.msgs.filter(function(b){return b&&!b.lp&&!b.live}).slice(-40),j;
+  try{j=JSON.stringify(M);while(j.length>40000&&M.length>1){M=M.slice(Math.ceil(M.length/4));j=JSON.stringify(M)}}catch(e){return}if(!M.length||j.length>40000||MC[key]===j)return;
+  MC[key]=j;MCo=MCo.filter(function(x){return x!=key});MCo.push(key);while(MCo.length>6)delete MC[MCo.shift()];
+  if(Date.now()-MCt>3000)mcSave();else if(!MCw)MCw=setTimeout(mcSave,3000)}
+ function mcFill(k,id){var s=st();if(!s||s.sid!=id||s.kind!=k||s.msgs.length||!s.loadingMsgs)return;var j=MC[k+':'+id];if(!j)return;try{s.msgs=JSON.parse(j);s.stick=true;HC.paint()}catch(e){}}
+ /* s4c-4b: ход закончился — через 1,5 и 7 с перечитываем список агента: Hermes даёт чату название после первого ответа */
+ var TW={sig:''};
+ function turnWatch(){var s=st();if(!s||s.view!='chat'||!s.sid||!main()){TW.sig='';return}var n=(s.msgs||[]).filter(function(b){return !b.lp}).length,busy=!!(s.busy||s.hpoll||s.dsending||(s.cur&&s.cur.live)),ld=!!s.loadingMsgs,sig=s.kind+':'+s.sid;
+  if(TW.sig!=sig||ld||TW.ld){TW.sig=sig;TW.n=n;TW.b=busy;TW.ld=ld;return}
+  if((n!=TW.n||TW.b)&&!busy){var k=s.kind;clearTimeout(TW.t1);clearTimeout(TW.t2);TW.t1=setTimeout(function(){loadK(k)},1500);TW.t2=setTimeout(function(){loadK(k)},7000)}
+  TW.n=n;TW.b=busy}
+ setInterval(function(){try{mcPut();turnWatch()}catch(e){}},1200);
+ /* s4c-5a: списки — заранее, при запуске панели (бейджи агентов и «Недавние» готовы к первому открытию меню) */
+ setTimeout(function(){load(true)},1500);
  function remember(){var s=st();if(s&&s.view=='chat'&&s.sid&&main()){var v={k:s.kind,id:s.sid},o=lsg('sd3last',null);if(!o||o.k!=v.k||o.id!=v.id){lss('sd3last',v);var M=lsg('sd3lastk',{})||{};M[v.k]=v.id;lss('sd3lastk',M)}}}
  setInterval(remember,1200);
  /* s3-4b: U.page='hcchat' вне вкладки «Чат» — база v5 рисовала бы старый экран агента (agentPage('hcchat')) */
@@ -381,7 +414,7 @@
   var L=lsg('sd3last',null),id=L&&L.k==s.kind&&s.sessions.some(function(x){return x.id==L.id})?L.id:null;
   if(!id){var a=s.sessions.filter(function(x){return x.src!='cron'}).sort(function(x,y){return (y.ts||0)-(x.ts||0)})[0];id=a&&a.id}
   if(!id){entEnd();return}
-  hcDo('open',{id:id});setTimeout(function(){entEnd()},400)}
+  hcDo('open',{id:id});mcFill(s.kind,id);/*s4c-5d*/setTimeout(function(){entEnd()},400)}
  /* нажатие вкладки «Чат» (нижняя панель или пункт меню) → вход */
  W.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-a=tab][data-x=hc]');if(!t)return;setTimeout(function(){var s=st();if(s&&s.view=='list'&&W.U&&U.tab=='hc')entStart()},0)},false);
  /* панель открылась сразу на вкладке «Чат» */

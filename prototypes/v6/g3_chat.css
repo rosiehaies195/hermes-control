@@ -25,6 +25,19 @@ html[data-theme=light] .g3gl{background:rgba(255,255,255,.78);box-shadow:inset 0
 .g3sp{flex:1}
 /* под строкой состояния лента гаснет до ~12% (кадр 54: y 36–45 pt), ниже 47 pt — без затемнения (кадр 13) */
 .g3top{position:absolute;left:0;right:0;top:0;height:max(0px,calc(var(--g3t) - 11px));z-index:3;pointer-events:none;background:linear-gradient(rgba(0,0,0,.88) calc(100% - 4px),rgba(0,0,0,0))}
+/* s4b-1: край прокрутки под стеклянными кнопками шапки (как ChatGPT/Claude iOS 26): лента под ☰ и ✎⋯ гаснет в фон, текст и значки
+   сообщений не просвечивают между кнопками (видео 191–260). Сплошной фон до середины кнопок, ниже — плавный спад */
+.g3top{height:calc(var(--g3t) + 62px);background:var(--g3bg);-webkit-mask-image:linear-gradient(#000 calc(var(--g3t) + 22px),rgba(0,0,0,.72) calc(var(--g3t) + 40px),rgba(0,0,0,0));mask-image:linear-gradient(#000 calc(var(--g3t) + 22px),rgba(0,0,0,.72) calc(var(--g3t) + 40px),rgba(0,0,0,0))}
+/* s4b-1: подложка под полем ввода: сверху спад, дальше фон (высоту ставит pad()) */
+.s4bf{position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0),var(--g3bg) 30px)}
+html[data-theme=light] .s4bf{background:linear-gradient(rgba(255,255,255,0),var(--g3bg) 30px)}
+/* s4b-3: клавиатура iOS накрыла страницу (visualViewport меньше окна) — экран чата сразу в видимой части, поле над клавиатурой */
+html.s4kbv .g3,html.s4kbv .cl3{top:var(--s4vt,0px);bottom:var(--s4kb,0px)}
+html.s4kbv #sheet.on{bottom:var(--s4kb,0px)}
+/* s4b-5: тосты в открытом чате — компактная плашка под шапкой: не закрывают поле, черновик и подсказки (видео 28, 53, 164, 227, 342, 458) */
+body.g3on .toast,body.cl3on .toast{top:calc(var(--s4vt,0px) + var(--g3t,6px) + 54px)!important;bottom:auto!important;left:50%!important;right:auto!important;width:max-content;max-width:calc(100% - 32px);
+ transform:translate(-50%,-10px)!important;padding:8px 14px!important;font-size:14px;line-height:19px;border-radius:19px!important;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+body.g3on .toast.on,body.cl3on .toast.on{transform:translate(-50%,0)!important}
 .g3b44{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--g3fg)}
 .g3cap{width:104.3px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:space-between;padding:0 1.1px 0 3.2px;color:var(--g3fg)}
 .g3cap i{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
@@ -115,7 +128,7 @@ html[data-theme=light] .g3gl{background:rgba(255,255,255,.78);box-shadow:inset 0
 .g3pb.pri{background:#fff;color:#000}
 /* ---------- «вниз» (§6): круг 32, стекло, по центру, над полем ---------- */
 .g3dn{position:absolute;left:50%;width:32px;height:32px;margin-left:-16px;border-radius:16px;display:flex;align-items:center;justify-content:center;z-index:3;color:var(--g3fg);
- background:rgba(68,68,68,.72);opacity:0;transform:scale(.6);pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.3,1.3,.5,1)}
+ background:rgba(68,68,68,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);/*s4b-4: стекло — текст под «вниз» размыт*/opacity:0;transform:scale(.6);pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.3,1.3,.5,1)}
 .g3dn.on{opacity:1;transform:none;pointer-events:auto}.g3dn .g3i{width:17px;height:17px}
 /* ---------- подсказки пустого чата (§4, кадр 01) ---------- */
 .g3sg{position:absolute;left:0;right:0;display:none;z-index:2;padding:0 16px}

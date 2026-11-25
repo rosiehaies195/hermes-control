@@ -25,7 +25,7 @@
  /* ---------- каркас ---------- */
  function frame(){var r=root(),g=$i('cl3');if(g&&g.parentNode===r)return g;if(g)g.remove();
   g=D.createElement('div');g.id='cl3';g.className='cl3';
-  g.innerHTML='<div class="clf" id="clf"><div class="cll" id="cll"></div></div><div class="cltop"></div>'+
+  g.innerHTML='<div class="clf" id="clf"><div class="cll" id="cll"></div></div><div class="cltop"></div><div class="clbf" id="clbf"></div>'+
    '<div class="clhi" id="clhi">'+ic('spark')+'<b id="clhib"></b></div>'+
    '<div class="clhd" id="clhd"><div class="cl44 clgl" data-cl="side" role="button" aria-label="Все чаты">'+ic('side')+'</div><div class="clsp"></div>'+
    '<div class="cl44 clgl" data-cl="pc" role="button" aria-label="Открыть на ПК">'+ic('laptop')+'</div>'+
@@ -36,7 +36,7 @@
    '<div class="clta2" id="clta2"></div><div class="clchip" id="clchip" data-cl="chip" role="button"></div><div class="clmic" data-cl="mic" role="button" aria-label="Диктовка">'+ic('mic')+'</div><div class="clgo" id="clgo" data-cl="go" role="button"></div></div>'+
    '<div class="cldict" id="cldict"></div><div class="clhide" id="clhide"><input id="clcam" type="file" accept="image/*" capture="environment"></div></div><div id="clqw"></div>';
   r.appendChild(g);
-  $i('clf').addEventListener('scroll',dnUpd,{passive:true});
+  $i('clf').addEventListener('scroll',function(){dnUpd();atBUpd()},{passive:true});/*s4b-4a*/
   $i('clc').addEventListener('transitionend',function(e){if(e.target.id=='clc')pad()});
   serifFit();return g}
  function adopt(){var ta=$i('hcin'),slot=$i('clta2'),hide=$i('clhide'),fl=$i('hcfile'),sb=$i('hcsend'),th=$i('hcthumbs'),ch=$i('hcchips');
@@ -84,20 +84,20 @@
  function imgsOf(b){if(!b.im)return '';var m=G.sent.filter(function(x){return Math.abs(x.ts-b.ts)<60&&x.n==b.im})[0];
   if(m)return '<div class="cluim">'+m.u.map(function(u){return '<img src="'+u+'">'}).join('')+'</div>';
   return '<div class="cluim0">'+b.im+' фото</div>'}
- function live(){var s=st(),sb=$i('hcsend');return !!(s.busy||s.cclive||(s.cur&&s.cur.live)||(sb&&sb.classList.contains('stop')))}
+ function live(){var s=st(),sb=$i('hcsend');return !!((s.dsq&&s.sid&&s.dsq[s.sid])/*s4a-live*/||s.busy||s.cclive||(s.cur&&s.cur.live)||(sb&&sb.classList.contains('stop')))}
  function feedHtml(){var s=st(),R=turns(),h='',lv=live();
   if(R.from>0)h+='<div class="clolder" data-hc="older">Показать более ранние ('+R.from+')</div>';
   var lu=-1;R.L.forEach(function(t,k){if(t.u)lu=k});var opened=false;
   R.L.forEach(function(t,k){var last=k==R.L.length-1;
    if(k==lu){h+='<div class="cllt" id="cllt"'+(G.ltH?' style="min-height:'+G.ltH+'px"':'')+'>';opened=true}
-   if(t.u){h+='<div class="clum" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="club">'+md(t.u.t)+'</div>':'')+'</div>';
+   if(t.u){h+='<div class="clum" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="club">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+'</div>';
     if(last&&lv)h+='<div class="clta cllast">'+thinking(null,-1)+'</div>';return}
    h+=turnA(t,last&&lv,last)});
   /* свёрнутая карточка вопроса/разрешения — строкой статуса (✕ на карточке) */
   (s.pend||[]).forEach(function(p,i){if(G.qmin[p.id||i])h+='<div class="clth" data-cl="qopen" data-i="'+i+'"><div class="cldots"><i></i><i></i><i></i></div><span>'+(p.kind=='clarify'?'Задаю вопрос':'Жду разрешения')+'</span>'+ic('clock')+ic('chev')+'</div>'});
   if(s.err)h+='<div class="clerr"><i>i</i><div>'+E(s.err)+'</div></div>';
   if(opened)h+='</div>';
-  if(s.loadingMsgs&&!s.msgs.length)h+='<div class="clth clload"><div class="cldots"><i></i><i></i><i></i></div><span>Загружаю</span></div>';
+  if(s.loadingMsgs&&!s.msgs.length)h+='<div class="clth clload"><div class="cldots"><i></i><i></i><i></i></div><span>'+(s.creating&&s.creating==s.sid?'Создаю чат…':'Загружаю')/*s4a-ld*/+'</span></div>';
   return h}
  /* cb5: список обновляем по верхним узлам: неизменившиеся остаются как есть (без пересоздания и перекладки), меняется только последний обмен */
  function setList(l,nh,first){
@@ -111,9 +111,11 @@
   var s=st(),key=s.kind+':'+s.sid,first=l.__sid!==key,prevN=l.querySelectorAll('.clum').length;
   var sc0=f.scrollTop;l.__h=nh;l.__sid=key;var ch=setList(l,nh,first);if(!first&&f.scrollTop!=sc0)f.scrollTop=sc0;
   if(ch)ch.forEach(shrink);else shrink(l);var nowN=l.querySelectorAll('.clum').length;fadeTail(l,first);ltFit();
-  if(first||G.stick||(nowN>prevN&&G.fly))f.scrollTop=f.scrollHeight;
+  /* s4b-2: после отправки верх своего сообщения — под шапкой и не срезан; s4b-4b: первое заполнение ленты — вниз */
+  var full=s.msgs.length>0&&l.__full!==key;if(full)l.__full=key;
+  if(nowN>prevN&&G.fly){f.scrollTop=f.scrollHeight;ltTop(f,l)}else if(first||full||G.stick)f.scrollTop=f.scrollHeight;
   if(G.fly&&nowN>prevN)flyIn(l.querySelectorAll('.clum')[nowN-1]);else flyKeep(l);if(nowN>prevN)G.fly=null;G.stick=false;
-  var _d=performance.now()-_t0;if(_d>45&&W.cbDiag)cbDiag('feed_slow',{ms:Math.round(_d),kids:l.children.length,nodes:l.getElementsByTagName('*').length});dnUpd()}
+  var _d=performance.now()-_t0;if(_d>45&&W.cbDiag)cbDiag('feed_slow',{ms:Math.round(_d),kids:l.children.length,nodes:l.getElementsByTagName('*').length});dnUpd();atBUpd()}
  /* пузырь обтягивает самую длинную строку (у Claude 2-строчный пузырь 310.6 pt при максимуме 318) */
  function shrink(l){l.querySelectorAll('.club').forEach(function(b){if(b.offsetHeight<60)return;var mx=0,mn=1e9,w=D.createTreeWalker(b,NodeFilter.SHOW_TEXT,null),n;
   /* только строки текста: прямоугольники блоков разметки (div абзаца) всегда во всю ширину */
@@ -142,12 +144,17 @@
  function flyKeep(l){var a=G.flyA;if(!a)return;var e2=performance.now()-a.t;if(e2>=SENDD){G.flyA=null;return}var L=l.querySelectorAll('.clum'),el=L[L.length-1];
   if(el&&el.animate)el.animate([{transform:'translateY('+a.dy+'px)'},{transform:'none'}],{duration:SENDD,delay:-e2,easing:SEND})}
  function dnUpd(){var f=$i('clf'),b=$i('cldn');if(!f||!b)return;b.classList.toggle('on',f.scrollHeight-f.scrollTop-f.clientHeight>200)}
+ /* s4b-4: «был внизу» — по прокрутке и после перерисовки; rb — низ экрана чата (с клавиатурой iOS выше низа окна) */
+ function atBUpd(){var f=$i('clf');if(f)G.atB=f.scrollHeight-f.scrollTop-f.clientHeight<60}
+ function rb(){var g=$i('cl3');return g?g.getBoundingClientRect().bottom:innerHeight}
+ function ltTop(f,l){var lt=$i('cllt');if(!lt)return;var pt=parseFloat(getComputedStyle(l).paddingTop)||0,d=lt.getBoundingClientRect().top-f.getBoundingClientRect().top-pt-8;if(d<0)f.scrollTop=Math.max(0,f.scrollTop+d)}
+ function cTop(c){var R=c.getBoundingClientRect(),an=c.getAnimations&&c.getAnimations().some(function(a){return a.playState=='running'&&!a.transitionProperty});return an&&c.__h?R.bottom-c.__h:R.top}
  /* ---------- пустой чат: искра + «Добрый день, имя» по центру над полем ---------- */
  function hello(){var s=st(),g=$i('clhi');if(!g)return;var em=!s.msgs.length&&!s.loadingMsgs&&!(s.pend||[]).length&&!s.busy;g.classList.toggle('on',em);if(!em)return;
   var h=new Date().getHours(),w=h<5?'Доброй ночи':h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер',nm='';try{nm=(tg.initDataUnsafe&&tg.initDataUnsafe.user&&tg.initDataUnsafe.user.first_name)||''}catch(e){}
   var t=w+(nm?', '+nm:''),b=$i('clhib');if(b.textContent!=t)b.textContent=t;
   /* кадр 3212_0009.79: искра 396–431, строка ~470 при поле на 766; с клавиатурой (0014.24) — по центру свободного места */
-  var c=$i('clc'),top=c?c.getBoundingClientRect().top:innerHeight-86,hd=(parseFloat(getComputedStyle(D.documentElement).getPropertyValue('--g3t'))||0)+44;
+  var c=$i('clc'),g0=$i('cl3'),rt=g0?g0.getBoundingClientRect().top:0,top=(c?c.getBoundingClientRect().top:rb()-86)-rt,hd=(parseFloat(getComputedStyle(D.documentElement).getPropertyValue('--g3t'))||0)+44;
   var mid=(hd+top)/2;g.style.top=Math.round(mid-39)+'px'}
  /* ---------- поле ---------- */
  function rec(){return !!(W.VC&&(VC.rec||VC.busy))}
@@ -166,16 +173,18 @@
   grow(ta);adopt();var h1=c.offsetHeight;c.__h=h1;
   /* §8: клавиатура — перестройка 52 → 98.7 за ~100 мс; вставка длинного текста — без анимации (1 кадр); диктовка — 140 мс */
   if(c.__k!==undefined&&c.__k!==k&&Math.abs(h1-h0)>2&&c.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)
-   c.animate([{height:h0+'px'},{height:h1+'px'}],{duration:r?140:card?100:150,easing:r?'cubic-bezier(.2,.05,.3,1)':'cubic-bezier(.25,.2,.15,1)'});
+   c.animate([{height:h0+'px'},{height:h1+'px'}],{duration:r?140:card?100:150,easing:r?'cubic-bezier(.2,.05,.3,1)':'cubic-bezier(.25,.2,.15,1)'}).onfinish=function(){pad()};/*s4b-2b*/
   c.__k=k;dict();pad();hello()}
  /* рост до 231 pt (3212_0130.78): дальше прокрутка внутри */
  function grow(ta){var c=$i('clc'),cs=getComputedStyle(ta),lh=parseFloat(cs.lineHeight)||23.7,card=c&&c.classList.contains('clcard');
   ta.style.height='auto';var sh=ta.scrollHeight,mx=card?231-36-8-(($i('hcthumbs')&&$i('hcthumbs').children.length)?87:0):52,h=Math.min(mx,Math.max(card?lh+31:52,sh));
   /* поле на максимуме: видна последняя строка, в 31 pt над чипом (3212_0130.78) — прокрутка вниз, когда не в фокусе (в фокусе — каретка) */
   if(ta.style.height!=h+'px')ta.style.height=h+'px';if(card&&sh>mx&&D.activeElement!=ta)ta.scrollTop=ta.scrollHeight}
- function pad(){var c=$i('clc'),l=$i('cll'),f=$i('clf');if(!c||!l)return;var top=c.getBoundingClientRect().top,/* низ ленты: без клавиатуры дисклеймер в 5 pt над полем (3213_0131.50), с клавиатурой в 39 pt (3213_0135.68) */h=Math.round(innerHeight-top+0.4+(B.classList.contains('hckb')?30.7:c.classList.contains('clrec')?34.3:0));/* при диктовке без клавиатуры — 39 pt (3213_0053.62) */
-  if(l.style.paddingBottom!=h+'px'){var near=f.scrollHeight-f.scrollTop-f.clientHeight<60;l.style.paddingBottom=h+'px';ltFit();if(near)f.scrollTop=f.scrollHeight}
-  var dn=$i('cldn');if(dn)dn.style.bottom=(innerHeight-top+20)+'px'}
+ function pad(){var c=$i('clc'),l=$i('cll'),f=$i('clf');if(!c||!l)return;var top=cTop(c),bot=rb(),keep=G.atB!==false,/* низ ленты: без клавиатуры дисклеймер в 5 pt над полем (3213_0131.50), с клавиатурой в 39 pt (3213_0135.68) */h=Math.round(bot-top+0.4+(B.classList.contains('hckb')?30.7:c.classList.contains('clrec')?34.3:0));/* при диктовке без клавиатуры — 39 pt (3213_0053.62) */
+  var near=keep||f.scrollHeight-f.scrollTop-f.clientHeight<60;if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();/*s4b-4: ltFit при любой смене высоты*/
+  if(near&&f.scrollHeight-f.scrollTop-f.clientHeight>1)f.scrollTop=f.scrollHeight;
+  var dn=$i('cldn');if(dn)dn.style.bottom=(bot-top+20)+'px';
+  var bf=$i('clbf');if(bf)bf.style.height=Math.max(0,Math.round(bot-top+30))+'px';/*s4b-1*/dnUpd()}
  /* ---------- диктовка (§3.4): «× · волна 33 бара · ■ · ↑», живой текст — сверху в той же карточке, хвост гаснет ---------- */
  function dict(){var d=$i('cldict'),r=rec(),c=$i('clc');if(!d)return;
   if(!r){if(d.dataset.k){d.dataset.k='';d.innerHTML=''}stopWave();trUpd(false);if(c)c.classList.remove('clhold');return}
@@ -209,7 +218,7 @@
  function sendAfter(){var sid0=st().sid,g0=W.VC?VC.gen:0;G.sendAfter=true;draw();if(VC.rec)vcStop();var n=0;(function w(){if(W.VC&&(VC.rec||VC.busy)&&n++<3000)return setTimeout(w,100);
     /* cb3: отправляем только в тот чат, где диктовали, и только если не отменили; ждать можно сколько нужно (раньше сдавались на 60 с) */
     var ok=G.sendAfter&&(!W.VC||VC.gen==g0)&&st().sid==sid0;G.sendAfter=false;G.voice=false;
-    if(ok&&has()){doSend();T('Отправлено голосом')}draw()})()}
+    if(ok&&has()){doSend();if(!has())T('Отправлено голосом')/*s4a-va: чип — только если правда ушло*/}draw()})()}
  function doSend(){var ta=$i('hcin'),s=st();if(ta){G.flyY=ta.getBoundingClientRect().top+2}G.fly=1;G.stick=true;
   if(s.imgs&&s.imgs.length)G.sent.push({ts:Date.now()/1000,n:s.imgs.length,u:s.imgs.slice()});
   var sb=$i('hcsend');if(sb)sb.click()}
@@ -244,7 +253,7 @@
  function mi(g,icn,t,cls,ex){var a=g.indexOf('hc:')==0?'data-hc="'+g.slice(3)+'"':'data-cl="'+g+'"';return '<div class="clmi'+(cls?' '+cls:'')+'" '+a+(ex?' '+ex:'')+'>'+(icn?ic(icn):'<i class="clck"></i>')+'<span>'+t+'</span></div>'}
  function headMenu(){var s=st(),cap=D.querySelector('#clhd .clpill'),em=$i('clhd').classList.contains('clempty');if(em)cap=D.querySelector('#clhd .clone');if(!cap)return;var r=cap.getBoundingClientRect();
   var x='<div class="clmh">'+E(s.title||'Новый чат')+'</div>'+(s.msgs.length?mi('fwdlast','msend','Переслать'):'')+(s.rw?mi('hc:rename','medit','Переименовать'):'')+
-   mi('hc:openpc','devices','Открыть на ПК')+mi('hc:menu','skills','Другие действия');
+   mi('hc:openpc','devices','Открыть на ПК')+mi('hc:menu','skills','Другие действия','','data-skip="openpc'+(s.rw?',ren':'')+'"')/*s4c-8*/;
   pop(x,{top:(r.bottom+8)+'px',right:(innerWidth-r.right)+'px',width:'250.3px'},'top right')}
  function lastIdx(u){var s=st();for(var i=s.msgs.length-1;i>=0;i--){if((s.msgs[i].k=='u')==u)return i}return -1}
  /* долгое нажатие (3213_0169.13): Copy / Send to / Select text (/ Edit — только Hermes) — меню над пузырём, фон темнеет */
@@ -269,7 +278,11 @@
   pop(x,{left:Math.max(8,r.left-8)+'px',bottom:(innerHeight-r.top+10)+'px',width:'250.3px'},'bottom left')}
  /* ---------- лист «+» (§5): плавающий, «Добавить в сессию», группы строк ---------- */
  function sheetClose(){var v=$i('clsv'),s=$i('clsh');if(v)v.remove();if(s){s.id='';s.classList.add('out');setTimeout(function(){s.remove()},160)}}
- function plusSheet(){sheetClose();var s=st(),ml=s.msel&&s.msel.m?HC.pretty(s.msel.m):'По умолчанию',ef=EFF[(s.msel&&s.msel.e)||'']||'Авто',pm=PERM[s.perm||'pc']||PERM.pc;
+ /* s4b-3c: «+» при открытой клавиатуре — сначала клавиатура уходит, потом лист (видео 243.0) */
+ function plusSheet(){var ta=$i('hcin');if(B.classList.contains('hckb')&&ta&&D.activeElement===ta){var t0=Date.now(),h0=rb();ta.blur();
+   (function w(){if($i('clsh'))return;var moved=Math.abs(rb()-h0)>40;if(!moved&&Date.now()-t0<450)return requestAnimationFrame(w);setTimeout(function(){if(!$i('clsh')&&on())plusSheet1()},moved?80:0)})();return}
+  plusSheet1()}
+ function plusSheet1(){sheetClose();var s=st(),ml=s.msel&&s.msel.m?HC.pretty(s.msel.m):'По умолчанию',ef=EFF[(s.msel&&s.msel.e)||'']||'Авто',pm=PERM[s.perm||'pc']||PERM.pc;
   var v=D.createElement('div');v.id='clsv';B.appendChild(v);var sh=D.createElement('div');sh.id='clsh';sh.className='clsh';
   sh.innerHTML='<div class="clgrab"></div><div class="clshh"><div class="clqx" data-cl="shx" role="button" aria-label="Закрыть">'+ic('x')+'</div><b>Добавить в сессию</b><label for="hcfile" data-cl="sphoto">Фото</label></div>'+
    '<div class="clstrip"><label for="hcfile" data-cl="sphoto">'+ic('files')+'<span>Фото</span></label>'+(s.imgs||[]).map(function(u){return '<img src="'+E(u)+'">'}).join('')+'</div>'+
@@ -337,11 +350,11 @@
    case 'side':if(W.SD3)SD3.open();else hcDo('back');break;   // gpt17: ☰ = боковое меню (side.js)
    case 'new':hcDo('new');break;
    case 'pc':hcDo('openpc');break;
-   case 'menu':headMenu();break;
+   case 'menu':W.CL3.headMenu();break;
    case 'plus':plusSheet();break;
    case 'shx':sheetClose();break;
-   case 'smodel':case 'chip':sheetClose();setTimeout(chipMenu,g=='chip'?0:170);break;
-   case 'seff':sheetClose();setTimeout(chipMenu,170);break;
+   case 'smodel':case 'chip':sheetClose();setTimeout(function(){W.CL3.chipMenu()},g=='chip'?0:170);break;
+   case 'seff':sheetClose();setTimeout(function(){(W.CL3.effMenu||W.CL3.chipMenu)()},170);break;
    case 'sperm':sheetClose();setTimeout(permMenu,170);break;
    case 'down':{var f=$i('clf');f.scrollTo({top:f.scrollHeight,behavior:'smooth'});break}
    case 'mic':if(W.vcStart&&!rec()){G.voice=false;vcStart();comp()}break;
@@ -366,7 +379,7 @@
  D.addEventListener('change',function(e){if(e.target.id!='clcam'||!e.target.files||!e.target.files.length)return;var f=$i('hcfile');if(!f)return;
   try{var dt=new DataTransfer();for(var i=0;i<e.target.files.length;i++)dt.items.add(e.target.files[i]);f.files=dt.files;f.dispatchEvent(new Event('change',{bubbles:true}))}catch(x){T('Камера недоступна, выбери фото')}e.target.value=''},true);
  D.addEventListener('keydown',function(e){if(e.target.id=='hcin'&&on()&&e.key=='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();e.stopImmediatePropagation();if(has())doSend()}},true);
- W.CL3={draw:draw,G:G,fade:FADE,abort:abortRec,sendAfter:sendAfter,wave:function(){return WV},plusSheet:plusSheet,sheetClose:sheetClose,headMenu:headMenu,chipMenu:chipMenu,msgMenu:msgMenu,closePop:closePop,ic:ic,
+ W.CL3={draw:draw,G:G,fade:FADE,relayout:function(){if(on()){pad();dnUpd();hello()}},abort:abortRec,sendAfter:sendAfter,wave:function(){return WV},plusSheet:plusSheet,sheetClose:sheetClose,headMenu:headMenu,chipMenu:chipMenu,msgMenu:msgMenu,closePop:closePop,ic:ic,
   fadeAt:function(ages){var l=$i('cll');if(!l)return;var n=performance.now();FADE.b=ages.map(function(a){return n-a});l.__h=null;var s=st();FADE.key=s.kind+':'+s.sid+':'+((l.querySelector('.clta.cllast')||{dataset:{}}).dataset.t||'');feed()}};
  sched();
 })();
