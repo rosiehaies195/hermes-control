@@ -121,6 +121,7 @@
   return '<div class="g3ta2'+(lastTurn?' g3last':'')+'" data-mi="'+li+'" data-t="'+t.ai[0]+'">'+h+'</div>'}
  function imgsOf(b){if(!b.im)return '';var m=G.sent.filter(function(x){return Math.abs(x.ts-b.ts)<60&&x.n==b.im})[0];
   if(m)return '<div class="g3uim">'+m.u.map(function(u){return '<img src="'+u+'">'}).join('')+'</div>';
+  if(b.ip&&b.ip.length)return '<div class="g3uim">'+b.ip.map(function(p){return '<img data-fp="'+E(p)+'" alt="">'}).join('')+'</div><div class="g3uim0 g3uimf">'+ic('photo')+' '+b.im+' фото</div>';/*s3-5c s3-5f-ui*/
   return '<div class="g3uim0">'+ic('photo')+' '+b.im+' фото</div>'}
  function pendHtml(p,i){var s=st(),who=NM[s.kind]||'Агент';
   if(p.kind=='clarify'){var ops=(p.opts||[]).map(function(o){return '<div class="g3pb" data-hc="clarop" data-i="'+i+'" data-v="'+E(o)+'">'+E(o)+'</div>'}).join('');
@@ -128,7 +129,7 @@
     '<div class="g3cin"><input id="hcclar" placeholder="'+(ops?'Свой ответ':'Ответ')+'"></div><div class="g3cbt">'+(s.kind!='hermes'?'<div class="g3pb" data-hc="clarskip" data-i="'+i+'">Пропустить</div>':'')+'<div class="g3pb pri" data-hc="clarify" data-i="'+i+'">Ответить</div></div></div>'}
   return '<div class="g3card"><div class="g3ck">'+ic('shield')+'Нужно разрешение'+(p.tool&&s.kind!='hermes'?' · '+E(p.tool):'')+'</div>'+(p.desc?'<div class="g3cq">'+E(p.desc)+'</div>':'')+(p.text?'<pre class="g3pre">'+E(p.text)+'</pre>':'')+
    '<div class="g3cbt"><div class="g3pb" data-hc="appr" data-c="deny" data-i="'+i+'">Отклонить</div><div class="g3pb" data-hc="appr" data-c="session" data-i="'+i+'">'+(s.kind=='hermes'?'На сессию':'Всегда')+'</div><div class="g3pb pri" data-hc="appr" data-c="once" data-i="'+i+'">Разрешить</div></div></div>'}
- function live(){var s=st(),sb=$i('hcsend');return !!(s.busy||s.cclive||(s.cur&&s.cur.live)||(sb&&sb.classList.contains('stop')))}
+ function live(){var s=st(),sb=$i('hcsend');return !!(s.busy||s.cclive||(s.hpoll&&s.hpoll==s.sid)||(s.cur&&s.cur.live)||/*s3-1c-live*/(sb&&sb.classList.contains('stop')))}
  function feedHtml(){var s=st(),R=turns(),h='',lv=live();
   if(R.from>0)h+='<div class="g3older" data-hc="older">Показать более ранние ('+R.from+')</div>';
   /* последний ход (последнее сообщение пользователя и всё после него) — в обёртке высотой с экран:
@@ -202,8 +203,10 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  function has(){var s=st(),ta=$i('hcin');return !!((ta&&ta.value.trim())||(s.imgs&&s.imgs.length))}
  var MC=null;
  function oneLine(ta){if(!ta.value)return true;if(/\n/.test(ta.value))return false;MC=MC||D.createElement('canvas').getContext('2d');var cs=getComputedStyle(ta);
-  MC.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;return MC.measureText(ta.value).width<=ta.clientWidth-2}
+  MC.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;/*s3-6b: порог — всегда ширина поля в режиме «пилюли», иначе петля пилюля↔карточка*/var c=$i('g3c'),w=(c&&c.__pw)||ta.clientWidth;
+  return MC.measureText(ta.value).width<=w-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0)-2}
  function comp(){var c=$i('g3c'),ta=$i('hcin'),s=st(),go=$i('g3go');if(!c||!ta||!go)return;
+  if(!c.classList.contains('card')&&!c.classList.contains('rec')&&!c.classList.contains('full')&&ta.clientWidth>40)c.__pw=ta.clientWidth;/*s3-6b-pw*/
   var r=rec(),hs=has(),stopS=!hs&&!r&&live(),card=!r&&!oneLine(ta);   /* фото не делают карточку: полоса фото над обычной строкой (кадр 23) */
   var k=(r?'r':'')+(card?'c':'')+(B.classList.contains('hckb')?'k':''),h0=c.__h||c.offsetHeight;
   c.classList.toggle('rec',r);c.classList.toggle('card',card);c.classList.toggle('has',hs);
@@ -415,3 +418,22 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  fadeAt:function(ages){var l=$i('g3l');if(!l)return;var n=performance.now();FADE.b=ages.map(function(a){return n-a});l.__h=null;var s=st();FADE.key=s.kind+':'+s.sid+':'+((l.querySelector('.g3ta2.g3last')||{dataset:{}}).dataset.t||'');feed()},abort:abortRec,sendAfter:sendAfter,wave:function(){return WV},plusMenu:plusMenu,headMenu:headMenu,modelMenu:modelMenu,msgMenu:msgMenu,closePop:closePop,ic:ic,I:I};
  sched();
 })();
+/* s3-5d: фото в чате. Тап по фото (своё сообщение у всех агентов, картинка MEDIA: в ответе) — на весь экран, тап — закрыть.
+   Фото из истории Hermes и MEDIA: лежат на ПК: грузим их с подписью (/api/hc/file) в blob, кэш на сессию. */
+(function(){var D=document,C=Object.create(null),Q=Object.create(null),F=Object.create(null);/*s3-5f-F*/
+ function src(p){if(C[p])return Promise.resolve(C[p]);if(Q[p])return Q[p];if(!window.API)return Promise.reject(0);
+  Q[p]=fetch(API+'/api/hc/file?p='+encodeURIComponent(p),{headers:{'X-Init-Data':(window.tg&&tg.initData)||''}}).then(function(r){if(!r.ok)throw r.status;return r.blob()}).then(function(b){C[p]=URL.createObjectURL(b);return C[p]});
+  Q[p].catch(function(){delete Q[p]});return Q[p]}
+ function load(){var L=D.querySelectorAll('img[data-fp]:not([data-ld])');for(var i=0;i<L.length;i++)(function(im){var p=im.getAttribute('data-fp');im.setAttribute('data-ld','1');
+   if(C[p]){im.src=C[p];return}if(F[p]){miss(im);return}src(p).then(function(u){im.src=u}).catch(function(){F[p]=1;miss(im)})})(L[i])}
+ /* s3-5f: фото недоступно — прежний вид: «N фото» у своего сообщения, имя файла у картинки MEDIA */
+ function miss(im){im.classList.add('hcmiss');var u=im.closest('.g3uim');if(u&&!u.querySelector('img:not(.hcmiss)'))u.classList.add('miss');
+  if(im.classList.contains('hcmedia')&&!(im.nextSibling&&im.nextSibling.className=='hcmf')){var n=(im.getAttribute('data-fp')||'').split(/[\\\/]/).pop();var sp=D.createElement('span');sp.className='hcmf';sp.textContent='🖼 '+n;im.parentNode.insertBefore(sp,im.nextSibling)}}
+ try{new MutationObserver(load).observe(D.body,{childList:true,subtree:true})}catch(e){}
+ function view(u){var v=D.getElementById('imgv3');if(!v){v=D.createElement('div');v.id='imgv3';v.className='imgv3';D.body.appendChild(v);
+   v.addEventListener('click',function(e){e.stopPropagation();v.classList.remove('on')})}
+  v.innerHTML='<img alt=""><i class="imgv3x" role="button" aria-label="Закрыть">✕</i>';v.firstChild.src=u;v.classList.add('on');
+  try{tg.HapticFeedback.impactOccurred('light')}catch(e){}}
+ D.addEventListener('click',function(e){var im=e.target&&e.target.closest&&e.target.closest('.g3uim img,.cluim img,img.hcmedia');if(!im||!im.src||im.classList.contains('hcmiss'))return;
+  e.preventDefault();e.stopPropagation();view(im.src)},true);
+ window.IMGV3={view:view,load:load}})();

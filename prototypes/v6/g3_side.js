@@ -131,6 +131,7 @@
  function openChat(k,id){var s=st();if(!s||!k||!id)return;rcClose(true);setClose(true);closePop();
   if(s.view=='chat'&&s.kind==k&&s.sid==id){close();return}
   var L=(SD.L[k]||[]).map(function(x){var y={};for(var q in x)y[q]=x[q];if(k!='hermes')y.cc=true;return y});
+  if(!(W.U&&U.tab=='hc')){U.tab='hc';U.page=null;render()}/*s3-4a: чат из меню на другой вкладке — сначала вкладка «Чат»*/
   if(s.kind!=k)hcDo('kind',{v:k});
   if(L.length)HC.st.sessions=L;hcDo('open',{id:id});
   var X=SD.pos||SD.X;requestAnimationFrame(function(){var m=main();if(!m){close({instant:true});return}SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.pos=Math.min(X,SD.X);setPos(m,SD.pos);paint();close()})}
@@ -356,6 +357,19 @@
  var ENT={on:0,t0:0,tm:0};
  function remember(){var s=st();if(s&&s.view=='chat'&&s.sid&&main()){var v={k:s.kind,id:s.sid},o=lsg('sd3last',null);if(!o||o.k!=v.k||o.id!=v.id){lss('sd3last',v);var M=lsg('sd3lastk',{})||{};M[v.k]=v.id;lss('sd3lastk',M)}}}
  setInterval(remember,1200);
+ /* s3-4b: U.page='hcchat' вне вкладки «Чат» — база v5 рисовала бы старый экран агента (agentPage('hcchat')) */
+ if(typeof W.render=='function'&&!W.render.s34){var r34=W.render;W.render=function(){if(W.U&&U.page=='hcchat'&&U.tab!='hc')U.page=null;return r34.apply(this,arguments)};W.render.s34=1}
+ /* s3-3a: «потянуть вниз = обновить» базы v5 — только вне чата, без открытого меню и когда прокрутка под пальцем у верха */
+ D.addEventListener('touchstart',function(e){if(W.PY==null)return;var t=e.target,blk=W.U&&U.tab=='hc'||SD.on||!!(t&&t.closest&&t.closest('#sd3,#sd3cv,#sheet.on'));
+  for(var n=t;!blk&&n&&n.nodeType==1&&n!==B;n=n.parentNode){if(n.scrollTop>0&&n.scrollHeight>n.clientHeight+2)blk=true}
+  if(blk)W.PY=null},{passive:true});
+ /* s3-3b: чат сдвинут вправо, а меню закрыто или пустое (видео 4:20–4:28) — диагностика и возврат в согласованное состояние */
+ var BL=0;setInterval(function(){if(SW||SD.anim||SD.drag||SD.fx){BL=0;return}var m=main(),p=$i('sd3');if(!m){BL=0;return}
+  var x=0;try{x=m.getBoundingClientRect().left}catch(e){}var on=!!(p&&/\bon\b/.test(p.className)),rows=p?p.querySelectorAll('[data-sd]').length:0;
+  var bad=SD.on?(!on||rows<1||(SD.pos>SD.X-2&&x<2)):x>2;
+  if(!bad){BL=0;return}if(++BL<3)return;BL=0;
+  W.cbDiag&&cbDiag('sd_blank',{on:SD.on?1:0,pon:on?1:0,rows:rows,x:Math.round(x),pos:Math.round(SD.pos||0),tab:W.U?U.tab:''});
+  if(SD.on){if(!on||rows<1)paint();if(x<2)setPos(m,SD.pos=SD.X);cover()}else{m.classList.remove('sd3main');m.style.transform='';m.style.borderTopLeftRadius=m.style.borderBottomLeftRadius='';if(m.__dm)m.__dm.style.opacity='0';cover()}},500);/*s3-3*/
  function entEnd(){ENT.on=0;clearTimeout(ENT.tm);B.classList.remove('sd3ent')}
  function entStart(k0){var s=st();if(!s||s.view=='chat')return;
   /* ни разу не открывали чат (первый запуск) — показываем список базы: из чего выбирать */
