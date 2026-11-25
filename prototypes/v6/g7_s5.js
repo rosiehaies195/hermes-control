@@ -157,7 +157,7 @@
  function tiles(){var t=pf('theme');function tl(v){return '<div class="g7tile'+(t==v?' on':'')+'" data-sd="g7pf" data-a="theme" data-x="'+v+'"><i class="g7mini '+v+'"><s></s><s></s><u></u></i><b>'+themeName(v)+'</b></div>'}
   return '<div class="g7card g7tiles">'+tl('light')+tl('dark')+tl('system')+'</div>'}
  /* Расход (Usage Claude: «Текущая сессия 6 % занято», полоса 9 pt #2568C7 на #031C3C, сноска под полосой) */
- function bar(t,p,sub){p=Math.max(0,Math.min(100,+p||0));return '<div class="g7use"><div><b>'+E(t)+'</b><em>'+Math.round(p)+' % занято</em></div><i><s style="width:'+Math.max(p,1.6)+'%"></s></i>'+(sub?'<small>'+E(sub)+'</small>':'')+'</div>'}
+ function bar(t,p,sub){p=Math.max(0,Math.min(100,+p||0));return '<div class="g7use"><div><b>'+E(t)+'</b><em>'+Math.round(p)+'% занято</em></div><i><s style="width:'+Math.max(p,1.6)+'%"></s></i>'+(sub?'<small>'+E(sub)+'</small>':'')+'</div>'}
  function track(u){var c=u&&u.claude,m=c?Math.max(+c.five||0,+c.week||0):0;return m>=90?'Лимит почти исчерпан.':m>=70?'Расход высокий — следи за лимитом.':'Всё в порядке: лимитов хватает с запасом.'}
  function usageBody(){var u=need('usage',setRepaint);if(!u)return '<div class="g7ld">Загружаю…</div>';if(u.error)return errH(u);var k=kind(),c=u.claude,x=u.codex,hm=u.hermes,L=[];
   function win(w){return !w?'':w.min>=10080?'Неделя':'Окно '+Math.round(w.min/60)+' ч'}
@@ -196,10 +196,15 @@
  function hb(sd,lbl,inner,cls){return '<div class="g7hb'+(cls?' '+cls:'')+'" data-sd="'+sd+'" role="button" aria-label="'+lbl+'">'+inner+'</div>'}
  function setHead(){var back=SS.stack.length>0,cl=isCl(),top=SS.stack[SS.stack.length-1],t=back?SP[top][0]:'Настройки';
   if(!cl&&top=='voice')t='Голос';if(!cl&&top=='code')t='Текст и код';/*vb5b-3*/
-  return '<div class="g7sh">'+(back?hb('g7setb','Назад',cl?ai('back'):backIc()):hb('setx','Закрыть',cl?ai('x'):ic('s_x')))+'<div class="g7st">'+E(t)+'</div>'+
-   (back?(top=='usage'?cap2(cl):''):hb('info','О панели',cl?ai('info'):ic('s_info'),'r'))+'</div>'}
+  return '<div class="g7sh">'+(back?hb('g7setb','Назад',cl?ai('back'):backIc()):hb('setx','Закрыть',hic('x',cl)))+'<div class="g7st">'+E(t)+'</div>'+
+   (back?(top=='usage'?cap2(cl):''):hb('info','О панели',hic('info',cl),'r'))+'</div>'}
+ /* vb6h: значки шапок листов — одна сетка 20×20, одна толщина линии (Claude 1.7, ChatGPT 2); раньше ✕/⟳/ⓘ были глифами
+    разных шрифтов (Anthropicons / OpenAI Sans) разного размера и веса, а «i» у ChatGPT — просто буквой: выглядело криво. */
+ function hic(n,cl){var P={x:'M5 5l10 10M15 5L5 15',refresh:'M16.2 10.4a6.2 6.2 0 1 1-1.9-4.6M16.4 3.6v3.6h-3.6'};
+  var d=n=='info'?'<circle cx="10" cy="10" r="7.6"/><path d="M10 9.2v4.8"/><circle cx="10" cy="6.5" r=".35" stroke-width="1.6"/>':'<path d="'+P[n]+'"/>';
+  return '<svg class="g7hi" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="'+(cl?1.7:2)+'" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>'}
  /* капсула [⟳ | i] как у Usage Claude */
- function cap2(cl){return '<div class="g7cap r"><i data-sd="g7usr" role="button" aria-label="Обновить">'+(cl?ai('refresh'):'<svg width="19" height="19" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.2 10.4a6.2 6.2 0 1 1-1.9-4.6M16.4 3.6v3.6h-3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>')+'</i><i data-sd="g7tip" data-x="Лимиты: Claude — из Claude Desktop, Codex — из последнего ответа, Hermes — токены за 24 ч" role="button" aria-label="Что это">'+(cl?ai('info'):'i')+'</i></div>'}
+ function cap2(cl){return '<div class="g7cap r"><i data-sd="g7usr" role="button" aria-label="Обновить">'+hic('refresh',cl)+'</i><i data-sd="g7tip" data-x="Лимиты: Claude — из Claude Desktop, Codex — из последнего ответа, Hermes — токены за 24 ч" role="button" aria-label="Что это">'+hic('info',cl)+'</i></div>'}
  function setBody(){var top=SS.stack[SS.stack.length-1];return '<div class="sd3sc g7ssc" id="sd3ssc">'+(top?SP[top][1]():mainBody())+'</div>'}
  function setHtml(sty){SS.stack=[];get('acct?k='+kind());get('usage');get('vers');return setBody()+setHead()}
  function setEl(){var r=$i('sd3set');return r&&/\bon\b/.test(r.className)?r:null}
@@ -234,12 +239,12 @@
    if(cl)cap.insertBefore(el,cap.firstChild);else cap.parentNode.insertBefore(el,cap)}
   B.classList.toggle('g7rg',cl);if(!have('usage'))need('usage',function(){});var hh=d.ph?ringHtml(0).replace(/<circle class="arc[^>]*>/,'').replace(/<b>[^<]*<\/b>/,'<b></b>'):ringHtml(d.pct);if(el.__h!=hh){el.innerHTML=hh;el.__h=hh}}
  setInterval(function(){try{ringTick()}catch(e){}},400);/*vb5a-4: было 1500 — кольцо появлялось через 0,6–1,5 с после открытия*/
- function fmtK(n){n=+n||0;var f=function(x){return String(x).replace('.',',')};return n>=1e6?f((n/1e6).toFixed(n%1e6?1:0))+' млн':n>=1e3?f((n/1e3).toFixed(1))+' тыс.':String(n)}/*vb5b-14*/
+ function fmtK(n){n=+n||0;var f=function(x){return String(x).replace(/\.0$/,'').replace('.',',')};/*vb6h: «475 тыс.», не «475,0 тыс.»*/return n>=1e6?f((n/1e6).toFixed(n%1e6?1:0))+' млн':n>=1e3?f((n/1e3).toFixed(1))+' тыс.':String(n)}/*vb5b-14*/
  function verS(){var v=+(W.VER||0);return v>=100?'10.'+(v-100):v?(v/10).toFixed(1):''}
  /* лист «Расход» из кольца (B1 101.5): плавающий, ✕ | Расход | [⟳ | i]; «Контекст» → «Окно контекста 8 % занято», полоса, «83.1K из 1M токенов»; ниже лимит тарифа */
  function ctxSheet(){var d=RG.d,s=st();if(!d||!s)return;var cl=s.kind=='claude',u=have('usage'),v=D.createElement('div');v.id='g7cv';var sh=D.createElement('div');sh.id='g7cs';sh.className='g7s '+(cl?'cl':'gp');
   function body(){var u=have('usage'),lim='';if(u){if(cl&&u.claude)lim=sec('Лимиты тарифа')+card([bar('Текущая сессия',u.claude.five,'Окно 5 ч · обновлено '+ago(u.claude.t))]);else if(!cl&&u.codex&&u.codex.primary)lim=sec('Лимиты тарифа')+card([bar(u.codex.primary.min>=10080?'Неделя':'Окно',u.codex.primary.pct,u.codex.primary.reset?'Сброс '+ago(u.codex.primary.reset):'')])}
-   return '<div class="g7grab"></div><div class="g7sh">'+hb('g7csx','Закрыть',cl?ai('x'):ic('s_x'))+'<div class="g7st">Расход</div>'+cap2(cl)+'</div><div class="g7csb">'+sec('Контекст')+
+   return '<div class="g7grab"></div><div class="g7sh">'+hb('g7csx','Закрыть',hic('x',cl))+'<div class="g7st">Расход</div>'+cap2(cl)+'</div><div class="g7csb">'+sec('Контекст')+
     card([bar('Окно контекста',d.pct,fmtK(d.used)+' из '+fmtK(d.win)+' токенов')])+
     '<div class="g7lead">'+(d.pct>=80?'Окно почти заполнено: скоро '+(cl?'Claude Code':'Codex')+' сожмёт старую часть разговора.':'Места в окне достаточно. Когда оно заполнится, '+(cl?'Claude Code':'Codex')+' сам сожмёт старую часть разговора.')+'</div>'+lim+'</div>'}
   sh.innerHTML=body();if(!have('usage'))get('usage',function(){if(sh.isConnected)sh.innerHTML=body()});

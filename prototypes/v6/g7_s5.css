@@ -170,7 +170,23 @@ body.g7nowrap #g3 pre,body.g7nowrap #cl3 pre{white-space:pre;overflow-x:auto}
 .g7cap i{flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-style:normal;cursor:pointer;font-size:17px}
 .g7cap .g7ai{font-size:20px}
 .g7sh:has(.g7cap) .g7st{margin-right:-56px}
+/* vb6h: капсула = две кнопки по 44 px (как ✕), значки шапки — одна SVG-сетка 20 px */
+.g7cap{width:88px}.g7sh:has(.g7cap) .g7st{margin-right:-44px}
+.g7hi{width:20px;height:20px;flex:none;display:block}
 .g7grab{width:36px;height:5px;border-radius:3px;background:#5a5a58;margin:7px auto 0}
 .gp .g7card{box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
 .cl3 .cla{font-family:var(--g7cl);font-size:17px;line-height:23.5px}
 .clpill .g7ring.in b{font-size:12.5px}
+
+/* vb6g: стеклянные кнопки шапок листов (Расход, Настройки, страницы) — тот же рецепт, что у кнопок шапки чата:
+   Claude = .clgl (g3_claude.css), ChatGPT/Codex/Hermes = .g3gl (g3_chat.css). Заливка-градиент, блик сверху, кромки, тень, размытие под кнопкой. */
+.cl .g7hb,.cl .g7hb.r,.cl .g7cap{background:linear-gradient(#3a3a3a,#2f2f2f 30%);color:#ECECE7;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 1px 0 0 rgba(0,0,0,.55),inset -1px 0 0 rgba(0,0,0,.55),0 6px 15px rgba(0,0,0,.35);
+ -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3)}
+.gp .g7hb,.gp .g7cap{background:linear-gradient(#262626,#1d1d1d 40%);color:#fff;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.22),0 6px 15px rgba(0,0,0,.35);
+ -webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4)}
+html[data-theme=light] .cl .g7hb,html[data-theme=light] .cl .g7cap{background:rgba(255,255,255,.82);color:#1a1a1a;box-shadow:inset 0 1px 0 #fff,0 0 0 .5px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
+html[data-theme=light] .gp .g7hb,html[data-theme=light] .gp .g7cap{background:rgba(255,255,255,.78);color:#0d0d0d;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 .5px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
+.g7cap i:active{filter:brightness(1.6)}
+.g7hb svg.g7hi,.g7cap svg.g7hi{fill:none!important}/*vb6g: .gp .g7hb svg{fill:#fff} заливал кружок ⓘ белым*/
