@@ -2457,6 +2457,183 @@ html[data-theme=light] .g6k{animation-name:g6kIn,g6kToneL}
 #g3sg{transition:opacity .4s ease-out}
 .g3:has(.g3c.rec) #g3sg{opacity:0;pointer-events:none}
 
+/* s5-2 (chat-1to1): ☰ «Панель», лист Настроек агента, страницы «По расписанию / Картинки / Настроить», кольцо контекста */
+.sd3 .g7nh{height:48px;margin-top:12.6px;padding-left:32px;display:flex;align-items:center;font-weight:500;font-size:17px;opacity:.62}
+.sd3.c .g7nh{height:39px;margin-top:3px;padding-left:25.3px;font-weight:400;font-size:15.5px;color:#bdbcaf;align-items:flex-end;padding-bottom:6px;box-sizing:border-box;opacity:1}
+/* ---------- страницы ---------- */
+.sd3rc.g7pg{z-index:37}
+.sd3rc.g7pg.g{background:#000;color:#fff}.sd3rc.g7pg.c{background:#151515;color:#fafaf8}
+html[data-theme=light] .sd3rc.g7pg{background:#fff;color:#0d0d0d}
+.g7sc{padding-left:0;padding-right:0}
+.g7lead{margin:4px 24px 18px;color:#9c9c9c;font-size:15px;line-height:20px}
+.g7empty{margin:0 24px 14px;color:#8e8e8e;font-size:15px}
+.g7task{margin:0 16.3px 12px;padding:14px 18px 13px;border-radius:22px;background:#1e1e1e;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.c .g7task{background:#262624}
+html[data-theme=light] .g7task{background:#f3f3f3;box-shadow:none}
+.g7th{display:flex;align-items:center;gap:10px}.g7th b{flex:1;min-width:0;font-weight:500;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g7th em{font-style:normal;font-size:13px;color:#9c9c9c}
+.g7task p{margin:6px 0 4px;color:#b8b8b8;font-size:14.5px;line-height:19px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.g7task small{display:block;color:#8a8a8a;font-size:13px;line-height:17px;margin-top:4px}
+.g7dot{flex:none;width:8px;height:8px;border-radius:4px;background:#6b6b6b;display:inline-block}
+.g7dot.ok{background:#34c759}.g7dot.warn{background:#ff9f0a}.g7dot.off{background:#6b6b6b}
+.g7grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:0 3px 90px}
+.g7cell{aspect-ratio:1;overflow:hidden;background:#1a1a1a;cursor:pointer}
+.g7cell img{width:100%;height:100%;object-fit:cover;display:block}
+.g7cell img.bad{opacity:0}
+.sd3rc .sd3sb.g7desc{padding:0 6px 0 18px}
+.g7go{flex:none;width:34px;height:34px;border-radius:17px;background:#fff;color:#000;font:600 18px/34px var(--sd3f);text-align:center;font-style:normal;cursor:pointer}
+#g7iv{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;box-sizing:border-box;font-family:var(--sd3f);color:#fff}
+#g7iv img{max-width:100%;max-height:70vh;border-radius:14px}
+#g7iv small{color:#9c9c9c;font-size:13px}
+.g7ivb{display:flex;gap:10px}.g7ivb i{font-style:normal;padding:10px 18px;border-radius:22px;background:#2a2a2a;cursor:pointer;font-size:16px}
+.g7txt{padding:12px 18px 14px}.g7txt small{display:block;color:#8a8a8a;font-size:12.5px;margin-bottom:6px}
+.g7txt pre{margin:0;max-height:240px;overflow:auto;white-space:pre-wrap;word-break:break-word;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#d0d0d0}
+html[data-theme=light] .g7txt pre{color:#333}
+.g7li{display:flex;align-items:center;gap:10px;padding:13px 18px;font-size:16px;border-top:.5px solid rgba(255,255,255,.08)}
+.g7li:first-child{border-top:0}
+.g7foot{margin:-24px 32px 30px;color:#8e8e8e;font-size:13px;line-height:17px}
+.g7sc .g7foot{margin-top:4px}
+/* ---------- шрифты 1:1 (s5-3): Anthropic Sans/Serif у Claude, OpenAI Sans у ChatGPT-облика; кириллица — системный SF Pro (на ПК Inter) ---------- */
+:root{--g7cl:'Anthropic Sans','SF Pro Text',-apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif;
+ --g7gp:'OpenAI Sans','SF Pro Text',-apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif;
+ --clsans:var(--g7cl);--g3f:var(--g7gp);--clserif:'Anthropic Serif','New York',ui-serif,Georgia,'Times New Roman',serif}
+.sd3.c,.sd3rc.c,.sd3pop.c,.sd3pv.c,#g7cs.cl,.sd3set.g7s.cl{--sd3f:var(--g7cl);--sd3fd:var(--g7cl);font-family:var(--g7cl)}
+.sd3.g,.sd3rc.g,.sd3pop.g,.sd3pv.g,#g7cs.gp,.sd3set.g7s.gp{--sd3f:var(--g7gp);--sd3fd:var(--g7gp);font-family:var(--g7gp)}
+.g7ai{font-family:Anthropicons;font-style:normal;font-weight:400;font-size:22px;font-variation-settings:'opsz' 20;line-height:1;speak:never;-webkit-font-smoothing:antialiased}
+/* ---------- лист Настроек: каркас ---------- */
+.sd3set.g7s{letter-spacing:-.15px}
+.sd3set.g7s.cl{background:#141414!important;color:#fff!important;font-family:var(--g7cl)}
+.sd3set.g7s.gp{background:#000!important;color:#fff!important;font-family:var(--g7gp)}
+.sd3set.g7s .sd3sc{padding:calc(var(--sd3t) + 93px) 0 calc(var(--sd3b) + 40px)}
+.g7sh{position:absolute;left:0;right:0;top:0;height:calc(var(--sd3t) + 69px);z-index:2;display:flex;align-items:flex-end;gap:8px;padding:0 17px 9px;box-sizing:border-box}
+.cl .g7sh{background:rgba(26,26,26,.72)}.gp .g7sh{background:rgba(0,0,0,.72)}
+.g7sh{-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);-webkit-mask-image:linear-gradient(#000 calc(100% - 8px),transparent);mask-image:linear-gradient(#000 calc(100% - 8px),transparent)}
+#g7cs .g7sh{-webkit-backdrop-filter:none;backdrop-filter:none;-webkit-mask-image:none;mask-image:none}
+.g7sh:not(:has(.r))::after{content:'';width:44px;flex:none}
+.g7hb{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;font-size:17px}
+.cl .g7hb{background:#363636;color:#ECECE7}.cl .g7hb.r{background:#2D2D2D;color:#DFDFD8}.cl .g7hb .g7ai{font-size:19px}
+.gp .g7hb{background:#1D1D1D;box-shadow:inset 0 1px 0 #3A3A3A,inset 0 2px 0 #242424;color:#fff}.gp .g7hb svg{fill:#fff}
+.g7hb:active{filter:brightness(1.6)}
+.g7st{flex:1;text-align:center;font-weight:600;font-size:17px;line-height:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* карточки и строки: Claude #1D1D1D r26 шаг 51.9 / ChatGPT #1E1E1E r25.8 шаг 54.2 */
+.g7card{margin:0 16px 16px;border-radius:26px;background:#1D1D1D;overflow:hidden}
+.gp .g7card{background:#1E1E1E;border-radius:25.8px;margin-bottom:34.6px}
+.g7sec{padding:10px 37px 9px;font-size:15.5px;line-height:20px;color:#969693;font-weight:400}
+.gp .g7sec{color:#8E8E93;padding-left:36px;font-size:15px}
+.g7r{display:flex;align-items:center;min-height:51.9px;position:relative;cursor:pointer;padding-right:18px;box-sizing:border-box}
+.gp .g7r{min-height:54.2px;padding-right:20px}
+.g7r:active{background:rgba(255,255,255,.05)}
+.g7ri{flex:none;display:flex;align-items:center;box-sizing:border-box;color:#CCCAC2}
+.cl .g7ri{width:61px;padding-left:23px}.gp .g7ri{width:51px;padding-left:19px;color:#fff}.gp .g7ri svg{fill:#fff;width:20px}
+.g7rt{flex:1;min-width:0;padding:14.5px 0}
+.g7rt b{display:block;font-weight:400;font-size:17px;line-height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g7rt span{display:block;font-size:13px;line-height:17px;margin-top:2px;color:#8F8F8A;white-space:normal}
+.gp .g7rt span{color:#ACACAC}
+.g7r.two .g7rt{padding:12px 0 13px}
+.g7r.noic .g7rt{padding-left:21px}.gp .g7r.noic .g7rt{padding-left:20px}
+.g7r+.g7r::before{content:'';position:absolute;left:61px;right:16px;top:0;height:1px;background:#2E2E2E}
+.gp .g7r+.g7r::before{left:51px;right:0;background:#2B2B2B}
+.g7r.noic+.g7r::before,.g7r+.g7r.noic::before{left:21px}
+.g7r em{font-style:normal;font-size:17px;color:#9998A1;margin-left:10px;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.gp .g7r em{color:#99989F}
+.g7r em.dd .g7ai{font-size:15px;color:#9998A1}.g7ud{font-style:normal;font-size:11px;letter-spacing:-1px;writing-mode:vertical-lr;line-height:1}
+.g7r .chv{font-size:17px;color:#898982;margin-left:10px}
+.gp .g7r .sd3chv{fill:#575754;margin-left:10px;flex:none}
+.g7r.blue b,.g7r.blue .g7ri{color:#80A7D5}
+.g7r.red b,.g7r.red .g7ri{color:#FFB1BB}.gp .g7r.red b,.gp .g7r.red .g7ri,.gp .g7r.red .g7ri svg{color:#FF453A;fill:#FF453A}
+.g7out{margin-top:8px}
+.g7foot{margin:-6px 37px 20px;font-size:13px;line-height:17px;color:#C3C3C0}
+.gp .g7foot{margin:-26px 36px 32px;color:#8E8E93}
+.g7ld{margin:24px 37px;color:#8E8E93}
+.g7lead{margin:4px 37px 22px;font-size:17px;line-height:23px;color:#ECECE7}
+.gp .g7lead{margin-left:36px}
+.sd3set.g7s .sd3ver{color:#5f5f5c;text-align:center;font-size:13px;margin:8px 0 10px}
+/* аккаунт Claude: аватар 40 pt #0D0D0D, «Личный» 17 / почта · тариф 15 #C5C5C0, «＋ Добавить аккаунт» синим */
+.g7accr{display:flex;align-items:center;gap:14px;padding:15px 20px 15px 21px;cursor:pointer}
+.g7av{flex:none;width:40px;height:40px;border-radius:20px;background:#0D0D0D;color:#fff;font:600 14px/40px var(--g7cl);text-align:center;font-style:normal}
+.g7accr b{display:block;font-weight:400;font-size:17px;line-height:22px}.g7accr span{display:block;font-size:15px;line-height:20px;color:#C5C5C0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g7accr div{min-width:0}
+.g7acc .g7r::before{left:21px!important;right:21px!important}
+.g7acc{margin-bottom:18px}
+/* аккаунт ChatGPT: розовый кружок 22 pt с инициалами */
+.g7gav{display:inline-block;width:22px;height:22px;border-radius:11px;background:#D263A3;color:#F7D3E7;font:600 9.5px/22px var(--g7gp);text-align:center;font-style:normal;letter-spacing:0}
+/* промо-карточка ChatGPT (как «Do more with ChatGPT» + белая пилюля «Upgrade») */
+.g7promo{display:flex;align-items:center;gap:12px;padding:16px 20px 16px 26px;min-height:91px;box-sizing:border-box;margin-bottom:50px!important}
+.g7promo div{flex:1;min-width:0}.g7promo b{display:block;font-weight:600;font-size:15.5px;line-height:20px}.g7promo span{display:block;font-size:14px;line-height:18px;color:#C9C9C9;margin-top:2px}
+.g7promo i{flex:none;height:39px;padding:0 18px;border-radius:20px;background:#fff;color:#000;font:500 16px/39px var(--g7gp);font-style:normal;cursor:pointer}
+/* тумблеры: Claude 62×28 #4A8BE0, ручка-пилюля 36×23; ChatGPT 63×28 #2AC94E, ручка 35.5×22.6 */
+.g7sw{flex:none;position:relative;cursor:pointer;font-style:normal;margin-left:10px;transition:background .2s}
+.g7sw:after{content:'';position:absolute;background:#fdfdfd;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:transform .28s cubic-bezier(.3,1.25,.5,1)}
+.cl .g7sw{width:62px;height:28px;border-radius:14px;background:#3A3A3A}
+.cl .g7sw:after{left:2.5px;top:2.5px;width:36px;height:23px;border-radius:11.5px}
+.cl .g7sw.on{background:#4A8BE0}.cl .g7sw.on:after{transform:translateX(21px)}
+.gp .g7sw{width:63px;height:28px;border-radius:14px;background:#525156}
+.gp .g7sw:after{left:2.7px;top:2.7px;width:35.5px;height:22.6px;border-radius:11.3px}
+.gp .g7sw.on{background:#2AC94E}.gp .g7sw.on:after{transform:translateX(22.1px)}
+.g7ck{font-style:normal;color:#5D91D3;margin-left:10px}.g7ck .g7ai{font-size:18px}
+/* «Оформление» Claude: три превью в карточке, оранжевая точка, выбранное — синяя рамка 2 pt #4A8BE0 и синяя подпись */
+.g7tiles{display:flex;gap:11px;padding:15px 16px 13px}
+.g7tile{flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;min-width:0}
+.g7tile b{font-weight:400;font-size:15px;color:#C3C3C0}.g7tile.on b{color:#6C8FB7}
+.g7mini{display:block;width:100%;aspect-ratio:1.48;border-radius:14px;position:relative;overflow:hidden;box-sizing:border-box}
+.g7mini::before{content:'';position:absolute;inset:7px;border-radius:9px;border:1px solid}
+.g7mini s{position:absolute;left:15px;height:3px;border-radius:2px;text-decoration:none}
+.g7mini s:first-of-type{top:15px;width:42%}.g7mini s:nth-of-type(2){top:23px;width:28%}
+.g7mini u{position:absolute;right:14px;bottom:13px;width:11px;height:11px;border-radius:6px;background:#D9775A}
+.g7mini.light{background:#F7F6F2}.g7mini.light::before{background:#fff;border-color:#E3E2DC}.g7mini.light s{background:#7D7C78}.g7mini.light u{background:#C4573A}
+.g7mini.dark{background:#0E0E0E}.g7mini.dark::before{background:#1D1D1D;border-color:#2E2E2E}.g7mini.dark s{background:#8A8986}
+.g7mini.system{background:linear-gradient(to top left,#0E0E0E 50%,#F7F6F2 50.2%)}
+.g7mini.system::before{background:linear-gradient(to top left,#1D1D1D 50%,#fff 50.2%);border-color:#8a8a8a55}.g7mini.system s{background:#7D7C78}
+.g7tile.on .g7mini{box-shadow:0 0 0 2px #4A8BE0}
+/* Расход: «Текущая сессия … 6 % занято», полоса 9 pt #2568C7 на #031C3C (ChatGPT — белая на сером, как Storage) */
+.g7use{padding:15px 20px 14px 21px}
+.g7use>div{display:flex;align-items:baseline;gap:10px}.g7use b{flex:1;font-weight:400;font-size:17px;line-height:22px}.g7use em{font-style:normal;font-size:15px;color:#9998A1;white-space:nowrap}
+.g7use i{display:block;height:9px;border-radius:4.5px;background:#031C3C;margin-top:11px;overflow:hidden}
+.g7use s{display:block;height:100%;border-radius:4.5px;background:#2568C7;text-decoration:none}
+.gp .g7use i{background:#3A3A3C}.gp .g7use s{background:#fff}
+.g7use small{display:block;font-size:13px;line-height:17px;color:#8F8F8A;margin-top:9px}
+.g7use+.g7use{border-top:1px solid #2E2E2E}
+.g7slide{display:flex;align-items:center;gap:12px;padding:16px 21px}.g7slide small{font-size:13px;color:#9998A1}.g7slide big{font-size:21px;color:#9998A1}
+.g7slide input{flex:1;accent-color:#4A8BE0}
+.g7bigav{display:flex;justify-content:center;margin:6px 0 24px}.g7bigav i{width:95px;height:95px;border-radius:48px;background:#0D0D0D;color:#fff;font:500 36px/95px var(--g7cl);text-align:center;font-style:normal}
+.g7s .g7txt{padding:14px 20px}.g7s .g7txt pre{color:#d6d5cf}
+/* выпадающие меню настроек: Claude стекло #333, шаг 42.3, ✓ слева; ChatGPT — как у базы */
+.sd3pop.g7m.g7mc{background:rgba(51,51,51,.96)!important;border-radius:29px;padding:8px 0;font-family:var(--g7cl)}
+.sd3pop.g7m.g7mc .sd3mi{height:42.3px;padding-left:44px}.sd3pop.g7m .sd3ckm{position:absolute;left:20px;display:flex;align-items:center}.sd3pop.g7mc .sd3ckm .g7ai{font-size:15px;color:#fff}
+.sd3pop.g7m.g7mg{font-family:var(--g7gp)}.sd3pop.g7m.g7mg .sd3mi{padding-left:44px}
+/* ---------- кольцо контекста: Claude — внутри капсулы [кольцо | •••] вместо ✎ ---------- */
+.g7ring{flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;color:#fff;font-style:normal}
+.g7ring svg{display:block}.g7ring .trk{stroke:#4B4B49}.g7ring .arc{stroke:#5698D4}.g7ring .arc.warn{stroke:#E0A040}.g7ring .arc.crit{stroke:#E5534B}
+.g7ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:500 11.5px/1 var(--g7cl);letter-spacing:-.2px;color:#F2F1EC}
+.clpill .g7ring.in{position:absolute;left:1.3px;top:0;width:44px;height:44px}
+body.g7rg #clhd .clpill [data-cl=new]{display:none}
+.g3hd .g7ring{width:44px;height:44px;border-radius:22px;margin-right:10px;margin-left:auto}
+.g3hd .g7ring .arc{stroke:#fff}.g3hd .g7ring .trk{stroke:#4a4a4a}.g3hd .g7ring b{font-family:var(--g7gp)}
+.g3hd .g7ring+.g3cap{margin-left:0}
+html[data-theme=light] .g7ring b{color:#222}html[data-theme=light] .g7ring .trk{stroke:#d5d5d0}
+body.g7noring .g7ring{display:none}
+/* лист «Расход» из кольца: плавающий (поля 8), фон листа Claude/ChatGPT */
+#g7cv{position:fixed;inset:0;z-index:62;background:rgba(0,0,0,.28)}
+#g7cs{position:fixed;left:8px;right:8px;bottom:8px;z-index:63;border-radius:40px;padding:0 0 calc(var(--sd3b,12px) - 4px);color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.55);max-height:70vh;overflow:auto}
+#g7cs.cl{background:#141414}#g7cs.gp{background:#0B0B0B}
+#g7cs .g7sh{position:sticky;height:auto;padding:12px 12px 8px;background:inherit;border-radius:40px 40px 0 0}
+#g7cs .g7lead{font-size:15px;line-height:20px;margin:-2px 37px 18px;color:#ECECE7}
+html[data-theme=light] #g7cs{background:#fff;color:#0d0d0d}
+/* ---------- лента: размер текста и перенос строк кода (g7pf) ---------- */
+#g3l,#cll{font-size:var(--g7fs,17px);line-height:1.4}
+body.g7nowrap #g3 pre,body.g7nowrap #cl3 pre{white-space:pre;overflow-x:auto}
+
+/* s5-3b: капсула [⟳ | i] (Usage Claude), ручка листа, обводка карточек ChatGPT, чат Claude Code — sans как в сессии Code (кадр B1 94.5) */
+.g7cap{flex:none;display:flex;width:100px;height:44px;border-radius:22px;align-items:center}
+.cl .g7cap{background:#363636;color:#ECECE7}.gp .g7cap{background:#1D1D1D;box-shadow:inset 0 1px 0 #3A3A3A;color:#fff}
+.g7cap i{flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-style:normal;cursor:pointer;font-size:17px}
+.g7cap .g7ai{font-size:20px}
+.g7sh:has(.g7cap) .g7st{margin-right:-56px}
+.g7grab{width:36px;height:5px;border-radius:3px;background:#5a5a58;margin:7px auto 0}
+.gp .g7card{box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.cl3 .cla{font-family:var(--g7cl);font-size:17px;line-height:23.5px}
+.clpill .g7ring.in b{font-size:12.5px}
+
 </style>
 </head>
 <body>
@@ -2755,7 +2932,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=113;
+var VER=114;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -3241,7 +3418,7 @@ function ago(ts){if(!ts)return '';var d=new Date(ts*1000),n=new Date(),p=functio
  var dd=Math.floor((new Date(n.getFullYear(),n.getMonth(),n.getDate())-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
  return dd<=0?t:dd==1?'вчера '+t:dd<7?['вс','пн','вт','ср','чт','пт','сб'][d.getDay()]+' '+t:p(d.getDate())+'.'+p(d.getMonth()+1)}
 var SRC={api_server:'Панель',telegram:'Telegram',gui:'Desktop',local:'Desktop',cli:'Терминал',cron:'Cron'};
-var EFF={low:'Низк',medium:'Сред',high:'Выс'};
+var EFF={low:'Низк',medium:'Сред',high:'Выс',xhigh:'Оч. выс',max:'Макс',ultra:'Ультра'};/*s5-1*/
 /* ---------- модель ---------- */
 function pretty(m){if(/^gpt-/i.test(String(m||'')))return String(m).replace(/^gpt-/i,'GPT-').replace(/-([a-z])/g,function(x,c){return '-'+c.toUpperCase()});m=String(m||'').replace(/^[^/]*\//,'').replace(/\[[^\]]*\]/g,'').replace(/^claude-/,'').replace(/-(\d{8})$/,'').replace(/-(\d)-(\d)(?!\d)/g,' $1.$2').replace(/-(\d)(?=$|-)/g,' $1').replace(/-/g,' ').trim();return m.charAt(0).toUpperCase()+m.slice(1)}
 function loadSel(id){try{var v=LS.get('hcmodel:'+id,null);return v&&v.m?v:null}catch(e){return null}}
@@ -4658,7 +4835,7 @@ window.G3V={side:[20.0,12.0,"M1.73 11.00C1.55 10.97 1.49 10.93 1.29 10.71C1.09 1
  function on(){var s=st();return !!(s&&W.U&&U.tab=='hc'&&s.view=='chat'&&root()&&s.kind!='claude'&&!D.documentElement.hasAttribute('data-g3off'))}
  function haptic(t){try{t=='ok'?tg.HapticFeedback.notificationOccurred('success'):tg.HapticFeedback.impactOccurred('light')}catch(e){}}
  function T(m){try{toast(m)}catch(e){}}
- var NM={hermes:'Hermes',codex:'Codex'},EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая'};
+ var NM={hermes:'Hermes',codex:'Codex'},EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая',xhigh:'Очень высокая',max:'Максимальная',ultra:'Ультра'};/*s5-1*/
  /* ---------- значки 24×24, заливка (обводка по кадрам видео — g3icons) ---------- */
  var I={
   side:'<rect x="3.2" y="6.6" width="17.6" height="2" rx="1"/><rect x="3.2" y="14.6" width="11.4" height="2" rx="1"/>',
@@ -5142,7 +5319,7 @@ window.CLV={side:[20.0,18.0,"M1.52 16.96C1.35 16.89 1.04 16.52 1.01 16.36C0.98 1
  function on(){var s=st();return !!(s&&W.U&&U.tab=='hc'&&s.view=='chat'&&root()&&s.kind=='claude'&&!D.documentElement.hasAttribute('data-g3off'))}
  function haptic(t){try{t=='ok'?tg.HapticFeedback.notificationOccurred('success'):tg.HapticFeedback.impactOccurred('light')}catch(e){}}
  function T(m){try{toast(m)}catch(e){}}
- var EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая'},EFS={'':'',low:'Low',medium:'Medium',high:'High'};
+ var EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая',xhigh:'Очень высокая',max:'Максимальная'},EFS={'':'',low:'Low',medium:'Medium',high:'High',xhigh:'Extra',max:'Max'};/*s5-1*/
  var PERM={pc:'Как на ПК',full:'Сам, кроме опасных',ask:'Спрашивать всё'};
  function ic(n,c){var v=W.CLV&&CLV[n];if(!v)return '';return '<svg class="clv clv-'+n+(c?' '+c:'')+'" width="'+v[0]+'" height="'+v[1]+'" viewBox="0 0 '+v[0]+' '+v[1]+'" aria-hidden="true"><path d="'+v[2]+'"/></svg>'}
  var G={voice:false,sendAfter:false,hold:false,fb:{},spk:-1,sent:[],open:{},qmin:{},qsel:{}};
@@ -5290,7 +5467,7 @@ window.CLV={side:[20.0,18.0,"M1.52 16.96C1.35 16.89 1.04 16.52 1.01 16.36C0.98 1
  function rec(){return !!(W.VC&&(VC.rec||VC.busy))}
  function has(){var s=st(),ta=$i('hcin');return !!((ta&&ta.value.trim())||(s.imgs&&s.imgs.length))}
  function chipHtml(){var s=st(),m=s.msel&&s.msel.m?s.msel.m:(s.models&&s.models.cur&&s.models.cur.model!='default'?s.models.cur.model:''),e=(s.msel&&s.msel.e)||'';
-  var mn=m?HC.pretty(m):'Claude';/* чип как у Claude: «Opus 5.5 Medium» (3213_0135.68) — имя модели без «Claude», сила второй строкой серым */
+  var dx=s.models&&s.models.x&&s.models.x.def,mn=m?HC.pretty(m):(dx&&dx.n||'Claude');/*s5-1: «Opus 5.5» по умолчанию, как чип Claude iOS*//* чип как у Claude: «Opus 5.5 Medium» (3213_0135.68) — имя модели без «Claude», сила второй строкой серым */
   mn=mn.replace(/^Claude\s+/i,'');return E(mn)+(e?'<em>'+E(EFS[e])+'</em>':'<em>Авто</em>')}
  function comp(){var c=$i('clc'),ta=$i('hcin'),go=$i('clgo');if(!c||!ta||!go)return;
   var r=rec(),hs=has(),kb=B.classList.contains('hckb'),stopS=!hs&&!r&&live(),card=!r&&(hs||kb||(ta.value&&ta.value.length>0));
@@ -5586,9 +5763,11 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
  function cover(){var c=$i('sd3cv');if(!c)return;var on=SD.on&&(SD.pos||0)>0;c.classList.toggle('on',on);if(on)c.style.left=Math.round(SD.pos)+'px'}
  /* ---------- разметка меню ---------- */
  function navRows(){if(SD.fx&&SD.fx.nav)return SD.fx.nav;
+  /* s5-2: сверху пункты родного приложения, ниже наши разделы группой «Панель»; Настройки — лист из аватара (развилки 1–2) */
+  if(W.G7&&G7.nav)return G7.nav(SD.sty);
   return SD.sty=='g'?[['home','g_remote','Пульт'],['prj','g_projects','Проекты'],['br','g_library','Мозг'],['j','g_sched','Журнал'],['set','g_custom','Настройки']]
    :[['home','c_code','Пульт'],['prj','c_projects','Проекты'],['br','c_artifacts','Мозг'],['j','c_sched','Журнал'],['set','s_gear','Настройки']]}
- function rowIc(x){if(x.ic)return x.ic;if(SD.sty=='g')return 'g_bubble';return x.k=='codex'?'c_code2':'c_bubble'}
+ function rowIc(x){if(x.ic)return x.ic;if(SD.sty=='g')return 'g_bubble';if(x.src=='cron'||x.sched)return 'c_clock';/*s5-2: значок типа как Recents Claude iOS*/return x.k=='codex'||x.k=='claude'?'c_code2':'c_bubble'}
  function agLbl(x){var s=st();return KN[x.k]&&s&&x.k!=s.kind?'<span class="sd3ag">'+KN[x.k]+'</span>':''}
  function chatRow(x,kind){/* kind: ch (с ○), rc (недавние ChatGPT без значка) */
   var on=x.on!=null?x.on:isCur(x),noic=SD.sty=='g'&&kind=='rc';
@@ -5610,7 +5789,7 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
   if(id)openChat(k,id);else newChat(k)}
  function sideHtml(){var g=SD.sty=='g',fx=SD.fx,s=st(),h='<div class="sd3sc" id="sd3sc"><div class="sd3pl"><div class="sd3ls">';
   if(!fx)h+=agRows();
- h+=navRows().map(function(n){var on=fx&&fx.navOn==n[2];return '<div class="sd3r sd3nv'+(on?' on':'')+'" data-sd="tab" data-x="'+n[0]+'">'+ic(n[1]||'')+'<b>'+E(n[2])+'</b></div>'}).join('');
+ h+=navRows().map(function(n){if(n[0]=='-')return '<div class="g7nh">'+E(n[2])+'</div>';var on=fx&&fx.navOn==n[2];return '<div class="sd3r sd3nv'+(on?' on':'')+'" data-sd="tab" data-x="'+n[0]+'">'+ic(n[1]||'')+'<b>'+E(n[2])+'</b></div>'}).join('');
   /* меню показывает чаты ТОЛЬКО выбранного агента (решение пользователя); все агенты вместе — экран «Все сессии» */
   var ck=s&&s.kind,A=fx?null:all().filter(function(x){return x.k==ck}),P=fx?fx.pins:A.filter(pinned),R=fx?fx.rec:A.filter(function(x){return !pinned(x)&&!(x.src=='cron'&&!isCur(x))});
   /* «Идёт сейчас» — только когда что-то идёт (как раньше в списке базы) */
@@ -5788,12 +5967,12 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
    '<div class="sd3card">'+sr('stopall','s_logout',fx.out||'Остановить всё','','',1)+'</div>'+
    '<div class="sd3ver">Hermes Control · v'+E(W.VER||'')+'</div></div>'+
    '<div class="sd3sth"><div class="sd3hb" data-sd="setx" role="button" aria-label="Закрыть">'+ic('s_x')+'</div><div class="sd3rt">'+E(fx.stitle||'Настройки')+'</div><div class="sd3hb inf" data-sd="info" role="button" aria-label="О панели">'+ic('s_info')+'</div></div>'}
- function setOpen(o){o=o||{};var r=setEl();r.className='sd3set on '+SD.sty;r.innerHTML=setHtml();
+ function setOpen(o){o=o||{};var r=setEl();r.className='sd3set on '+SD.sty;r.innerHTML=W.G7&&G7.setHtml&&!SD.fx?G7.setHtml(SD.sty):setHtml();if(W.G7&&G7.setOpened)G7.setOpened(r);
   /* лист iOS поднимается снизу (кривая листа spec §8 Claude: cubic-bezier(.32,.72,0,1) ~ 500 мс) */
   if(r.animate&&!o.instant)r.animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:500,easing:'cubic-bezier(.32,.72,0,1)'})}
  function setClose(instant){var r=$i('sd3set');if(!r||!r.classList.contains('on'))return;if(instant||!r.animate){r.className='sd3set';return}
   var a=r.animate([{transform:'none'},{transform:'translateY(100%)'}],{duration:300,easing:'cubic-bezier(.4,0,1,1)'});a.onfinish=function(){r.className='sd3set'}}
- function infoMenu(el){var r=el.getBoundingClientRect();pop('<div class="sd3mh">Hermes Control v'+E(W.VER||'')+'</div>'+mi('reload','','Обновить панель')+mi('go','','Система: проверка',0,{x:'sys'}),{top:(r.bottom+8)+'px',right:(innerWidth-r.right)+'px'},{origin:'top right'})}
+ function infoMenu(el){if(W.G7&&G7.info&&!SD.fx){G7.info(el);return}var r=el.getBoundingClientRect();pop('<div class="sd3mh">Hermes Control v'+E(W.VER||'')+'</div>'+mi('reload','','Обновить панель')+mi('go','','Система: проверка',0,{x:'sys'}),{top:(r.bottom+8)+'px',right:(innerWidth-r.right)+'px'},{origin:'top right'})}
  /* ---------- клики ---------- */
  W.addEventListener('click',function(e){
   if(SD.lpFired&&Date.now()-SD.lpFired<700){SD.lpFired=0;if(e.target.closest&&e.target.closest('.sd3,.sd3rc')){e.stopImmediatePropagation();e.preventDefault();return}}SD.lpFired=0;
@@ -5803,7 +5982,7 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
   if(el.tagName=='INPUT')return;e.stopPropagation();e.preventDefault();var a=el.dataset.sd,ds=el.dataset;
   switch(a){
    case 'agent':goAgent(ds.k);break;
-   case 'tab':goTab(ds.x);break;
+   case 'tab':if(W.G7&&/^g7:/.test(ds.x||'')){G7.go(ds.x.slice(3),el);break}goTab(ds.x);break;
    case 'go':goTab(ds.x=='sys'?'sys':ds.x);break;
    case 'open':openChat(ds.k,ds.id);break;
    case 'all':rcOpen();break;
@@ -5836,6 +6015,7 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
    case 'delyes':delDo(ds.k,ds.id);break;
    case 'arch':archDo(ds.k,ds.id);break;
    case 'popx':closePop();break;
+   default:if(W.G7&&G7.act)G7.act(a,ds,el);
   }},true);
  D.addEventListener('keydown',function(e){if(e.key=='Escape'){if($i('sd3veil'))closePop();else if($i('sd3set')&&$i('sd3set').classList.contains('on'))setClose();else if(SD.rc){rcClose();}else if(SD.on)close()}
   if(e.key=='Enter'&&e.target.id=='sd3ren'){e.preventDefault();var b=D.querySelector('.sd3pop [data-sd=rensave]');if(b)b.click()}});
@@ -5942,7 +6122,7 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
  function tgBack(){if(SD.rc){rcClose();return}if($i('sd3set')&&$i('sd3set').classList.contains('on')){setClose();return}
   if(W.U&&U.page=='hcchat'&&main()){SD.on?close():open();return}if(typeof W.back=='function')W.back()}
  try{if(W.tg&&tg.BackButton&&tg.BackButton.offClick&&typeof W.back=='function'){tg.BackButton.offClick(W.back);tg.BackButton.onClick(tgBack)}}catch(e){}
- W.SD3={folder:folder,goAgent:goAgent,lastOf:lastOf,entry:entStart,tgBack:tgBack,open:open,close:close,closeAll:closeAll,rcOpen:rcOpen,rcClose:rcClose,setOpen:setOpen,setClose:setClose,filterMenu:filterMenu,rowMenu:rowMenu,closePop:closePop,
+ W.SD3={goTab:goTab,newChat:newChat,pop:pop,mi:mi,user:user,ic:ic,agIc:agIc,api:api,sty:sty,folder:folder,goAgent:goAgent,lastOf:lastOf,entry:entStart,tgBack:tgBack,open:open,close:close,closeAll:closeAll,rcOpen:rcOpen,rcClose:rcClose,setOpen:setOpen,setClose:setClose,filterMenu:filterMenu,rowMenu:rowMenu,closePop:closePop,
   paint:paint,load:load,SD:SD,all:all,pinned:pinned,openChat:openChat,
   /* для сверки со стоп-кадром: позиция экрана в pt и мгновенная отрисовка */
   at:function(x){SD.pos=x;setPos(main(),x);cover()}};
@@ -6296,7 +6476,17 @@ document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.targ
  function st(){return W.HC&&HC.st}
  function E(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
  function RM(){return matchMedia('(prefers-reduced-motion: reduce)').matches}
- var EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая'},EK=['','low','medium','high'];
+ /* s5-1: уровни — из списка самой программы (Claude Code: low…xhigh/max, Codex: …max/ultra), имена/подписи моделей — из M.x */
+ var EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая',xhigh:'Очень высокая',max:'Максимальная',ultra:'Ультра'},EK=['','low','medium','high'];
+ var DSC={'For your toughest challenges':'Для самых сложных задач','For complex work and everyday tasks':'Для сложной и повседневной работы',
+  'Most efficient for simpler tasks':'Эффективнее для простых задач','Fastest for quick answers':'Самая быстрая для коротких ответов'};
+ function X(){var M=st().models;return M&&M.x||null}
+ function all(){var x=X();return x?(x.main||[]).concat(x.more||[]):[]}
+ function rowOf(id){return all().filter(function(r){return r.id==id})[0]||null}
+ function effs(){var c=cur(),x=X(),r=c.m?rowOf(c.m):null;if(!r&&x){r=x.def&&x.def.e&&x.def.e.length?x.def:null;
+   if(!r&&st().models&&st().models.cur)r=rowOf(st().models.cur.model);if(!r)r=(x.main||[])[0]}
+  var e=(r&&r.e&&r.e.length?r.e:EK.slice(1)).filter(function(k){return EFF[k]});return [''].concat(e)}
+ function dsc(r){return r?(DSC[r.d]||(st().kind=='claude'?sub(r.id+' '+r.n):'')||''):''}
  /* кривые из csv видео (s4/e/fit.py): критическая пружина, нормированная к 1 в конце */
  var OPEN='linear(0,.042,.137,.253,.370,.480,.577,.661,.731,.788,.835,.872,.901,.925,.943,.957,.968,.977,.983,.988,.992,.995,.997,.999,1)';
  var PUSH='linear(0,.051,.163,.294,.423,.538,.637,.718,.784,.835,.876,.907,.931,.949,.963,.973,.980,.986,.990,.993,.996,.997,.998,.999,1)';
@@ -6314,18 +6504,26 @@ document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.targ
   fetch(API.replace(/\/$/,'')+'/api/hc'+bs+'/models',{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){return r.json()}).then(function(d){if(d&&d.p){s.models=s.models||d;cb()}}).catch(function(){})}
  /* подписи моделей — перевод подписей «Select model» Claude iOS по семейству */
  function sub(m){m=String(m).toLowerCase();return /fable/.test(m)?'Для самых сложных задач':/opus/.test(m)?'Для сложной и повседневной работы':/sonnet/.test(m)?'Эффективнее для простых задач':/haiku/.test(m)?'Самая быстрая для коротких ответов':''}
- function nm(m){return HC.pretty(m).replace(/^Claude\s+/i,'')}
+ function nm(m){var r=rowOf(m);return r?r.n:HC.pretty(m).replace(/^Claude\s+/i,'')}
 
  /* =================== Claude: лист «Выбор модели» =================== */
  var SH={el:null,full:false,stack:[],focus:false};
+ function mRow(m,sb,c){return '<div class="g6r2" data-hc="mpick" data-m="'+E(m)+'" data-p="claude"><div><b>'+E(nm(m))+'</b>'+(sb?'<span>'+E(sb)+'</span>':'')+'</div>'+(c.m==m?CK:'')+'</div>'}
  function clMain(){var s=st(),M=s.models,c=cur(),x='<div class="g6pt">Выбор модели</div>';
   if(!M){x+='<div class="g6ld">Загружаю…</div>';return x}
-  var pv=M.p[0];
-  x+='<div class="g6card g6mods"><div class="g6r2" data-hc="mdef"><div><b>По умолчанию</b><span>Как в Claude на ПК</span></div>'+(c.m?'':CK)+'</div>'+
-   (pv?pv.m:[]).map(function(m){return '<div class="g6r2" data-hc="mpick" data-m="'+E(m)+'" data-p="'+E(pv.slug)+'"><div><b>'+E(nm(m))+'</b>'+(sub(m)?'<span>'+E(sub(m))+'</span>':'')+'</div>'+(c.m==m?CK:'')+'</div>'}).join('')+'</div>'+
-   '<div class="g6card g6pill" data-g6="eff"><b>Сила работы</b>'+(c.e==''?'<i class="g6bd">Рекомендуется</i>':'')+'<em>'+E(EFF[c.e])+'</em>'+CH+'</div>';
+  var X1=X(),pv=M.p[0],dn=X1&&X1.def&&X1.def.n;
+  x+='<div class="g6card g6mods"><div class="g6r2" data-hc="mdef"><div><b>По умолчанию</b><span>'+(dn?E(dn)+' · как в Claude на ПК':'Как в Claude на ПК')+'</span></div>'+(c.m?'':CK)+'</div>';
+  if(X1){x+=(X1.main||[]).map(function(r){return mRow(r.id,dsc(r),c)}).join('');
+   /* выбранная «другая» модель видна в основном списке с ✓ (как в Claude iOS выбор живёт в основном списке) */
+   if(c.m&&!(X1.main||[]).some(function(r){return r.id==c.m}))x+=mRow(c.m,'Другая модель',c)}
+  else x+=(pv?pv.m:[]).map(function(m){return mRow(m,sub(m),c)}).join('');
+  x+='</div><div class="g6card g6pill" data-g6="eff"><b>Сила работы</b>'+(c.e==''?'<i class="g6bd">Рекомендуется</i>':'')+'<em>'+E(EFF[c.e]||c.e)+'</em>'+CH+'</div>';
+  if(X1&&(X1.more||[]).length)x+='<div class="g6card g6pill" data-g6="more"><b>Другие модели</b><em></em>'+CH+'</div>';
   return x}
- function clEff(){var c=cur();return '<div class="g6pt">Сила работы</div><div class="g6card g6effs">'+EK.map(function(k){return '<div class="g6r1" data-hc="epick" data-e="'+k+'"><b>'+EFF[k]+'</b>'+(k==''?'<i class="g6bd">Рекомендуется</i>':'')+(c.e==k?CK:'')+'</div>'}).join('')+
+ function clMore(){var c=cur(),X1=X()||{};return '<div class="g6pt">Другие модели</div><div class="g6card g6effs g6more">'+(X1.more||[]).map(function(r){
+   return '<div class="g6r1" data-hc="mpick" data-m="'+E(r.id)+'" data-p="claude"><b>'+E(r.n)+'</b>'+(c.m==r.id?CK:'')+'</div>'}).join('')+'</div>'+
+  '<div class="g6ft">Старые модели Claude Code на этом ПК. Новые — в основном списке.</div>'}
+ function clEff(){var c=cur();return '<div class="g6pt">Сила работы</div><div class="g6card g6effs">'+effs().map(function(k){return '<div class="g6r1" data-hc="epick" data-e="'+k+'"><b>'+EFF[k]+'</b>'+(k==''?'<i class="g6bd">Рекомендуется</i>':'')+(k=='max'?'<i class="g6bd g6warn">'+WARN+' в 4+ раза больше лимитов</i>':'')+(c.e==k?CK:'')+'</div>'}).join('')+
   '</div><div class="g6ft">Чем выше сила, тем тщательнее ответ, но он дольше и быстрее тратит лимиты. «Авто» — как в Claude на ПК.</div>'}
  function half(){return Math.round(innerHeight*405.4/852)}
  function geo(full){var sh=SH.el;if(!sh)return;sh.classList.toggle('g6full',!!full);sh.style.top=(full?Math.round(innerHeight*58.6/852):half())+'px'}
@@ -6377,7 +6575,7 @@ document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.targ
  D.addEventListener('click',function(e){var sh=SH.el;if(!sh)return;
   if(e.target.id=='g6sv'){e.stopPropagation();e.preventDefault();clClose(false);return}
   if(!sh.contains(e.target))return;var a=e.target.closest('[data-g6]'),h=e.target.closest('[data-hc]');
-  if(a){e.stopPropagation();e.preventDefault();var g=a.dataset.g6;if(g=='x'){if(SH.stack.length>1)pop();else clClose(false)}else if(g=='eff')push(clEff(),'g6effp');return}
+  if(a){e.stopPropagation();e.preventDefault();var g=a.dataset.g6;if(g=='x'){if(SH.stack.length>1)pop();else clClose(false)}else if(g=='eff')push(clEff(),'g6effp');else if(g=='more')push(clMore(),'g6morep');return}
   if(h){var k=h.dataset.hc;setTimeout(function(){if(SH.el!==sh)return;
    if(k=='epick'){var p=SH.stack[SH.stack.length-1];if(p&&p.classList.contains('g6effp')){p.innerHTML=clEff();setTimeout(function(){if(SH.el===sh)pop()},160)}}
    else if(k=='mpick'||k=='mdef'){var m=sh.querySelector('.g6main');if(m)m.innerHTML=clMain();setTimeout(function(){if(SH.el===sh)clClose(false)},180)}},0)}},false);
@@ -6387,12 +6585,12 @@ document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.targ
  function gIc(n){return W.G3&&G3.ic?G3.ic(n):''}
  function mmHtml(){var s=st(),M=s.models,c=cur(),x='';
   if(MM.lvl=='e'){x='<div class="g3mi g6back" data-g6m="back">'+BK+'<span>Модель</span></div><div class="g3mh">Сила рассуждений</div>'+
-    EK.map(function(k){return '<div class="g3mi" data-hc="epick" data-e="'+k+'">'+(c.e==k?gIc('check'):'<i class="g3ck"></i>')+'<span>'+EFF[k]+'</span>'+(k==''?'<em class="g6rec">как на ПК</em>':'')+'</div>'}).join('');return x}
+    effs().map(function(k){return '<div class="g3mi" data-hc="epick" data-e="'+k+'">'+(c.e==k?gIc('check'):'<i class="g3ck"></i>')+'<span>'+EFF[k]+'</span>'+(k==''?'<em class="g6rec">как на ПК</em>':'')+'</div>'}).join('');return x}
   x='<div class="g3mh">Модель</div>';
   if(!M)return x+'<div class="g3mh">Загружаю…</div>';
   var pv=M.p.filter(function(p){return p.slug==(c.p||M.cur.provider)})[0]||M.p[0];
-  x+='<div class="g3mi g6two" data-hc="mdef">'+(c.m?'<i class="g3ck"></i>':gIc('check'))+'<span><b>По умолчанию</b><small>'+E(HC.pretty(M.cur.model))+' · как на ПК</small></span></div>';
-  (pv?pv.m:[]).slice(0,8).forEach(function(m){x+='<div class="g3mi" data-hc="mpick" data-m="'+E(m)+'" data-p="'+E(pv.slug)+'">'+(c.m==m?gIc('check'):'<i class="g3ck"></i>')+'<span>'+E(HC.pretty(m))+'</span></div>'});
+  x+='<div class="g3mi g6two" data-hc="mdef">'+(c.m?'<i class="g3ck"></i>':gIc('check'))+'<span><b>По умолчанию</b><small>'+E(nm(M.cur.model))+' · как на ПК</small></span></div>';
+  (pv?pv.m:[]).slice(0,8).forEach(function(m){x+='<div class="g3mi" data-hc="mpick" data-m="'+E(m)+'" data-p="'+E(pv.slug)+'">'+(c.m==m?gIc('check'):'<i class="g3ck"></i>')+'<span>'+E(nm(m))+'</span></div>'});
   x+='<div class="g3mi" data-hc="model"><i class="g3ck"></i><span>Другие модели…</span></div><div class="g6sep"></div>'+
    '<div class="g3mi g6effr" data-g6m="eff">'+gIc('bulb')+'<span>Рассуждения</span><em>'+E(EFF[c.e])+'</em>'+CH+'</div>';
   return x}
@@ -6422,7 +6620,24 @@ document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.targ
  hook();var ht=setInterval(function(){if(W.CL3&&CL3.__g6m&&W.G3&&G3.__g6m)clearInterval(ht);else hook()},300);
  /* уход из чата / смена экрана — лист и меню не должны висеть */
  setInterval(function(){var s=st();if(SH.el&&!(s&&s.view=='chat'&&s.kind=='claude'&&W.U&&U.tab=='hc'))clClose(true,false);if(mmEl()&&!(s&&s.view=='chat'&&W.U&&U.tab=='hc'))mmClose()},500);
- W.G6M={open:clOpen,close:clClose,push:push,pop:pop,full:function(f){SH.full=f!==false;geo(SH.full)},sh:SH,mm:mmOpen,mmClose:mmClose,mmLevel:mmLevel,curves:{OPEN:OPEN,PUSH:PUSH,POPU:POPU,DET:DET}};
+ W.G6M={open:clOpen,close:clClose,push:push,pop:pop,full:function(f){SH.full=f!==false;geo(SH.full)},sh:SH,mm:mmOpen,mmClose:mmClose,mmLevel:mmLevel,curves:{OPEN:OPEN,PUSH:PUSH,POPU:POPU,DET:DET},effs:effs,name:nm};
+ /* =================== s5-1: список моделей принадлежит агенту ===================
+    Ответ /models помечается агентом по адресу (/cc = claude, /cx = codex, иначе hermes); HC.st.models отдаёт и принимает
+    список только своего агента. Причина: ответ, пришедший после смены агента, раньше ложился в чужой чат (s.models=s.models||d)
+    — так в меню Codex мог оказаться список Claude. */
+ function kindOf(u){u=String(u||'');var m=u.match(/\/api\/hc(\/cc|\/cx)?\/models(?:[?#]|$)/);return m?(m[1]=='/cc'?'claude':m[1]=='/cx'?'codex':'hermes'):''}
+ if(!W.__s5f){W.__s5f=1;var f0=W.fetch;W.fetch=function(u,o){var k=kindOf(typeof u=='string'?u:u&&u.url),pr=f0.apply(this,arguments);if(!k)return pr;
+  return pr.then(function(r){if(!r.ok)return r;return r.clone().json().then(function(d){if(d&&typeof d=='object'&&!Array.isArray(d))d.k=k;
+   return new Response(JSON.stringify(d),{status:r.status,headers:{'Content-Type':'application/json'}})}).catch(function(){return r})})}}
+ function guard(){var s=st();if(!s||s.__s5m)return !!s;s.__s5m=1;var m=s.models;
+  Object.defineProperty(s,'models',{configurable:true,enumerable:true,get:function(){return m&&m.k&&m.k!=s.kind?null:m},
+   set:function(v){if(v&&v.k&&v.k!=s.kind)return;m=v}});return true}
+ if(!guard()){var gt=setInterval(function(){if(guard())clearInterval(gt)},200)}
+ /* имена моделей как в родных приложениях (Fable 5.2, GPT-6.2-Sol) там, где база зовёт HC.pretty */
+ var pr0=null;function hp(){if(!W.HC||!HC.pretty||HC.pretty.__s5)return;pr0=HC.pretty;HC.pretty=function(m){var r=st()&&st().models?rowOf(m):null;return r?r.n:pr0(m)};HC.pretty.__s5=1}
+ hp();setInterval(hp,1000);
+ /* чип Claude «Opus 5.5 Medium»: имя модели по умолчанию нужно сразу при входе в чат — список грузим заранее */
+ setInterval(function(){var s=st();if(s&&s.view=='chat'&&s.kind=='claude'&&!s.models&&!load.__on){load.__on=1;load(function(){load.__on=0;if(W.CL3&&CL3.draw)CL3.draw()});setTimeout(function(){load.__on=0},8000)}},700);
 })();
 
 /* s4-e: стеклянные меню, вырастающие из кнопки (s4/ref/B1-claude-spec.md §8 «меню •••», B2 §2.5/§4.4 «меню ⓘ», §6 анимации).
@@ -6524,6 +6739,290 @@ document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.targ
  /* старт/стоп записи без нового черновика (смена экрана, отмена) — сбросить показ */
  setInterval(function(){if(!rec()&&Z.gen!==-1)upd();var z=$i('g6dz');if(z&&z.classList.contains('on')&&W.G3&&G3.G.show===false){z.classList.remove('on');z.textContent=''}},250);
  W.G6D={upd:upd,Z:Z,reset:reset};
+})();
+
+/* s5-2 (chat-1to1): экраны «как в родных приложениях» поверх ☰ g3_side (решения пользователя 25.11, «давай» по ★ и развилкам):
+   1) ☰: сверху пункты родного агента (Claude: Проекты / Код / По расписанию; облик ChatGPT: Картинки / По расписанию / Настроить / Проекты),
+      ниже наши разделы группой «Панель» (Пульт, Мозг, Журнал); Настройки — лист из аватара.
+   2) Лист «Настройки» в облике текущего агента: аккаунт, разделы агента, ниже наши общие (Telegram, автопилот, Face ID, Система).
+      Push-страницы как в листе модели (g6). Переключатели — те же действия базы ([data-a=nt:*|qon|hap] + save), свои — localStorage g7pf.
+   3) Кольцо заполнения контекста в шапке Claude и Codex, тап — half-лист «Контекст».
+   4) Экраны: «По расписанию», «Картинки», «Настроить».
+   Данные — только чтение: GET /api/hc/s5/{acct,usage,ctx,sched,images,img,custom,vers} (staged-scripts/tv_s5.py).
+   Подписи по-русски (развилка 3). */
+(function(){
+ var D=document,B=D.body,W=window;
+ function $i(id){return D.getElementById(id)}
+ function st(){return W.HC&&HC.st}
+ function E(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ function ic(n,c){return W.SD3&&SD3.ic?SD3.ic(n,c):''}
+ function T(m){try{toast(m)}catch(e){}}
+ function RM(){return matchMedia('(prefers-reduced-motion: reduce)').matches}
+ function lsg(k,d){try{return W.LS?LS.get(k,d):d}catch(e){return d}}
+ function lss(k,v){try{W.LS&&LS.set(k,v)}catch(e){}}
+ var KN={hermes:'Hermes',claude:'Claude',codex:'Codex'};
+ function kind(){var s=st();return (s&&s.kind)||'hermes'}
+ /* ---------- данные ---------- */
+ var C={},TTL={acct:3600e3,usage:60e3,sched:60e3,images:120e3,custom:300e3,vers:3600e3,ctx:20e3};
+ function url(p){return String(W.API||'').replace(/\/$/,'')+'/api/hc/s5/'+p}
+ /* cb зовётся только когда пришёл ответ сети (никогда синхронно) — иначе перерисовка ↔ get по кэшу ошибки уходила в бесконечную рекурсию */
+ function get(p,cb){var w=p.split('?')[0],c=C[p];if(c&&!c.p&&Date.now()-c.t<(TTL[w]||60e3))return c.d
+  if(c&&c.p){c.p.then(function(d){cb&&cb(d)});return c&&c.d}
+  var pr=fetch(url(p),{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
+   .then(function(d){C[p]={t:Date.now(),d:d};return d}).catch(function(e){C[p]={t:Date.now()-((TTL[w]||60e3)-5e3),d:{error:e.message}};return C[p].d});
+  C[p]={t:0,d:c&&c.d,p:pr};pr.then(function(d){cb&&cb(d)});return c&&c.d}
+ function have(p){var c=C[p];return c&&c.d&&!c.d.error?c.d:null}
+ /* данные или {error} (свежая ошибка) или null (грузится; cb — когда придёт) */
+ function need(p,cb){var d=have(p);if(d)return d;var c=C[p],w=p.split('?')[0];if(c&&!c.p&&c.d&&c.d.error&&Date.now()-c.t<(TTL[w]||60e3))return {error:c.d.error};get(p,cb);return null}
+ function errH(d){return '<div class="sd3none"><b>Не удалось загрузить</b><span>'+E(d.error)+'</span></div>'}
+ /* картинки — с подписью initData, поэтому через blob */
+ var IB={};function imgSrc(p,el){if(IB[p]){el.src=IB[p];return}
+  fetch(url('img?p='+encodeURIComponent(p)),{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){IB[p]=URL.createObjectURL(b);el.src=IB[p]}).catch(function(){el.classList.add('bad')})}
+ /* ---------- свои настройки (облик / поведение) ---------- */
+ var PF=lsg('g7pf',null)||{};var PD={theme:'system',links:'tg',kbhide:false,ring:true,busy:'steer',fs:17,wrap:true};
+ function pf(k){return PF[k]!=null?PF[k]:PD[k]}
+ function pfs(k,v){PF[k]=v;lss('g7pf',PF);applyPF()}
+ function applyPF(){var r=D.documentElement;r.style.setProperty('--g7fs',pf('fs')+'px');B.classList.toggle('g7nowrap',!pf('wrap'));B.classList.toggle('g7noring',!pf('ring'));
+  var t=pf('theme');if(t!='system')r.dataset.theme=t;else if(W.theme)try{W.theme()}catch(e){}}
+ if(typeof W.theme=='function'&&!W.theme.g7){var th0=W.theme;W.theme=function(){var r=th0.apply(this,arguments),t=pf('theme');if(t!='system')D.documentElement.dataset.theme=t;return r};W.theme.g7=1}
+ /* ссылки: в Telegram (Instant View) или во внешнем браузере */
+ D.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="http"]');if(!a||!W.tg||!tg.openLink)return;e.preventDefault();
+  try{tg.openLink(a.href,pf('links')=='tg'?{try_instant_view:true}:{})}catch(x){W.open(a.href,'_blank')}},true);
+ /* клавиатура после ↑ */
+ D.addEventListener('click',function(e){if(!pf('kbhide'))return;var g=e.target.closest&&e.target.closest('[data-g3=go],[data-cl=go],#hcsend');if(!g)return;setTimeout(function(){var a=D.activeElement;if(a&&a.blur&&a.tagName=='TEXTAREA')a.blur()},60)},true);
+ /* ---------- действия базы ---------- */
+ function baseA(a,x){var d=D.createElement('i');d.dataset.a=a;if(x!=null)d.dataset.x=x;d.style.display='none';B.appendChild(d);d.click();d.remove()}
+ var SVT=0;function baseSave(){clearTimeout(SVT);SVT=setTimeout(function(){try{if(W.dirty&&!W.dirty())return}catch(e){}baseA('save')},500)}
+ function Ev(){return W.E||{}}
+ /* ---------- 1. меню ☰ ---------- */
+ function nav(sty){var our=sty=='g'?[['-','','Панель'],['home','g_remote','Пульт'],['br','g_library','Мозг'],['j','g_bubble','Журнал']]
+   :[['-','','Панель'],['home','s_remote','Пульт'],['br','c_artifacts','Мозг'],['j','c_clock','Журнал']];
+  var nat=sty=='g'?[['g7:img','g_images','Картинки'],['g7:sched','g_sched','По расписанию'],['g7:cust','g_custom','Настроить'],['prj','g_projects','Проекты']]
+   :[['prj','c_projects','Проекты'],['g7:code','c_code','Код'],['g7:sched','c_sched','По расписанию']];
+  return nat.concat(our)}
+ /* ---------- 4. полноэкранные страницы (облик «Недавних» g3_side) ---------- */
+ var PG={k:'',el:null};
+ function pgEl(){var r=$i('g7pg');if(!r){r=D.createElement('div');r.id='g7pg';B.appendChild(r)}return r}
+ function pgHead(t,right){return '<div class="sd3rh"><div class="sd3hb" data-sd="g7pgx" role="button" aria-label="Назад">'+backIc()+'</div><div class="sd3rt">'+E(t)+'</div>'+(right||'')+'</div>'}
+ function backIc(){return '<svg width="11" height="18" viewBox="0 0 11 18" aria-hidden="true"><path d="M9 1.6 1.9 9 9 16.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'}
+ function pgOpen(k,o){o=o||{};PG.k=k;var r=pgEl(),sty=W.SD3?SD3.sty():'g';r.className='sd3rc on g7pg '+sty;pgPaint();
+  if(W.SD3)SD3.close({instant:true});
+  if(r.animate&&!RM()&&!o.instant)r.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:380,easing:'cubic-bezier(.32,.72,0,1)'})}
+ function pgClose(instant){var r=$i('g7pg');if(!r||!/\bon\b/.test(r.className))return;PG.k='';var off=function(){r.className='sd3rc g7pg';r.innerHTML=''};if(instant||RM()||!r.animate){off();return}
+  var a=r.animate([{transform:'none'},{transform:'translateX(100%)'}],{duration:260,easing:'cubic-bezier(.4,0,1,1)'});a.onfinish=function(){if(!PG.k)off()}}
+ function pgPaint(){var r=$i('g7pg');if(!r||!PG.k)return;var sc=r.querySelector('.sd3sc'),top=sc?sc.scrollTop:0;r.innerHTML=PAGES[PG.k]();var s2=r.querySelector('.sd3sc');if(s2)s2.scrollTop=top;
+  [].forEach.call(r.querySelectorAll('img[data-p]'),function(im){imgSrc(im.dataset.p,im)})}
+ function ago(ts){if(!ts)return '';var m=Math.round((Date.now()/1000-ts)/60),f=m<0;m=Math.abs(m);var s=m<1?'сейчас':m<60?m+' мин':m<1440?Math.floor(m/60)+' ч':Math.floor(m/1440)+' дн';return m<1?s:(f?'через '+s:s+' назад')}
+ function schedRow(x){var dot=x.on?(x.st&&x.st!='ok'&&x.st!='active'?'warn':'ok'):'off';
+  return '<div class="g7task"><div class="g7th"><i class="g7dot '+dot+'"></i><b>'+E(x.t)+'</b><em>'+(x.on?'Активна':'На паузе')+'</em></div>'+
+   (x.d?'<p>'+E(x.d)+'</p>':'')+'<small>'+E(x.sch||'')+(x.next?' · следующий '+E(ago(x.next)):'')+(x.last?' · последний '+E(ago(x.last)):'')+(x.runs?' · прогонов '+x.runs:'')+'</small></div>'}
+ var PAGES={
+  sched:function(){var d=need('sched',pgPaint),k=kind(),h='<div class="sd3sc g7sc">';
+   if(!d)h+='<div class="sd3none"><b>Загружаю…</b></div>';else if(d.error)h+=errH(d);
+   else{var L=d.s||[],mine=L.filter(function(x){return x.k==k}),oth=L.filter(function(x){return x.k!=k});
+    h+='<div class="g7lead">Задачи, которые '+E(KN[k])+' выполняет сам по расписанию.'+(k=='hermes'?' Пауза и запуск — в «Журнале».':' Создать и изменить — в приложении на ПК.')+'</div>';
+    h+=(mine.length?mine.map(schedRow).join(''):'<div class="g7empty">У '+E(KN[k])+' задач нет</div>');
+    ['claude','codex','hermes'].filter(function(a){return a!=k}).forEach(function(a){var M=oth.filter(function(x){return x.k==a});if(M.length)h+='<div class="sd3sh">'+KN[a]+'</div>'+M.map(schedRow).join('')})}
+   return h+'</div>'+pgHead('По расписанию',k=='hermes'?'<div class="sd3hb dots" data-sd="g7tab" data-x="j" role="button" aria-label="Журнал">'+ic('g_sched')+'</div>':'')},
+  img:function(){var d=need('images?n=60',pgPaint),h='<div class="sd3sc g7sc">';
+   if(!d)h+='<div class="sd3none"><b>Загружаю…</b></div>';else if(d.error)h+=errH(d);
+   else if(!(d.i||[]).length)h+='<div class="sd3none"><b>Картинок пока нет</b><span>Попроси Codex нарисовать что-нибудь.</span></div>';
+   else h+='<div class="g7grid">'+d.i.map(function(x,i){return '<div class="g7cell" data-sd="g7img" data-i="'+i+'"><img alt="" data-p="'+E(x.p)+'"></div>'}).join('')+'</div>';
+   return h+'</div>'+pgHead('Картинки')+'<div class="sd3sb g7desc"><input id="g7dq" placeholder="Опиши картинку" enterkeyhint="send" autocomplete="off"><i class="g7go" data-sd="g7draw" role="button" aria-label="Нарисовать">↑</i></div>'},
+  cust:function(){var k=kind(),p='custom?k='+k,d=need(p,pgPaint),h='<div class="sd3sc g7sc">';
+   if(!d)h+='<div class="sd3none"><b>Загружаю…</b></div>';else if(d.error)h+=errH(d);
+   else{h+='<div class="sd3sh first">Инструкции</div><div class="sd3card g7txt"><small>'+E(d.inst.t)+'</small><pre>'+E(d.inst.v||'— пусто —')+'</pre></div>'+
+    '<div class="sd3sh">Память</div><div class="sd3card g7txt"><small>'+E(d.mem.t)+'</small><pre>'+E(d.mem.v||'— пусто —')+'</pre></div>'+
+    (d.mcp.length?'<div class="sd3sh">Подключения (MCP)</div><div class="sd3card">'+d.mcp.map(function(x){return '<div class="g7li"><i class="g7dot ok"></i>'+E(x)+'</div>'}).join('')+'</div>':'')+
+    (d.plug.length?'<div class="sd3sh">'+(k=='hermes'?'Навыки':'Плагины')+' · '+d.plug.length+'</div><div class="sd3card">'+d.plug.map(function(x){return '<div class="g7li">'+E(x)+'</div>'}).join('')+'</div>':'')+
+    '<div class="g7foot">Только просмотр. Править — в файлах на ПК или попроси агента в чате.</div>'}
+   return h+'</div>'+pgHead('Настроить')}
+ };
+ function imgView(i){var d=have('images?n=60'),x=d&&d.i[i];if(!x)return;var v=D.createElement('div');v.id='g7iv';v.innerHTML='<img alt="" data-p="'+E(x.p)+'"><div class="g7ivb">'+
+   (x.tid?'<i data-sd="g7ichat" data-id="'+E(x.tid)+'">Открыть чат</i>':'')+'<i data-sd="g7ivx">Закрыть</i></div><small>'+E(x.n)+' · '+E(ago(x.ts))+'</small>';B.appendChild(v);imgSrc(x.p,v.querySelector('img'));
+  v.addEventListener('click',function(e){var a=e.target.closest('[data-sd]');if(a&&a.dataset.sd=='g7ichat'){v.remove();pgClose(true);if(W.SD3)SD3.openChat('codex',a.dataset.id)}else if(!a||a.dataset.sd=='g7ivx')v.remove()})}
+ function draw(){var q=$i('g7dq'),t=q&&q.value.trim();if(!t)return;pgClose(true);if(W.SD3)SD3.newChat('codex');
+  var s=st();if(s)s.draft='Нарисуй картинку: '+t;setTimeout(function(){var ta=$i('hcin');if(ta){ta.value='Нарисуй картинку: '+t;ta.dispatchEvent(new Event('input',{bubbles:true}));ta.focus()}},350)}
+ /* ---------- 2. лист «Настройки» (s5-3: облик 1:1 по кадрам B1/B2 — спеки s4/ref/B1 §7, B2 §2 и §4) ----------
+    Claude: лист #141414, карточки #1D1D1D r26, строки 51.9 pt, значки — шрифт Anthropicons #CCCAC2, текст 17 белый, значение #9998A1,
+    шеврон #898982, заголовки секций 15.5 #969693, сноски 13 #C3C3C0, тумблер 62×28 #4A8BE0 с ручкой-пилюлей 36×23, выход розовым #FFB1BB.
+    ChatGPT (Codex/Hermes): лист #000, карточки #1E1E1E r25.8, строки 54.2 pt, значки ChatGPT (SDV) белые, шеврон #575754,
+    промо-карточка с белой пилюлей, «Аккаунт» с розовым аватаром, тумблер 63×28 #2AC94E, выход красным #FF453A. */
+ var SS={stack:[]};
+ function isCl(){return kind()=='claude'}
+ /* значки Claude — глифы шрифта Anthropicons (из Claude Desktop); у ChatGPT — свои SVG из кадров */
+ var AI={user:'E104',bill:'E05F',usage:'E130',bell:'E0B4',clock:'E0B2',shield:'E0A3',link:'E099',caps:'F079',code:'E049',plug:'E055',voice:'E108',
+  ext:'E082',hap:'E087',out:'E0EB',plus:'E001',x:'E10F',info:'E08E',chev:'E02A',back:'E029',ud:'E02C',check:'E03B',refresh:'E11D',gear:'E0D6',
+  brain:'E0A8',q:'E088',auto:'E098',arch:'E008',folder:'E072',lock:'E0A1',img:'E08C',down:'E027'};
+ function ai(n,c){return '<i class="g7ai'+(c?' '+c:'')+'" aria-hidden="true">&#x'+(AI[n]||'E001')+';</i>'}
+ var GI={user:'@av',bill:'s_data',usage:'s_data',bell:'s_bell',clock:'s_gear',shield:'s_shield',lock:'s_lock',voice:'s_voice',gear:'s_gear',remote:'s_remote',
+  data:'s_data',storage:'s_storage',cust:'s_custom',out:'s_logout',plus:'s_plus',q:'s_bell',brain:'s_storage',auto:'s_custom'};
+ function rowIcon(n){if(!n)return '';if(isCl())return ai(n);var g=GI[n]||n;return g=='@av'?'':ic(g)}
+ function tg2(on,a,x){return '<i class="g7sw'+(on?' on':'')+'" data-sd="g7sw" data-a="'+a+'"'+(x!=null?' data-x="'+E(x)+'"':'')+' role="switch" aria-checked="'+!!on+'"></i>'}
+ /* строка: o.ic — значок, o.go — push-страница, o.act/o.x — действие, o.em — значение справа, o.dd — выпадающий (⌃⌄), o.sw — тумблер, o.sub — подпись */
+ function row(t,o){o=o||{};var cl=isCl(),chev=o.go||o.chev,tail='';
+  if(o.dd)tail='<em class="dd">'+E(o.em||'')+(cl?ai('ud','ud'):'<i class="g7ud">⌃⌄</i>')+'</em>';else if(o.em!=null&&o.em!=='')tail='<em>'+E(o.em)+'</em>';
+  if(o.sw)tail+=o.sw;if(chev&&!o.dd)tail+=cl?ai('chev','chv'):ic('s_chev','sd3chv');
+  return '<div class="g7r'+(o.ic?'':' noic')+(o.sub?' two':'')+(o.red?' red':'')+(o.blue?' blue':'')+'"'+(o.go?' data-sd="g7set" data-x="'+o.go+'"':o.act?' data-sd="'+o.act+'"'+(o.x?' data-x="'+E(o.x)+'"':''):'')+'>'+
+   (o.ic?'<span class="g7ri">'+rowIcon(o.ic)+'</span>':'')+'<div class="g7rt"><b>'+E(t)+'</b>'+(o.sub?'<span>'+E(o.sub)+'</span>':'')+'</div>'+tail+'</div>'}
+ function card(rows,cls){return '<div class="g7card'+(cls?' '+cls:'')+'">'+rows.filter(Boolean).join('')+'</div>'}
+ function sec(t){return '<div class="g7sec">'+E(t)+'</div>'}
+ function foot(t){return '<div class="g7foot">'+E(t)+'</div>'}
+ function plan(a,k){return a.plan?(k=='claude'&&!/claude/i.test(a.plan)?a.plan:a.plan):''}
+ function ini(n){var p=String(n||'Я').trim().split(/\s+/);return ((p[0]||'')[0]||'Я').toUpperCase()+(isCl()?'':((p[1]||'')[0]||'').toUpperCase())}
+ function themeName(t){return {system:'Системное',dark:'Тёмное',light:'Светлое'}[t]}
+ function linksName(){return pf('links')=='tg'?'В Telegram':'В браузере'}
+ /* Claude Settings: аккаунт, «Аккаунт», «Приложение», «Оформление» (плитки прямо в листе), «Панель», выход */
+ function clMain(){var a=need('acct?k=claude',setRepaint)||{},e=Ev(),nOn=e.notify?Object.keys(e.notify).filter(function(x){return e.notify[x]}).length:0;
+  return '<div class="g7card g7acc"><div class="g7accr" data-sd="g7set" data-x="acct"><i class="g7av">'+E(ini(a.name))+'</i><div><b>Личный</b><span>'+E([a.mail,plan(a,'claude')].filter(Boolean).join(' · ')||'Claude')+'</span></div></div>'+
+   row('Добавить аккаунт',{ic:'plus',blue:1,act:'g7toast',x:'Добавить аккаунт — в Claude на ПК'})+'</div>'+
+   sec('Аккаунт')+card([row('Профиль',{ic:'user',go:'prof'}),row('Тариф',{ic:'bill',go:'acct',em:a.plan?a.plan:''}),row('Расход',{ic:'usage',go:'usage'}),
+    row('Уведомления',{ic:'bell',go:'notif'}),row('Время и фокус',{ic:'clock',go:'focus'})])+
+   sec('Приложение')+card([row('Возможности',{ic:'caps',go:'perm'}),row('Claude Code',{ic:'code',go:'code'}),row('Подключения',{ic:'plug',go:'conn'}),
+    row('Голос и диктовка',{ic:'voice',go:'voice'}),row('Открывать ссылки',{ic:'ext',act:'g7menu',x:'links',em:linksName(),dd:1}),
+    row('Вибро',{ic:'hap',sw:tg2(W.U&&U.haptics!==false,'hap')})])+foot('Ссылки из ответов агента открываются так же.')+
+   sec('Оформление')+tiles()+
+   sec('Панель')+card([row('Автопилот и агенты',{ic:'auto',act:'g7tab',x:'set',chev:1}),row('Система',{ic:'gear',act:'g7tab',x:'sys',chev:1}),row('Вопросы',{ic:'q',act:'g7tab',x:'q',chev:1})])+
+   card([row('Остановить всё',{ic:'out',act:'stopall',red:1})],'g7out')+'<div class="sd3ver">Hermes Control · v'+E(W.VER||'')+'</div>'}
+ /* ChatGPT Settings: промо-карточка, «Аккаунт» + «Добавить аккаунт», «Настроить», разделы, «Панель», выход */
+ function gpMain(){var k=kind(),a=need('acct?k='+k,setRepaint)||{},nm=a.name||KN[k];
+  return '<div class="g7card g7promo"><div><b>Всё под контролем</b><span>Агенты, службы и связь с ПК — в «Системе».</span></div><i data-sd="g7tab" data-x="sys">Система</i></div>'+
+   card(['<div class="g7r" data-sd="g7set" data-x="acct"><span class="g7ri"><i class="g7gav">'+E(ini(nm))+'</i></span><div class="g7rt"><b>Аккаунт</b></div><em>'+E((a.mail||'').split('@')[0]||nm)+'</em>'+ic('s_chev','sd3chv')+'</div>',
+    row('Добавить аккаунт',{ic:'plus',act:'g7toast',x:'Добавить аккаунт — в '+KN[k]+' на ПК'})])+
+   card([row('Настроить '+KN[k],{ic:'cust',sub:k=='hermes'?'Инструкции, память, навыки':'Инструкции, память, плагины',act:'g7tab',x:'g7:cust',chev:1})])+
+   card([row('Общие',{ic:'gear',go:'gen'}),row('Уведомления',{ic:'bell',go:'notif'}),row('Голос',{ic:'voice',go:'voice'}),row('Безопасность и вход',{ic:'lock',go:'sec'}),
+    row('Удалённое управление',{ic:'remote',go:'rc'}),row('Расход',{ic:'storage',go:'usage'}),row('Данные',{ic:'data',go:'data'})])+
+   card([row('Автопилот и агенты',{ic:'auto',act:'g7tab',x:'set',chev:1}),row('Вопросы',{ic:'q',act:'g7tab',x:'q',chev:1})])+
+   card([row('Остановить всё',{ic:'out',act:'stopall',red:1})],'g7out')+'<div class="sd3ver">Hermes Control · v'+E(W.VER||'')+'</div>'}
+ function mainBody(){return isCl()?clMain():gpMain()}
+ /* «Оформление» Claude: 3 плитки-миниатюры (светлая / тёмная / системная по диагонали), оранжевая точка, выбранная — синяя рамка */
+ function tiles(){var t=pf('theme');function tl(v){return '<div class="g7tile'+(t==v?' on':'')+'" data-sd="g7pf" data-a="theme" data-x="'+v+'"><i class="g7mini '+v+'"><s></s><s></s><u></u></i><b>'+themeName(v)+'</b></div>'}
+  return '<div class="g7card g7tiles">'+tl('light')+tl('dark')+tl('system')+'</div>'}
+ /* Расход (Usage Claude: «Текущая сессия 6 % занято», полоса 9 pt #2568C7 на #031C3C, сноска под полосой) */
+ function bar(t,p,sub){p=Math.max(0,Math.min(100,+p||0));return '<div class="g7use"><div><b>'+E(t)+'</b><em>'+Math.round(p)+' % занято</em></div><i><s style="width:'+Math.max(p,1.6)+'%"></s></i>'+(sub?'<small>'+E(sub)+'</small>':'')+'</div>'}
+ function track(u){var c=u&&u.claude,m=c?Math.max(+c.five||0,+c.week||0):0;return m>=90?'Лимит почти исчерпан.':m>=70?'Расход высокий — следи за лимитом.':'Всё в порядке: лимитов хватает с запасом.'}
+ function usageBody(){var u=need('usage',setRepaint);if(!u)return '<div class="g7ld">Загружаю…</div>';if(u.error)return errH(u);var k=kind(),c=u.claude,x=u.codex,hm=u.hermes,L=[];
+  function win(w){return !w?'':w.min>=10080?'Неделя':'Окно '+Math.round(w.min/60)+' ч'}
+  if(c)L.push(['claude',(k=='claude'?'':sec('Claude'))+card([bar('Текущая сессия',c.five,'Окно 5 ч · обновлено '+ago(c.t))])+sec('Недельные лимиты')+card([bar('Все модели',c.week,'По данным Claude Desktop')])]);
+  if(x)L.push(['codex',sec('Codex')+card([x.primary?bar(win(x.primary),x.primary.pct,x.primary.reset?'Сброс '+ago(x.primary.reset):''):'',x.secondary?bar(win(x.secondary),x.secondary.pct,x.secondary.reset?'Сброс '+ago(x.secondary.reset):''):''])]);
+  if(hm)L.push(['hermes',sec('Hermes')+card([row('Токены за сутки',{em:(hm.day/1e6).toFixed(1)+' млн'})])]);
+  L.sort(function(a,b){return (a[0]==k?0:1)-(b[0]==k?0:1)});
+  return '<div class="g7lead">'+E(track(u))+'</div>'+L.map(function(z){return z[1]}).join('')+foot('Лимиты обновляются, когда агент работает. Hermes — токены cron и чатов за 24 ч.')}
+ function notifBody(){var e=Ev(),cl=isCl(),N=[['question','Вопросы агентов','Когда агент ждёт твоего ответа или разрешения.'],['start','Начат новый шаг','Когда автопилот нажал Start.'],
+   ['hang','Агент завис','Когда в чате ничего не меняется дольше порога.'],['fail','Что-то сломалось','Агент не отвечает, клик не прошёл.']];
+  return card(N.slice(0,2).map(function(n){return row(n[1],{sub:cl?n[2]:'',sw:tg2(e.notify&&e.notify[n[0]],'nt:'+n[0])})}))+card(N.slice(2).map(function(n){return row(n[1],{sub:cl?n[2]:'',sw:tg2(e.notify&&e.notify[n[0]],'nt:'+n[0])})}))+foot('Уведомления приходят в Telegram от бота Hermes.')}
+ function focusBody(){var e=Ev(),q=e.quiet||{},s=e.sched||{};
+  return sec('Тихие часы')+card([row('Ночью копить, утром сводка',{sw:tg2(q.on,'qon')}),q.on?row('С',{em:q.from,act:'g7menu',x:'qfrom',dd:1}):'',q.on?row('До',{em:q.to,act:'g7menu',x:'qto',dd:1}):'',q.on?row('Вопросы всё равно присылать',{sw:tg2(q.q,'qq')}):''])+
+   sec('Когда работать')+card([row('Автопилот',{em:s.on?(s.from+'–'+s.to):'круглосуточно',act:'g7tab',x:'set',chev:1})])+foot('Окно работы и правила автопилота — в «Автопилот и агенты».')}
+ function lookBody(){return tiles()+foot('«Системное» — как в Telegram.')}
+ function codeBody(){return sec('Оформление')+card(['<div class="g7slide"><small>A</small><input type="range" min="14" max="21" step="1" value="'+pf('fs')+'" data-g7r="fs"><big>A</big></div>',row('Размер текста ленты',{em:pf('fs')+' pt'})])+
+   sec('Код')+card([row('Переносить длинные строки',{sw:tg2(pf('wrap'),'pf','wrap')})])}
+ function rcBody(){return sec('Поле ввода')+card([row('Скрывать клавиатуру после ↑',{sw:tg2(pf('kbhide'),'pf','kbhide')}),row('Заполнение контекста',{sw:tg2(pf('ring'),'pf','ring')}),
+   row('Если агент занят',{em:pf('busy')=='steer'?'Вмешаться':'В очередь',act:'g7menu',x:'busy',dd:1})])+foot('«Вмешаться» — сообщение уходит сразу, агент читает его по ходу. «В очередь» — после конца хода.')+
+   sec('Поведение')+card([row('Переносить строки кода',{sw:tg2(pf('wrap'),'pf','wrap')})])}
+ function voiceBody(){return sec('Диктовка')+card([row('Язык',{em:'Авто',act:'g7tab',x:'set',chev:1}),row('Словарь',{act:'g7tab',x:'glos',chev:1})])+foot('Голосового режима с ответом голосом в панели нет: агенты отвечают текстом.')}
+ function secBody(){return sec('Панель')+card([row('Face ID',{sub:'Вход в панель и опасные действия',sw:tg2(W.U&&U.biolock,'bio')})])+foot('Вход в аккаунт '+KN[kind()]+' — в приложении на ПК.')}
+ function genBody(){var t=pf('theme');return card([row('Оформление',{em:themeName(t),act:'g7menu',x:'theme',dd:1}),row('Открывать ссылки',{em:linksName(),act:'g7menu',x:'links',dd:1})])+
+   card([row('Вибро',{sw:tg2(W.U&&U.haptics!==false,'hap')}),row('Размер текста ленты',{go:'code',em:pf('fs')+' pt'})])}
+ function dataBody(){return sec('История чатов')+card([row('Архив чатов',{act:'g7arch',chev:1}),row('Все сессии по папкам',{act:'g7all',chev:1})])+foot('«Удалить все чаты» нет намеренно: это необратимо.')}
+ function connBody(){var d=need('custom?k=claude',setRepaint);if(!d)return '<div class="g7ld">Загружаю…</div>';if(d.error)return errH(d);
+  return (d.mcp.length?card(d.mcp.map(function(x){return row(x,{ic:'plug',em:'подключено'})})):foot('Подключений нет'))+foot('Список из ~/.claude.json. Подключать — в Claude на ПК.')}
+ function profBody(){var d=need('custom?k=claude',setRepaint),a=have('acct?k=claude')||{};if(!d)return '<div class="g7ld">Загружаю…</div>';if(d.error)return errH(d);
+  return '<div class="g7bigav"><i>'+E(ini(a.name))+'</i></div>'+card([row('Полное имя',{em:a.name||'—'}),row('Почта',{em:a.mail||'—'})])+
+   sec('Инструкции')+'<div class="g7card g7txt"><pre>'+E(d.inst.v||'— пусто —')+'</pre></div>'+foot('Файл '+d.inst.t+'. Только просмотр.')}
+ function permBody(){return sec('Доступ к инструментам')+card([row('Как на ПК',{sub:'Режим разрешений из настроек Claude Code',sw:'<i class="g7ck">'+ai('check')+'</i>'}),row('Спрашивать в панели',{sub:'Разрешить / Отклонить карточкой'})])+foot('Права для одного чата — в меню ••• чата.')}
+ function acctBody(){var k=kind(),a=have('acct?k='+k)||{};return card([row('Имя',{em:a.name||'—'}),row('Почта',{em:a.mail||'—'}),row('Тариф',{em:a.plan||'—'})])+foot('Только чтение. Сменить аккаунт или тариф — в '+KN[k]+' на ПК.')}
+ var SP={usage:['Расход',usageBody],notif:['Уведомления',notifBody],focus:['Время и фокус',focusBody],look:['Оформление',lookBody],code:['Claude Code',codeBody],rc:['Удалённое управление',rcBody],
+  voice:['Голос и диктовка',voiceBody],sec:['Безопасность и вход',secBody],gen:['Общие',genBody],data:['Данные',dataBody],conn:['Подключения',connBody],prof:['Профиль',profBody],perm:['Возможности',permBody],acct:['Аккаунт',acctBody]};
+ function hb(sd,lbl,inner,cls){return '<div class="g7hb'+(cls?' '+cls:'')+'" data-sd="'+sd+'" role="button" aria-label="'+lbl+'">'+inner+'</div>'}
+ function setHead(){var back=SS.stack.length>0,cl=isCl(),top=SS.stack[SS.stack.length-1],t=back?SP[top][0]:'Настройки';
+  if(!cl&&top=='voice')t='Голос';
+  return '<div class="g7sh">'+(back?hb('g7setb','Назад',cl?ai('back'):backIc()):hb('setx','Закрыть',cl?ai('x'):ic('s_x')))+'<div class="g7st">'+E(t)+'</div>'+
+   (back?(top=='usage'?cap2(cl):''):hb('info','О панели',cl?ai('info'):ic('s_info'),'r'))+'</div>'}
+ /* капсула [⟳ | i] как у Usage Claude */
+ function cap2(cl){return '<div class="g7cap r"><i data-sd="g7usr" role="button" aria-label="Обновить">'+(cl?ai('refresh'):'⟳')+'</i><i data-sd="g7toast" data-x="Лимиты: Claude — из Claude Desktop, Codex — из последнего ответа, Hermes — токены за 24 ч" role="button" aria-label="Что это">'+(cl?ai('info'):'i')+'</i></div>'}
+ function setBody(){var top=SS.stack[SS.stack.length-1];return '<div class="sd3sc g7ssc" id="sd3ssc">'+(top?SP[top][1]():mainBody())+'</div>'}
+ function setHtml(sty){SS.stack=[];get('acct?k='+kind());get('usage');get('vers');return setBody()+setHead()}
+ function setEl(){var r=$i('sd3set');return r&&/\bon\b/.test(r.className)?r:null}
+ function setCls(r){r.classList.add('g7s');r.classList.toggle('cl',isCl());r.classList.toggle('gp',!isCl())}
+ function setRepaint(){var r=setEl();if(!r)return;var sc=r.querySelector('.sd3sc'),y=sc?sc.scrollTop:0;r.innerHTML=setBody()+setHead();var s2=r.querySelector('.sd3sc');if(s2)s2.scrollTop=y;setCls(r)}
+ function setOpened(r){setCls(r)}
+ function setPush(k){var r=setEl();if(!r||!SP[k])return;SS.stack.push(k);r.innerHTML=setBody()+setHead();var nw=r.querySelector('.sd3sc');
+  if(!RM()&&nw.animate){var w=r.clientWidth;nw.animate([{transform:'translateX('+w+'px)'},{transform:'none'}],{duration:385,easing:'linear(0,.051,.163,.294,.423,.538,.637,.718,.784,.835,.876,.907,.931,.949,.963,.973,.980,.986,.990,.993,.996,.997,.998,.999,1)'})}}
+ function setPop(){var r=setEl();if(!r)return;SS.stack.pop();r.innerHTML=setBody()+setHead();var nw=r.querySelector('.sd3sc');if(!RM()&&nw.animate)nw.animate([{transform:'translateX(-101px)',opacity:.6},{transform:'none',opacity:1}],{duration:333,easing:'linear(0,.287 10%,.845 20%,1.054 30%,1.101 40%,1.095 50%,1.06 60%,1.034 70%,1.02 80%,1.007 90%,1)'})}
+ /* выбор из списка — меню с ✓, растёт от строки (как выпадающие списки ChatGPT Settings) */
+ var MENUS={busy:[['steer','Вмешаться'],['queue','В очередь']],theme:[['system','Системное'],['light','Светлое'],['dark','Тёмное']],links:[['tg','В Telegram'],['ext','Во внешнем браузере']],qfrom:[['22:00'],['23:00'],['00:00'],['01:00']],qto:[['07:00'],['08:00'],['09:00'],['10:00']]};
+ function menu(k,el){var L=MENUS[k];if(!L||!W.SD3)return;var e=Ev(),cur=k=='links'||k=='busy'||k=='theme'?pf(k):k=='qfrom'?(e.quiet||{}).from:(e.quiet||{}).to,r=el.getBoundingClientRect();
+  var h=L.map(function(o){return '<div class="sd3mi" data-sd="g7pick" data-m="'+k+'" data-v="'+E(o[0])+'">'+(o[0]==cur?'<i class="sd3ckm">'+(isCl()?ai('check'):ic('c_check'))+'</i>':'')+'<span>'+E(o[1]||o[0])+'</span></div>'}).join('');
+  var up=r.top>innerHeight/2,p=SD3.pop(h,up?{right:'24px',bottom:(innerHeight-r.top+4)+'px',minWidth:'200px'}:{right:'24px',top:(r.bottom+4)+'px',minWidth:'200px'},{origin:up?'bottom right':'top right'});p.classList.add('g7m');p.classList.add(isCl()?'g7mc':'g7mg')}
+ function pick(k,v){SD3.closePop();if(k=='links'||k=='busy'||k=='theme')pfs(k,v);else{var e=Ev();if(e.quiet){e.quiet[k=='qfrom'?'from':'to']=v;baseSave()}}setRepaint()}
+ /* ⓘ — версии */
+ function info(el){var v=have('vers'),r=el.getBoundingClientRect();if(!v){get('vers',function(d){if(d&&!d.error&&el.isConnected)info(el)});v={}}
+  var h='<div class="sd3mh">Hermes Control v'+E(W.VER||'')+'</div>'+['claude','codex','hermes'].map(function(k){return v[k]?'<div class="sd3mi" data-sd="g7copy" data-v="'+E(KN[k]+' '+v[k])+'"><span>'+KN[k]+' '+E(v[k])+'</span></div>':''}).join('')+
+   SD3.mi('reload','','Обновить панель')+SD3.mi('g7tab','','Система: проверка',0,{x:'sys'});
+  SD3.pop(h,{top:(r.bottom+8)+'px',right:(innerWidth-r.right)+'px'},{origin:'top right'})}
+ /* ---------- 3. кольцо контекста (Claude iOS, кадр B1 94.5: в капсуле [32 | •••] вместо ✎, Ø≈22 pt, серый трек, дуга #5698D4, число внутри) ---------- */
+ var RG={sig:'',d:null,t:0};
+ function ringHtml(p){p=Math.max(0,Math.min(100,+p||0));var R=13.6,L=2*Math.PI*R,w=p>=90?' crit':p>=70?' warn':'';
+  return '<svg width="31" height="31" viewBox="0 0 31 31" aria-hidden="true"><circle cx="15.5" cy="15.5" r="'+R+'" fill="none" class="trk" stroke-width="2.6"/><circle class="arc'+w+'" cx="15.5" cy="15.5" r="'+R+'" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+(L*Math.max(p,1.5)/100).toFixed(2)+' '+L.toFixed(2)+'" transform="rotate(-90 15.5 15.5)"/></svg><b>'+Math.round(p)+'</b>'}
+ function ringTick(){var s=st();if(!s||s.view!='chat'||!s.sid||(s.kind!='claude'&&s.kind!='codex')||!pf('ring')){D.querySelectorAll('.g7ring').forEach(function(x){x.remove()});B.classList.remove('g7rg');return}
+  var cl=s.kind=='claude',hd=cl?$i('clhd'):$i('g3hd');if(!hd)return;var cap=cl?hd.querySelector('.clpill'):hd.querySelector('.g3cap');if(!cap)return;
+  var sig=s.kind+':'+s.sid,busy=!!(s.busy||(s.cur&&s.cur.live)),p='ctx?k='+s.kind+'&id='+encodeURIComponent(s.sid);
+  if(sig!=RG.sig){RG.sig=sig;RG.d=null;RG.t=0}if((!RG.t||Date.now()-RG.t>(busy?20e3:60e3))){RG.t=Date.now();delete C[p];get(p,function(d){if(RG.sig==sig){RG.d=d;ringTick()}})}
+  var d=RG.d,el=hd.querySelector('.g7ring');if(!d||d.error||!d.win){if(el)el.remove();B.classList.remove('g7rg');return}
+  if(!el){el=D.createElement(cl?'i':'div');el.className='g7ring'+(cl?' in':' g3gl');el.dataset.g7='ctx';el.setAttribute('role','button');el.setAttribute('aria-label','Контекст');
+   if(cl)cap.insertBefore(el,cap.firstChild);else cap.parentNode.insertBefore(el,cap)}
+  B.classList.toggle('g7rg',cl);if(!have('usage'))need('usage',function(){});var hh=ringHtml(d.pct);if(el.__h!=hh){el.innerHTML=hh;el.__h=hh}}
+ setInterval(function(){try{ringTick()}catch(e){}},1500);
+ function fmtK(n){n=+n||0;return n>=1e6?(n/1e6).toFixed(n%1e6?1:0)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n)}
+ /* лист «Расход» из кольца (B1 101.5): плавающий, ✕ | Расход | [⟳ | i]; «Контекст» → «Окно контекста 8 % занято», полоса, «83.1K из 1M токенов»; ниже лимит тарифа */
+ function ctxSheet(){var d=RG.d,s=st();if(!d||!s)return;var cl=s.kind=='claude',u=have('usage'),v=D.createElement('div');v.id='g7cv';var sh=D.createElement('div');sh.id='g7cs';sh.className='g7s '+(cl?'cl':'gp');
+  function body(){var u=have('usage'),lim='';if(u){if(cl&&u.claude)lim=sec('Лимиты тарифа')+card([bar('Текущая сессия',u.claude.five,'Окно 5 ч · обновлено '+ago(u.claude.t))]);else if(!cl&&u.codex&&u.codex.primary)lim=sec('Лимиты тарифа')+card([bar(u.codex.primary.min>=10080?'Неделя':'Окно',u.codex.primary.pct,u.codex.primary.reset?'Сброс '+ago(u.codex.primary.reset):'')])}
+   return '<div class="g7grab"></div><div class="g7sh">'+hb('g7csx','Закрыть',cl?ai('x'):ic('s_x'))+'<div class="g7st">Расход</div>'+cap2(cl)+'</div><div class="g7csb">'+sec('Контекст')+
+    card([bar('Окно контекста',d.pct,fmtK(d.used)+' из '+fmtK(d.win)+' токенов')])+
+    '<div class="g7lead">'+(d.pct>=80?'Окно почти заполнено: скоро '+(cl?'Claude Code':'Codex')+' сожмёт старую часть разговора.':'Места в окне достаточно. Когда оно заполнится, '+(cl?'Claude Code':'Codex')+' сам сожмёт старую часть разговора.')+'</div>'+lim+'</div>'}
+  sh.innerHTML=body();if(!have('usage'))get('usage',function(){if(sh.isConnected)sh.innerHTML=body()});
+  B.appendChild(v);B.appendChild(sh);function cls(){v.remove();if(!RM()&&sh.animate){var a=sh.animate([{transform:'none'},{transform:'translateY(110%)'}],{duration:220,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});a.onfinish=function(){sh.remove()}}else sh.remove()}
+  v.onclick=cls;sh.onclick=function(e){var a=e.target.closest('[data-sd]');if(!a)return;if(a.dataset.sd=='g7csx')cls();else if(a.dataset.sd=='g7usr'){delete C['usage'];get('usage',function(){if(sh.isConnected)sh.innerHTML=body()})}else if(a.dataset.sd=='g7toast')T(a.dataset.x)};if(!RM()&&sh.animate)sh.animate([{transform:'translateY(110%)'},{transform:'none'}],{duration:440,easing:'linear(0,.042,.137,.253,.370,.480,.577,.661,.731,.788,.835,.872,.901,.925,.943,.957,.968,.977,.983,.988,.992,.995,.997,.999,1)'})}
+ D.addEventListener('click',function(e){var r=e.target.closest&&e.target.closest('[data-g7=ctx]');if(!r)return;e.stopPropagation();e.preventDefault();ctxSheet()},true);
+ /* ---------- шрифты 1:1: Anthropic Sans/Serif + Anthropicons (Claude Desktop), OpenAI Sans (Codex Desktop) — с ПК (/api/hc/s5/font), НЕ с Pages.
+    В них нет кириллицы: русский текст рисуется системным SF Pro, как в самих приложениях на русском. Не на Apple (ПК) вместо SF — Inter. */
+ var FONTS=[['Anthropic Sans','ant','300 800'],['Anthropic Serif','antserif','300 800'],['Anthropicons','anticons','400 700'],['OpenAI Sans','oai400','400'],['OpenAI Sans','oai500','500'],['OpenAI Sans','oai600','600'],['Inter','inter','100 900']];
+ /* есть ли системный SF (-apple-system): ширина кириллицы в «-apple-system, monospace» отличается от чистого monospace */
+ function hasSF(){try{var c=D.createElement('canvas').getContext('2d'),t='Настройки панели Wwi';c.font='17px monospace';var a=c.measureText(t).width;c.font='17px -apple-system, monospace';return Math.abs(c.measureText(t).width-a)>0.5}catch(e){return /iPhone|iPad|Macintosh/.test(navigator.userAgent)}}
+ function loadFonts(){if(!W.FontFace||!D.fonts)return;var apple=hasSF();
+  FONTS.forEach(function(f){if(f[1]=='inter'&&apple)return;var u=url('font?n='+f[1]),key='https://g7font/'+f[1];
+   var hit=W.caches?caches.open('g7f').then(function(c){return c.match(key).then(function(r){return r||fetch(u,{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r2){if(!r2.ok)throw 0;return c.put(key,r2.clone()).then(function(){return r2})})})}).catch(function(){return fetch(u,{headers:{'X-Init-Data':W.tg?tg.initData:''}})})
+    :fetch(u,{headers:{'X-Init-Data':W.tg?tg.initData:''}});
+   hit.then(function(r){if(!r||!r.ok)throw 0;return r.arrayBuffer()}).then(function(b){var ff=new FontFace(f[0],b,{weight:f[2],display:'swap'});return ff.load().then(function(){D.fonts.add(ff);B.classList.add('g7f-'+f[1])})}).catch(function(){})})}
+ setTimeout(loadFonts,0);
+ /* ---------- клики (вызываются из switch g3_side: default → G7.act) ---------- */
+ function go(x,el){if(x=='code'){if(W.SD3)SD3.rcOpen({ag:'claude'});return}if(PAGES[x])pgOpen(x)}
+ function tabGo(x){pgClose(true);if(W.SD3){SD3.setClose(true);if(x.indexOf('g7:')==0){go(x.slice(3));return}if(x=='glos'){SD3.closeAll();baseA('glos');return}SD3.goTab(x)}}
+ function act(a,ds,el){switch(a){
+  case 'g7pgx':pgClose();if(W.SD3)SD3.open();break;
+  case 'g7tab':SD3.closePop();tabGo(ds.x);break;
+  case 'g7img':imgView(+ds.i);break;
+  case 'g7draw':draw();break;
+  case 'g7set':setPush(ds.x);break;
+  case 'g7setb':setPop();break;
+  case 'g7menu':menu(ds.x,el);break;
+  case 'g7pick':pick(ds.m,ds.v);break;
+  case 'g7toast':T(ds.x||'');break;
+  case 'g7usr':delete C['usage'];get('usage',setRepaint);break;
+  case 'g7copy':try{navigator.clipboard.writeText(ds.v);T('Скопировано')}catch(e){}SD3.closePop();break;
+  case 'g7arch':{SD3.setClose(true);var Q=SD3.SD;Q.q='';Q.sel=null;Q.flt='arch';Q.grp=false;Q.ag='';SD3.rcOpen({keep:true});break}
+  case 'g7all':SD3.setClose(true);SD3.rcOpen();break;
+  case 'g7pf':if(ds.a=='theme')pfs('theme',ds.x);else pfs('busy',ds.x);setRepaint();break;
+  case 'g7sw':{var k=ds.a;if(k=='pf'){pfs(ds.x,!pf(ds.x))}else if(k=='hap'){baseA('hap')}else if(k=='bio'){baseA('biolock')}else{baseA(k);baseSave()}
+   try{tg.HapticFeedback.selectionChanged()}catch(x){}setTimeout(setRepaint,30);break}
+ }}
+ D.addEventListener('input',function(e){var r=e.target.dataset&&e.target.dataset.g7r;if(!r)return;pfs(r,+e.target.value);var em=e.target.parentNode.querySelector('em');if(em)em.textContent=e.target.value},true);
+ D.addEventListener('keydown',function(e){if(e.target.id=='g7dq'&&e.key=='Enter'){e.preventDefault();draw()}if(e.key=='Escape'&&PG.k)pgClose()});
+ /* страница открыта, а экран сменился (уход из вкладки) — закрыть */
+ setInterval(function(){if(PG.k&&!(W.U&&U.tab=='hc'))pgClose(true)},700);
+ applyPF();
+ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,info:info,act:act,go:go,pgOpen:pgOpen,pgClose:pgClose,pf:pf,pfs:pfs,C:C,get:get,ring:ringTick,RG:RG,ctxSheet:ctxSheet,SS:SS,PG:PG};
 })();
 
 </script>

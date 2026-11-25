@@ -12,7 +12,7 @@
  function on(){var s=st();return !!(s&&W.U&&U.tab=='hc'&&s.view=='chat'&&root()&&s.kind=='claude'&&!D.documentElement.hasAttribute('data-g3off'))}
  function haptic(t){try{t=='ok'?tg.HapticFeedback.notificationOccurred('success'):tg.HapticFeedback.impactOccurred('light')}catch(e){}}
  function T(m){try{toast(m)}catch(e){}}
- var EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая'},EFS={'':'',low:'Low',medium:'Medium',high:'High'};
+ var EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая',xhigh:'Очень высокая',max:'Максимальная'},EFS={'':'',low:'Low',medium:'Medium',high:'High',xhigh:'Extra',max:'Max'};/*s5-1*/
  var PERM={pc:'Как на ПК',full:'Сам, кроме опасных',ask:'Спрашивать всё'};
  function ic(n,c){var v=W.CLV&&CLV[n];if(!v)return '';return '<svg class="clv clv-'+n+(c?' '+c:'')+'" width="'+v[0]+'" height="'+v[1]+'" viewBox="0 0 '+v[0]+' '+v[1]+'" aria-hidden="true"><path d="'+v[2]+'"/></svg>'}
  var G={voice:false,sendAfter:false,hold:false,fb:{},spk:-1,sent:[],open:{},qmin:{},qsel:{}};
@@ -160,7 +160,7 @@
  function rec(){return !!(W.VC&&(VC.rec||VC.busy))}
  function has(){var s=st(),ta=$i('hcin');return !!((ta&&ta.value.trim())||(s.imgs&&s.imgs.length))}
  function chipHtml(){var s=st(),m=s.msel&&s.msel.m?s.msel.m:(s.models&&s.models.cur&&s.models.cur.model!='default'?s.models.cur.model:''),e=(s.msel&&s.msel.e)||'';
-  var mn=m?HC.pretty(m):'Claude';/* чип как у Claude: «Opus 5.5 Medium» (3213_0135.68) — имя модели без «Claude», сила второй строкой серым */
+  var dx=s.models&&s.models.x&&s.models.x.def,mn=m?HC.pretty(m):(dx&&dx.n||'Claude');/*s5-1: «Opus 5.5» по умолчанию, как чип Claude iOS*//* чип как у Claude: «Opus 5.5 Medium» (3213_0135.68) — имя модели без «Claude», сила второй строкой серым */
   mn=mn.replace(/^Claude\s+/i,'');return E(mn)+(e?'<em>'+E(EFS[e])+'</em>':'<em>Авто</em>')}
  function comp(){var c=$i('clc'),ta=$i('hcin'),go=$i('clgo');if(!c||!ta||!go)return;
   var r=rec(),hs=has(),kb=B.classList.contains('hckb'),stopS=!hs&&!r&&live(),card=!r&&(hs||kb||(ta.value&&ta.value.length>0));

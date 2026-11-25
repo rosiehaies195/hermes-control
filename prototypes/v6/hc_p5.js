@@ -18,7 +18,7 @@ function ago(ts){if(!ts)return '';var d=new Date(ts*1000),n=new Date(),p=functio
  var dd=Math.floor((new Date(n.getFullYear(),n.getMonth(),n.getDate())-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
  return dd<=0?t:dd==1?'вчера '+t:dd<7?['вс','пн','вт','ср','чт','пт','сб'][d.getDay()]+' '+t:p(d.getDate())+'.'+p(d.getMonth()+1)}
 var SRC={api_server:'Панель',telegram:'Telegram',gui:'Desktop',local:'Desktop',cli:'Терминал',cron:'Cron'};
-var EFF={low:'Низк',medium:'Сред',high:'Выс'};
+var EFF={low:'Низк',medium:'Сред',high:'Выс',xhigh:'Оч. выс',max:'Макс',ultra:'Ультра'};/*s5-1*/
 /* ---------- модель ---------- */
 function pretty(m){if(/^gpt-/i.test(String(m||'')))return String(m).replace(/^gpt-/i,'GPT-').replace(/-([a-z])/g,function(x,c){return '-'+c.toUpperCase()});m=String(m||'').replace(/^[^/]*\//,'').replace(/\[[^\]]*\]/g,'').replace(/^claude-/,'').replace(/-(\d{8})$/,'').replace(/-(\d)-(\d)(?!\d)/g,' $1.$2').replace(/-(\d)(?=$|-)/g,' $1').replace(/-/g,' ').trim();return m.charAt(0).toUpperCase()+m.slice(1)}
 function loadSel(id){try{var v=LS.get('hcmodel:'+id,null);return v&&v.m?v:null}catch(e){return null}}

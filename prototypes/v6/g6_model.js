@@ -15,7 +15,17 @@
  function st(){return W.HC&&HC.st}
  function E(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
  function RM(){return matchMedia('(prefers-reduced-motion: reduce)').matches}
- var EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая'},EK=['','low','medium','high'];
+ /* s5-1: уровни — из списка самой программы (Claude Code: low…xhigh/max, Codex: …max/ultra), имена/подписи моделей — из M.x */
+ var EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая',xhigh:'Очень высокая',max:'Максимальная',ultra:'Ультра'},EK=['','low','medium','high'];
+ var DSC={'For your toughest challenges':'Для самых сложных задач','For complex work and everyday tasks':'Для сложной и повседневной работы',
+  'Most efficient for simpler tasks':'Эффективнее для простых задач','Fastest for quick answers':'Самая быстрая для коротких ответов'};
+ function X(){var M=st().models;return M&&M.x||null}
+ function all(){var x=X();return x?(x.main||[]).concat(x.more||[]):[]}
+ function rowOf(id){return all().filter(function(r){return r.id==id})[0]||null}
+ function effs(){var c=cur(),x=X(),r=c.m?rowOf(c.m):null;if(!r&&x){r=x.def&&x.def.e&&x.def.e.length?x.def:null;
+   if(!r&&st().models&&st().models.cur)r=rowOf(st().models.cur.model);if(!r)r=(x.main||[])[0]}
+  var e=(r&&r.e&&r.e.length?r.e:EK.slice(1)).filter(function(k){return EFF[k]});return [''].concat(e)}
+ function dsc(r){return r?(DSC[r.d]||(st().kind=='claude'?sub(r.id+' '+r.n):'')||''):''}
  /* кривые из csv видео (s4/e/fit.py): критическая пружина, нормированная к 1 в конце */
  var OPEN='linear(0,.042,.137,.253,.370,.480,.577,.661,.731,.788,.835,.872,.901,.925,.943,.957,.968,.977,.983,.988,.992,.995,.997,.999,1)';
  var PUSH='linear(0,.051,.163,.294,.423,.538,.637,.718,.784,.835,.876,.907,.931,.949,.963,.973,.980,.986,.990,.993,.996,.997,.998,.999,1)';
@@ -33,18 +43,26 @@
   fetch(API.replace(/\/$/,'')+'/api/hc'+bs+'/models',{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){return r.json()}).then(function(d){if(d&&d.p){s.models=s.models||d;cb()}}).catch(function(){})}
  /* подписи моделей — перевод подписей «Select model» Claude iOS по семейству */
  function sub(m){m=String(m).toLowerCase();return /fable/.test(m)?'Для самых сложных задач':/opus/.test(m)?'Для сложной и повседневной работы':/sonnet/.test(m)?'Эффективнее для простых задач':/haiku/.test(m)?'Самая быстрая для коротких ответов':''}
- function nm(m){return HC.pretty(m).replace(/^Claude\s+/i,'')}
+ function nm(m){var r=rowOf(m);return r?r.n:HC.pretty(m).replace(/^Claude\s+/i,'')}
 
  /* =================== Claude: лист «Выбор модели» =================== */
  var SH={el:null,full:false,stack:[],focus:false};
+ function mRow(m,sb,c){return '<div class="g6r2" data-hc="mpick" data-m="'+E(m)+'" data-p="claude"><div><b>'+E(nm(m))+'</b>'+(sb?'<span>'+E(sb)+'</span>':'')+'</div>'+(c.m==m?CK:'')+'</div>'}
  function clMain(){var s=st(),M=s.models,c=cur(),x='<div class="g6pt">Выбор модели</div>';
   if(!M){x+='<div class="g6ld">Загружаю…</div>';return x}
-  var pv=M.p[0];
-  x+='<div class="g6card g6mods"><div class="g6r2" data-hc="mdef"><div><b>По умолчанию</b><span>Как в Claude на ПК</span></div>'+(c.m?'':CK)+'</div>'+
-   (pv?pv.m:[]).map(function(m){return '<div class="g6r2" data-hc="mpick" data-m="'+E(m)+'" data-p="'+E(pv.slug)+'"><div><b>'+E(nm(m))+'</b>'+(sub(m)?'<span>'+E(sub(m))+'</span>':'')+'</div>'+(c.m==m?CK:'')+'</div>'}).join('')+'</div>'+
-   '<div class="g6card g6pill" data-g6="eff"><b>Сила работы</b>'+(c.e==''?'<i class="g6bd">Рекомендуется</i>':'')+'<em>'+E(EFF[c.e])+'</em>'+CH+'</div>';
+  var X1=X(),pv=M.p[0],dn=X1&&X1.def&&X1.def.n;
+  x+='<div class="g6card g6mods"><div class="g6r2" data-hc="mdef"><div><b>По умолчанию</b><span>'+(dn?E(dn)+' · как в Claude на ПК':'Как в Claude на ПК')+'</span></div>'+(c.m?'':CK)+'</div>';
+  if(X1){x+=(X1.main||[]).map(function(r){return mRow(r.id,dsc(r),c)}).join('');
+   /* выбранная «другая» модель видна в основном списке с ✓ (как в Claude iOS выбор живёт в основном списке) */
+   if(c.m&&!(X1.main||[]).some(function(r){return r.id==c.m}))x+=mRow(c.m,'Другая модель',c)}
+  else x+=(pv?pv.m:[]).map(function(m){return mRow(m,sub(m),c)}).join('');
+  x+='</div><div class="g6card g6pill" data-g6="eff"><b>Сила работы</b>'+(c.e==''?'<i class="g6bd">Рекомендуется</i>':'')+'<em>'+E(EFF[c.e]||c.e)+'</em>'+CH+'</div>';
+  if(X1&&(X1.more||[]).length)x+='<div class="g6card g6pill" data-g6="more"><b>Другие модели</b><em></em>'+CH+'</div>';
   return x}
- function clEff(){var c=cur();return '<div class="g6pt">Сила работы</div><div class="g6card g6effs">'+EK.map(function(k){return '<div class="g6r1" data-hc="epick" data-e="'+k+'"><b>'+EFF[k]+'</b>'+(k==''?'<i class="g6bd">Рекомендуется</i>':'')+(c.e==k?CK:'')+'</div>'}).join('')+
+ function clMore(){var c=cur(),X1=X()||{};return '<div class="g6pt">Другие модели</div><div class="g6card g6effs g6more">'+(X1.more||[]).map(function(r){
+   return '<div class="g6r1" data-hc="mpick" data-m="'+E(r.id)+'" data-p="claude"><b>'+E(r.n)+'</b>'+(c.m==r.id?CK:'')+'</div>'}).join('')+'</div>'+
+  '<div class="g6ft">Старые модели Claude Code на этом ПК. Новые — в основном списке.</div>'}
+ function clEff(){var c=cur();return '<div class="g6pt">Сила работы</div><div class="g6card g6effs">'+effs().map(function(k){return '<div class="g6r1" data-hc="epick" data-e="'+k+'"><b>'+EFF[k]+'</b>'+(k==''?'<i class="g6bd">Рекомендуется</i>':'')+(k=='max'?'<i class="g6bd g6warn">'+WARN+' в 4+ раза больше лимитов</i>':'')+(c.e==k?CK:'')+'</div>'}).join('')+
   '</div><div class="g6ft">Чем выше сила, тем тщательнее ответ, но он дольше и быстрее тратит лимиты. «Авто» — как в Claude на ПК.</div>'}
  function half(){return Math.round(innerHeight*405.4/852)}
  function geo(full){var sh=SH.el;if(!sh)return;sh.classList.toggle('g6full',!!full);sh.style.top=(full?Math.round(innerHeight*58.6/852):half())+'px'}
@@ -96,7 +114,7 @@
  D.addEventListener('click',function(e){var sh=SH.el;if(!sh)return;
   if(e.target.id=='g6sv'){e.stopPropagation();e.preventDefault();clClose(false);return}
   if(!sh.contains(e.target))return;var a=e.target.closest('[data-g6]'),h=e.target.closest('[data-hc]');
-  if(a){e.stopPropagation();e.preventDefault();var g=a.dataset.g6;if(g=='x'){if(SH.stack.length>1)pop();else clClose(false)}else if(g=='eff')push(clEff(),'g6effp');return}
+  if(a){e.stopPropagation();e.preventDefault();var g=a.dataset.g6;if(g=='x'){if(SH.stack.length>1)pop();else clClose(false)}else if(g=='eff')push(clEff(),'g6effp');else if(g=='more')push(clMore(),'g6morep');return}
   if(h){var k=h.dataset.hc;setTimeout(function(){if(SH.el!==sh)return;
    if(k=='epick'){var p=SH.stack[SH.stack.length-1];if(p&&p.classList.contains('g6effp')){p.innerHTML=clEff();setTimeout(function(){if(SH.el===sh)pop()},160)}}
    else if(k=='mpick'||k=='mdef'){var m=sh.querySelector('.g6main');if(m)m.innerHTML=clMain();setTimeout(function(){if(SH.el===sh)clClose(false)},180)}},0)}},false);
@@ -106,12 +124,12 @@
  function gIc(n){return W.G3&&G3.ic?G3.ic(n):''}
  function mmHtml(){var s=st(),M=s.models,c=cur(),x='';
   if(MM.lvl=='e'){x='<div class="g3mi g6back" data-g6m="back">'+BK+'<span>Модель</span></div><div class="g3mh">Сила рассуждений</div>'+
-    EK.map(function(k){return '<div class="g3mi" data-hc="epick" data-e="'+k+'">'+(c.e==k?gIc('check'):'<i class="g3ck"></i>')+'<span>'+EFF[k]+'</span>'+(k==''?'<em class="g6rec">как на ПК</em>':'')+'</div>'}).join('');return x}
+    effs().map(function(k){return '<div class="g3mi" data-hc="epick" data-e="'+k+'">'+(c.e==k?gIc('check'):'<i class="g3ck"></i>')+'<span>'+EFF[k]+'</span>'+(k==''?'<em class="g6rec">как на ПК</em>':'')+'</div>'}).join('');return x}
   x='<div class="g3mh">Модель</div>';
   if(!M)return x+'<div class="g3mh">Загружаю…</div>';
   var pv=M.p.filter(function(p){return p.slug==(c.p||M.cur.provider)})[0]||M.p[0];
-  x+='<div class="g3mi g6two" data-hc="mdef">'+(c.m?'<i class="g3ck"></i>':gIc('check'))+'<span><b>По умолчанию</b><small>'+E(HC.pretty(M.cur.model))+' · как на ПК</small></span></div>';
-  (pv?pv.m:[]).slice(0,8).forEach(function(m){x+='<div class="g3mi" data-hc="mpick" data-m="'+E(m)+'" data-p="'+E(pv.slug)+'">'+(c.m==m?gIc('check'):'<i class="g3ck"></i>')+'<span>'+E(HC.pretty(m))+'</span></div>'});
+  x+='<div class="g3mi g6two" data-hc="mdef">'+(c.m?'<i class="g3ck"></i>':gIc('check'))+'<span><b>По умолчанию</b><small>'+E(nm(M.cur.model))+' · как на ПК</small></span></div>';
+  (pv?pv.m:[]).slice(0,8).forEach(function(m){x+='<div class="g3mi" data-hc="mpick" data-m="'+E(m)+'" data-p="'+E(pv.slug)+'">'+(c.m==m?gIc('check'):'<i class="g3ck"></i>')+'<span>'+E(nm(m))+'</span></div>'});
   x+='<div class="g3mi" data-hc="model"><i class="g3ck"></i><span>Другие модели…</span></div><div class="g6sep"></div>'+
    '<div class="g3mi g6effr" data-g6m="eff">'+gIc('bulb')+'<span>Рассуждения</span><em>'+E(EFF[c.e])+'</em>'+CH+'</div>';
   return x}
@@ -141,5 +159,22 @@
  hook();var ht=setInterval(function(){if(W.CL3&&CL3.__g6m&&W.G3&&G3.__g6m)clearInterval(ht);else hook()},300);
  /* уход из чата / смена экрана — лист и меню не должны висеть */
  setInterval(function(){var s=st();if(SH.el&&!(s&&s.view=='chat'&&s.kind=='claude'&&W.U&&U.tab=='hc'))clClose(true,false);if(mmEl()&&!(s&&s.view=='chat'&&W.U&&U.tab=='hc'))mmClose()},500);
- W.G6M={open:clOpen,close:clClose,push:push,pop:pop,full:function(f){SH.full=f!==false;geo(SH.full)},sh:SH,mm:mmOpen,mmClose:mmClose,mmLevel:mmLevel,curves:{OPEN:OPEN,PUSH:PUSH,POPU:POPU,DET:DET}};
+ W.G6M={open:clOpen,close:clClose,push:push,pop:pop,full:function(f){SH.full=f!==false;geo(SH.full)},sh:SH,mm:mmOpen,mmClose:mmClose,mmLevel:mmLevel,curves:{OPEN:OPEN,PUSH:PUSH,POPU:POPU,DET:DET},effs:effs,name:nm};
+ /* =================== s5-1: список моделей принадлежит агенту ===================
+    Ответ /models помечается агентом по адресу (/cc = claude, /cx = codex, иначе hermes); HC.st.models отдаёт и принимает
+    список только своего агента. Причина: ответ, пришедший после смены агента, раньше ложился в чужой чат (s.models=s.models||d)
+    — так в меню Codex мог оказаться список Claude. */
+ function kindOf(u){u=String(u||'');var m=u.match(/\/api\/hc(\/cc|\/cx)?\/models(?:[?#]|$)/);return m?(m[1]=='/cc'?'claude':m[1]=='/cx'?'codex':'hermes'):''}
+ if(!W.__s5f){W.__s5f=1;var f0=W.fetch;W.fetch=function(u,o){var k=kindOf(typeof u=='string'?u:u&&u.url),pr=f0.apply(this,arguments);if(!k)return pr;
+  return pr.then(function(r){if(!r.ok)return r;return r.clone().json().then(function(d){if(d&&typeof d=='object'&&!Array.isArray(d))d.k=k;
+   return new Response(JSON.stringify(d),{status:r.status,headers:{'Content-Type':'application/json'}})}).catch(function(){return r})})}}
+ function guard(){var s=st();if(!s||s.__s5m)return !!s;s.__s5m=1;var m=s.models;
+  Object.defineProperty(s,'models',{configurable:true,enumerable:true,get:function(){return m&&m.k&&m.k!=s.kind?null:m},
+   set:function(v){if(v&&v.k&&v.k!=s.kind)return;m=v}});return true}
+ if(!guard()){var gt=setInterval(function(){if(guard())clearInterval(gt)},200)}
+ /* имена моделей как в родных приложениях (Fable 5.2, GPT-6.2-Sol) там, где база зовёт HC.pretty */
+ var pr0=null;function hp(){if(!W.HC||!HC.pretty||HC.pretty.__s5)return;pr0=HC.pretty;HC.pretty=function(m){var r=st()&&st().models?rowOf(m):null;return r?r.n:pr0(m)};HC.pretty.__s5=1}
+ hp();setInterval(hp,1000);
+ /* чип Claude «Opus 5.5 Medium»: имя модели по умолчанию нужно сразу при входе в чат — список грузим заранее */
+ setInterval(function(){var s=st();if(s&&s.view=='chat'&&s.kind=='claude'&&!s.models&&!load.__on){load.__on=1;load(function(){load.__on=0;if(W.CL3&&CL3.draw)CL3.draw()});setTimeout(function(){load.__on=0},8000)}},700);
 })();

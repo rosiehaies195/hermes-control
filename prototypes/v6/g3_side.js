@@ -67,9 +67,11 @@
  function cover(){var c=$i('sd3cv');if(!c)return;var on=SD.on&&(SD.pos||0)>0;c.classList.toggle('on',on);if(on)c.style.left=Math.round(SD.pos)+'px'}
  /* ---------- разметка меню ---------- */
  function navRows(){if(SD.fx&&SD.fx.nav)return SD.fx.nav;
+  /* s5-2: сверху пункты родного приложения, ниже наши разделы группой «Панель»; Настройки — лист из аватара (развилки 1–2) */
+  if(W.G7&&G7.nav)return G7.nav(SD.sty);
   return SD.sty=='g'?[['home','g_remote','Пульт'],['prj','g_projects','Проекты'],['br','g_library','Мозг'],['j','g_sched','Журнал'],['set','g_custom','Настройки']]
    :[['home','c_code','Пульт'],['prj','c_projects','Проекты'],['br','c_artifacts','Мозг'],['j','c_sched','Журнал'],['set','s_gear','Настройки']]}
- function rowIc(x){if(x.ic)return x.ic;if(SD.sty=='g')return 'g_bubble';return x.k=='codex'?'c_code2':'c_bubble'}
+ function rowIc(x){if(x.ic)return x.ic;if(SD.sty=='g')return 'g_bubble';if(x.src=='cron'||x.sched)return 'c_clock';/*s5-2: значок типа как Recents Claude iOS*/return x.k=='codex'||x.k=='claude'?'c_code2':'c_bubble'}
  function agLbl(x){var s=st();return KN[x.k]&&s&&x.k!=s.kind?'<span class="sd3ag">'+KN[x.k]+'</span>':''}
  function chatRow(x,kind){/* kind: ch (с ○), rc (недавние ChatGPT без значка) */
   var on=x.on!=null?x.on:isCur(x),noic=SD.sty=='g'&&kind=='rc';
@@ -91,7 +93,7 @@
   if(id)openChat(k,id);else newChat(k)}
  function sideHtml(){var g=SD.sty=='g',fx=SD.fx,s=st(),h='<div class="sd3sc" id="sd3sc"><div class="sd3pl"><div class="sd3ls">';
   if(!fx)h+=agRows();
- h+=navRows().map(function(n){var on=fx&&fx.navOn==n[2];return '<div class="sd3r sd3nv'+(on?' on':'')+'" data-sd="tab" data-x="'+n[0]+'">'+ic(n[1]||'')+'<b>'+E(n[2])+'</b></div>'}).join('');
+ h+=navRows().map(function(n){if(n[0]=='-')return '<div class="g7nh">'+E(n[2])+'</div>';var on=fx&&fx.navOn==n[2];return '<div class="sd3r sd3nv'+(on?' on':'')+'" data-sd="tab" data-x="'+n[0]+'">'+ic(n[1]||'')+'<b>'+E(n[2])+'</b></div>'}).join('');
   /* меню показывает чаты ТОЛЬКО выбранного агента (решение пользователя); все агенты вместе — экран «Все сессии» */
   var ck=s&&s.kind,A=fx?null:all().filter(function(x){return x.k==ck}),P=fx?fx.pins:A.filter(pinned),R=fx?fx.rec:A.filter(function(x){return !pinned(x)&&!(x.src=='cron'&&!isCur(x))});
   /* «Идёт сейчас» — только когда что-то идёт (как раньше в списке базы) */
@@ -269,12 +271,12 @@
    '<div class="sd3card">'+sr('stopall','s_logout',fx.out||'Остановить всё','','',1)+'</div>'+
    '<div class="sd3ver">Hermes Control · v'+E(W.VER||'')+'</div></div>'+
    '<div class="sd3sth"><div class="sd3hb" data-sd="setx" role="button" aria-label="Закрыть">'+ic('s_x')+'</div><div class="sd3rt">'+E(fx.stitle||'Настройки')+'</div><div class="sd3hb inf" data-sd="info" role="button" aria-label="О панели">'+ic('s_info')+'</div></div>'}
- function setOpen(o){o=o||{};var r=setEl();r.className='sd3set on '+SD.sty;r.innerHTML=setHtml();
+ function setOpen(o){o=o||{};var r=setEl();r.className='sd3set on '+SD.sty;r.innerHTML=W.G7&&G7.setHtml&&!SD.fx?G7.setHtml(SD.sty):setHtml();if(W.G7&&G7.setOpened)G7.setOpened(r);
   /* лист iOS поднимается снизу (кривая листа spec §8 Claude: cubic-bezier(.32,.72,0,1) ~ 500 мс) */
   if(r.animate&&!o.instant)r.animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:500,easing:'cubic-bezier(.32,.72,0,1)'})}
  function setClose(instant){var r=$i('sd3set');if(!r||!r.classList.contains('on'))return;if(instant||!r.animate){r.className='sd3set';return}
   var a=r.animate([{transform:'none'},{transform:'translateY(100%)'}],{duration:300,easing:'cubic-bezier(.4,0,1,1)'});a.onfinish=function(){r.className='sd3set'}}
- function infoMenu(el){var r=el.getBoundingClientRect();pop('<div class="sd3mh">Hermes Control v'+E(W.VER||'')+'</div>'+mi('reload','','Обновить панель')+mi('go','','Система: проверка',0,{x:'sys'}),{top:(r.bottom+8)+'px',right:(innerWidth-r.right)+'px'},{origin:'top right'})}
+ function infoMenu(el){if(W.G7&&G7.info&&!SD.fx){G7.info(el);return}var r=el.getBoundingClientRect();pop('<div class="sd3mh">Hermes Control v'+E(W.VER||'')+'</div>'+mi('reload','','Обновить панель')+mi('go','','Система: проверка',0,{x:'sys'}),{top:(r.bottom+8)+'px',right:(innerWidth-r.right)+'px'},{origin:'top right'})}
  /* ---------- клики ---------- */
  W.addEventListener('click',function(e){
   if(SD.lpFired&&Date.now()-SD.lpFired<700){SD.lpFired=0;if(e.target.closest&&e.target.closest('.sd3,.sd3rc')){e.stopImmediatePropagation();e.preventDefault();return}}SD.lpFired=0;
@@ -284,7 +286,7 @@
   if(el.tagName=='INPUT')return;e.stopPropagation();e.preventDefault();var a=el.dataset.sd,ds=el.dataset;
   switch(a){
    case 'agent':goAgent(ds.k);break;
-   case 'tab':goTab(ds.x);break;
+   case 'tab':if(W.G7&&/^g7:/.test(ds.x||'')){G7.go(ds.x.slice(3),el);break}goTab(ds.x);break;
    case 'go':goTab(ds.x=='sys'?'sys':ds.x);break;
    case 'open':openChat(ds.k,ds.id);break;
    case 'all':rcOpen();break;
@@ -317,6 +319,7 @@
    case 'delyes':delDo(ds.k,ds.id);break;
    case 'arch':archDo(ds.k,ds.id);break;
    case 'popx':closePop();break;
+   default:if(W.G7&&G7.act)G7.act(a,ds,el);
   }},true);
  D.addEventListener('keydown',function(e){if(e.key=='Escape'){if($i('sd3veil'))closePop();else if($i('sd3set')&&$i('sd3set').classList.contains('on'))setClose();else if(SD.rc){rcClose();}else if(SD.on)close()}
   if(e.key=='Enter'&&e.target.id=='sd3ren'){e.preventDefault();var b=D.querySelector('.sd3pop [data-sd=rensave]');if(b)b.click()}});
@@ -423,7 +426,7 @@
  function tgBack(){if(SD.rc){rcClose();return}if($i('sd3set')&&$i('sd3set').classList.contains('on')){setClose();return}
   if(W.U&&U.page=='hcchat'&&main()){SD.on?close():open();return}if(typeof W.back=='function')W.back()}
  try{if(W.tg&&tg.BackButton&&tg.BackButton.offClick&&typeof W.back=='function'){tg.BackButton.offClick(W.back);tg.BackButton.onClick(tgBack)}}catch(e){}
- W.SD3={folder:folder,goAgent:goAgent,lastOf:lastOf,entry:entStart,tgBack:tgBack,open:open,close:close,closeAll:closeAll,rcOpen:rcOpen,rcClose:rcClose,setOpen:setOpen,setClose:setClose,filterMenu:filterMenu,rowMenu:rowMenu,closePop:closePop,
+ W.SD3={goTab:goTab,newChat:newChat,pop:pop,mi:mi,user:user,ic:ic,agIc:agIc,api:api,sty:sty,folder:folder,goAgent:goAgent,lastOf:lastOf,entry:entStart,tgBack:tgBack,open:open,close:close,closeAll:closeAll,rcOpen:rcOpen,rcClose:rcClose,setOpen:setOpen,setClose:setClose,filterMenu:filterMenu,rowMenu:rowMenu,closePop:closePop,
   paint:paint,load:load,SD:SD,all:all,pinned:pinned,openChat:openChat,
   /* для сверки со стоп-кадром: позиция экрана в pt и мгновенная отрисовка */
   at:function(x){SD.pos=x;setPos(main(),x);cover()}};

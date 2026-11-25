@@ -14,7 +14,7 @@
  function on(){var s=st();return !!(s&&W.U&&U.tab=='hc'&&s.view=='chat'&&root()&&s.kind!='claude'&&!D.documentElement.hasAttribute('data-g3off'))}
  function haptic(t){try{t=='ok'?tg.HapticFeedback.notificationOccurred('success'):tg.HapticFeedback.impactOccurred('light')}catch(e){}}
  function T(m){try{toast(m)}catch(e){}}
- var NM={hermes:'Hermes',codex:'Codex'},EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая'};
+ var NM={hermes:'Hermes',codex:'Codex'},EFF={'':'Авто',low:'Низкая',medium:'Средняя',high:'Высокая',xhigh:'Очень высокая',max:'Максимальная',ultra:'Ультра'};/*s5-1*/
  /* ---------- значки 24×24, заливка (обводка по кадрам видео — g3icons) ---------- */
  var I={
   side:'<rect x="3.2" y="6.6" width="17.6" height="2" rx="1"/><rect x="3.2" y="14.6" width="11.4" height="2" rx="1"/>',
