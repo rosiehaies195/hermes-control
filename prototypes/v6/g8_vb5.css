@@ -1,0 +1,9 @@
+/* vb5: правки по видео iPhone v10.14. В — название модели по центру шапки чата ChatGPT-облика (Codex/Hermes). */
+.g3hd .g3sp{display:flex;justify-content:center;align-items:center;min-width:0;pointer-events:none}
+.g8mt{pointer-events:auto;display:flex;align-items:center;gap:5px;max-width:100%;height:44px;padding:0 10px;color:#fff;-webkit-tap-highlight-color:transparent;cursor:pointer}
+.g8mt b{font:600 17px/22px var(--g3f,-apple-system,system-ui,sans-serif);letter-spacing:-.43px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g8mt .g8chv{flex:none;color:rgba(255,255,255,.5);margin-top:1px}
+.g8mt:active b{opacity:.6}
+.g8mt.g8ro{cursor:default}.g8mt.g8ro b{color:rgba(255,255,255,.85)}
+/* vb5-Б9: подсказка «i» в Расходе — поповер над листом */
+.g7tipb{padding:12px 14px;font-size:14px;line-height:19px;white-space:normal;color:inherit;opacity:.92}

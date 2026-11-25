@@ -85,8 +85,10 @@
   if(k.length<30000){if(++MDN>300){MDC=Object.create(null);MDN=1}MDC[k]=v}return v}
  function txt(b){if(!b)return '';if(b.k=='u')return b.t||'';return (b.parts||[]).filter(function(p){return p.p=='t'}).map(function(p){return p.t}).join('\n\n')}
  function dur(s){s=Math.max(1,Math.round(s));return s<60?s+' с':Math.floor(s/60)+' мин'+(s%60?' '+s%60+' с':'')}
+ var TN6={exec:'Команда',exec_command:'Команда',shell:'Команда',shell_command:'Команда',bash:'Команда',terminal:'Команда',local_shell:'Команда',apply_patch:'Правка файлов',edit:'Правка файла',multiedit:'Правка файла',write:'Запись файла',write_file:'Запись файла',patch:'Правка файлов',read:'Чтение файла',read_file:'Чтение файла',view:'Просмотр файла',view_image:'Просмотр картинки',grep:'Поиск в файлах',glob:'Поиск файлов',search_files:'Поиск в файлах',list_dir:'Список файлов',ls:'Список файлов',web_search:'Поиск в сети',websearch:'Поиск в сети',web_fetch:'Страница из сети',webfetch:'Страница из сети',web_extract:'Страница из сети',task:'Помощник',agent:'Помощник',spawn_agent:'Помощник',delegate_task:'Помощник',update_plan:'План',todowrite:'План',todo:'План'};
+ function tn6(n){var k=String(n||'').toLowerCase().replace(/^mcp__[^_]+__/,'');return TN6[k]||(/^mcp__/.test(String(n||''))?String(n).replace(/^mcp__([^_]+)__/,'$1 · ').replace(/_/g,' '):n)}/*vb5g6*/
  function toolName(p){var a={};try{a=JSON.parse(p.a||'{}')}catch(e){}var x=a.command||a.cmd||a.path||a.file_path||a.query||a.url||a.pattern||'';
-  return '<b>'+E(p.n||'действие')+'</b>'+(x?' <span>'+E(String(x).replace(/\s+/g,' ').slice(0,90))+'</span>':'')}
+  return '<b>'+E(tn6(p.n)||'действие')+'</b>'+(x?' <span>'+E(String(x).replace(/\s+/g,' ').slice(0,90))+'</span>':'')}
  /* ход = сообщение пользователя + все ответы агента до следующего сообщения пользователя */
  function turns(){var s=st(),L=[],from=Math.max(0,s.msgs.length-s.lim),cur=null,lastU=null;
   for(var i=from;i<s.msgs.length;i++){var b=s.msgs[i];
@@ -143,7 +145,7 @@
   (s.pend||[]).forEach(function(p,i){h+=pendHtml(p,i)});
   if(s.err)h+='<div class="g3err">'+E(s.err)+'</div>';
   if(opened)h+='</div>';
-  if(s.loadingMsgs&&!s.msgs.length)h+='<div class="g3think g3load"><span>'+(s.creating&&s.creating==s.sid?'Создаю чат…':'Загружаю')/*s4a-ld*/+'</span></div>';
+  if(s.loadingMsgs&&!s.msgs.length&&!(s.creating&&s.creating==s.sid)/*vb5a6: создаётся = обычный пустой чат*/)h+='<div class="g3think g3load"><span>Загружаю</span></div>';
   return h}
  /* cb5: список обновляем по верхним узлам: неизменившиеся остаются как есть (без пересоздания и перекладки), меняется только последний обмен */
  function setList(l,nh,first){
@@ -357,7 +359,7 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  function draw(){if(busyDraw)return;busyDraw=true;try{
   /* классы body — только при реальной смене: classList.add/remove без изменения всё равно рождает мутацию, и соседний модуль (claude.js) с таким же наблюдателем будил бы этот бесконечно */var g=$i('g3');if(!on()){if(g)g.remove();['g3on','g3dim'].forEach(function(c){if(B.classList.contains(c))B.classList.remove(c)});stopWave();busyDraw=false;MO.takeRecords();return}
   if(!B.classList.contains('g3on'))B.classList.add('g3on');frame();adopt();feed();comp();edBar();suggest();dnUpd();
-  var s=st(),em=!s.msgs.length&&!s.busy;$i('g3hd').classList.toggle('g3empty',em);
+  var s=st(),em=!s.msgs.length&&!s.busy;$i('g3hd').classList.toggle('g3empty',em);if(W.G8)G8.hd();/*vb5m*/
   }catch(e){console.error(e)}busyDraw=false;MO.takeRecords()}
  var qd=0;function sched(){if(qd)return;qd=requestAnimationFrame(function(){qd=0;draw()})}
  /* перерисовки базы (paintChat меняет #hcroot целиком, paint — #hcmsgs, sendBtn — класс #hcsend) → сразу, без мигания */

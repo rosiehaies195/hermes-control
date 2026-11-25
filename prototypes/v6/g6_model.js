@@ -136,10 +136,11 @@
  /* id как у меню g3 (#g3pop/#g3veil): закрытие, тап мимо и выбор [data-hc] обрабатывает сам g3_chat (closePop) */
  function mmEl(){var p=$i('g3pop');return p&&p.classList.contains('g6mm')?p:null}
  function mmClose(){if(W.G3&&G3.closePop){G3.closePop();return}var p=$i('g3pop'),v=$i('g3veil');if(v)v.remove();if(p){p.id='';p.classList.add('out');setTimeout(function(){p.remove()},180)}}
- function mmOpen(lvl){var s=st();if(!s||(s.kind!='codex'&&s.kind!='hermes'))return;MM.lvl=lvl||'m';mmClose();if(W.G3)G3.closePop();
+ function mmOpen(lvl,at){var s=st();if(!s||(s.kind!='codex'&&s.kind!='hermes'))return;MM.lvl=lvl||'m';mmClose();if(W.G3)G3.closePop();
   var c=$i('g3c'),r=c?c.getBoundingClientRect():{left:34,top:innerHeight-90,width:325,height:48};
   var v=D.createElement('div');v.id='g3veil';B.appendChild(v);var p=D.createElement('div');p.id='g3pop';p.className='g3pop g3pm g6mm';p.innerHTML=mmHtml();
   p.style.left=Math.max(8,r.left-8)+'px';p.style.bottom=(innerHeight-r.top+12)+'px';p.style.width='281px';p.style.maxHeight=Math.max(160,r.top-12-(parseFloat(getComputedStyle(D.documentElement).getPropertyValue('--g3t'))||0)-8)+'px';p.style.transformOrigin='bottom left';
+  if(at){/*vb5m: из названия модели в шапке — меню под ним, растёт вниз*/var ar=at.getBoundingClientRect(),w=281;p.style.bottom='';p.style.top=(ar.bottom+8)+'px';p.style.left=Math.max(8,Math.min(innerWidth-w-8,ar.left+ar.width/2-w/2))+'px';p.style.maxHeight=Math.max(160,innerHeight-ar.bottom-120)+'px';p.style.transformOrigin='top center';r={left:ar.left+ar.width/2-22,top:ar.top}}
   B.appendChild(p);p.__g6src={x:r.left,y:r.top,w:44,h:44};
   if(p.animate&&!RM()){var sx=Math.min(1,44/p.offsetWidth),sy=Math.min(1,44/p.offsetHeight);
    p.animate([{transform:'scale('+sx.toFixed(3)+','+sy.toFixed(3)+')',opacity:.4},{transform:'none',opacity:1}],{duration:400,easing:'linear(0,.06,.198,.365,.53,.675,.793,.883,.947,.99,1.015,1.027,1.031,1.03,1.026,1.021,1.016,1.011,1.007,1.004,1.002,1)'});

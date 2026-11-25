@@ -51,8 +51,10 @@
  var MDC=Object.create(null),MDN=0;function md(t){var k=String(t==null?'':t),v=MDC[k];if(v!==undefined)return v;try{v=HC.md(k)}catch(e){v=E(k)}
   if(k.length<30000){if(++MDN>300){MDC=Object.create(null);MDN=1}MDC[k]=v}return v}
  function txt(b){if(!b)return '';if(b.k=='u')return b.t||'';return (b.parts||[]).filter(function(p){return p.p=='t'}).map(function(p){return p.t}).join('\n\n')}
+ var TN6={exec:'Команда',exec_command:'Команда',shell:'Команда',shell_command:'Команда',bash:'Команда',terminal:'Команда',local_shell:'Команда',apply_patch:'Правка файлов',edit:'Правка файла',multiedit:'Правка файла',write:'Запись файла',write_file:'Запись файла',patch:'Правка файлов',read:'Чтение файла',read_file:'Чтение файла',view:'Просмотр файла',view_image:'Просмотр картинки',grep:'Поиск в файлах',glob:'Поиск файлов',search_files:'Поиск в файлах',list_dir:'Список файлов',ls:'Список файлов',web_search:'Поиск в сети',websearch:'Поиск в сети',web_fetch:'Страница из сети',webfetch:'Страница из сети',web_extract:'Страница из сети',task:'Помощник',agent:'Помощник',spawn_agent:'Помощник',delegate_task:'Помощник',update_plan:'План',todowrite:'План',todo:'План'};
+ function tn6(n){var k=String(n||'').toLowerCase().replace(/^mcp__[^_]+__/,'');return TN6[k]||(/^mcp__/.test(String(n||''))?String(n).replace(/^mcp__([^_]+)__/,'$1 · ').replace(/_/g,' '):n)}/*vb5g6*/
  function toolName(p){var a={};try{a=JSON.parse(p.a||'{}')}catch(e){}var x=a.command||a.cmd||a.path||a.file_path||a.query||a.url||a.pattern||a.description||'';
-  return '<b>'+E(p.n||'действие')+'</b>'+(x?' <span>'+E(String(x).replace(/\s+/g,' ').slice(0,90))+'</span>':'')}
+  return '<b>'+E(tn6(p.n)||'действие')+'</b>'+(x?' <span>'+E(String(x).replace(/\s+/g,' ').slice(0,90))+'</span>':'')}
  function stepsWord(n){var m=n%10,c=n%100;return n+' '+(m==1&&c!=11?'шаг':m>=2&&m<=4&&(c<10||c>=20)?'шага':'шагов')}
  function turns(){var s=st(),L=[],from=Math.max(0,s.msgs.length-s.lim),cur=null,lastU=null;
   for(var i=from;i<s.msgs.length;i++){var b=s.msgs[i];
@@ -97,7 +99,7 @@
   (s.pend||[]).forEach(function(p,i){if(G.qmin[p.id||i])h+='<div class="clth" data-cl="qopen" data-i="'+i+'"><div class="cldots"><i></i><i></i><i></i></div><span>'+(p.kind=='clarify'?'Задаю вопрос':'Жду разрешения')+'</span>'+ic('clock')+ic('chev')+'</div>'});
   if(s.err)h+='<div class="clerr"><i>i</i><div>'+E(s.err)+'</div></div>';
   if(opened)h+='</div>';
-  if(s.loadingMsgs&&!s.msgs.length)h+='<div class="clth clload"><div class="cldots"><i></i><i></i><i></i></div><span>'+(s.creating&&s.creating==s.sid?'Создаю чат…':'Загружаю')/*s4a-ld*/+'</span></div>';
+  if(s.loadingMsgs&&!s.msgs.length&&!(s.creating&&s.creating==s.sid)/*vb5a6*/)h+='<div class="clth clload"><div class="cldots"><i></i><i></i><i></i></div><span>Загружаю</span></div>';
   return h}
  /* cb5: список обновляем по верхним узлам: неизменившиеся остаются как есть (без пересоздания и перекладки), меняется только последний обмен */
  function setList(l,nh,first){
@@ -150,7 +152,7 @@
  function ltTop(f,l){var lt=$i('cllt');if(!lt)return;var pt=parseFloat(getComputedStyle(l).paddingTop)||0,d=lt.getBoundingClientRect().top-f.getBoundingClientRect().top-pt-8;if(d<0)f.scrollTop=Math.max(0,f.scrollTop+d)}
  function cTop(c){var R=c.getBoundingClientRect(),an=c.getAnimations&&c.getAnimations().some(function(a){return a.playState=='running'&&!a.transitionProperty});return an&&c.__h?R.bottom-c.__h:R.top}
  /* ---------- пустой чат: искра + «Добрый день, имя» по центру над полем ---------- */
- function hello(){var s=st(),g=$i('clhi');if(!g)return;var em=!s.msgs.length&&!s.loadingMsgs&&!(s.pend||[]).length&&!s.busy;g.classList.toggle('on',em);if(!em)return;
+ function hello(){var s=st(),g=$i('clhi');if(!g)return;var em=!s.msgs.length&&(!s.loadingMsgs||(s.creating&&s.creating==s.sid))/*vb5a6*/&&!(s.pend||[]).length&&!s.busy;g.classList.toggle('on',em);if(!em)return;
   var h=new Date().getHours(),w=h<5?'Доброй ночи':h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер',nm='';try{nm=(tg.initDataUnsafe&&tg.initDataUnsafe.user&&tg.initDataUnsafe.user.first_name)||''}catch(e){}
   var t=w+(nm?', '+nm:''),b=$i('clhib');if(b.textContent!=t)b.textContent=t;
   /* кадр 3212_0009.79: искра 396–431, строка ~470 при поле на 766; с клавиатурой (0014.24) — по центру свободного места */

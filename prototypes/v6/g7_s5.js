@@ -23,21 +23,25 @@
  var C={},TTL={acct:3600e3,usage:60e3,sched:60e3,images:120e3,custom:300e3,vers:3600e3,ctx:20e3};
  function url(p){return String(W.API||'').replace(/\/$/,'')+'/api/hc/s5/'+p}
  /* cb зовётся только когда пришёл ответ сети (никогда синхронно) — иначе перерисовка ↔ get по кэшу ошибки уходила в бесконечную рекурсию */
+ var CP=lsg('g7c',null)||{};for(var cpk in CP)if(!C[cpk])C[cpk]={t:0,d:CP[cpk]};/*vb5b-1: последний ответ с ПК — сразу, свежий догружается*/
+ var CPW=0;function cpPut(p,d){var w=p.split('?')[0];if(!/^(acct|usage|custom|sched|images|vers)$/.test(w)||!d||d.error)return;CP[p]=d;if(!CPW)CPW=setTimeout(function(){CPW=0;lss('g7c',CP)},800)}
  function get(p,cb){var w=p.split('?')[0],c=C[p];if(c&&!c.p&&Date.now()-c.t<(TTL[w]||60e3))return c.d
   if(c&&c.p){c.p.then(function(d){cb&&cb(d)});return c&&c.d}
   var pr=fetch(url(p),{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
-   .then(function(d){C[p]={t:Date.now(),d:d};return d}).catch(function(e){C[p]={t:Date.now()-((TTL[w]||60e3)-5e3),d:{error:e.message}};return C[p].d});
+   .then(function(d){C[p]={t:Date.now(),d:d};cpPut(p,d);return d}).catch(function(e){C[p]={t:Date.now()-((TTL[w]||60e3)-5e3),d:{error:e.message}};return C[p].d});
   C[p]={t:0,d:c&&c.d,p:pr};pr.then(function(d){cb&&cb(d)});return c&&c.d}
  function have(p){var c=C[p];return c&&c.d&&!c.d.error?c.d:null}
  /* данные или {error} (свежая ошибка) или null (грузится; cb — когда придёт) */
- function need(p,cb){var d=have(p);if(d)return d;var c=C[p],w=p.split('?')[0];if(c&&!c.p&&c.d&&c.d.error&&Date.now()-c.t<(TTL[w]||60e3))return {error:c.d.error};get(p,cb);return null}
+ function need(p,cb){var d=have(p);if(d){var c0=C[p],w0=p.split('?')[0];if(c0&&!c0.p&&Date.now()-c0.t>=(TTL[w0]||60e3))get(p,cb);return d}var c=C[p],w=p.split('?')[0];if(c&&!c.p&&c.d&&c.d.error&&Date.now()-c.t<(TTL[w]||60e3))return {error:c.d.error};get(p,cb);return null}
  function errH(d){return '<div class="sd3none"><b>Не удалось загрузить</b><span>'+E(d.error)+'</span></div>'}
  /* картинки — с подписью initData, поэтому через blob */
- var IB={};function imgSrc(p,el){if(IB[p]){el.src=IB[p];return}
-  fetch(url('img?p='+encodeURIComponent(p)),{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){IB[p]=URL.createObjectURL(b);el.src=IB[p]}).catch(function(){el.classList.add('bad')})}
+ /*vb5b-g5: миниатюры (сервер ужимает до w px), не больше 3 загрузок сразу, одна загрузка на картинку (раньше каждая перерисовка начинала заново)*/
+ var IB={},IW={},IQ=[],IN=0;function imgSrc(p,el,w){var key=p+'|'+(w||0);el.dataset.ik=key;if(IB[key]){el.src=IB[key];return}if(IW[key])return;IW[key]=1;IQ.push({p:p,w:w,key:key});imgRun()}
+ function imgRun(){while(IN<3&&IQ.length){(function(j){IN++;fetch(url('img?p='+encodeURIComponent(j.p)+(j.w?'&w='+j.w:'')),{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){if(!r.ok)throw 0;return r.blob()})
+  .then(function(b){IB[j.key]=URL.createObjectURL(b)}).catch(function(){IB[j.key]=''}).then(function(){IN--;delete IW[j.key];[].forEach.call(D.querySelectorAll('img[data-ik]'),function(im){if(im.dataset.ik==j.key){if(IB[j.key])im.src=IB[j.key];else im.classList.add('bad')}});imgRun()})})(IQ.shift())}}
  /* ---------- свои настройки (облик / поведение) ---------- */
  var PF=lsg('g7pf',null)||{};var PD={theme:'system',links:'tg',kbhide:false,ring:true,busy:'steer',fs:17,wrap:true};
- function pf(k){return PF[k]!=null?PF[k]:PD[k]}
+ function pf(k){if(k=='theme')return 'system';/*vb5b-2: только как в Telegram*/return PF[k]!=null?PF[k]:PD[k]}
  function pfs(k,v){PF[k]=v;lss('g7pf',PF);applyPF()}
  function applyPF(){var r=D.documentElement;r.style.setProperty('--g7fs',pf('fs')+'px');B.classList.toggle('g7nowrap',!pf('wrap'));B.classList.toggle('g7noring',!pf('ring'));
   var t=pf('theme');if(t!='system')r.dataset.theme=t;else if(W.theme)try{W.theme()}catch(e){}}
@@ -68,7 +72,7 @@
  function pgClose(instant){var r=$i('g7pg');if(!r||!/\bon\b/.test(r.className))return;PG.k='';var off=function(){r.className='sd3rc g7pg';r.innerHTML=''};if(instant||RM()||!r.animate){off();return}
   var a=r.animate([{transform:'none'},{transform:'translateX(100%)'}],{duration:260,easing:'cubic-bezier(.4,0,1,1)'});a.onfinish=function(){if(!PG.k)off()}}
  function pgPaint(){var r=$i('g7pg');if(!r||!PG.k)return;var sc=r.querySelector('.sd3sc'),top=sc?sc.scrollTop:0;r.innerHTML=PAGES[PG.k]();var s2=r.querySelector('.sd3sc');if(s2)s2.scrollTop=top;
-  [].forEach.call(r.querySelectorAll('img[data-p]'),function(im){imgSrc(im.dataset.p,im)})}
+  [].forEach.call(r.querySelectorAll('img[data-p]'),function(im){imgSrc(im.dataset.p,im,360)})}
  function ago(ts){if(!ts)return '';var m=Math.round((Date.now()/1000-ts)/60),f=m<0;m=Math.abs(m);var s=m<1?'сейчас':m<60?m+' мин':m<1440?Math.floor(m/60)+' ч':Math.floor(m/1440)+' дн';return m<1?s:(f?'через '+s:s+' назад')}
  function schedRow(x){var dot=x.on?(x.st&&x.st!='ok'&&x.st!='active'?'warn':'ok'):'off';
   return '<div class="g7task"><div class="g7th"><i class="g7dot '+dot+'"></i><b>'+E(x.t)+'</b><em>'+(x.on?'Активна':'На паузе')+'</em></div>'+
@@ -131,26 +135,23 @@
  function linksName(){return pf('links')=='tg'?'В Telegram':'В браузере'}
  /* Claude Settings: аккаунт, «Аккаунт», «Приложение», «Оформление» (плитки прямо в листе), «Панель», выход */
  function clMain(){var a=need('acct?k=claude',setRepaint)||{},e=Ev(),nOn=e.notify?Object.keys(e.notify).filter(function(x){return e.notify[x]}).length:0;
-  return '<div class="g7card g7acc"><div class="g7accr" data-sd="g7set" data-x="acct"><i class="g7av">'+E(ini(a.name))+'</i><div><b>Личный</b><span>'+E([a.mail,plan(a,'claude')].filter(Boolean).join(' · ')||'Claude')+'</span></div></div>'+
-   row('Добавить аккаунт',{ic:'plus',blue:1,act:'g7toast',x:'Добавить аккаунт — в Claude на ПК'})+'</div>'+
+  return '<div class="g7card g7acc"><div class="g7accr" data-sd="g7set" data-x="acct"><i class="g7av">'+E(ini(a.name))+'</i><div><b>Личный</b><span>'+E([a.mail,plan(a,'claude')].filter(Boolean).join(' · ')||'Claude')+'</span></div></div>'+'</div>'+/*vb5b-10*/
    sec('Аккаунт')+card([row('Профиль',{ic:'user',go:'prof'}),row('Тариф',{ic:'bill',go:'acct',em:a.plan?a.plan:''}),row('Расход',{ic:'usage',go:'usage'}),
     row('Уведомления',{ic:'bell',go:'notif'}),row('Время и фокус',{ic:'clock',go:'focus'})])+
    sec('Приложение')+card([row('Возможности',{ic:'caps',go:'perm'}),row('Claude Code',{ic:'code',go:'code'}),row('Подключения',{ic:'plug',go:'conn'}),
     row('Голос и диктовка',{ic:'voice',go:'voice'}),row('Открывать ссылки',{ic:'ext',act:'g7menu',x:'links',em:linksName(),dd:1}),
-    row('Вибро',{ic:'hap',sw:tg2(W.U&&U.haptics!==false,'hap')})])+foot('Ссылки из ответов агента открываются так же.')+
-   sec('Оформление')+tiles()+
+    row('Вибро',{ic:'hap',sw:tg2(W.U&&U.haptics!==false,'hap')})])+foot('Ссылки из ответов агента открываются так же.')+/*vb5b-2: Оформление убрано*/
    sec('Панель')+card([row('Автопилот и агенты',{ic:'auto',act:'g7tab',x:'set',chev:1}),row('Система',{ic:'gear',act:'g7tab',x:'sys',chev:1}),row('Вопросы',{ic:'q',act:'g7tab',x:'q',chev:1})])+
-   card([row('Остановить всё',{ic:'out',act:'stopall',red:1})],'g7out')+'<div class="sd3ver">Hermes Control · v'+E(W.VER||'')+'</div>'}
+   card([row('Остановить всё',{ic:'out',act:'stopall',red:1})],'g7out')+'<div class="sd3ver">Hermes Control · v'+E(verS())+'</div>'}
  /* ChatGPT Settings: промо-карточка, «Аккаунт» + «Добавить аккаунт», «Настроить», разделы, «Панель», выход */
- function gpMain(){var k=kind(),a=need('acct?k='+k,setRepaint)||{},nm=a.name||KN[k];
+ function gpMain(){var k=kind(),a=need('acct?k='+k,setRepaint)||{},nm=a.name||'';/*vb5b-1: без «Codex» вместо имени*/
   return '<div class="g7card g7promo"><div><b>Всё под контролем</b><span>Агенты, службы и связь с ПК — в «Системе».</span></div><i data-sd="g7tab" data-x="sys">Система</i></div>'+
-   card(['<div class="g7r" data-sd="g7set" data-x="acct"><span class="g7ri"><i class="g7gav">'+E(ini(nm))+'</i></span><div class="g7rt"><b>Аккаунт</b></div><em>'+E((a.mail||'').split('@')[0]||nm)+'</em>'+ic('s_chev','sd3chv')+'</div>',
-    row('Добавить аккаунт',{ic:'plus',act:'g7toast',x:'Добавить аккаунт — в '+KN[k]+' на ПК'})])+
+   card(['<div class="g7r" data-sd="g7set" data-x="acct"><span class="g7ri"><i class="g7gav">'+E(ini(nm||KN[k]))+'</i></span><div class="g7rt"><b>Аккаунт</b></div><em>'+E((a.mail||'').split('@')[0]||nm)+'</em>'+ic('s_chev','sd3chv')+'</div>'])+/*vb5b-10*/
    card([row('Настроить '+KN[k],{ic:'cust',sub:k=='hermes'?'Инструкции, память, навыки':'Инструкции, память, плагины',act:'g7tab',x:'g7:cust',chev:1})])+
    card([row('Общие',{ic:'gear',go:'gen'}),row('Уведомления',{ic:'bell',go:'notif'}),row('Голос',{ic:'voice',go:'voice'}),row('Безопасность и вход',{ic:'lock',go:'sec'}),
     row('Удалённое управление',{ic:'remote',go:'rc'}),row('Расход',{ic:'storage',go:'usage'}),row('Данные',{ic:'data',go:'data'})])+
    card([row('Автопилот и агенты',{ic:'auto',act:'g7tab',x:'set',chev:1}),row('Вопросы',{ic:'q',act:'g7tab',x:'q',chev:1})])+
-   card([row('Остановить всё',{ic:'out',act:'stopall',red:1})],'g7out')+'<div class="sd3ver">Hermes Control · v'+E(W.VER||'')+'</div>'}
+   card([row('Остановить всё',{ic:'out',act:'stopall',red:1})],'g7out')+'<div class="sd3ver">Hermes Control · v'+E(verS())+'</div>'}
  function mainBody(){return isCl()?clMain():gpMain()}
  /* «Оформление» Claude: 3 плитки-миниатюры (светлая / тёмная / системная по диагонали), оранжевая точка, выбранная — синяя рамка */
  function tiles(){var t=pf('theme');function tl(v){return '<div class="g7tile'+(t==v?' on':'')+'" data-sd="g7pf" data-a="theme" data-x="'+v+'"><i class="g7mini '+v+'"><s></s><s></s><u></u></i><b>'+themeName(v)+'</b></div>'}
@@ -177,27 +178,28 @@
  function rcBody(){return sec('Поле ввода')+card([row('Скрывать клавиатуру после ↑',{sw:tg2(pf('kbhide'),'pf','kbhide')}),row('Заполнение контекста',{sw:tg2(pf('ring'),'pf','ring')}),
    row('Если агент занят',{em:pf('busy')=='steer'?'Вмешаться':'В очередь',act:'g7menu',x:'busy',dd:1})])+foot('«Вмешаться» — сообщение уходит сразу, агент читает его по ходу. «В очередь» — после конца хода.')+
    sec('Поведение')+card([row('Переносить строки кода',{sw:tg2(pf('wrap'),'pf','wrap')})])}
- function voiceBody(){return sec('Диктовка')+card([row('Язык',{em:'Авто',act:'g7tab',x:'set',chev:1}),row('Словарь',{act:'g7tab',x:'glos',chev:1})])+foot('Голосового режима с ответом голосом в панели нет: агенты отвечают текстом.')}
+ function voiceBody(){return sec('Диктовка')+card([row('Язык распознавания',{em:'Авто'})])/*vb5b-5*/+foot('Голосового режима с ответом голосом в панели нет: агенты отвечают текстом.')}
  function secBody(){return sec('Панель')+card([row('Face ID',{sub:'Вход в панель и опасные действия',sw:tg2(W.U&&U.biolock,'bio')})])+foot('Вход в аккаунт '+KN[kind()]+' — в приложении на ПК.')}
- function genBody(){var t=pf('theme');return card([row('Оформление',{em:themeName(t),act:'g7menu',x:'theme',dd:1}),row('Открывать ссылки',{em:linksName(),act:'g7menu',x:'links',dd:1})])+
+ function genBody(){var t=pf('theme');return card([row('Открывать ссылки',{em:linksName(),act:'g7menu',x:'links',dd:1})])+
    card([row('Вибро',{sw:tg2(W.U&&U.haptics!==false,'hap')}),row('Размер текста ленты',{go:'code',em:pf('fs')+' pt'})])}
- function dataBody(){return sec('История чатов')+card([row('Архив чатов',{act:'g7arch',chev:1}),row('Все сессии по папкам',{act:'g7all',chev:1})])+foot('«Удалить все чаты» нет намеренно: это необратимо.')}
+ function dataBody(){return sec('История чатов')+card([row('Все сессии по папкам',{act:'g7all',chev:1})])/*vb5b-4*/+foot('«Удалить все чаты» нет намеренно: это необратимо.')}
  function connBody(){var d=need('custom?k=claude',setRepaint);if(!d)return '<div class="g7ld">Загружаю…</div>';if(d.error)return errH(d);
   return (d.mcp.length?card(d.mcp.map(function(x){return row(x,{ic:'plug',em:'подключено'})})):foot('Подключений нет'))+foot('Список из ~/.claude.json. Подключать — в Claude на ПК.')}
  function profBody(){var d=need('custom?k=claude',setRepaint),a=have('acct?k=claude')||{};if(!d)return '<div class="g7ld">Загружаю…</div>';if(d.error)return errH(d);
   return '<div class="g7bigav"><i>'+E(ini(a.name))+'</i></div>'+card([row('Полное имя',{em:a.name||'—'}),row('Почта',{em:a.mail||'—'})])+
    sec('Инструкции')+'<div class="g7card g7txt"><pre>'+E(d.inst.v||'— пусто —')+'</pre></div>'+foot('Файл '+d.inst.t+'. Только просмотр.')}
  function permBody(){return sec('Доступ к инструментам')+card([row('Как на ПК',{sub:'Режим разрешений из настроек Claude Code',sw:'<i class="g7ck">'+ai('check')+'</i>'}),row('Спрашивать в панели',{sub:'Разрешить / Отклонить карточкой'})])+foot('Права для одного чата — в меню ••• чата.')}
- function acctBody(){var k=kind(),a=have('acct?k='+k)||{};return card([row('Имя',{em:a.name||'—'}),row('Почта',{em:a.mail||'—'}),row('Тариф',{em:a.plan||'—'})])+foot('Только чтение. Сменить аккаунт или тариф — в '+KN[k]+' на ПК.')}
+ function acctBody(){var k=kind(),a=need('acct?k='+k,setRepaint);if(!a)return '<div class="g7ld">Загружаю…</div>';if(a.error)return errH(a);/*vb5b-10*/
+  var L=[a.name?row('Имя',{em:a.name}):'',a.mail?row('Почта',{em:a.mail}):'',a.plan?row('Тариф',{em:a.plan}):''].filter(Boolean);if(!L.length)L=[row(KN[k],{em:'вход на ПК'})];return card(L)+foot('Только чтение. Сменить аккаунт или тариф — в '+KN[k]+' на ПК.')}
  var SP={usage:['Расход',usageBody],notif:['Уведомления',notifBody],focus:['Время и фокус',focusBody],look:['Оформление',lookBody],code:['Claude Code',codeBody],rc:['Удалённое управление',rcBody],
   voice:['Голос и диктовка',voiceBody],sec:['Безопасность и вход',secBody],gen:['Общие',genBody],data:['Данные',dataBody],conn:['Подключения',connBody],prof:['Профиль',profBody],perm:['Возможности',permBody],acct:['Аккаунт',acctBody]};
  function hb(sd,lbl,inner,cls){return '<div class="g7hb'+(cls?' '+cls:'')+'" data-sd="'+sd+'" role="button" aria-label="'+lbl+'">'+inner+'</div>'}
  function setHead(){var back=SS.stack.length>0,cl=isCl(),top=SS.stack[SS.stack.length-1],t=back?SP[top][0]:'Настройки';
-  if(!cl&&top=='voice')t='Голос';
+  if(!cl&&top=='voice')t='Голос';if(!cl&&top=='code')t='Текст и код';/*vb5b-3*/
   return '<div class="g7sh">'+(back?hb('g7setb','Назад',cl?ai('back'):backIc()):hb('setx','Закрыть',cl?ai('x'):ic('s_x')))+'<div class="g7st">'+E(t)+'</div>'+
    (back?(top=='usage'?cap2(cl):''):hb('info','О панели',cl?ai('info'):ic('s_info'),'r'))+'</div>'}
  /* капсула [⟳ | i] как у Usage Claude */
- function cap2(cl){return '<div class="g7cap r"><i data-sd="g7usr" role="button" aria-label="Обновить">'+(cl?ai('refresh'):'⟳')+'</i><i data-sd="g7toast" data-x="Лимиты: Claude — из Claude Desktop, Codex — из последнего ответа, Hermes — токены за 24 ч" role="button" aria-label="Что это">'+(cl?ai('info'):'i')+'</i></div>'}
+ function cap2(cl){return '<div class="g7cap r"><i data-sd="g7usr" role="button" aria-label="Обновить">'+(cl?ai('refresh'):'<svg width="19" height="19" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.2 10.4a6.2 6.2 0 1 1-1.9-4.6M16.4 3.6v3.6h-3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>')+'</i><i data-sd="g7tip" data-x="Лимиты: Claude — из Claude Desktop, Codex — из последнего ответа, Hermes — токены за 24 ч" role="button" aria-label="Что это">'+(cl?ai('info'):'i')+'</i></div>'}
  function setBody(){var top=SS.stack[SS.stack.length-1];return '<div class="sd3sc g7ssc" id="sd3ssc">'+(top?SP[top][1]():mainBody())+'</div>'}
  function setHtml(sty){SS.stack=[];get('acct?k='+kind());get('usage');get('vers');return setBody()+setHead()}
  function setEl(){var r=$i('sd3set');return r&&/\bon\b/.test(r.className)?r:null}
@@ -215,23 +217,25 @@
  function pick(k,v){SD3.closePop();if(k=='links'||k=='busy'||k=='theme')pfs(k,v);else{var e=Ev();if(e.quiet){e.quiet[k=='qfrom'?'from':'to']=v;baseSave()}}setRepaint()}
  /* ⓘ — версии */
  function info(el){var v=have('vers'),r=el.getBoundingClientRect();if(!v){get('vers',function(d){if(d&&!d.error&&el.isConnected)info(el)});v={}}
-  var h='<div class="sd3mh">Hermes Control v'+E(W.VER||'')+'</div>'+['claude','codex','hermes'].map(function(k){return v[k]?'<div class="sd3mi" data-sd="g7copy" data-v="'+E(KN[k]+' '+v[k])+'"><span>'+KN[k]+' '+E(v[k])+'</span></div>':''}).join('')+
+  var h='<div class="sd3mh">Hermes Control v'+E(verS())+'</div>'+['claude','codex','hermes'].map(function(k){return v[k]?'<div class="sd3mi" data-sd="g7copy" data-v="'+E(KN[k]+' '+v[k])+'"><span>'+KN[k]+' '+E(v[k])+'</span></div>':''}).join('')+
    SD3.mi('reload','','Обновить панель')+SD3.mi('g7tab','','Система: проверка',0,{x:'sys'});
   SD3.pop(h,{top:(r.bottom+8)+'px',right:(innerWidth-r.right)+'px'},{origin:'top right'})}
  /* ---------- 3. кольцо контекста (Claude iOS, кадр B1 94.5: в капсуле [32 | •••] вместо ✎, Ø≈22 pt, серый трек, дуга #5698D4, число внутри) ---------- */
- var RG={sig:'',d:null,t:0};
+ var RG={sig:'',d:null,t:0};var RGC=lsg('g7rgc',null)||{};/*vb5a-4: последнее кольцо по чату — сразу при открытии*/
+ function rgPut(sig,d){if(!d||d.error||!d.win)return;RGC[sig]={pct:d.pct,win:d.win,used:d.used,ts:Date.now()};var ks=Object.keys(RGC);if(ks.length>40){ks.sort(function(a,b){return RGC[a].ts-RGC[b].ts});delete RGC[ks[0]]}try{localStorage.setItem('g7rgc',JSON.stringify(RGC))}catch(e){}}
  function ringHtml(p){p=Math.max(0,Math.min(100,+p||0));var R=13.6,L=2*Math.PI*R,w=p>=90?' crit':p>=70?' warn':'';
   return '<svg width="31" height="31" viewBox="0 0 31 31" aria-hidden="true"><circle cx="15.5" cy="15.5" r="'+R+'" fill="none" class="trk" stroke-width="2.6"/><circle class="arc'+w+'" cx="15.5" cy="15.5" r="'+R+'" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+(L*Math.max(p,1.5)/100).toFixed(2)+' '+L.toFixed(2)+'" transform="rotate(-90 15.5 15.5)"/></svg><b>'+Math.round(p)+'</b>'}
  function ringTick(){var s=st();if(!s||s.view!='chat'||!s.sid||(s.kind!='claude'&&s.kind!='codex')||!pf('ring')){D.querySelectorAll('.g7ring').forEach(function(x){x.remove()});B.classList.remove('g7rg');return}
   var cl=s.kind=='claude',hd=cl?$i('clhd'):$i('g3hd');if(!hd)return;var cap=cl?hd.querySelector('.clpill'):hd.querySelector('.g3cap');if(!cap)return;
   var sig=s.kind+':'+s.sid,busy=!!(s.busy||(s.cur&&s.cur.live)),p='ctx?k='+s.kind+'&id='+encodeURIComponent(s.sid);
-  if(sig!=RG.sig){RG.sig=sig;RG.d=null;RG.t=0}if((!RG.t||Date.now()-RG.t>(busy?20e3:60e3))){RG.t=Date.now();delete C[p];get(p,function(d){if(RG.sig==sig){RG.d=d;ringTick()}})}
-  var d=RG.d,el=hd.querySelector('.g7ring');if(!d||d.error||!d.win){if(el)el.remove();B.classList.remove('g7rg');return}
+  if(sig!=RG.sig){RG.sig=sig;RG.d=RGC[sig]||null;RG.ph=!RG.d;RG.t=0}if((!RG.t||Date.now()-RG.t>(busy?20e3:60e3))){RG.t=Date.now();delete C[p];get(p,function(d){if(RG.sig==sig){RG.d=d;RG.ph=false;rgPut(sig,d);ringTick()}})}
+  var d=RG.d,el=hd.querySelector('.g7ring');if(!d&&RG.ph)d={pct:0,win:1,ph:1};/*vb5a-4: пока нет данных — пустое кольцо на своём месте*/if(!d||d.error||!d.win){if(el)el.remove();B.classList.remove('g7rg');return}
   if(!el){el=D.createElement(cl?'i':'div');el.className='g7ring'+(cl?' in':' g3gl');el.dataset.g7='ctx';el.setAttribute('role','button');el.setAttribute('aria-label','Контекст');
    if(cl)cap.insertBefore(el,cap.firstChild);else cap.parentNode.insertBefore(el,cap)}
-  B.classList.toggle('g7rg',cl);if(!have('usage'))need('usage',function(){});var hh=ringHtml(d.pct);if(el.__h!=hh){el.innerHTML=hh;el.__h=hh}}
- setInterval(function(){try{ringTick()}catch(e){}},1500);
- function fmtK(n){n=+n||0;return n>=1e6?(n/1e6).toFixed(n%1e6?1:0)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n)}
+  B.classList.toggle('g7rg',cl);if(!have('usage'))need('usage',function(){});var hh=d.ph?ringHtml(0).replace(/<circle class="arc[^>]*>/,'').replace(/<b>[^<]*<\/b>/,'<b></b>'):ringHtml(d.pct);if(el.__h!=hh){el.innerHTML=hh;el.__h=hh}}
+ setInterval(function(){try{ringTick()}catch(e){}},400);/*vb5a-4: было 1500 — кольцо появлялось через 0,6–1,5 с после открытия*/
+ function fmtK(n){n=+n||0;var f=function(x){return String(x).replace('.',',')};return n>=1e6?f((n/1e6).toFixed(n%1e6?1:0))+' млн':n>=1e3?f((n/1e3).toFixed(1))+' тыс.':String(n)}/*vb5b-14*/
+ function verS(){var v=+(W.VER||0);return v>=100?'10.'+(v-100):v?(v/10).toFixed(1):''}
  /* лист «Расход» из кольца (B1 101.5): плавающий, ✕ | Расход | [⟳ | i]; «Контекст» → «Окно контекста 8 % занято», полоса, «83.1K из 1M токенов»; ниже лимит тарифа */
  function ctxSheet(){var d=RG.d,s=st();if(!d||!s)return;var cl=s.kind=='claude',u=have('usage'),v=D.createElement('div');v.id='g7cv';var sh=D.createElement('div');sh.id='g7cs';sh.className='g7s '+(cl?'cl':'gp');
   function body(){var u=have('usage'),lim='';if(u){if(cl&&u.claude)lim=sec('Лимиты тарифа')+card([bar('Текущая сессия',u.claude.five,'Окно 5 ч · обновлено '+ago(u.claude.t))]);else if(!cl&&u.codex&&u.codex.primary)lim=sec('Лимиты тарифа')+card([bar(u.codex.primary.min>=10080?'Неделя':'Окно',u.codex.primary.pct,u.codex.primary.reset?'Сброс '+ago(u.codex.primary.reset):'')])}
@@ -255,9 +259,9 @@
  setTimeout(loadFonts,0);
  /* ---------- клики (вызываются из switch g3_side: default → G7.act) ---------- */
  function go(x,el){if(x=='code'){if(W.SD3)SD3.rcOpen({ag:'claude'});return}if(PAGES[x])pgOpen(x)}
- function tabGo(x){pgClose(true);if(W.SD3){SD3.setClose(true);if(x.indexOf('g7:')==0){go(x.slice(3));return}if(x=='glos'){SD3.closeAll();baseA('glos');return}SD3.goTab(x)}}
+ var PGF='';function tabGo(x){PGF=setEl()&&x.indexOf('g7:')==0?'set':'';/*vb5b-6*/pgClose(true);if(W.SD3){SD3.setClose(true);if(x.indexOf('g7:')==0){go(x.slice(3));return}if(x=='glos'){SD3.closeAll();baseA('glos');return}SD3.goTab(x)}}
  function act(a,ds,el){switch(a){
-  case 'g7pgx':pgClose();if(W.SD3)SD3.open();break;
+  case 'g7pgx':{var f0=PGF;PGF='';pgClose();if(W.SD3){if(f0=='set'){SD3.open({instant:true});setTimeout(function(){SD3.setOpen()},30)}else SD3.open()}break}/*vb5b-6*/
   case 'g7tab':SD3.closePop();tabGo(ds.x);break;
   case 'g7img':imgView(+ds.i);break;
   case 'g7draw':draw();break;
@@ -266,6 +270,7 @@
   case 'g7menu':menu(ds.x,el);break;
   case 'g7pick':pick(ds.m,ds.v);break;
   case 'g7toast':T(ds.x||'');break;
+  case 'g7tip':{if(!W.SD3)break;var rr=el.getBoundingClientRect(),pp=SD3.pop('<div class="g7tipb">'+E(ds.x||'')+'</div>',{right:'16px',top:(rr.bottom+6)+'px',maxWidth:'270px'},{origin:'top right'});pp.classList.add('g7m');pp.classList.add(isCl()?'g7mc':'g7mg');break}/*vb5b-9*/
   case 'g7usr':delete C['usage'];get('usage',setRepaint);break;
   case 'g7copy':try{navigator.clipboard.writeText(ds.v);T('Скопировано')}catch(e){}SD3.closePop();break;
   case 'g7arch':{SD3.setClose(true);var Q=SD3.SD;Q.q='';Q.sel=null;Q.flt='arch';Q.grp=false;Q.ag='';SD3.rcOpen({keep:true});break}
@@ -274,7 +279,7 @@
   case 'g7sw':{var k=ds.a;if(k=='pf'){pfs(ds.x,!pf(ds.x))}else if(k=='hap'){baseA('hap')}else if(k=='bio'){baseA('biolock')}else{baseA(k);baseSave()}
    try{tg.HapticFeedback.selectionChanged()}catch(x){}setTimeout(setRepaint,30);break}
  }}
- D.addEventListener('input',function(e){var r=e.target.dataset&&e.target.dataset.g7r;if(!r)return;pfs(r,+e.target.value);var em=e.target.parentNode.querySelector('em');if(em)em.textContent=e.target.value},true);
+ D.addEventListener('input',function(e){var r=e.target.dataset&&e.target.dataset.g7r;if(!r)return;pfs(r,+e.target.value);var cd=e.target.closest('.g7card'),em=cd&&cd.querySelector('.g7r em');if(em)em.textContent=e.target.value+' pt'},true);/*vb5b-3: подпись в соседней строке*/
  D.addEventListener('keydown',function(e){if(e.target.id=='g7dq'&&e.key=='Enter'){e.preventDefault();draw()}if(e.key=='Escape'&&PG.k)pgClose()});
  /* страница открыта, а экран сменился (уход из вкладки) — закрыть */
  setInterval(function(){if(PG.k&&!(W.U&&U.tab=='hc'))pgClose(true)},700);

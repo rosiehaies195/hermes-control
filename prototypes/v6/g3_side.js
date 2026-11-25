@@ -124,7 +124,7 @@
  function open(o){o=o||{};var m=main();if(!m&&!o.fx)return;closePop();
   SD.fx=o.fx||null;SD.sty=o.sty||(SD.fx&&SD.fx.sty)||sty();SD.X=SD.sty=='c'?320.3:310;SD.on=true;
   try{var a=D.activeElement;if(a&&a.blur)a.blur()}catch(e){}
-  paint();load();haptic();if(o.instant){SD.pos=SD.X;setPos(main(),SD.X);cover();return}
+  paint();load();haptic();setTimeout(function(){if(SD.on)mcWarm()},700);/*vb5a3*/if(o.instant){SD.pos=SD.X;setPos(main(),SD.X);cover();return}
   if(SD.pos==null)SD.pos=0;animTo(SD.X)}
  function close(o,cb){o=o||{};if(!SD.on){cb&&cb();return}
   var fin=function(){SD.on=false;SD.pos=0;var m=main();var pp=$i('sd3');if(pp){pp.style.opacity='';pp.style.clipPath=''}if(m){m.classList.remove('sd3main');m.style.transform='';m.style.borderTopLeftRadius=m.style.borderBottomLeftRadius='';if(m.__dm)m.__dm.style.opacity='0'}
@@ -134,7 +134,7 @@
      после быстрого свайпа — продолжаем со скоростью пальца */
   var x0=SD.pos||0,d=Math.round(220+80*Math.min(1,x0/SD.X));
   if(o.flick)animTo(0,fin,Math.max(180,Math.min(320,x0/o.flick)),'cubic-bezier(.2,.55,.25,1)');else animTo(0,fin,d,'cubic-bezier(.4,0,.2,1)')}
- function goTab(x){closeAll();var d=D.createElement('i');if(x=='sys'){d.dataset.a='sys'}else{d.dataset.a='tab';d.dataset.x=x}d.style.display='none';B.appendChild(d);d.click();d.remove();
+ function goTab(x){closeAll();var d=D.createElement('i');if(x=='sys'){if(W.U&&U.tab=='hc'){U.tab='more';U.page=null}/*vb5b7: Система в облике g4 (вкладка «Ещё»), не старый экран v5*/d.dataset.a='sys'}else{d.dataset.a='tab';d.dataset.x=x}d.style.display='none';B.appendChild(d);d.click();d.remove();
   if(x=='sys'){/* «Система» — страница из Настроек */}}
  function closeAll(){rcClose(true);setClose(true);closePop();close({instant:true})}
  function hcDo(a,ds){var d=D.createElement('i');d.dataset.hc=a;for(var k in (ds||{}))d.dataset[k]=ds[k];d.style.display='none';($i('hcroot')||B).appendChild(d);d.click();if(d.parentNode)d.remove()}
@@ -350,7 +350,7 @@
    if(!SW.open&&!SD.on){if(dx<=0||SD.fx){swDrop();return}SW.open=true;SW.p0=SD.pos||0}
    if(Math.abs(dx)<Math.abs(dy)*1.2||(SW.open&&dx<0)||(!SW.open&&dx>0&&SW.p0>=SD.X)){SW=null;return}
    /* s4c-2: меню рисуется ДО захвата жеста (paint() при SW.go откладывается до отпускания) — с первого кадра свайпа пункты на месте, а не чёрная пустота */
-   if(SW.open){SD.fx=null;SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.on=true;SD.dirty=0;paint();load();try{D.activeElement&&D.activeElement.blur&&D.activeElement.blur()}catch(x){}}
+   if(SW.open){SD.fx=null;SD.sty=sty();SD.X=SD.sty=='c'?320.3:310;SD.on=true;SD.dirty=0;paint();load();setTimeout(function(){if(SD.on)mcWarm()},700);/*vb5a3*/try{D.activeElement&&D.activeElement.blur&&D.activeElement.blur()}catch(x){}}
    SW.go=true;SD.drag=true;
    if(SD.anim){cancelAnimationFrame(SD.anim);SD.anim=null}}
   e.preventDefault();var now=performance.now();SW.v=(t.clientX-SW.lx)/Math.max(1,now-SW.lt);SW.lx=t.clientX;SW.lt=now;
@@ -379,8 +379,19 @@
  function mcSave(){MCt=Date.now();MCw=0;lss('sd3mc',MC);lss('sd3mco',MCo)}
  function mcPut(){var s=st();if(!s||s.view!='chat'||!s.sid||s.loadingMsgs||s.busy||!s.msgs||!s.msgs.length)return;var key=s.kind+':'+s.sid,M=s.msgs.filter(function(b){return b&&!b.lp&&!b.live}).slice(-40),j;
   try{j=JSON.stringify(M);while(j.length>40000&&M.length>1){M=M.slice(Math.ceil(M.length/4));j=JSON.stringify(M)}}catch(e){return}if(!M.length||j.length>40000||MC[key]===j)return;
-  MC[key]=j;MCo=MCo.filter(function(x){return x!=key});MCo.push(key);while(MCo.length>6)delete MC[MCo.shift()];
+  MC[key]=j;MCo=MCo.filter(function(x){return x!=key});MCo.push(key);while(MCo.length>16)delete MC[MCo.shift()];/*vb5a-3: было 6*/
   if(Date.now()-MCt>3000)mcSave();else if(!MCw)MCw=setTimeout(mcSave,3000)}
+ /*vb5a3: прогрев кэша — по одному запросу подряд, не чаще раза в 3 мин на чат, только когда меню открыто*/
+ var MW={q:[],busy:0,t:{}};
+ function mcWarm(){var s=st();if(!s)return;var k=s.kind,bs=k=='codex'?'/cx':k=='claude'?'/cc':'';
+  var R=(SD.L[k]||[]).filter(function(x){return x.src!='cron'&&!x.new&&x.id!=s.sid}).sort(function(a,b){return (b.ts||0)-(a.ts||0)}).slice(0,4);
+  R.forEach(function(x){var key=k+':'+x.id;if(MC[key]||Date.now()-(MW.t[key]||0)<180e3||MW.q.some(function(q){return q.key==key}))return;MW.q.push({key:key,u:bs+'/sessions/'+encodeURIComponent(x.id)+'/messages'})});
+  mcStep()}
+ function mcStep(){if(MW.busy||!MW.q.length)return;var j=MW.q.shift();MW.t[j.key]=Date.now();MW.busy=1;
+  api(j.u).then(function(d){var M=(W.HC&&HC.fromHistory&&d&&d.m)?HC.fromHistory(d.m).filter(function(b){return b&&!b.live}).slice(-40):[];if(!M.length||MC[j.key])return;var js=JSON.stringify(M);
+   while(js.length>40000&&M.length>1){M=M.slice(Math.ceil(M.length/4));js=JSON.stringify(M)}if(js.length>40000)return;
+   MC[j.key]=js;MCo=MCo.filter(function(x){return x!=j.key});MCo.push(j.key);while(MCo.length>16)delete MC[MCo.shift()];if(!MCw)MCw=setTimeout(mcSave,1500)})
+   .catch(function(){}).then(function(){MW.busy=0;if(SD.on)setTimeout(mcStep,150);else MW.q.length=0})}
  function mcFill(k,id){var s=st();if(!s||s.sid!=id||s.kind!=k||s.msgs.length||!s.loadingMsgs)return;var j=MC[k+':'+id];if(!j)return;try{s.msgs=JSON.parse(j);s.stick=true;HC.paint()}catch(e){}}
  /* s4c-4b: ход закончился — через 1,5 и 7 с перечитываем список агента: Hermes даёт чату название после первого ответа */
  var TW={sig:''};
@@ -413,7 +424,10 @@
   var L=lsg('sd3last',null),k=KN[k0]?k0:(L&&KN[L.k]?L.k:s.kind);if(s.kind!=k)hcDo('kind',{v:k});entTick()}
  function entTick(){if(!ENT.on)return;var s=st();if(!s||!(W.U&&U.tab=='hc')){entEnd();return}if(s.view=='chat'){entEnd();return}
   if(s.lerr){entEnd();return}
-  if(!s.sessions){setTimeout(entTick,120);return}
+  if(!s.sessions){/*vb5a-1: список ещё грузится — последний чат берём из кэша списка (sd3L_<агент>), экран чата сразу, сообщения из кэша sd3mc*/
+   var C0=SD.L[s.kind],L0=lsg('sd3last',null),c0=L0&&L0.k==s.kind&&C0&&C0.some(function(x){return x.id==L0.id})?L0.id:null;
+   if(c0){var k0=s.kind;HC.st.sessions=C0.map(function(x){var y={};for(var q in x)y[q]=x[q];if(k0!='hermes')y.cc=true;return y});hcDo('open',{id:c0});mcFill(k0,c0);entEnd();return}
+   setTimeout(entTick,120);return}
   var L=lsg('sd3last',null),id=L&&L.k==s.kind&&s.sessions.some(function(x){return x.id==L.id})?L.id:null;
   if(!id){var a=s.sessions.filter(function(x){return x.src!='cron'}).sort(function(x,y){return (y.ts||0)-(x.ts||0)})[0];id=a&&a.id}
   if(!id){entEnd();return}

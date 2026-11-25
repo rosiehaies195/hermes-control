@@ -33,7 +33,8 @@ function subTxt(){/*p5one*/if(!st.rw&&deskOK())return deskRun()?'отвечае�
 function deskRun(){if(st.sid&&st.dsq&&st.dsq[st.sid])return true;/*s4a-run: сообщение ещё уходит на ПК — уже «работает»*/return st.kind=='hermes'?!!(st.cur&&st.cur.live||st.hpoll&&st.hpoll==st.sid):!!st.cclive}/*s3-1c-run*/
 function sendBtn(){var s=document.getElementById('hcsend');if(!s)return;var dk=!st.rw&&deskOK(),idle=!(st.draft||'').trim()&&!st.imgs.length,stp=dk?(deskRun()&&idle):st.busy;
  s.className='hcsendb'+(stp?' stop':'')+(dk&&st.dsq&&st.dsq[st.sid]?' wait':'')/*s4a-wait*/;s.innerHTML=stp?IC('square'):IC('arrow-up')}
-function chipsHtml(){if(!st.rw&&st.kind=='codex')return '';return '<div class="hcchip" data-hc="model">'+E(chipTxt())+(st.msel&&st.msel.m?'<i class="on"></i>':'')+IC('chevron-down')+'</div><div class="hcchip" data-hc="effort">'+E(effTxt())+IC('chevron-down')+'</div>'}
+function cxFresh(){return st.kind=='codex'&&!st.rw&&!!st.sid&&!st.loadingMsgs&&!st.msgs.length&&!(st.dsq&&st.dsq[st.sid])}/*vb5m: у нового чата Codex модель первого хода выбирается (config.toml на время подхвата)*/
+function chipsHtml(){if(!st.rw&&st.kind=='codex'&&!cxFresh())return '';return '<div class="hcchip" data-hc="model">'+E(chipTxt())+(st.msel&&st.msel.m?'<i class="on"></i>':'')+IC('chevron-down')+'</div><div class="hcchip" data-hc="effort">'+E(effTxt())+IC('chevron-down')+'</div>'}
 function modelSheet(){var M=st.models;
  if(!M){sheet('<div class="hcsh"><b>Модель</b></div><div class="hint2">'+(st.merr?E(st.merr):'Загружаю список…')+'</div><div class="btn" data-hc="close">Закрыть</div>');if(!st.models)loadModels().then(function(){if(st.models)modelSheet()});return}
  if(!st.mprov){var cp=st.msel&&st.msel.p||M.cur.provider;st.mprov=M.p.some(function(p){return p.slug==cp})?cp:(M.p[0]&&M.p[0].slug)||''}
@@ -76,8 +77,12 @@ function md0(src){src=String(src||'');var parts=[],re=/(?:^|\n)[ \t]{0,3}```([\w
 /* ---------- история -> блоки ---------- */
 function argPreview(a){if(!a)return '';try{var j=typeof a=='string'?JSON.parse(a):a;var k=['command','cmd','path','file_path','query','url','pattern','prompt','text'];for(var i=0;i<k.length;i++)if(j[k[i]])return String(j[k[i]]);var v=Object.keys(j)[0];if(!v)return '';var x=j[v];return typeof x=='string'?x:(x&&typeof x=='object'?JSON.stringify(x):String(x))}catch(e){return String(a)}}
 function resErr(s){try{var j=JSON.parse(s);if(j&&typeof j=='object'){if(j.error)return true;if(j.exit_code!=null&&j.exit_code!==0)return true}}catch(e){}return false}
+/*vb5g4: ходы автоматизаций Codex приходят XML-ом <heartbeat>…</heartbeat> — показываем словами*/
+function hbTx(c,r){var g=function(k){var mm=String(c).match(new RegExp('<'+k+'>([\\s\\S]*?)</'+k+'>'));return mm?mm[1].trim():''};
+ if(r=='user'){var id=g('automation_id'),ins=g('instructions');return 'Автоматизация'+(id?' «'+id+'»':'')+' — проверка по расписанию'+(ins?'\n\n'+ins:'')}
+ var msg=g('message'),dec=g('decision');return (msg||String(c).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim())+(dec=='NOTIFY'?'\n\n(уведомить)':'')}
 function fromHistory(m,out0){var out=(out0||[]).filter(function(b){return !b.lp}),a=out.length&&out[out.length-1].k=='a'?out[out.length-1]:null;
- m.forEach(function(x){
+ m.forEach(function(x){if(x&&(x.r=='user'||x.r=='assistant')&&/^\s*<heartbeat>/.test(x.c||'')){var y={};for(var q in x)y[q]=x[q];y.c=hbTx(x.c,x.r);x=y}
   if(x.r=='user'){a=null;var c=x.c||'',im=0,ip=[];/*s3-5a*/c=c.replace(/\n*\[Image attached at:([^\]]*)\]/g,function(_,pp){im++;pp=String(pp||'').trim();if(pp)ip.push(pp);return ''}).replace(/\n*\[screenshot\]/g,'').trim();if(im&&/^Посмотри на изображени[ея]\.?$/.test(c))c='';/*s4a-cap: подпись, которую подставил ПК к фото без текста, не показываем*/if(c||im)out.push({k:'u',t:c,im:im,ip:ip,ts:x.ts||0});return}/*s3-5a-push*/
   if(x.r=='assistant'){if(!a){a={k:'a',parts:[]};out.push(a)}if(x.ts)a.ts=x.ts;if((x.c||'').trim())a.parts.push({p:'t',t:x.c});(x.tc||[]).forEach(function(c){a.parts.push({p:'tool',id:c.id,n:c.n||'tool',a:c.a||'',st:'nr',res:''})});return}
   if(x.r=='tool'){for(var i=out.length-1;i>=0;i--){if(out[i].k!='a')continue;var f=out[i].parts.filter(function(p){return p.p=='tool'&&p.id==x.tid})[0];if(f){f.res=x.c||'';f.st=resErr(x.c)?'err':'ok';break}}}
@@ -217,10 +222,12 @@ function psOn(){return !!document.querySelector('#sheet.on .hcps')}
 /* s3-8d: Claude работает в любой папке проекта (незнакомую панель открывает диплинком + Trust), у Claude нет «Без проекта» —
    вместо него «Новый проект…» (папка по названию). Папки, где Claude уже работал, у Claude идут первыми. */
 function projSheet(){var ps=st.projs,kk=st.newK||st.kind,cl=kk=='claude';
+ if(!ps){var pc=LS.get('hcprojs',null);if(pc&&pc.length){st.projs=ps=pc;st.projsT=0}}/*vb5a6b: сразу из кэша*/
+ if(ps&&Date.now()-(st.projsT||0)>30000){st.projsT=Date.now();J('/projects').then(function(d){var n=d.p||[];LS.set('hcprojs',n);if(JSON.stringify(n)!=JSON.stringify(st.projs)){st.projs=n;if(psOn())projSheet()}}).catch(function(){})}
  if(ps){ps=ps.map(function(p,i){var y={};for(var q in p)y[q]=p[q];y._i=i;return y});if(cl)ps.sort(function(a,b){return (b.cl?1:0)-(a.cl?1:0)||a._i-b._i})}
  var np='<div class="hcmi" data-hc="npnew">'+IC('plus')+'<b>Новый проект…</b><span>'+(cl?'Claude нужна папка — дай проекту название':'создать папку по названию')+'</span></div>';
  if(!ps){sheet('<div class="hcsh hcps"><b>Проект</b></div><div class="hint2">'+(st.perr?E(st.perr):'Загружаю список…')+'</div><div class="hcml">'+np+'</div>'+(cl?'':'<div class="btn" data-hc="newnone">Без проекта</div>')+'<div class="btn" data-hc="close">Отмена</div>');
-  J('/projects').then(function(d){st.projs=d.p||[];st.perr='';if(psOn())projSheet();else window.cbDiag&&cbDiag('newchat_late_list',{})}).catch(function(e){st.perr='Не удалось: '+E(e.message);st.projs=null;if(psOn()){if(cl)projSheet();else doNew('','')}});return}
+  J('/projects').then(function(d){st.projs=d.p||[];st.projsT=Date.now();LS.set('hcprojs',st.projs);st.perr='';if(psOn())projSheet();else window.cbDiag&&cbDiag('newchat_late_list',{})}).catch(function(e){st.perr='Не удалось: '+E(e.message);st.projs=null;if(psOn()){if(cl)projSheet();else doNew('','')}});return}
  if(!ps.length&&!cl){doNew('','');return}
  var last=LS.get('hcproj_'+kk,LS.get('hcproj',''));if(cl&&!ps.some(function(p){return p.path==last}))last=ps.length?ps[0].path:'';/*s3-8h-last: у Claude отмечен последний его проект или первая папка, где он работал*/
  var h='<div class="hcsh hcps"><b>Проект для нового чата</b></div><div class="hcml">'+/*s3-8h-order: у Hermes/Codex сначала «Без проекта»*/
@@ -348,7 +355,7 @@ function deskStopId(o,k){toast('Останавливаю…');
 function KB(k){return k=='claude'?'/cc':k=='codex'?'/cx':''}
 function ccSend(){var t=(st.draft||'').trim();if((!t&&!st.imgs.length)||!live())return;st.dsq=st.dsq||{};
  if(st.sid&&st.dsq[st.sid]){toast(st.creating==st.sid?'Чат ещё создаётся — сообщение уйдёт сразу после него':'Дождись: предыдущее сообщение ещё уходит на ПК');haptic('error');return}
- if(!st.rw&&st.sid&&deskOK()){var o=st.sid,k=st.kind,imgs=st.imgs.slice(),m=st.msel||{},b={t:t};if(imgs.length)b.images=imgs;if(k!='codex'){if(m.m){b.model=m.m;b.provider=m.p}if(m.e)b.effort=m.e}
+ if(!st.rw&&st.sid&&deskOK()){var o=st.sid,k=st.kind,imgs=st.imgs.slice(),m=st.msel||{},b={t:t};if(imgs.length)b.images=imgs;if(k!='codex'||cxFresh()){if(m.m){b.model=m.m;b.provider=m.p}if(m.e)b.effort=m.e}/*vb5m*/
   st.draft='';st.imgs=[];var ta0=document.getElementById('hcin');if(ta0){ta0.value='';grow(ta0)}
   var T0=Date.now(),nu0=st.msgs.filter(function(b){return b.k=='u'&&!b.lp}).length;st.lp=(st.lp||[]).concat([{sid:o,k:k,t:t||'',im:imgs.length,ts:T0/1000,t0:T0,nu:nu0}]);
   st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}));st.stick=true;
@@ -496,8 +503,8 @@ function msgMenu(i){var b=st.msgs[i],t=msgText(b);if(!t||!t.trim())return;var cb
  document.addEventListener('click',function(e){if(fired&&Date.now()-fired<900){fired=0;e.preventDefault();e.stopPropagation()}},true);
  document.addEventListener('contextmenu',function(e){if(e.target.closest&&e.target.closest('#hcmsgs .hcrow[data-mi]')&&armed){e.preventDefault()}},true);
 })();
-function fwdQuote(b){var t=msgText(b).trim(),who=b.k=='u'?'моё сообщение':agentName();
- return '[Переслано из '+agentName()+' · «'+(st.title||'чат')+'» · '+who+']\n'+t.split('\n').map(function(l){return '> '+l}).join('\n')+'\n\n'}
+function fwdQuote(b){var t=msgText(b).trim();/*vb5g3: без служебной разметки [· ·]*/
+ return 'Переслано из '+agentName()+' «'+(st.title||'чат')+'»'+(b.k=='u'?' (моё сообщение)':'')+':\n'+t.split('\n').map(function(l){return '> '+l}).join('\n')+'\n\n'}
 function fwdStart(i){var b=st.msgs[i];if(!b||!msgText(b).trim())return;st.fwdSrc={q:fwdQuote(b),kind:st.kind,sid:st.sid};st.fwdL=st.fwdL||{};fwdSheet(st.kind)}
 function fwdPath(k){return k=='claude'?'/cc/sessions?limit=40':k=='codex'?'/cx/sessions?limit=40':'/sessions?limit=40'}
 function fwdSheet(k){if(!st.fwdSrc)return;var L=st.fwdL[k],nm={hermes:'Hermes',claude:'Claude',codex:'Codex'};
@@ -516,5 +523,5 @@ function fwdGo(k,id,isNew){var f=st.fwdSrc;if(!f)return;unsheet();st.fwdSrc=null
  if(st.kind!=k){ccStop();st.kind=k;LS.set('hckind',k);st.models=null;st.msel=null;st.mprov=''}
  st.sessions=(st.fwdL[k]||[]).map(function(x){if(k!='hermes')x.cc=true;return x});st.fwdDraft=f.q;
  openSess(id)}
-return {newChat:newChat,msgMenu:msgMenu,fwdStart:fwdStart,copyText:copyText,open:function(id){if(st.kind!='hermes'){st.kind='hermes';LS.set('hckind','hermes')}return openSess(id)},pretty:pretty,st:st,shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint,failHtml:failHtml,phantom:phantom/*s4a-exp*/}
+return {newChat:newChat,msgMenu:msgMenu,fwdStart:fwdStart,copyText:copyText,open:function(id){if(st.kind!='hermes'){st.kind='hermes';LS.set('hckind','hermes')}return openSess(id)},pretty:pretty,cxFresh:cxFresh,chipTxt:chipTxt,st:st,/*vb5m*/shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint,failHtml:failHtml,phantom:phantom/*s4a-exp*/}
 })();
