@@ -97,6 +97,7 @@
    h+=turnA(t,last&&lv,last)});
   /* свёрнутая карточка вопроса/разрешения — строкой статуса (✕ на карточке) */
   (s.pend||[]).forEach(function(p,i){if(G.qmin[p.id||i])h+='<div class="clth" data-cl="qopen" data-i="'+i+'"><div class="cldots"><i></i><i></i><i></i></div><span>'+(p.kind=='clarify'?'Задаю вопрос':'Жду разрешения')+'</span>'+ic('clock')+ic('chev')+'</div>'});
+  if(W.S5S)h+=S5S.html(s);/*s5-sub: субагенты*/
   if(s.err)h+='<div class="clerr"><i>i</i><div>'+E(s.err)+'</div></div>';
   if(opened)h+='</div>';
   if(s.loadingMsgs&&!s.msgs.length&&!(s.creating&&s.creating==s.sid)/*vb5a6*/)h+='<div class="clth clload"><div class="cldots"><i></i><i></i><i></i></div><span>Загружаю</span></div>';

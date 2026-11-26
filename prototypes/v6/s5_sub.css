@@ -1,0 +1,45 @@
+/* s5-sub (этап 5, п.4): субагенты в конце ленты чата (тихий блок, строки: заголовок + одна строка подписи) */
+.s5s{margin:6px 16px 10px;border-radius:18px;border:1px solid rgba(127,127,127,.22);padding:4px 0}
+.s5sh{font-size:13px;line-height:18px;opacity:.55;padding:6px 14px 2px}
+.s5sr{display:flex;align-items:center;gap:10px;min-height:48px;padding:4px 14px;cursor:pointer}
+.s5sr+.s5sr{border-top:1px solid rgba(127,127,127,.14)}
+.s5sd{flex:none;width:8px;height:8px;border-radius:50%;background:rgba(127,127,127,.6)}
+.s5sd.run{background:#34c759;animation:s5sp 1.4s ease-in-out infinite}
+.s5sd.fail{background:#ff6b6b}
+@keyframes s5sp{50%{opacity:.35}}
+.s5st{flex:1;min-width:0;display:flex;flex-direction:column}
+.s5st>b{font-weight:400;font-size:15px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5st>span{font-size:13px;line-height:18px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5sl{margin:6px 0 12px;max-height:46vh;overflow:auto;font:12px/17px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;opacity:.85}
+.s5sl>div{padding:3px 0;border-bottom:1px solid rgba(127,127,127,.12);word-break:break-word}
+#sheet .s5sg{font-size:15px;line-height:20px;padding:0 4px 4px;text-align:center}
+#sheet .s5sm{font-size:13px;line-height:18px;opacity:.55;text-align:center;padding:0 4px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sheet.g6set .s5sl{background:#1e1e1e;border-radius:20px;padding:6px 14px;margin:4px 0 0}
+#sheet.g6set.g6setc .s5sl{background:#1d1d1d}
+#sheet.g6set .s5sl>div:last-child{border-bottom:0}
+html[data-theme=light] #sheet.g6set .s5sl{background:#fff}
+#sheet:has(.s5sl) .hcsh b{text-transform:none!important;color:#fff!important;letter-spacing:normal!important;font-size:17px;font-weight:600}
+html[data-theme=light] #sheet:has(.s5sl) .hcsh b{color:#000!important}
+
+/* «Открыть переписку» — экран поверх чата, только чтение */
+#s5sv{display:none;position:fixed;inset:0;z-index:60;background:var(--bg,#000);color:inherit;flex-direction:column}
+#s5sv.on{display:flex}
+body.g3on #s5sv,body.cl3on #s5sv{background:#000}
+html[data-theme=light] #s5sv{background:#fff}
+.s5vh{flex:none;display:flex;align-items:center;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 8px) 12px 8px;border-bottom:1px solid rgba(127,127,127,.18)}
+.s5vx{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:20px;cursor:pointer}
+.s5vx svg{width:24px;height:24px}
+.s5vht{flex:1;min-width:0;display:flex;flex-direction:column}
+.s5vht b{font-weight:600;font-size:16px;line-height:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5vht span{font-size:13px;line-height:17px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5vb{flex:1;overflow:auto;padding:12px 16px 8px;-webkit-overflow-scrolling:touch}
+.s5vn{flex:none;text-align:center;font-size:13px;line-height:18px;opacity:.5;padding:10px 16px calc(env(safe-area-inset-bottom,0px) + 12px);border-top:1px solid rgba(127,127,127,.18)}
+.s5vu{display:flex;justify-content:flex-end;margin:10px 0}
+.s5vu>div{max-width:85%;background:rgba(127,127,127,.18);border-radius:18px;padding:8px 14px;white-space:pre-wrap;word-break:break-word;font-size:15px;line-height:21px;max-height:40vh;overflow:auto}
+.s5va{margin:10px 0;font-size:15px;line-height:22px;word-break:break-word}
+.s5va p{margin:0 0 8px}
+.s5vt{margin:2px 0;font-size:13px;line-height:18px;opacity:.6;cursor:pointer}
+.s5vt span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.s5vt.on span{white-space:pre-wrap;word-break:break-all}
+.s5vo{margin:0 0 6px 12px;padding-left:8px;border-left:2px solid rgba(127,127,127,.25);font:12px/16px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;opacity:.5;white-space:pre-wrap;word-break:break-word;max-height:64px;overflow:hidden}
+.s5ve{text-align:center;opacity:.5;font-size:13px;margin:14px 0}

@@ -30,7 +30,7 @@
  var LPATH={hermes:function(){return '/sessions?limit=100'+(lsg('hcall',false)||lsg('sd3all',false)?'&all=1':'')},claude:function(){return '/cc/sessions?limit=60'+(lsg('sd3all',false)?'&all=1':'')},codex:function(){return '/cx/sessions?limit=60'}};
  ['hermes','claude','codex'].forEach(function(k){var c=lsg('sd3L_'+k,null);if(c&&c.length!=null)SD.L[k]=c});SD.ldT={};
  function loadK(k){if(SD.fx)return;SD.ldT[k]=Date.now();
-  return api(LPATH[k]()).then(function(d){var L=(d.s||[]).filter(function(x){return !(x.new&&W.HC&&HC.phantom&&HC.phantom(k,x))})/*s4a-ph*/.map(function(x){var y={};for(var q in x)y[q]=x[q];y.k=k;return y}),j=JSON.stringify(L),same=SD.L[k]&&SD.lj&&SD.lj[k]==j;
+  return api(LPATH[k]()).then(function(d){var L=(d.s||[]).filter(function(x){return !(x.new&&W.HC&&HC.phantom&&HC.phantom(k,x))&&!(W.S5D&&S5D.hide(k,x))/*s5-side*/})/*s4a-ph*/.map(function(x){var y={};for(var q in x)y[q]=x[q];y.k=k;return y}),j=JSON.stringify(L),same=SD.L[k]&&SD.lj&&SD.lj[k]==j;
    SD.lj=SD.lj||{};SD.lj[k]=j;SD.L[k]=L;SD.err[k]='';if(!same)lss('sd3L_'+k,L);tsync(k);toastOff(k);if(!same)paint()})
    .catch(function(e){SD.err[k]=e.message;if(!SD.L[k])SD.L[k]=[];paint()})}
  function load(force){if(SD.fx)return;if(!force&&Date.now()-SD.loadT<4000)return;SD.loadT=Date.now();['hermes','claude','codex'].forEach(loadK)}
@@ -141,7 +141,7 @@
  /* переход в чат: экран чата меняется под меню, потом отъезжает обратно (как в видео: тап по чату → экран едет влево) */
  function openChat(k,id){var s=st();if(!s||!k||!id)return;mcPut();rcClose(true);setClose(true);closePop();
   if(s.view=='chat'&&s.kind==k&&s.sid==id){close();return}
-  var L=(SD.L[k]||[]).map(function(x){var y={};for(var q in x)y[q]=x[q];if(k!='hermes')y.cc=true;return y});
+  var L=(SD.L[k]||[]).concat(W.S5D?S5D.extra(k,id):[])/*s5-side*/.map(function(x){var y={};for(var q in x)y[q]=x[q];if(k!='hermes')y.cc=true;return y});
   if(!(W.U&&U.tab=='hc')){U.tab='hc';U.page=null;render()}/*s3-4a: чат из меню на другой вкладке — сначала вкладка «Чат»*/
   if(s.kind!=k)hcDo('kind',{v:k});
   if(L.length)HC.st.sessions=L;hcDo('open',{id:id});

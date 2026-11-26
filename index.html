@@ -2673,6 +2673,87 @@ html[data-theme=light] .gp .g7hb,html[data-theme=light] .gp .g7cap{background:rg
 .s5qr>i,.s5qx{font-style:normal;font-size:14px;color:#ff6b6b;cursor:pointer;flex:none}
 .s5qx{font-size:12px}
 
+/* s5-sub (этап 5, п.4): субагенты в конце ленты чата (тихий блок, строки: заголовок + одна строка подписи) */
+.s5s{margin:6px 16px 10px;border-radius:18px;border:1px solid rgba(127,127,127,.22);padding:4px 0}
+.s5sh{font-size:13px;line-height:18px;opacity:.55;padding:6px 14px 2px}
+.s5sr{display:flex;align-items:center;gap:10px;min-height:48px;padding:4px 14px;cursor:pointer}
+.s5sr+.s5sr{border-top:1px solid rgba(127,127,127,.14)}
+.s5sd{flex:none;width:8px;height:8px;border-radius:50%;background:rgba(127,127,127,.6)}
+.s5sd.run{background:#34c759;animation:s5sp 1.4s ease-in-out infinite}
+.s5sd.fail{background:#ff6b6b}
+@keyframes s5sp{50%{opacity:.35}}
+.s5st{flex:1;min-width:0;display:flex;flex-direction:column}
+.s5st>b{font-weight:400;font-size:15px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5st>span{font-size:13px;line-height:18px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5sl{margin:6px 0 12px;max-height:46vh;overflow:auto;font:12px/17px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;opacity:.85}
+.s5sl>div{padding:3px 0;border-bottom:1px solid rgba(127,127,127,.12);word-break:break-word}
+#sheet .s5sg{font-size:15px;line-height:20px;padding:0 4px 4px;text-align:center}
+#sheet .s5sm{font-size:13px;line-height:18px;opacity:.55;text-align:center;padding:0 4px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sheet.g6set .s5sl{background:#1e1e1e;border-radius:20px;padding:6px 14px;margin:4px 0 0}
+#sheet.g6set.g6setc .s5sl{background:#1d1d1d}
+#sheet.g6set .s5sl>div:last-child{border-bottom:0}
+html[data-theme=light] #sheet.g6set .s5sl{background:#fff}
+#sheet:has(.s5sl) .hcsh b{text-transform:none!important;color:#fff!important;letter-spacing:normal!important;font-size:17px;font-weight:600}
+html[data-theme=light] #sheet:has(.s5sl) .hcsh b{color:#000!important}
+
+/* «Открыть переписку» — экран поверх чата, только чтение */
+#s5sv{display:none;position:fixed;inset:0;z-index:60;background:var(--bg,#000);color:inherit;flex-direction:column}
+#s5sv.on{display:flex}
+body.g3on #s5sv,body.cl3on #s5sv{background:#000}
+html[data-theme=light] #s5sv{background:#fff}
+.s5vh{flex:none;display:flex;align-items:center;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 8px) 12px 8px;border-bottom:1px solid rgba(127,127,127,.18)}
+.s5vx{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:20px;cursor:pointer}
+.s5vx svg{width:24px;height:24px}
+.s5vht{flex:1;min-width:0;display:flex;flex-direction:column}
+.s5vht b{font-weight:600;font-size:16px;line-height:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5vht span{font-size:13px;line-height:17px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5vb{flex:1;overflow:auto;padding:12px 16px 8px;-webkit-overflow-scrolling:touch}
+.s5vn{flex:none;text-align:center;font-size:13px;line-height:18px;opacity:.5;padding:10px 16px calc(env(safe-area-inset-bottom,0px) + 12px);border-top:1px solid rgba(127,127,127,.18)}
+.s5vu{display:flex;justify-content:flex-end;margin:10px 0}
+.s5vu>div{max-width:85%;background:rgba(127,127,127,.18);border-radius:18px;padding:8px 14px;white-space:pre-wrap;word-break:break-word;font-size:15px;line-height:21px;max-height:40vh;overflow:auto}
+.s5va{margin:10px 0;font-size:15px;line-height:22px;word-break:break-word}
+.s5va p{margin:0 0 8px}
+.s5vt{margin:2px 0;font-size:13px;line-height:18px;opacity:.6;cursor:pointer}
+.s5vt span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.s5vt.on span{white-space:pre-wrap;word-break:break-all}
+.s5vo{margin:0 0 6px 12px;padding-left:8px;border-left:2px solid rgba(127,127,127,.25);font:12px/16px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;opacity:.5;white-space:pre-wrap;word-break:break-word;max-height:64px;overflow:hidden}
+.s5ve{text-align:center;opacity:.5;font-size:13px;margin:14px 0}
+
+/* s5-side (этап 5, п.4б): side-чаты Codex и «Спросить в сторону» Hermes */
+.s5di{width:20px;height:20px;flex:none}
+.g3mi .s5di{width:22px;height:22px}
+#sheet .btn .s5di{margin-right:8px;vertical-align:-4px}
+#sheet:has(.s5dl) .hcsh b,#sheet:has(#s5dta) .hcsh b{text-transform:none!important;color:#fff!important;letter-spacing:normal!important;font-size:17px;font-weight:600}
+html[data-theme=light] #sheet:has(.s5dl) .hcsh b,html[data-theme=light] #sheet:has(#s5dta) .hcsh b{color:#000!important}
+.s5dh{font-size:13px;line-height:18px;opacity:.6;text-align:center;padding:0 8px 10px}
+.s5dl{margin:0 0 10px;border-radius:20px;overflow:hidden;background:rgba(127,127,127,.12)}
+#sheet.g6set .s5dl{background:#1e1e1e}
+html[data-theme=light] #sheet.g6set .s5dl{background:#fff}
+.s5dr{display:flex;align-items:center;min-height:52px;padding:6px 16px;cursor:pointer}
+.s5dr+.s5dr{border-top:1px solid rgba(127,127,127,.16)}
+.s5dt{flex:1;min-width:0;display:flex;flex-direction:column}
+.s5dt>b{font-weight:400;font-size:15px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5dt>span{font-size:13px;line-height:18px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5de{text-align:center;opacity:.5;font-size:14px;padding:16px}
+.s5da{max-height:42vh;overflow:auto;margin:0 0 10px}
+.s5dq{margin:0 0 12px}
+.s5dqq{margin-left:auto;max-width:85%;width:fit-content;background:rgba(127,127,127,.2);border-radius:18px;padding:8px 14px;font-size:15px;line-height:21px;white-space:pre-wrap;word-break:break-word}
+.s5dqa{margin-top:6px;font-size:15px;line-height:22px;word-break:break-word;padding:0 4px}
+.s5dqa p{margin:0 0 8px}.s5dqa.bad{color:#ff6b6b}
+.s5dw{opacity:.55;animation:s5sp 1.4s ease-in-out infinite}
+@keyframes s5sp{50%{opacity:.25}}
+.s5dtx{width:100%;box-sizing:border-box;resize:none;min-height:64px;font:inherit;font-size:16px;line-height:22px}
+body.s5dro #g3c{display:none!important}
+#s5dnote{position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:40;text-align:center;font-size:13px;line-height:18px;padding:10px 14px;border-radius:18px;background:rgba(127,127,127,.18);color:inherit;opacity:.85}
+#sheet .s5dr,#sheet .s5dt,#sheet .s5dt>b,#sheet .s5dt>span{text-align:left!important;align-items:flex-start}
+#sheet .s5dt>b{color:#fff!important;opacity:1!important}
+html[data-theme=light] #sheet .s5dt>b{color:#000!important}
+#g3sg .s5dsg{display:flex;gap:12px;align-items:flex-start;padding:0 20px;font-size:15px;line-height:21px;opacity:.75;pointer-events:none}
+#g3sg .s5dsg .s5di{margin-top:1px}
+#sheet .s5dl{opacity:1!important}
+#g3sg .s5dsg{height:auto!important;min-height:0!important;white-space:normal!important;overflow:visible!important}
+#g3sg .s5dsg span{white-space:normal!important;overflow:visible!important}
+
 </style>
 </head>
 <body>
@@ -2971,7 +3052,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=119;
+var VER=121;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -5028,6 +5109,7 @@ window.G3V={side:[20.0,12.0,"M1.73 11.00C1.55 10.97 1.49 10.93 1.29 10.71C1.09 1
    h+=turnA(t,last&&lv,last)});
   (s.pend||[]).forEach(function(p,i){h+=pendHtml(p,i)});
   if(W.S5Q)h+=S5Q.html(s);/*s5-cxq: очередь Codex*/
+  if(W.S5S)h+=S5S.html(s);/*s5-sub: субагенты*/
   if(s.err)h+='<div class="g3err">'+E(s.err)+'</div>';
   if(opened)h+='</div>';
   if(s.loadingMsgs&&!s.msgs.length&&!(s.creating&&s.creating==s.sid)/*vb5a6: создаётся = обычный пустой чат*/)h+='<div class="g3think g3load"><span>Загружаю</span></div>';
@@ -5470,6 +5552,7 @@ window.CLV={side:[20.0,18.0,"M1.52 16.96C1.35 16.89 1.04 16.52 1.01 16.36C0.98 1
    h+=turnA(t,last&&lv,last)});
   /* свёрнутая карточка вопроса/разрешения — строкой статуса (✕ на карточке) */
   (s.pend||[]).forEach(function(p,i){if(G.qmin[p.id||i])h+='<div class="clth" data-cl="qopen" data-i="'+i+'"><div class="cldots"><i></i><i></i><i></i></div><span>'+(p.kind=='clarify'?'Задаю вопрос':'Жду разрешения')+'</span>'+ic('clock')+ic('chev')+'</div>'});
+  if(W.S5S)h+=S5S.html(s);/*s5-sub: субагенты*/
   if(s.err)h+='<div class="clerr"><i>i</i><div>'+E(s.err)+'</div></div>';
   if(opened)h+='</div>';
   if(s.loadingMsgs&&!s.msgs.length&&!(s.creating&&s.creating==s.sid)/*vb5a6*/)h+='<div class="clth clload"><div class="cldots"><i></i><i></i><i></i></div><span>Загружаю</span></div>';
@@ -5794,7 +5877,7 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
  var LPATH={hermes:function(){return '/sessions?limit=100'+(lsg('hcall',false)||lsg('sd3all',false)?'&all=1':'')},claude:function(){return '/cc/sessions?limit=60'+(lsg('sd3all',false)?'&all=1':'')},codex:function(){return '/cx/sessions?limit=60'}};
  ['hermes','claude','codex'].forEach(function(k){var c=lsg('sd3L_'+k,null);if(c&&c.length!=null)SD.L[k]=c});SD.ldT={};
  function loadK(k){if(SD.fx)return;SD.ldT[k]=Date.now();
-  return api(LPATH[k]()).then(function(d){var L=(d.s||[]).filter(function(x){return !(x.new&&W.HC&&HC.phantom&&HC.phantom(k,x))})/*s4a-ph*/.map(function(x){var y={};for(var q in x)y[q]=x[q];y.k=k;return y}),j=JSON.stringify(L),same=SD.L[k]&&SD.lj&&SD.lj[k]==j;
+  return api(LPATH[k]()).then(function(d){var L=(d.s||[]).filter(function(x){return !(x.new&&W.HC&&HC.phantom&&HC.phantom(k,x))&&!(W.S5D&&S5D.hide(k,x))/*s5-side*/})/*s4a-ph*/.map(function(x){var y={};for(var q in x)y[q]=x[q];y.k=k;return y}),j=JSON.stringify(L),same=SD.L[k]&&SD.lj&&SD.lj[k]==j;
    SD.lj=SD.lj||{};SD.lj[k]=j;SD.L[k]=L;SD.err[k]='';if(!same)lss('sd3L_'+k,L);tsync(k);toastOff(k);if(!same)paint()})
    .catch(function(e){SD.err[k]=e.message;if(!SD.L[k])SD.L[k]=[];paint()})}
  function load(force){if(SD.fx)return;if(!force&&Date.now()-SD.loadT<4000)return;SD.loadT=Date.now();['hermes','claude','codex'].forEach(loadK)}
@@ -5905,7 +5988,7 @@ window.SDV={g_images:[22.33,21.33,"M11.48 20.33C10.91 20.30 10.52 20.24 10.12 20
  /* переход в чат: экран чата меняется под меню, потом отъезжает обратно (как в видео: тап по чату → экран едет влево) */
  function openChat(k,id){var s=st();if(!s||!k||!id)return;mcPut();rcClose(true);setClose(true);closePop();
   if(s.view=='chat'&&s.kind==k&&s.sid==id){close();return}
-  var L=(SD.L[k]||[]).map(function(x){var y={};for(var q in x)y[q]=x[q];if(k!='hermes')y.cc=true;return y});
+  var L=(SD.L[k]||[]).concat(W.S5D?S5D.extra(k,id):[])/*s5-side*/.map(function(x){var y={};for(var q in x)y[q]=x[q];if(k!='hermes')y.cc=true;return y});
   if(!(W.U&&U.tab=='hc')){U.tab='hc';U.page=null;render()}/*s3-4a: чат из меню на другой вкладке — сначала вкладка «Чат»*/
   if(s.kind!=k)hcDo('kind',{v:k});
   if(L.length)HC.st.sessions=L;hcDo('open',{id:id});
@@ -7228,6 +7311,171 @@ document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.targ
   .catch(function(e){W.toast&&toast(/уже взял/.test(e.message)?'Codex уже взял сообщение в работу':'Не убрал: '+E(e.message));Q.t=0;paint()})}
  D.addEventListener('click',function(ev){var el=ev.target.closest&&ev.target.closest('[data-s5q]');if(!el)return;ev.stopPropagation();ev.preventDefault();
   if(el.dataset.s5q=='del')del(el.dataset.id,el)},true);
+})();
+
+/* s5-sub (этап 5, п.4): субагенты чата — кто работает и что делает сейчас; Hermes — «Остановить».
+   Источник /api/hc/sub (Claude: subagents/*.jsonl сессии, Codex: треды-дети, Hermes: владелец subagent.list/tail/interrupt).
+   Блок в конце ленты только когда есть идущие или закончившие за 15 мин; тап по строке — лист с последними шагами.
+   Опрос: Claude/Codex 5 с, пока кто-то работает (иначе 20 с); Hermes 10/30 с (каждый опрос — запрос к владельцу). */
+(function(){var W=window,D=document;
+ try{if(W.ICP&&!ICP['message-square'])ICP['message-square']='<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'}catch(e){}
+ var S={k:'',sid:'',L:[],t:0,busy:0,j:'',stop:false,open:'',ot:0};W.S5S=S;
+ function st(){return W.HC&&HC.st}
+ function E(t){var d=D.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
+ function on(){var s=st();return !!(s&&W.U&&U.tab=='hc'&&s.view=='chat'&&s.sid&&/^(claude|codex|hermes)$/.test(s.kind))}
+ function ago(ts){var d=Math.max(0,Date.now()/1000-ts);return d<60?'только что':d<3600?Math.round(d/60)+' мин назад':Math.round(d/3600)+' ч назад'}
+ function steps(n){var m=n%10,c=n%100;return n+' '+(m==1&&c!=11?'шаг':m>=2&&m<=4&&(c<12||c>14)?'шага':'шагов')}
+ function sub(x){if(x.st=='run')return (x.n?steps(x.n):'запускается')+(x.last?' · '+x.last:'');return x.st=='done'?'готово · '+ago(x.ts):'остановлен · '+ago(x.ts)}
+ S.html=function(s){if(!on()||S.sid!=s.sid||S.k!=s.kind||!S.L.length)return '';var run=S.L.filter(function(x){return x.st=='run'}).length;
+  return '<div class="s5s"><div class="s5sh">'+(run?'Субагенты · '+run+' '+(run==1?'работает':'работают'):'Субагенты · готово')+'</div>'+S.L.map(function(x){
+   return '<div class="s5sr" data-s5s="open" data-id="'+E(x.id)+'" role="button"><i class="s5sd '+E(x.st)+'"></i><div class="s5st"><b>'+E(x.goal||x.name)+'</b><span>'+E(sub(x))+'</span></div></div>'}).join('')+'</div>'};
+ function paint(){try{HC.paint()}catch(e){}}
+ function load(){var s=st();if(!on()||S.busy||!W.SD3||!W.API)return;var k=s.kind,sid=s.sid;S.busy=1;
+  SD3.api('/sub?k='+k+'&sid='+encodeURIComponent(sid)).then(function(d){S.busy=0;S.t=Date.now();var c=st();if(c.sid!=sid||c.kind!=k)return;var L=d.s||[],j=JSON.stringify(L);
+   if(S.sid!=sid||S.k!=k||S.j!=j){S.sid=sid;S.k=k;S.L=L;S.j=j;S.stop=!!d.stop;paint();if(S.open)sheetPaint()}}).catch(function(){S.busy=0;S.t=Date.now()})}
+ function tick(){if(!on())return;var s=st();if(S.sid!=s.sid||S.k!=s.kind){S.L=[];S.j='';S.t=0;S.sid=s.sid;S.k=s.kind}
+  var hot=S.L.some(function(x){return x.st=='run'})||!!s.cclive||!!(s.cur&&s.cur.live),hm=s.kind=='hermes';
+  if(Date.now()-S.t>(hot?(hm?10000:5000):(hm?30000:20000)))load();
+  if(S.open&&Date.now()-S.ot>4000&&S.L.some(function(x){return x.id==S.open&&x.st=='run'}))tail(S.open)}
+ setInterval(tick,1000);
+ var TL={};
+ function tail(id){var s=st();if(!s)return;S.ot=Date.now();SD3.api('/sub/tail?k='+s.kind+'&sid='+encodeURIComponent(s.sid)+'&id='+encodeURIComponent(id)).then(function(d){TL[id]=d.lines||[];if(S.open==id)sheetPaint()}).catch(function(e){TL[id]=['Не удалось прочитать: '+e.message];if(S.open==id)sheetPaint()})}
+ function sheetPaint(){var x=S.L.filter(function(y){return y.id==S.open})[0];if(!x||!W.sheet)return;var L=TL[x.id];
+  /* скрытый маркер data-hc=openpc: G6MENU.sheetMark даёт листу облик агента (g6set: Claude/ChatGPT), как у меню чата */
+  var h='<i hidden data-hc="openpc"></i><div class="hcsh"><b>Субагент</b></div><div class="s5sg">'+E(x.goal||x.name)+'</div><div class="s5sm">'+E(sub(x))+(x.model?' · '+E(x.model):'')+'</div>'+
+   '<div class="s5sl">'+(L==null?'<div>Загружаю…</div>':L.length?L.map(function(l){return '<div>'+E(l)+'</div>'}).join(''):'<div>Шагов пока нет</div>')+'</div>'+
+   (S.stop&&x.st=='run'?'<div class="btn bad danger" data-s5s="stop" data-id="'+E(x.id)+'">'+(W.IC?IC('square'):'')+'Остановить субагента</div>':'')+'<div class="btn" data-s5s="log" data-id="'+E(x.id)+'">'+(W.IC?IC('message-square'):'')+'Открыть переписку</div><div class="btn" data-s5s="close">'+(W.IC?IC('x'):'')+'Закрыть</div>';
+  var sh=D.getElementById('sheet');if(sh&&sh.classList.contains('on')&&sh.querySelector('.s5sl')){sh.innerHTML='<div class="gr"></div>'+h}else sheet(h)}
+ function stop(id,el){var s=st();if(el)el.textContent='Останавливаю…';
+  SD3.api('/sub/stop',{method:'POST',body:{sid:s.sid,id:id}}).then(function(r){W.toast&&toast(r.found?'Субагент остановлен':'Субагент уже закончил');S.t=0;load()})
+   .catch(function(e){W.toast&&toast('Не остановил: '+E(e.message));if(el)el.textContent='Остановить субагента'})}
+ D.addEventListener('click',function(ev){var el=ev.target.closest&&ev.target.closest('[data-s5s]');if(!el)return;ev.stopPropagation();ev.preventDefault();var a=el.dataset.s5s;
+  if(a=='open'){S.open=el.dataset.id;TL[S.open]=TL[S.open]||null;sheetPaint();tail(S.open)}
+  else if(a=='close'){S.open='';W.unsheet&&unsheet()}
+  else if(a=='stop')stop(el.dataset.id,el)
+  else if(a=='log'){S.open='';W.unsheet&&unsheet();logOpen(el.dataset.id)}
+  else if(a=='lback')logClose()
+  else if(a=='tog')el.classList.toggle('on')},true);
+ /* «Открыть переписку»: весь разговор субагента на отдельном экране, только чтение (поля ввода нет) */
+ var V={id:'',t:0,j:'',busy:0};S.V=V;
+ function md(t){try{return W.md?W.md(t):E(t)}catch(e){return E(t)}}
+ function row(m){if(m.r=='u')return '<div class="s5vu"><div>'+E(m.t)+'</div></div>';
+  if(m.r=='a')return '<div class="s5va">'+md(m.t)+'</div>';
+  if(m.r=='t')return '<div class="s5vt" data-s5s="tog"><span>'+E(m.t)+'</span></div>';
+  return '<div class="s5vo">'+E(m.t)+'</div>'}
+ function vpaint(L){var x=S.L.filter(function(y){return y.id==V.id})[0]||{},el=D.getElementById('s5sv');if(!el)return;
+  var b=el.querySelector('.s5vb'),near=b.scrollHeight-b.scrollTop-b.clientHeight<80;
+  el.querySelector('.s5vh b').textContent=x.goal||x.name||'Субагент';el.querySelector('.s5vh span').textContent=x.st?sub(x):'';
+  b.innerHTML=L==null?'<div class="s5ve">Загружаю…</div>':L.length?L.map(row).join('')+(x.st=='run'?'<div class="s5ve">работает…</div>':''):'<div class="s5ve">Переписки пока нет</div>';
+  b.parentNode.querySelector('.s5vn').textContent='Только просмотр · пишет субагенту главный агент';if(near||V.first){b.scrollTop=b.scrollHeight;V.first=0}}
+ function vload(){var s=st(),x=S.L.filter(function(y){return y.id==V.id})[0]||{};if(!V.id||V.busy)return;V.busy=1;V.t=Date.now();
+  SD3.api('/sub/log?k='+s.kind+'&sid='+encodeURIComponent(s.sid)+'&id='+encodeURIComponent(V.id)+(x.cs?'&cs='+encodeURIComponent(x.cs):'')).then(function(d){V.busy=0;var j=JSON.stringify(d.m||[]);if(j!=V.j){V.j=j;vpaint(d.m||[])}})
+   .catch(function(e){V.busy=0;var el=D.getElementById('s5sv');if(el&&!V.j)el.querySelector('.s5vb').innerHTML='<div class="s5ve">Не удалось прочитать: '+E(e.message)+'</div>'})}
+ function back(){logClose()}
+ function logOpen(id){V.id=id;V.j='';V.first=1;var el=D.getElementById('s5sv');if(!el){el=D.createElement('div');el.id='s5sv';D.body.appendChild(el)}
+  el.className='on '+(st().kind||'');el.innerHTML='<div class="s5vh"><div class="s5vx" data-s5s="lback" role="button">'+(W.IC?IC('chevron-left'):'‹')+'</div><div class="s5vht"><b></b><span></span></div></div><div class="s5vb"></div><div class="s5vn"></div>';
+  vpaint(null);vload();
+  try{if(W.tg&&tg.BackButton&&W.SD3&&SD3.tgBack){tg.BackButton.offClick(SD3.tgBack);tg.BackButton.onClick(back);tg.BackButton.show()}}catch(e){}}
+ function logClose(){var el=D.getElementById('s5sv');if(el)el.className='';V.id='';
+  try{if(W.tg&&tg.BackButton&&W.SD3&&SD3.tgBack){tg.BackButton.offClick(back);tg.BackButton.onClick(SD3.tgBack)}}catch(e){}}
+ S.logOpen=logOpen;S.logClose=logClose;
+ setInterval(function(){if(!V.id)return;var x=S.L.filter(function(y){return y.id==V.id})[0];if(x&&x.st=='run'&&Date.now()-V.t>5000)vload();if(!on())logClose()},1000);
+ /* закрыли лист свайпом/вуалью — перестать обновлять хвост */
+ setInterval(function(){var sh=D.getElementById('sheet');if(S.open&&!(sh&&sh.classList.contains('on')&&sh.querySelector('.s5sl')))S.open=''},700);
+})();
+
+/* s5-side (этап 5, п.4б): side-чаты.
+   Codex: «⋯» в шапке → «Side-чаты»: лист со списком side-чатов этого чата и «Новый side-чат». Side-чат — отдельный разговор
+     поверх основного: Codex видит его историю, но основную задачу не продолжает и ничего не меняет без просьбы (граница как
+     в Codex Desktop). Ходы ведёт панель (tv_cc), основной чат и Codex Desktop не трогаются. Side-чаты прячутся из общих
+     списков (метка side у строки), открываются из этого листа; в самом side-чате «⋯» → «К основному чату».
+     Side-чаты, созданные в Codex Desktop (dside), — только чтение: вместо поля ввода подпись.
+   Hermes: «⋯» → «Спросить в сторону»: вопрос по снимку разговора (prompt.btw), ответ в листе, в историю чата не попадает,
+     текущий ход Hermes не прерывается. Вопросы и ответы хранятся на телефоне (последние 10 на чат).
+   Claude: пункта нет (у Claude нет side-чатов). */
+(function(){var W=window,D=document,B=D.body;
+ var S={keep:{codex:{}},list:{},lt:{},q:{}};W.S5D=S;
+ function st(){return W.HC&&HC.st}
+ function E(t){var d=D.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
+ function T(m){try{toast(m)}catch(e){}}
+ function ago(ts){var d=Math.max(0,Date.now()/1000-ts);return d<60?'только что':d<3600?Math.round(d/60)+' мин назад':d<86400?Math.round(d/3600)+' ч назад':Math.round(d/86400)+' дн назад'}
+ function md(t){try{return W.md?W.md(t):E(t)}catch(e){return E(t)}}
+ var SVG={side:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h7A2.5 2.5 0 0 1 16 5.5v4A2.5 2.5 0 0 1 13.5 12H9l-3.2 2.6V12h0A2.5 2.5 0 0 1 4 9.5Z"/><path d="M19 9.2a2.5 2.5 0 0 1 1 2v4a2.5 2.5 0 0 1-2.5 2.5h-.3V21L14 18h-3.5a2.5 2.5 0 0 1-2-1"/>',
+  up:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>'};
+ function ic(n){return '<svg class="s5di" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+SVG[n]+'</svg>'}
+ /* строки side-чатов из общего списка: в списке их нет, но openChat должен их знать */
+ S.hide=function(k,x){if(!x||!x.side)return false;(S.keep[k]=S.keep[k]||{})[x.id]=x;return true};
+ S.extra=function(k,id){var x=(S.keep[k]||{})[id];return x?[x]:[]};
+ function cur(){var s=st();if(!s||s.view!='chat'||!s.sid)return null;return (S.keep[s.kind]||{})[s.sid]||null}
+ /* ---------- «⋯» шапки ---------- */
+ function item(a,icn,t){return '<div class="g3mi" data-s5d="'+a+'">'+ic(icn)+'<span>'+t+'</span></div>'}
+ function addItems(){var p=D.getElementById('g3pop'),s=st();if(!p||!s||!p.classList.contains('g3pm')||p.querySelector('[data-s5d]'))return;
+  var x='',c=cur();
+  if(s.kind=='codex'&&c)x=item('parent','up','К основному чату');
+  else if(s.kind=='codex'&&s.sid)x=item('list','side','Side-чаты');
+  else if(s.kind=='hermes'&&s.sid)x=item('ask','side','Спросить в сторону');
+  if(!x)return;var ref=p.querySelector('[data-hc=menu]');var t=D.createElement('div');t.innerHTML=x;
+  if(ref)p.insertBefore(t.firstChild,ref);else p.appendChild(t.firstChild)}
+ function wrap(){if(!W.G3||!G3.headMenu||G3.headMenu.__s5d)return;var o=G3.headMenu;G3.headMenu=function(){var r=o.apply(this,arguments);addItems();setTimeout(addItems,0);return r};G3.headMenu.__s5d=1}
+ setInterval(wrap,500);wrap();
+ D.addEventListener('click',function(ev){var el=ev.target.closest&&ev.target.closest('[data-s5d]');if(!el)return;ev.stopPropagation();ev.preventDefault();var a=el.dataset.s5d,s=st();
+  if(el.closest('.g3pop')&&W.G3&&G3.closePop)G3.closePop();
+  if(a=='list')listOpen();
+  else if(a=='new')newSide(el);
+  else if(a=='open'){W.unsheet&&unsheet();openSide(el.dataset.id)}
+  else if(a=='parent'){var c=cur();if(c)SD3.openChat('codex',c.side)}
+  else if(a=='ask')askOpen();
+  else if(a=='send')askSend(el);
+  else if(a=='close'){W.unsheet&&unsheet()}},true);
+ /* ---------- Codex: лист «Side-чаты» ---------- */
+ var HINT='Отдельный разговор поверх этого чата: Codex видит всю его историю, но основную задачу не продолжает и ничего не меняет без твоей просьбы. Основной чат не прерывается.';
+ function lrow(x){return '<div class="s5dr" data-s5d="open" data-id="'+E(x.id)+'" role="button"><div class="s5dt"><b>'+E(x.t)+'</b><span>'+(x.dside?'из Codex Desktop · ':'')+(x.new?'ещё без сообщений':E(ago(x.ts)))+'</span></div></div>'}
+ function listPaint(){var s=st(),L=S.list[s.sid];
+  var h='<i hidden data-hc="openpc"></i><div class="hcsh"><b>Side-чаты</b></div><div class="s5dh">'+HINT+'</div>'+
+   '<div class="s5dl">'+(L==null?'<div class="s5de">Загружаю…</div>':L.length?L.map(lrow).join(''):'<div class="s5de">Пока нет ни одного</div>')+'</div>'+
+   '<div class="btn pri" data-s5d="new">'+ic('side')+'Новый side-чат</div><div class="btn" data-s5d="close">Закрыть</div>';
+  var sh=D.getElementById('sheet');if(sh&&sh.classList.contains('on')&&sh.querySelector('.s5dl'))sh.innerHTML='<div class="gr"></div>'+h;else sheet(h)}
+ function listOpen(){var s=st(),sid=s.sid;listPaint();
+  SD3.api('/side?k=codex&sid='+encodeURIComponent(sid)).then(function(d){S.list[sid]=d.s||[];(d.s||[]).forEach(function(x){x.side=sid;if(!x.dside){x.src='панель';x.rw=true}else x.rw=false;x.cc=true;(S.keep.codex=S.keep.codex||{})[x.id]=Object.assign({},S.keep.codex[x.id]||{},x)});if(st().sid==sid)listPaint()})
+   .catch(function(e){S.list[sid]=S.list[sid]||[];T('Не загрузил side-чаты: '+E(e.message));listPaint()})}
+ function openSide(id){var x=S.keep.codex[id];if(!x)return;SD3.openChat('codex',id)}
+ function newSide(el){var s=st(),sid=s.sid;if(el.dataset.busy)return;el.dataset.busy=1;el.lastChild.textContent='Создаю…';
+  SD3.api('/side/new',{method:'POST',body:{k:'codex',sid:sid}}).then(function(r){var x=r.s;x.side=sid;x.new=true;S.keep.codex[x.id]=x;(S.list[sid]=S.list[sid]||[]).unshift(x);
+    W.unsheet&&unsheet();SD3.openChat('codex',x.id);setTimeout(function(){var ta=D.getElementById('hcin');if(ta)ta.focus()},400)})
+   .catch(function(e){delete el.dataset.busy;el.lastChild.textContent='Новый side-чат';T(E(e.message))})}
+ /* пустой side-чат: вместо общих подсказок — что это за чат (шапка Codex показывает модель, а не название) */
+ var SGW='';
+ setInterval(function(){var g=D.getElementById('g3sg'),c=cur();if(!g)return;
+  if(c&&!c.dside){var par=(SD3.SD.L.codex||[]).filter(function(y){return y.id==c.side})[0],w='s5:'+c.id;
+   if(SGW!=w||!g.querySelector('.s5dsg')){SGW=w;g.innerHTML='<div class="s5dsg">'+ic('side')+'<span>Side-чат от «'+E(par?par.t:'основного чата')+'». Основной чат не прервётся, Codex ничего не изменит без твоей просьбы.</span></div>'}}
+  else if(SGW){SGW='';if(g.querySelector('.s5dsg'))g.innerHTML=''}},300);
+ /* side-чат из Codex Desktop: только чтение */
+ var NOTE=null;
+ setInterval(function(){var c=cur(),on=!!(c&&c.dside&&W.U&&U.tab=='hc');B.classList.toggle('s5dro',on);
+  if(on&&!NOTE){NOTE=D.createElement('div');NOTE.id='s5dnote';NOTE.textContent='Side-чат из Codex Desktop — продолжить можно в Codex на ПК. Здесь только чтение.';B.appendChild(NOTE)}
+  if(NOTE)NOTE.style.display=on?'':'none'},400);
+ /* ---------- Hermes: «Спросить в сторону» ---------- */
+ function key(sid){return 's5btw_'+sid}
+ function hist(sid){try{return JSON.parse(localStorage.getItem(key(sid))||'[]')}catch(e){return []}}
+ function save(sid,L){try{localStorage.setItem(key(sid),JSON.stringify(L.slice(-10)))}catch(e){}}
+ function arow(x){return '<div class="s5dq"><div class="s5dqq">'+E(x.t)+'</div><div class="s5dqa'+(x.st=='fail'?' bad':'')+'">'+(x.st=='run'?'<span class="s5dw">Hermes думает…</span>':x.st=='fail'?E(x.a):md(x.a))+'</div></div>'}
+ function askPaint(keep){var s=st(),L=hist(s.sid),ta=D.getElementById('s5dta'),v=ta?ta.value:'';
+  var h='<i hidden data-hc="openpc"></i><div class="hcsh"><b>Спросить в сторону</b></div><div class="s5dh">Hermes ответит по этому разговору, не прерывая свою работу. В историю чата вопрос и ответ не попадут.</div>'+
+   (L.length?'<div class="s5da">'+L.map(arow).join('')+'</div>':'')+
+   '<textarea id="s5dta" class="hcinp s5dtx" rows="2" maxlength="4000" placeholder="Например: что ты сейчас делаешь и сколько осталось?"></textarea>'+
+   '<div class="btn pri" data-s5d="send">'+ic('side')+'Спросить</div><div class="btn" data-s5d="close">Закрыть</div>';
+  var sh=D.getElementById('sheet');if(sh&&sh.classList.contains('on')&&sh.querySelector('#s5dta')){sh.innerHTML='<div class="gr"></div>'+h}else sheet(h);
+  var t2=D.getElementById('s5dta');if(t2&&keep){t2.value=v}var a=D.querySelector('#sheet .s5da');if(a)a.scrollTop=a.scrollHeight}
+ function askOpen(){askPaint();var s=st();hist(s.sid).forEach(function(x){if(x.st=='run')poll(s.sid,x.q)})}
+ function askSend(el){var s=st(),ta=D.getElementById('s5dta'),t=(ta&&ta.value||'').trim(),sid=s.sid;if(!t||el.dataset.busy)return;el.dataset.busy=1;
+  SD3.api('/side/ask',{method:'POST',body:{k:'hermes',sid:sid,text:t}}).then(function(r){var L=hist(sid);L.push({q:r.q,t:t,st:'run',a:'',ts:Date.now()/1000|0});save(sid,L);if(ta)ta.value='';askPaint();poll(sid,r.q)})
+   .catch(function(e){delete el.dataset.busy;T('Не отправил: '+E(e.message))})}
+ function poll(sid,q){if(S.q[q])return;S.q[q]=1;var n=0;
+  (function go(){SD3.api('/side/ask?q='+encodeURIComponent(q)).then(function(d){if(d.st=='run'&&n++<150){setTimeout(go,2000);return}
+     var L=hist(sid);L.forEach(function(x){if(x.q==q){x.st=d.st=='run'?'fail':d.st;x.a=d.st=='run'?'Ответа нет больше 5 минут.':d.a}});save(sid,L);delete S.q[q];
+     var sh=D.getElementById('sheet');if(st().sid==sid&&sh&&sh.classList.contains('on')&&sh.querySelector('#s5dta'))askPaint(true)})
+    .catch(function(e){if(n++<150&&!/404|не найден/i.test(e.message)){setTimeout(go,3000);return}var L=hist(sid);L.forEach(function(x){if(x.q==q&&x.st=='run'){x.st='fail';x.a='Ответ потерян: '+e.message}});save(sid,L);delete S.q[q];
+     var sh=D.getElementById('sheet');if(st().sid==sid&&sh&&sh.classList.contains('on')&&sh.querySelector('#s5dta'))askPaint(true)})})()}
 })();
 
 </script>
