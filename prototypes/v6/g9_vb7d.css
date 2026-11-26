@@ -1,0 +1,25 @@
+/* vb7-d: служебный текст и мелочи */
+/* аудио MEDIA: в ответе — карточка-плеер, путь не виден */
+.vb7aud{display:flex;flex-direction:column;gap:6px;margin:8px 0;padding:10px 12px;border-radius:16px;background:rgba(127,127,127,.12);max-width:320px}
+.vb7aud .vb7audl{font-size:14px;opacity:.75}
+.vb7aud audio{width:100%;height:36px}
+.vb7aud.ok .vb7audl{font-size:13px}
+/* «Инструкции» — свёрнутый markdown обычным шрифтом */
+.vb7inst{font:15px/1.45 -apple-system,system-ui,sans-serif;color:inherit}
+.vb7inst .vb7instn{font-size:12.5px;color:#8a8a8a;margin-bottom:6px}
+.vb7inst .vb7md{max-height:7.3em;overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+.vb7inst.open .vb7md{max-height:none;-webkit-mask-image:none;mask-image:none}
+.vb7inst .vb7md h1,.vb7inst .vb7md h2,.vb7inst .vb7md h3{font-size:15px;margin:6px 0 2px}
+.vb7inst .vb7md pre,.vb7inst .vb7md code{white-space:pre-wrap;word-break:break-word}
+.vb7inst .vb7more{margin-top:8px;font-size:14px;color:#0a84ff;cursor:pointer}
+/* «Переслать в…»: строки одного размера, «…» при обрезке, без прокрутки вбок */
+#sheet .hcfwdl{overflow-x:hidden}
+#sheet .hcfwdl .hcmi{min-height:48px;height:auto;box-sizing:border-box}
+#sheet .hcfwdl .hcmi b{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;font-weight:500;line-height:20px}
+#sheet .hcfwdl .hcmi span{flex:none;max-width:42%;font:13px/18px -apple-system,system-ui,sans-serif}
+/* одинаковые названия — различие второй строкой */
+.vb7dup{display:block;font-size:12px;font-weight:400;opacity:.55;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* «Другие модели…»: вкладки провайдеров с «…», без сырого id */
+.hcmprov span{max-width:60vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* тост в чате над полем ввода */
+body.g3on .toast.vb7tb,body.cl3on .toast.vb7tb{bottom:auto!important}

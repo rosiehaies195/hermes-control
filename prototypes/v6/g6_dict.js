@@ -43,5 +43,9 @@
  wrap();var t0=setInterval(function(){if(wrap())clearInterval(t0)},300);
  /* старт/стоп записи без нового черновика (смена экрана, отмена) — сбросить показ */
  setInterval(function(){if(!rec()&&Z.gen!==-1)upd();var z=$i('g6dz');if(z&&z.classList.contains('on')&&W.G3&&G3.G.show===false){z.classList.remove('on');z.textContent=''}},250);
+ /* vb7a П9: экран чата пересоздан во время записи (новый чат создан, перерисовка) — живой текст не пропадает до следующего черновика */
+ setInterval(function(){if(!rec())return;var k=kind(),ta=$i('hcin');if(!k||!ta||!ta.value.trim())return;
+  var z=k=='g'?$i('g6dz'):$i('cltr'),gone=k=='g'?(!z||!z.classList.contains('on'))&&!(W.G3&&G3.G.show===false):(!!z&&!z.textContent.trim());if(!gone)return;
+  try{if(W.VC&&Z.dh!==VC.rid){Z.dh=VC.rid;W.cbDiag&&cbDiag('dict_hide',{why:z?'off':'nodz',k:k,len:ta.value.length})}}catch(e){}upd()},120);
  W.G6D={upd:upd,Z:Z,reset:reset};
 })();

@@ -139,7 +139,7 @@ html[data-theme=light] .g7txt pre{color:#333}
 .g7bigav{display:flex;justify-content:center;margin:6px 0 24px}.g7bigav i{width:95px;height:95px;border-radius:48px;background:#0D0D0D;color:#fff;font:500 36px/95px var(--g7cl);text-align:center;font-style:normal}
 .g7s .g7txt{padding:14px 20px}.g7s .g7txt pre{color:#d6d5cf}
 /* выпадающие меню настроек: Claude стекло #333, шаг 42.3, ✓ слева; ChatGPT — как у базы */
-.sd3pop.g7m.g7mc{background:rgba(51,51,51,.96)!important;border-radius:29px;padding:8px 0;font-family:var(--g7cl)}
+.sd3pop.g7m.g7mc{background:rgba(52,52,50,.62)!important;border-radius:29px;padding:8px 0;font-family:var(--g7cl)}
 .sd3pop.g7m.g7mc .sd3mi{height:42.3px;padding-left:44px}.sd3pop.g7m .sd3ckm{position:absolute;left:20px;display:flex;align-items:center}.sd3pop.g7mc .sd3ckm .g7ai{font-size:15px;color:#fff}
 .sd3pop.g7m.g7mg{font-family:var(--g7gp)}.sd3pop.g7m.g7mg .sd3mi{padding-left:44px}
 /* ---------- кольцо контекста: Claude — внутри капсулы [кольцо | •••] вместо ✎ ---------- */
@@ -190,3 +190,24 @@ html[data-theme=light] .cl .g7hb,html[data-theme=light] .cl .g7cap{background:rg
 html[data-theme=light] .gp .g7hb,html[data-theme=light] .gp .g7cap{background:rgba(255,255,255,.78);color:#0d0d0d;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 .5px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
 .g7cap i:active{filter:brightness(1.6)}
 .g7hb svg.g7hi,.g7cap svg.g7hi{fill:none!important}/*vb6g: .gp .g7hb svg{fill:#fff} заливал кружок ⓘ белым*/
+
+/* ---------- vb7b: Настройки (строки выбора, меню-стекло, переходы) ---------- */
+.sd3set.g7s .vb7pg{position:absolute;inset:0;overflow:hidden}
+.sd3set.g7s.cl .vb7pg{background:#141414}.sd3set.g7s.gp .vb7pg{background:#000}
+.sd3set.g7s .vb7pg.vb7old{pointer-events:none}
+.sd3set.g7s .vb7pg+.vb7pg:not(.vb7old){box-shadow:-10px 0 30px rgba(0,0,0,.35)}
+.vb7ud{display:block;flex:none;color:#8E8E93}.cl .vb7ud{color:#9998A1}
+.g7r em.dd{gap:5px}
+.g7r em.vb7tm{background:rgba(118,118,128,.24);border-radius:8px;padding:6px 11px;color:#fff;line-height:22px}
+.g7r.vb7ro{cursor:default}
+.vb7qx{overflow:hidden}
+.vb7qx>.g7r:first-child::before{content:'';position:absolute;left:21px;right:16px;top:0;height:1px;background:#2E2E2E}
+.gp .vb7qx>.g7r:first-child::before{left:20px;right:0;background:#2B2B2B}
+.g7ri svg.vb7ic{fill:none!important}
+.sd3pop.g7m{-webkit-backdrop-filter:blur(40px) saturate(180%)!important;backdrop-filter:blur(40px) saturate(180%)!important;box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 0 0 .5px rgba(255,255,255,.1)}
+.sd3pop.g7m.g7mg{background:rgba(37,37,39,.62)!important;border-radius:26px;padding:6px 0}
+.sd3pop.g7m .sd3mi+.sd3mi{border-top:.5px solid rgba(255,255,255,.14)}
+body.vb7scr .g7r:active,body.vb7scr .g7accr:active,body.vb7scr .sd3mi:active{background:transparent!important}
+/*vb7b-p1*/
+/* vb7c-3: снимок лимита старше 5 ч — серым «устарело» */
+.g7use.vb7cst s{background:#8E8E93!important}.g7use.vb7cst em,.g7use.vb7cst b{color:#8E8E93}.g7use.vb7cst small{color:#8E8E93}.vb7cus .d.vb7cst{color:var(--mut)}

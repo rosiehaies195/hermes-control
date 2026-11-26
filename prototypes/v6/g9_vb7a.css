@@ -1,0 +1,5 @@
+/* vb7a: клавиатура Telegram iOS по viewportChanged (g9_vb7a.js). Экран чата и открытый лист раскладываются от ВЕРХА
+   с явной высотой H0−kb: позднее (0,4 с) уменьшение окна до той же высоты их не сдвигает. */
+html.vb7kb .g3,html.vb7kb .cl3,html.vb7kb.s4kbv .g3,html.vb7kb.s4kbv .cl3{top:0!important;bottom:auto!important;height:calc(var(--vb7H,100%) - var(--vb7k,0px))!important}
+/* лист: низ = H0−kb от верха окна; 100% у fixed — текущая высота окна, поэтому до и после уменьшения окна низ один и тот же */
+html.vb7kb #sheet.on,html.vb7kb.s4kbv #sheet.on{bottom:calc(100% - var(--vb7H,100%) + var(--vb7k,0px) + var(--vb7sb,0px))!important;max-height:calc(var(--vb7H,100%) - var(--vb7k,0px) - var(--vb7sb,0px) - 24px)!important}

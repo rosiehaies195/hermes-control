@@ -85,10 +85,10 @@
   if(k.length<30000){if(++MDN>300){MDC=Object.create(null);MDN=1}MDC[k]=v}return v}
  function txt(b){if(!b)return '';if(b.k=='u')return b.t||'';return (b.parts||[]).filter(function(p){return p.p=='t'}).map(function(p){return p.t}).join('\n\n')}
  function dur(s){s=Math.max(1,Math.round(s));return s<60?s+' с':Math.floor(s/60)+' мин'+(s%60?' '+s%60+' с':'')}
- var TN6={exec:'Команда',exec_command:'Команда',shell:'Команда',shell_command:'Команда',bash:'Команда',terminal:'Команда',local_shell:'Команда',apply_patch:'Правка файлов',edit:'Правка файла',multiedit:'Правка файла',write:'Запись файла',write_file:'Запись файла',patch:'Правка файлов',read:'Чтение файла',read_file:'Чтение файла',view:'Просмотр файла',view_image:'Просмотр картинки',grep:'Поиск в файлах',glob:'Поиск файлов',search_files:'Поиск в файлах',list_dir:'Список файлов',ls:'Список файлов',web_search:'Поиск в сети',websearch:'Поиск в сети',web_fetch:'Страница из сети',webfetch:'Страница из сети',web_extract:'Страница из сети',task:'Помощник',agent:'Помощник',spawn_agent:'Помощник',delegate_task:'Помощник',update_plan:'План',todowrite:'План',todo:'План'};
+ var TN6={toolsearch:'Поиск инструментов'/*vb7d*/,exec:'Команда',exec_command:'Команда',shell:'Команда',shell_command:'Команда',bash:'Команда',terminal:'Команда',local_shell:'Команда',apply_patch:'Правка файлов',edit:'Правка файла',multiedit:'Правка файла',write:'Запись файла',write_file:'Запись файла',patch:'Правка файлов',read:'Чтение файла',read_file:'Чтение файла',view:'Просмотр файла',view_image:'Просмотр картинки',grep:'Поиск в файлах',glob:'Поиск файлов',search_files:'Поиск в файлах',list_dir:'Список файлов',ls:'Список файлов',web_search:'Поиск в сети',websearch:'Поиск в сети',web_fetch:'Страница из сети',webfetch:'Страница из сети',web_extract:'Страница из сети',task:'Помощник',agent:'Помощник',spawn_agent:'Помощник',delegate_task:'Помощник',update_plan:'План',todowrite:'План',todo:'План'};
  function tn6(n){var k=String(n||'').toLowerCase().replace(/^mcp__[^_]+__/,'');return TN6[k]||(/^mcp__/.test(String(n||''))?String(n).replace(/^mcp__([^_]+)__/,'$1 · ').replace(/_/g,' '):n)}/*vb5g6*/
  function toolName(p){var a={};try{a=JSON.parse(p.a||'{}')}catch(e){}var x=a.command||a.cmd||a.path||a.file_path||a.query||a.url||a.pattern||'';
-  return '<b>'+E(tn6(p.n)||'действие')+'</b>'+(x?' <span>'+E(String(x).replace(/\s+/g,' ').slice(0,90))+'</span>':'')}
+  return '<b>'+E(tn6(p.n)||'действие')+'</b>'+(x?' <span>'+E((W.vb7dArg?vb7dArg(x):String(x)).replace(/\s+/g,' ').slice(0,90))+'</span>':'')}/*vb7d*/
  /* ход = сообщение пользователя + все ответы агента до следующего сообщения пользователя */
  function turns(){var s=st(),L=[],from=Math.max(0,s.msgs.length-s.lim),cur=null,lastU=null;
   for(var i=from;i<s.msgs.length;i++){var b=s.msgs[i];
@@ -157,7 +157,7 @@
     while(l.children.length>arr.length)l.removeChild(l.lastElementChild);return ch}}
   l.innerHTML=nh;l.__ok=1;for(var j=0;j<l.children.length;j++)l.children[j].__oh=l.children[j].outerHTML;return null}
  function feed(){var f=$i('g3f'),l=$i('g3l');if(!f||!l)return;var _t0=performance.now(),nh=feedHtml();if(l.__h===nh)return;
-  var sl=W.getSelection&&W.getSelection(),selin=sl&&!sl.isCollapsed&&sl.rangeCount&&l.contains(sl.anchorNode);if(selin&&!G.stick)return;
+  var sl=W.getSelection&&W.getSelection(),selin=sl&&!sl.isCollapsed&&sl.rangeCount&&l.contains(sl.anchorNode);if(selin&&!G.stick&&l.__sid===st().kind+':'+st().sid)return;if(selin&&l.__sid!==st().kind+':'+st().sid)try{sl.removeAllRanges()}catch(x){}/*vb7a П10: другой чат — без кадра старой ленты*/
   var s=st(),key=s.kind+':'+s.sid,first=l.__sid!==key,prevN=l.querySelectorAll('.g3um').length;
   var ae=D.activeElement,clar=ae&&ae.id=='hcclar'?ae.value:null;
   /* «nh» строится до innerHTML: прокрутку держим сами, иначе браузер на миг обрезает её по укороченной ленте */
@@ -167,7 +167,9 @@
   /* s4b-2: после отправки верх своего сообщения встаёт под шапку и не срезается (длинное — тоже, видео 167.7);
      s4b-4b: первое заполнение ленты (после «Загружаю») — вниз, как при открытии */
   var full=s.msgs.length>0&&l.__full!==key;if(full)l.__full=key;
-  if(nowN>prevN&&G.fly){f.scrollTop=f.scrollHeight;ltTop(f,l,'g3lt')}else if(first||full||G.stick)f.scrollTop=f.scrollHeight;
+  /* vb7a П10: открыли из кэша — следующий приход настоящей истории тоже вниз (пока пользователь не листал и не отправлял) */
+  if(first){l.__op=Date.now();l.__usr=0}if(G.fly)l.__op=0;var reo=!first&&!full&&l.__op&&!l.__usr&&Date.now()-l.__op<6000;
+  if(nowN>prevN&&G.fly){f.scrollTop=f.scrollHeight;ltTop(f,l,'g3lt')}else if(first||full||G.stick||reo)f.scrollTop=f.scrollHeight;
   if(G.fly&&nowN>prevN)flyIn(l.querySelectorAll('.g3um')[nowN-1]);else flyKeep(l);if(nowN>prevN)G.fly=null;G.stick=false;
   var _d=performance.now()-_t0;if(_d>45&&W.cbDiag)cbDiag('feed_slow',{ms:Math.round(_d),kids:l.children.length,nodes:l.getElementsByTagName('*').length});dnUpd();atBUpd()}
  /* затухание хвоста при стриминге (стоп-кадры 0063.44, 0105.80): каждое новое слово проявляется из прозрачности
@@ -192,13 +194,16 @@ function fadeTail(l,first){var s=st(),t=l.querySelector('.g3ta2.g3last');if(!t){
 function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var cs=getComputedStyle(l),
   h=Math.max(0,f.clientHeight-parseFloat(cs.paddingTop)-8-parseFloat(cs.paddingBottom));G.ltH=h;if(lt.style.minHeight!=h+'px')lt.style.minHeight=h+'px'}
  /* отправка: новый пузырь появляется на месте текста поля и уезжает вверх (видео: 383 мс, spring(0.29,1.0)) */
+ /* vb7a П1-б: вместе с пузырём едет всё, что ниже него в последнем ходе («Думаю…»), — индикатор всегда под пузырём */
+ W.vb7fly=function(el,kf,o,lt){el.animate(kf,o);var L=D.getElementById(lt);if(!L||!L.contains(el)||L===el)return;var n=el;
+  while(n&&n!==L){for(var s=n.nextElementSibling;s;s=s.nextElementSibling)if(s.animate)s.animate(kf,o);n=n.parentElement}};
  function flyIn(el){var fy=G.flyY;if(!el||fy==null||!el.animate||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   var r=el.getBoundingClientRect(),dy=fy-r.top;if(dy<=4)return;
   /* покадрово по pts (54.63–55.08 с): 460 мс cubic-bezier(.1,.4,0,1.05), отклонение 1.3 pt на 140 pt пути */
-  el.animate([{transform:'translateY('+dy+'px)'},{transform:'none'}],{duration:460,easing:'cubic-bezier(.1,.4,0,1.05)'});G.flyA={t:performance.now(),dy:dy}}
+  vb7fly(el,[{transform:'translateY('+dy+'px)'},{transform:'none'}],{duration:460,easing:'cubic-bezier(.1,.4,0,1.05)'},'g3lt');G.flyA={t:performance.now(),dy:dy}}
  /* база перерисовывает ленту, когда сервер ответил на отправку (обычно < 100 мс): полёт продолжаем на новом узле с того же места */
  function flyKeep(l){var a=G.flyA;if(!a)return;var el2=performance.now()-a.t;if(el2>=460){G.flyA=null;return}var L=l.querySelectorAll('.g3um'),el=L[L.length-1];
-  if(el&&el.animate)el.animate([{transform:'translateY('+a.dy+'px)'},{transform:'none'}],{duration:460,delay:-el2,easing:'cubic-bezier(.1,.4,0,1.05)'})}
+  if(el&&el.animate)vb7fly(el,[{transform:'translateY('+a.dy+'px)'},{transform:'none'}],{duration:460,delay:-el2,easing:'cubic-bezier(.1,.4,0,1.05)'},'g3lt')}
  /* ---------- «вниз» ---------- */
  function dnUpd(){var f=$i('g3f'),b=$i('g3dn');if(!f||!b)return;b.classList.toggle('on',f.scrollHeight-f.scrollTop-f.clientHeight>200)}
  /* s4b-4: «был внизу» помним по прокрутке и после перерисовки, а не по размерам после смены высоты экрана (клавиатура, фото в поле) */
@@ -302,7 +307,7 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  function hApi(){var s=st();return s.kind=='hermes'&&!!s.rw&&/^api_/.test(s.sid||'')}
  function canRw(){return hDesk()||hApi()}
  function headMenu(){var s=st(),cap=D.querySelector('#g3hd .g3cap');if(!cap)return;var r=cap.getBoundingClientRect();
-  var x='<div class="g3mh">'+E(s.title||'Новый чат')+'</div>'+
+  var x='<div class="g3mh">'+E(W.vb7dTitle?vb7dTitle(s):(s.title||'Новый чат'))/*vb7d*/+'</div>'+
    (s.kind=='hermes'?mi('hc:pinmenu','pin',s.pin?'Открепить':'Закрепить'):'')+
    (s.rw?mi('hc:rename','edit','Переименовать'):'')+mi('fwdlast','share','Переслать')+mi('hc:menu','more','Другие действия','','data-skip="'+(s.kind=='hermes'?'pin,':'')+(s.rw?'ren,del':'')+'"')/*s4c-8*/+
    (hDesk()?mi('arch','arch','В архив'):'')+(s.rw?mi('hc:del','trash','Удалить','bad'):'');
@@ -451,7 +456,7 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
    прокрутку окна в чате сбрасываем. */
 (function(){var D=document,W=window,R=D.documentElement,vt=-1,kb=-1,shT=null;
  function chat(){var b=D.body;return !!b&&(b.classList.contains('g3on')||b.classList.contains('cl3on'))}
- function sheetFlip(){var s=D.querySelector('#sheet.on');if(!s){shT=null;return}var t=s.offsetTop;/* без transform — иначе идущая анимация удваивается */
+ function sheetFlip(){var s=D.querySelector('#sheet.on');if(!s){shT=null;return}var t=s.offsetTop;if(R.classList.contains('vb7kb')){shT=t;return}/*vb7a: лист уже едет по viewportChanged*//* без transform — иначе идущая анимация удваивается */
   /* s4b-3d: лист (напр. «Новый проект») с клавиатурой не прыгает рывком, а въезжает (видео 159) */
   if(shT!=null&&Math.abs(t-shT)>24&&s.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)s.animate([{transform:'translateY('+Math.round(shT-t)+'px)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.32,.72,0,1)'});shT=t}
  function upd(){var v=W.visualViewport,t=0,k=0;if(v&&!(v.scale&&Math.abs(v.scale-1)>.01)){t=Math.max(0,Math.round(v.offsetTop||0));k=Math.round(innerHeight-v.height-t);if(k<40)k=0}/*при щипке-зуме не трогаем*/

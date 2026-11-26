@@ -12,7 +12,7 @@ function mounted(){return !!root()}
 function live(){return !!API&&API!='mock'}
 function hq(path,o){o=o||{};var h={'X-Init-Data':tg?tg.initData:''};if(o.body!==undefined)h['Content-Type']='application/json';
  return fetch(API.replace(/\/$/,'')+'/api/hc'+path,{method:o.method||'GET',headers:h,body:o.body!==undefined?JSON.stringify(o.body):undefined,signal:o.signal})}
-function J(path,o){return hq(path,o).then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){var e=new Error(j.text||(r.status==401?'Подпись устарела: закрой и снова открой панель из меню бота.':j.error||('HTTP '+r.status)));e.status=r.status;throw e});return r.json()})}
+function J(path,o){return hq(path,o).then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){var e=new Error(j.text||(r.status==401?'Подпись устарела: закрой и снова открой панель из меню бота.':j.error||('HTTP '+r.status)));e.status=r.status;e.code=j.error||'';/*vb7d*/throw e});return r.json()})}
 function E(s){return esc(s)}
 function ago(ts){if(!ts)return '';var d=new Date(ts*1000),n=new Date(),p=function(x){return (x<10?'0':'')+x},t=p(d.getHours())+':'+p(d.getMinutes());
  var dd=Math.floor((new Date(n.getFullYear(),n.getMonth(),n.getDate())-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
@@ -38,14 +38,17 @@ function chipsHtml(){if(!st.rw&&st.kind=='codex'&&!cxFresh())return '';return '<
 function modelSheet(){var M=st.models;
  if(!M){sheet('<div class="hcsh"><b>Модель</b></div><div class="hint2">'+(st.merr?E(st.merr):'Загружаю список…')+'</div><div class="btn" data-hc="close">Закрыть</div>');if(!st.models)loadModels().then(function(){if(st.models)modelSheet()});return}
  if(!st.mprov){var cp=st.msel&&st.msel.p||M.cur.provider;st.mprov=M.p.some(function(p){return p.slug==cp})?cp:(M.p[0]&&M.p[0].slug)||''}
- var h='<div class="hcsh"><b>Модель</b></div><div class="hcmprov">'+M.p.map(function(p){return '<span class="'+(p.slug==st.mprov?'on':'')+'" data-hc="mprov" data-v="'+E(p.slug)+'">'+E(p.name)+'</span>'}).join('')+'</div>'+
+ var h='<div class="hcsh"><b>Модель</b></div><div class="hcmprov">'+M.p.map(function(p){return '<span class="'+(p.slug==st.mprov?'on':'')+'" data-hc="mprov" data-v="'+E(p.slug)+'">'+E(provName(p))+'</span>'}).join('')+'</div>'+
  '<input id="hcmq" class="hcinp" placeholder="Поиск модели" value="'+E(st.mq).replace(/"/g,'&quot;')+'"><div id="hcml" class="hcml"></div><div class="btn" data-hc="close">Закрыть</div>';
  sheet(h);mlist()}
+/*vb7d: провайдеры Hermes по-человечески*/function provName(p){var s=String(p&&p.slug||'').toLowerCase(),n=String(p&&p.name||'');
+ if(/claude.*(subscr|directsdk)|anthropic.*subscr/.test(s+' '+n.toLowerCase()))return 'Подписка Claude';if(/openrouter/.test(s))return 'OpenRouter';if(/^nous|nous/.test(s))return 'Nous Portal';
+ if(/^anthropic/.test(s))return 'Anthropic API';if(/^openai|codex/.test(s))return 'OpenAI';if(/gemini|google/.test(s))return 'Google';return n.replace(/\s*\((?:Experimental|Beta)\)\s*/ig,'').trim()||s}
 function mlist(){var el=document.getElementById('hcml');if(!el||!st.models)return;var p=st.models.p.filter(function(x){return x.slug==st.mprov})[0];if(!p){el.innerHTML='';return}
  var q=st.mq.toLowerCase(),cur=st.msel&&st.msel.m,curp=st.msel&&st.msel.p;
  var def=(!cur?'<div class="hcmi on" data-hc="mdef">'+IC('check')+'<b>По умолчанию</b><span>'+E(pretty(st.models.cur.model))+'</span></div>':'<div class="hcmi" data-hc="mdef"><i></i><b>По умолчанию</b><span>'+E(pretty(st.models.cur.model))+'</span></div>');
  var items=p.m.filter(function(m){return !q||m.toLowerCase().indexOf(q)>=0||pretty(m).toLowerCase().indexOf(q)>=0});
- el.innerHTML=def+items.map(function(m){var on=cur==m&&curp==p.slug;return '<div class="hcmi'+(on?' on':'')+'" data-hc="mpick" data-m="'+E(m)+'" data-p="'+E(p.slug)+'">'+(on?IC('check'):'<i></i>')+'<b>'+E(pretty(m))+'</b><span>'+E(m)+'</span></div>'}).join('')+(items.length?'':'<div class="hint2">Ничего не найдено</div>')}
+ el.innerHTML=def+items.map(function(m){var on=cur==m&&curp==p.slug;return '<div class="hcmi'+(on?' on':'')+'" data-hc="mpick" data-m="'+E(m)+'" data-p="'+E(p.slug)+'">'+(on?IC('check'):'<i></i>')+'<b>'+E(pretty(m))+(/\[1m\]/i.test(m)?' · 1M':'')+'</b></div>'}/*vb7d: без сырого id (поиск по id остаётся)*/).join('')+(items.length?'':'<div class="hint2">Ничего не найдено</div>')}
 function pickModel(m,p){var e=st.msel&&st.msel.e;st.msel=m?{m:m,p:p,e:e||''}:(e?{m:'',p:'',e:e}:null);if(st.msel&&!st.msel.m&&!st.msel.e)st.msel=null;saveSel(st.sid,st.msel||{});unsheet();paintChat();if(m)toast('Модель: '+pretty(m))}
 function effortSheet(){sheet('<div class="hcsh"><b>Глубина размышления</b></div><div class="hint2">Сколько Hermes думает перед ответом. «Авто» — как настроено на ПК.</div>'+
  [['','Авто'],['low','Низкая'],['medium','Средняя'],['high','Высокая']].map(function(x){var on=((st.msel&&st.msel.e)||'')==x[0];return '<div class="hcmi'+(on?' on':'')+'" data-hc="epick" data-e="'+x[0]+'">'+(on?IC('check'):'<i></i>')+'<b>'+x[1]+'</b></div>'}).join('')+'<div class="btn" data-hc="close">Закрыть</div>')}
@@ -66,8 +69,10 @@ function blocks(t){var lines=E(t).split('\n'),out=[],ul=null,tbl=[];
   out.push('<div>'+inl(l)+'</div>')});
  flush();return out.join('')}
 /* s3-5b: строка «MEDIA:<путь к картинке>» в ответе Hermes — картинка (грузится с ПК), а не голый путь */
-function md(src){src=String(src||'');var MED=[];src=src.replace(/^[ \t]*MEDIA:[ \t]*([^\n]+?\.(?:jpe?g|png|webp|gif))[ \t]*$/gim,function(_,p){MED.push(p);return '\u0001M'+(MED.length-1)+'\u0001'});
- var out=md0(src);if(MED.length)out=out.replace(/\u0001M(\d+)\u0001/g,function(_,i){return '<img class="hcmedia" data-fp="'+E(MED[+i])+'" alt="фото">'});return out}
+function md(src){src=String(src||'');var MED=[];src=src.replace(/^[ \t]*MEDIA:[ \t]*([^\n]+?\.(?:jpe?g|png|webp|gif|mp3|ogg|oga|opus|m4a|wav))[ \t]*$/gim,function(_,p){MED.push(p);return '\u0001M'+(MED.length-1)+'\u0001'});
+ /*vb7d: MEDIA посреди строки («…через edge TTS: MEDIA:D:\…mp3») — тоже вложение*/src=src.replace(/[ \t]*\bMEDIA:[ \t]*([A-Za-z]:[\\\/][^\n]*?\.(?:mp3|ogg|oga|opus|m4a|wav))(?=[ \t]*$)/gim,function(_,p){MED.push(p);return '\n\u0001M'+(MED.length-1)+'\u0001'});
+ /*vb7d: [название](#local_…) и прочие не-веб ссылки — просто название*/src=src.replace(/\[([^\]\n]{1,200})\]\((?!https?:)[#\w][^)\s]*\)/g,'$1');
+ var out=md0(src);if(MED.length)out=out.replace(/\u0001M(\d+)\u0001/g,function(_,i){var p=MED[+i];if(/\.(?:mp3|ogg|oga|opus|m4a|wav)$/i.test(p))return '<div class="vb7aud" data-fa="'+E(p)+'"><span class="vb7audl">🔊 Голосовой ответ</span></div>';return '<img class="hcmedia" data-fp="'+E(p)+'" alt="фото">'});return out}
 function md0(src){src=String(src||'');var parts=[],re=/(?:^|\n)[ \t]{0,3}```([\w+.-]*)[ \t]*\n([\s\S]*?)(?:\n[ \t]{0,3}```[ \t]*(?=\n|$)|$(?![\s\S]))/g,last=0,m;
  while((m=re.exec(src))){if(m[0]===''){re.lastIndex++;continue}parts.push(blocks(src.slice(last,m.index)));parts.push('<pre class="hcpre"><code>'+E(m[2].replace(/\n$/,''))+'</code></pre>');last=re.lastIndex}
  var rest=src.slice(last),o=-1;
@@ -81,13 +86,13 @@ function resErr(s){try{var j=JSON.parse(s);if(j&&typeof j=='object'){if(j.error)
 function hbTx(c,r){var g=function(k){var mm=String(c).match(new RegExp('<'+k+'>([\\s\\S]*?)</'+k+'>'));return mm?mm[1].trim():''};
  if(r=='user'){var id=g('automation_id'),ins=g('instructions');return 'Автоматизация'+(id?' «'+id+'»':'')+' — проверка по расписанию'+(ins?'\n\n'+ins:'')}
  var msg=g('message'),dec=g('decision');return (msg||String(c).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim())+(dec=='NOTIFY'?'\n\n(уведомить)':'')}
-function fromHistory(m,out0){var out=(out0||[]).filter(function(b){return !b.lp}),a=out.length&&out[out.length-1].k=='a'?out[out.length-1]:null;
+function fromHistory(m,out0,pure){var out=(out0||[]).filter(function(b){return !b.lp}),a=out.length&&out[out.length-1].k=='a'?out[out.length-1]:null;
  m.forEach(function(x){if(x&&(x.r=='user'||x.r=='assistant')&&/^\s*<heartbeat>/.test(x.c||'')){var y={};for(var q in x)y[q]=x[q];y.c=hbTx(x.c,x.r);x=y}
   if(x.r=='user'){a=null;var c=x.c||'',im=0,ip=[];/*s3-5a*/c=c.replace(/\n*\[Image attached at:([^\]]*)\]/g,function(_,pp){im++;pp=String(pp||'').trim();if(pp)ip.push(pp);return ''}).replace(/\n*\[screenshot\]/g,'').trim();if(im&&/^Посмотри на изображени[ея]\.?$/.test(c))c='';/*s4a-cap: подпись, которую подставил ПК к фото без текста, не показываем*/if(c||im)out.push({k:'u',t:c,im:im,ip:ip,ts:x.ts||0});return}/*s3-5a-push*/
   if(x.r=='assistant'){if(!a){a={k:'a',parts:[]};out.push(a)}if(x.ts)a.ts=x.ts;if((x.c||'').trim())a.parts.push({p:'t',t:x.c});(x.tc||[]).forEach(function(c){a.parts.push({p:'tool',id:c.id,n:c.n||'tool',a:c.a||'',st:'nr',res:''})});return}
   if(x.r=='tool'){for(var i=out.length-1;i>=0;i--){if(out[i].k!='a')continue;var f=out[i].parts.filter(function(p){return p.p=='tool'&&p.id==x.tid})[0];if(f){f.res=x.c||'';f.st=resErr(x.c)?'err':'ok';break}}}
  });
- return withLocal(out.filter(function(b){return b.k!='a'||b.parts.length}))}
+ var o2=out.filter(function(b){return b.k!='a'||b.parts.length});return pure?o2:withLocal(o2)/*vb7a П10: предзагрузка чужого чата не трогает пузыри текущего*/}
 /* s2-1: своё сообщение в чате ПК видно сразу после ↑, пока история с ПК его не вернула (Codex ждёт до 25 с, Hermes — до ответа шлюза).
    Локальный пузырь снимается, как только в истории появилось новое сообщение пользователя (или тот же текст). */
 function nrm(t){return String(t||'').replace(/\s+/g,' ').trim().slice(0,60)}
@@ -189,7 +194,13 @@ function paintList(){var r=root();if(!r)return;r.className='k-'+st.kind;
  else if(!st.sessions.length)h+='<div class="hcempty">'+(st.kind=='claude'?'Сессий Claude не найдено.':'Сессий пока нет.<br>Нажми «Новая сессия» и напиши Hermes.')+'</div>';
  else h+=groupsHtml();
  r.innerHTML=h+'</div>'}
-function paintChat(){var r=root();if(!r)return;r.className='k-'+st.kind;
+function paintChat(){var r=root();if(!r)return;
+ /*vb7a А-2: поле в фокусе (клавиатура открыта) и экран g3/cl3 того же агента уже на месте — не пересоздавать #hcroot:
+   иначе #hcin удаляется, и iOS прячет клавиатуру (новый чат после создания, ↑ во время создания — видео 94, 467, 484 с)*/
+ var a0=document.activeElement;if(a0&&a0.id=='hcin'&&r.contains(a0)&&r.className=='k-'+st.kind&&(st.rw||deskOK())&&(document.getElementById('g3')||document.getElementById('cl3'))){
+  var h1=r.querySelector('.hchd h1');if(h1)h1.textContent=st.title||'Новая сессия';var sb0=document.getElementById('hcsub');if(sb0)sb0.textContent=subTxt();
+  st.draft=a0.value;if(st.fwdDraft){st.draft=st.fwdDraft;st.fwdDraft=null;a0.value=st.draft;grow(a0)}st.stick=true;paint();return}
+ r.className='k-'+st.kind;
  var ta0=document.getElementById('hcin');if(ta0)st.draft=ta0.value;
  r.innerHTML='<div class="hd hchd"><div class="ib" data-hc="back" title="Назад">'+IC('chevron-left')+'</div><div class="hcmid tap" data-hc="menu"><h1>'+E(st.title||'Новая сессия')+'</h1><div class="st"><span class="dot ok"></span><span id="hcsub">'+E(subTxt())+'</span></div></div><div class="r"><div class="ib" data-hc="menu" title="Меню">'+IC('ellipsis')+'</div></div></div>'+
  '<div id="hcmsgs" class="hcmsgs"></div>'+
@@ -222,14 +233,18 @@ function psOn(){return !!document.querySelector('#sheet.on .hcps')}
 /* s3-8d: Claude работает в любой папке проекта (незнакомую панель открывает диплинком + Trust), у Claude нет «Без проекта» —
    вместо него «Новый проект…» (папка по названию). Папки, где Claude уже работал, у Claude идут первыми. */
 function projSheet(){var ps=st.projs,kk=st.newK||st.kind,cl=kk=='claude';
- if(!ps){var pc=LS.get('hcprojs',null);if(pc&&pc.length){st.projs=ps=pc;st.projsT=0}}/*vb5a6b: сразу из кэша*/
- if(ps&&Date.now()-(st.projsT||0)>30000){st.projsT=Date.now();J('/projects').then(function(d){var n=d.p||[];LS.set('hcprojs',n);if(JSON.stringify(n)!=JSON.stringify(st.projs)){st.projs=n;if(psOn())projSheet()}}).catch(function(){})}
+ if(!ps){var pc=LS.get('hcprojs',null);if(pc&&pc.length){st.projs=ps=pc;st.projsT=0;st.projsC=1}}/*vb5a6b: сразу из кэша*/
+ if(ps&&Date.now()-(st.projsT||0)>30000){st.projsT=Date.now();J('/projects').then(function(d){var n=d.p||[];LS.set('hcprojs',n);st.projsC=0;if(JSON.stringify(n)!=JSON.stringify(st.projs)){st.projs=n;if(psOn()){st.psRe=1;try{projSheet()}finally{st.psRe=0}}}}).catch(function(){})}
  if(ps){ps=ps.map(function(p,i){var y={};for(var q in p)y[q]=p[q];y._i=i;return y});if(cl)ps.sort(function(a,b){return (b.cl?1:0)-(a.cl?1:0)||a._i-b._i})}
  var np='<div class="hcmi" data-hc="npnew">'+IC('plus')+'<b>Новый проект…</b><span>'+(cl?'Claude нужна папка — дай проекту название':'создать папку по названию')+'</span></div>';
  if(!ps){sheet('<div class="hcsh hcps"><b>Проект</b></div><div class="hint2">'+(st.perr?E(st.perr):'Загружаю список…')+'</div><div class="hcml">'+np+'</div>'+(cl?'':'<div class="btn" data-hc="newnone">Без проекта</div>')+'<div class="btn" data-hc="close">Отмена</div>');
   J('/projects').then(function(d){st.projs=d.p||[];st.projsT=Date.now();LS.set('hcprojs',st.projs);st.perr='';if(psOn())projSheet();else window.cbDiag&&cbDiag('newchat_late_list',{})}).catch(function(e){st.perr='Не удалось: '+E(e.message);st.projs=null;if(psOn()){if(cl)projSheet();else doNew('','')}});return}
  if(!ps.length&&!cl){doNew('','');return}
- var last=LS.get('hcproj_'+kk,LS.get('hcproj',''));if(cl&&!ps.some(function(p){return p.path==last}))last=ps.length?ps[0].path:'';/*s3-8h-last: у Claude отмечен последний его проект или первая папка, где он работал*/
+ var last=LS.get('hcproj_'+kk,LS.get('hcproj',''));
+ /*vb7a П8: список из старого кэша без последнего проекта — дописываем его строкой сразу (✓ на месте с первого кадра, не переезжает после свежего списка)*/
+ if(last&&st.projsC&&!ps.some(function(p){return p.path==last})){var bn=String(last).replace(/[\\\/]+$/,'').split(/[\\\/]/).pop();if(bn&&st.projs){st.projs.push({path:last,name:bn,cl:cl});ps.push({path:last,name:bn,cl:cl,_i:st.projs.length-1})}}
+ if(cl&&!ps.some(function(p){return p.path==last}))last=ps.length?ps[0].path:'';
+ if(st.psRe&&st.psShown&&ps.some(function(p){return p.path==st.psShown}))last=st.psShown;st.psShown=last;/*s3-8h-last: у Claude отмечен последний его проект или первая папка, где он работал*/
  var h='<div class="hcsh hcps"><b>Проект для нового чата</b></div><div class="hcml">'+/*s3-8h-order: у Hermes/Codex сначала «Без проекта»*/
   (cl?np:'<div class="hcmi'+(last?'':' on')+'" data-hc="newnone">'+(last?'<i></i>':IC('check'))+'<b>Без проекта</b><span>папка по умолчанию</span></div>'+np)+
   ps.map(function(p){var on=last==p.path;return '<div class="hcmi'+(on?' on':'')+'" data-hc="newproj" data-i="'+p._i+'">'+(on?IC('check'):'<i></i>')+'<b>'+E(p.name)+'</b><span>'+E(p.path)+'</span></div>'}).join('')+
@@ -252,7 +267,7 @@ function s4ph(k,ph){ccStop();if(st.kind!=k){st.kind=k;LS.set('hckind',k);st.mode
  st.pin=false;st.title='Новый чат';st.rw=false;st.src=k=='hermes'?'gui':'';st.cclive=false;st.view='chat';U.page='hcchat';st.stick=true;st.loadingMsgs=true;loadModels();render()}
 function doNew(cwd,pname,newp){/*s3-8f*/unsheet();if(st.newBusy&&Date.now()-st.newBusy<20000){window.cbDiag&&cbDiag('newchat_dup',{});return}st.newBusy=Date.now();var t0n=Date.now();var k=st.newK||st.kind;st.newK=null;LS.set('hcproj',cwd||'');LS.set('hcproj_'+k,cwd||'');
  var prev={kind:st.kind,sid:st.sid,view:st.view,ss:st.sessions,title:st.title,rw:st.rw,src:st.src},ph='s4new-'+t0n;s4ph(k,ph);var from=st.kind+':'+st.sid+':'+st.view;
- function remap(id){(st.lp||[]).forEach(function(q){if(q.sid==ph){q.sid=id;q.nu=0}});if(st.dsq)delete st.dsq[ph];var q=st.qd&&st.qd.o==ph?st.qd:null;st.qd=null;return q}
+ function remap(id){(st.lp||[]).forEach(function(q){if(q.sid==ph){q.sid=id;q.nu=0}});if(window.VC&&VC.sid==ph)VC.sid=id||VC.sid;/*vb7a П9: диктовка, начатая в создаваемом чате, остаётся в нём*/if(st.dsq)delete st.dsq[ph];var q=st.qd&&st.qd.o==ph?st.qd:null;st.qd=null;return q}
  J('/new',{method:'POST',body:newp?{agent:k,newproj:newp}:{agent:k,cwd:cwd||'',pname:pname||''}}).then(function(d){st.newBusy=0;if(st.creating==ph)st.creating=0;if(d&&d.proj&&d.proj.path){cwd=d.proj.path;pname=d.proj.name;LS.set('hcproj',cwd);LS.set('hcproj_'+k,cwd);st.projs=null}/*s3-8f-body*/var moved=(st.kind+':'+st.sid+':'+st.view)!=from;window.cbDiag&&cbDiag('newchat',{ag:k,ms:Date.now()-t0n,ok:1,late:moved?1:0});
   var id=d.s.id,q=remap(id),ms=st.sid==ph?st.msel:null;if(ms)saveSel(id,ms,1);
   if(moved){st.fwdPend=null;if(q)deskPost(id,q.k,q.t,q.imgs,q.b,q.T0);toast('Чат создан — он в списке '+(KN[k]||k));return}
@@ -341,7 +356,7 @@ function openAgent(id,fresh){var s=(st.sessions||[]).filter(function(x){return x
  if(st.rw)return J(base()+'/sessions/'+encodeURIComponent(id)+'/messages').then(function(d){if(st.sid!=id||st.busy)return;st.msgs=fromHistory(d.m);st.loadingMsgs=false;st.stick=true;st.perm=d.perm||'';if(d.run)resumeRun(d.run);else paint()}).catch(function(e){st.loadingMsgs=false;st.err=e.message;paint()});
  ccPoll(true)}
 function ccPoll(first){ccStop();var id=st.sid;if(st.creating&&st.creating==id)return;/*s4a-poll: чат ещё создаётся*/if(st.kind=='hermes'||st.rw||st.view!='chat'||!id)return;var k=st.kind,tok=ccTok,t0=Date.now(),lp=!(first||st.ccoff==null);ccFly=true;
- J(base()+'/sessions/'+encodeURIComponent(id)+'/messages'+(lp?'?from='+st.ccoff+'&sz='+(st.ccsz||st.ccoff)+'&wait=20':'')).then(function(d){if(tok!=ccTok||st.sid!=id||st.kind!=k)return;
+ J(base()+'/sessions/'+encodeURIComponent(id)+'/messages'+(lp?'?from='+st.ccoff+'&sz='+(st.ccsz||st.ccoff)+'&wait=20'+(st.cclive?'&lv=1':'')/*vb7d-live: сервер ответит сразу, как кончится ход (■ не висит до 20 с)*/:'')).then(function(d){if(tok!=ccTok||st.sid!=id||st.kind!=k)return;
   if(!lp)st.msgs=fromHistory(d.m);else if(d.m.length)st.msgs=fromHistory(d.m,st.msgs);
   st.ccoff=d.off;st.ccsz=d.size;st.cclive=!!d.live;st.loadingMsgs=false;st.err='';if(first)st.stick=true;paint();return d.m.length
  }).catch(function(e){if(tok!=ccTok)return;st.loadingMsgs=false;st.err=e.message||'Нет связи';paint();return -1}).then(function(g){if(tok!=ccTok)return;ccFly=false;
@@ -369,7 +384,10 @@ function deskPost(o,k,t,imgs,b,T0){st.dsq=st.dsq||{};st.dsq[o]=1;paint();
    if(st.sid!=o){paint();return}st.stick=true;st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}));/*s5-dlv: «В очереди» подписью под сообщением, не тостом*/haptic('success');paint();if(ns&&st.kind==k){(st.lp||[]).forEach(function(q){if(q.sid==o){q.sid=ns;q.nu=0}});st.sid=ns;st.ccoff=null;st.ccsz=0;st.msgs=withLocal([]);st.sessions=null;paint()}
    /* s2-1: живой канал (watch) на iPhone молчал — ответ появлялся только после повторного открытия чата. Если за 3,5 с от него нет событий хода, опрашиваем историю. */
    if(k=='hermes'){if(DWS[st.src]&&(!hwOn||hwSid!=o))hWatch(o);/*s3-1a-send*/hPoll(o,0);/*s3-1d: опрос сразу, он сам уступает живому каналу*/setTimeout(function(){if(st.sid==o&&hwOn&&hwSid==o&&!(st.hwSeen>T0))window.cbDiag&&cbDiag('watch_silent',{})},3500)}else ccPoll(false)})
-   .catch(function(e){delete st.dsq[o];if(st.dstop==o)st.dstop=0;var raw=String(e&&e.message||''),msg=humanErr(raw,k);st.lp=(st.lp||[]).filter(function(p){return p.t0!=T0});
+   .catch(function(e){/*vb7d-lock: Claude Desktop занят другим набором (автопилот/другой чат) — не «Не отправлено», а «В очереди» и повтор сам*/
+    if(e&&e.status==409&&e.code=='busy'&&st.dstop!=o){var R=st.dsr=st.dsr||{};R[T0]=(R[T0]||0)+1;if(R[T0]<=8){(st.lp||[]).forEach(function(p){if(p.t0==T0)p.st='pcbusy'});window.cbDiag&&cbDiag('desk_busy',{ag:k,n:R[T0],ms:Date.now()-T0});
+     if(st.sid==o){st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}))}paint();setTimeout(function(){if(st.dstop==o){st.dstop=0;delete st.dsq[o];st.lp=(st.lp||[]).filter(function(p){return p.t0!=T0});if(st.sid==o)st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}));paint();return}deskPost(o,k,t,imgs,b,T0)},R[T0]<3?4000:8000);return}}
+    delete st.dsq[o];if(st.dstop==o)st.dstop=0;var raw=String(e&&e.message||''),msg=humanErr(raw,k);st.lp=(st.lp||[]).filter(function(p){return p.t0!=T0});
     failAdd({sid:o,k:k,t:t||'',im:imgs.length,ts:T0/1000,t0:T0,err:msg},imgs);window.cbDiag&&cbDiag('desk_fail',{ag:k,ms:Date.now()-T0,err:raw.slice(0,60),here:st.sid==o?1:0});
     if(st.sid==o){st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}));st.stick=true;haptic('error')}paint()})}
 /* s4a-err: сырые ответы ПК (исключения PowerShell и т. п.) — человеческим текстом */
@@ -399,7 +417,7 @@ function dlvTick(){if(DLV.busy||document.hidden||!API)return;/*s5-dlvfix: свя
    else if(r.st=='bad'){st.lp=st.lp.filter(function(q){return q!==p});failAdd({sid:p.sid,k:p.k,t:p.t||'',im:p.im,ts:p.ts,t0:p.t0,unc:1,err:r.why=='timeout'?'агент не начал этот ход за '+Math.max(1,Math.round((r.age||0)/60))+' мин':'агент не взял сообщение'});ch=1}});
   if(ch){dlvSave();if(st.view=='chat'){st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}));paint()}}}).catch(function(){DLV.busy=0})}
 dlvLoad();setInterval(dlvTick,5000);
-function dlHtml(b){var t=b.dl=='queued'?'В очереди · уйдёт после текущего ответа':b.dl=='wait'?'Отправлено · ждём подтверждения':b.dl=='ok'?'Доставлено':'';return t?'<div class="s5dl'+(b.dl=='ok'?' ok':'')+'">'+t+'</div>':''}
+function dlHtml(b){var t=b.dl=='pcbusy'?'В очереди · '+(DESK[st.kind]||'ПК')+' занят другим чатом, отправлю сам':b.dl=='queued'?'В очереди · уйдёт после текущего ответа':b.dl=='wait'?'Отправлено · ждём подтверждения':b.dl=='ok'?'Доставлено':'';return t?'<div class="s5dl'+(b.dl=='ok'?' ok':'')+'">'+t+'</div>':''}
 function failHtml(b){return '<div class="s4fl"><div class="s4flt">'+IC('info')+'<span>'+(b.unc?'Не подтверждено':'Не отправлено')+(b.fail?': '+E(b.fail):'')+'</span></div><div class="s4fla"><i data-s4f="retry" data-t0="'+E(b.ft)+'" role="button">Повторить</i><i data-s4f="edit" data-t0="'+E(b.ft)+'" role="button">Изменить</i></div></div>'}
 function phantom(k,x){return !!(x&&x.new&&!(st.sid==x.id&&st.kind==k)&&!failLoad().some(function(f){return f.sid==x.id})&&!(st.dsq&&st.dsq[x.id]))}/*s4a-ph: пустой «Новый чат», не созданный на ПК, в списках не показываем (как у родных)*/
 function s4retry(t0,edit){var f=failLoad().filter(function(x){return String(x.t0)==String(t0)})[0];if(!f)return;var ta=document.getElementById('hcin');
@@ -496,7 +514,7 @@ document.addEventListener('click',function(ev){var el=ev.target.closest('[data-h
  }});
 document.addEventListener('input',function(e){if(e.target.id=='hcin'){st.draft=e.target.value;grow(e.target);sendBtn()}if(e.target.id=='hcmq'){st.mq=e.target.value;mlist()}});
 document.addEventListener('focusin',function(e){if(e.target.id=='hcin')document.body.classList.add('hckb')});
-document.addEventListener('focusout',function(e){if(e.target.id=='hcin')setTimeout(function(){if(document.activeElement&&document.activeElement.id=='hcin')return;document.body.classList.remove('hckb')},250)});
+document.addEventListener('focusout',function(e){if(e.target.id=='hcin')setTimeout(function(){if(document.activeElement&&document.activeElement.id=='hcin')return;document.body.classList.remove('hckb')},0)});/*vb7a К2: без задержки 250 мс — поле не меняет вид на весу*/
 document.addEventListener('keydown',function(e){if(e.target.id=='hcin'&&e.key=='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();send()}if(e.target.id=='hcren'&&e.key=='Enter'){e.preventDefault();var b=document.querySelector('[data-hc=rensave]');if(b)b.click()}});
 document.addEventListener('change',function(e){if(e.target.id!='hcfile')return;var fs=[].slice.call(e.target.files||[]).slice(0,Math.max(0,20-st.imgs.length));if((e.target.files||[]).length+st.imgs.length>20)toast('Не больше 20 фото за раз');e.target.value='';
  fs.reduce(function(p,f){return p.then(function(){return readImg(f).then(function(u){st.imgs.push(u)})})},Promise.resolve()).then(paint).catch(function(){toast('Не удалось прочитать фото')})});

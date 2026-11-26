@@ -13,13 +13,14 @@
      var body=document.createElement('div');body.className='hctgb';b.insertBefore(g,run[0]);run.forEach(function(t){body.appendChild(t)});g.appendChild(body)}run=[]}
    kids.forEach(function(k){if(k.classList&&k.classList.contains('hctool'))run.push(k);else flush()});flush()})}
  document.addEventListener('click',function(e){var h=e.target.closest&&e.target.closest('.hctgh');if(!h)return;var g=h.parentNode,o=!g.classList.contains('open');g.classList.toggle('open',o);OPEN[g.dataset.k]=o},true);
- function upd(){var b=document.body;if(!b)return;var m=b.classList.contains('hcm'),c=m&&!!document.getElementById('hcmsgs'),key=(m?1:0)+''+(c?1:0)+b.className.indexOf('hk-claude')+b.className.indexOf('hk-codex');
+ function upd(){var b=document.body;if(!b)return;var m=b.classList.contains('hcm'),c=m&&!!document.getElementById('hcmsgs'),cq=c&&document.querySelector('.g3,.cl3'),key=(m?1:0)+''+(c?1:0)+(cq?cq.className.indexOf('cl3'):'n')+b.className.indexOf('hk-claude')+b.className.indexOf('hk-codex');
   if(c)groupTools();
   if(b.classList.contains('hcv-chat')!=c)b.classList.toggle('hcv-chat',c);
   if(b.classList.contains('hcv-list')!=(m&&!c))b.classList.toggle('hcv-list',m&&!c);
   if(key==last)return;last=key;
   try{var T=window.Telegram&&Telegram.WebApp;if(!T||!T.setHeaderColor)return;var r=document.getElementById('hcroot'),col=null;
-   if(m&&r){var bg=getComputedStyle(r).backgroundColor,mm=bg.match(/\d+/g);if(mm)col='#'+mm.slice(0,3).map(function(x){return ('0'+(+x).toString(16)).slice(-2)}).join('')}
+   /*vb7a К1/К2: в чате фон контейнера Telegram (виден в кадрах перерисовки при клавиатуре) = фон чата, а не #hcroot*/
+   if(m&&r){var bg=getComputedStyle(cq||r).backgroundColor;if(cq&&/rgba\(.*,\s*0\)|transparent/.test(bg))bg=getComputedStyle(r).backgroundColor;mm=bg.match(/\d+/g);if(mm)col='#'+mm.slice(0,3).map(function(x){return ('0'+(+x).toString(16)).slice(-2)}).join('')}
    if(!col)col=document.documentElement.dataset.theme=='light'?'#f6f4ee':'#07070d';
    T.setHeaderColor(col);T.setBackgroundColor(col);if(T.setBottomBarColor)T.setBottomBarColor(col)}catch(e){}}
  var mo=new MutationObserver(function(){upd()});

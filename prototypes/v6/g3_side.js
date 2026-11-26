@@ -85,7 +85,7 @@
   /* fx1: «ждёт ответа · 12» путали с вопросами (на Пульте «вопросов нет»): это чаты, где агент закончил и ход за тобой */
   return w?{t:'твой ход'+(w>1?' · '+w:''),dot:1}:lv?{t:'идёт'+(lv>1?' · '+lv:'')+' сейчас'}:{t:''}}
  function agRows(){var s=st(),cur=s&&s.kind;return ['hermes','claude','codex'].map(function(k){var a=agState(k);
-  return '<div class="sd3r sd3ag8'+(k==cur?' on':'')+'" data-sd="agent" data-k="'+k+'">'+agIc(k)+'<b>'+KN[k]+'</b>'+(a.t?'<span class="sd3as">'+E(a.t)+'</span>':'')+(a.dot?'<i class="sd3dot"></i>':'')+'</div>'}).join('')+'<div class="sd3r sd3ag8 sd3fold" data-sd="all">'+ic(SD.sty=='g'?'g_projects':'c_projects')+'<b>Все сессии</b><span class="sd3as">по папкам</span></div><div class="sd3gap"></div>'}
+  return '<div class="sd3r sd3ag8'+(k==cur?' on':'')+'" data-sd="agent" data-k="'+k+'">'+agIc(k)+'<b>'+KN[k]+'</b>'+(a.t?'<span class="sd3as">'+E(a.t)+'</span>':'')+(a.dot?'<i class="sd3dot"></i>':'')+'</div>'}).join('')+'<div class="sd3r sd3ag8 sd3fold" data-sd="all">'+ic('c_fall')/*vb7d: не тот же значок, что «Проекты»*/+'<b>Все сессии</b><span class="sd3as">по папкам</span></div><div class="sd3gap"></div>'}
  function lastOf(k){var M=lsg('sd3lastk',{})||{},L=(SD.L[k]||[]).filter(function(x){return x.src!='cron'}),id=M[k];if(id&&L.some(function(x){return x.id==id}))return id;
   var a=L.slice().sort(function(x,y){return (y.ts||0)-(x.ts||0)})[0];return a&&a.id}
  function goAgent(k,n){var s=st();if(s&&s.kind==k&&s.view=='chat'){close();return}var id=lastOf(k);
@@ -115,7 +115,7 @@
    :'<div class="sd3av" data-sd="settings" role="button" aria-label="Настройки"><i>'+E(fx&&fx.user||u.ini1)+'</i></div><div class="sd3new" data-sd="new" role="button">'+ic('c_plus')+'<span>'+E(fx&&fx.newl||'Новый чат')+'</span></div>')+'</div>';
   return h}
  function user(){var u={};try{u=(tg.initDataUnsafe&&tg.initDataUnsafe.user)||{}}catch(e){}
-  var n=((u.first_name||'')+' '+(u.last_name||'')).trim()||u.username||'Я',p=n.split(/\s+/),ini=((p[0]||'')[0]||'')+((p[1]||'')[0]||'');
+  var n=(window.vb7dUser&&vb7dUser())/*vb7d: одно имя везде — из аккаунта агента*/||((u.first_name||'')+' '+(u.last_name||'')).trim()||u.username||'Я',p=n.split(/\s+/),ini=((p[0]||'')[0]||'')+((p[1]||'')[0]||'');
   return {name:n,nick:u.username?'@'+u.username:n,ini:(ini||n.slice(0,2)).toUpperCase(),ini1:(n[0]||'Я').toUpperCase()}}
  function pane(){var p=$i('sd3');if(!p){p=D.createElement('div');p.id='sd3';p.className='sd3';B.appendChild(p);
    var c=D.createElement('div');c.id='sd3cv';c.className='sd3cv';B.appendChild(c)}return p}
@@ -190,14 +190,14 @@
  function rcClose(instant){SD.rc=false;SD.sel=null;var r=$i('sd3rc');if(!r||!r.classList.contains('on'))return;var q=$i('sd3q');if(q)q.blur();
   if(instant||!r.animate){r.className='sd3rc';return}var a=r.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease-out'});a.onfinish=function(){if(!SD.rc)r.className='sd3rc'}}
  /* поиск над клавиатурой (0214.05): поле едет вместе с visualViewport */
- function kbPos(){var r=$i('sd3rc');if(!r||!SD.rc)return;var vv=W.visualViewport,kb=vv?Math.max(0,innerHeight-vv.height-vv.offsetTop):0,q=$i('sd3q'),f=q&&D.activeElement===q;
+ function kbPos(){var r=$i('sd3rc');if(!r||!SD.rc)return;var vv=W.visualViewport,kb=vv?Math.max(0,innerHeight-vv.height-vv.offsetTop):0;if(W.VB7KB&&VB7KB.on())kb=Math.max(kb,VB7KB.off());/*vb7a: iOS — по viewportChanged сразу*/var q=$i('sd3q'),f=q&&D.activeElement===q;
   SD.kb=f;r.classList.toggle('kb',f);var sb=r.querySelector('.sd3sb');if(sb)sb.style.transform=kb>40?'translateY('+(-kb+Math.max(0,parseFloat(getComputedStyle(D.documentElement).getPropertyValue('--sd3b'))||0)-8)+'px)':''}
- if(W.visualViewport)visualViewport.addEventListener('resize',kbPos);
+ if(W.visualViewport)visualViewport.addEventListener('resize',kbPos);W.addEventListener('vb7kb',kbPos);
  D.addEventListener('focusin',function(e){if(e.target.id=='sd3q')setTimeout(kbPos,30)});D.addEventListener('focusout',function(e){if(e.target.id=='sd3q')setTimeout(kbPos,30)});
  D.addEventListener('input',function(e){if(e.target.id!='sd3q')return;SD.q=e.target.value;var sb=e.target.closest('.sd3sb');if(sb)sb.classList.toggle('has',!!SD.q);
   var sc=$i('sd3rsc');if(sc){var L=rcList();sc.innerHTML=L.length?(SD.grp&&!SD.q.trim()&&!SD.sel?grpHtml(L):L.map(rcRow).join('')):'<div class="sd3none"><b>Ничего не нашлось</b><span>Попробуй другое слово.</span></div>'}},true);
  /* ---------- поповеры: фильтр, долгое нажатие, переименование, удаление ---------- */
- function closePop(){var v=$i('sd3veil'),p=D.querySelectorAll('.sd3pop,.sd3pv');if(v)v.remove();p.forEach(function(x){x.remove()});SD.lp=null}
+ function closePop(){var v=$i('sd3veil'),p=D.querySelectorAll('.sd3pop,.sd3pv');if(v)v.remove();p.forEach(function(x){if(x.__out)return;/*vb7b-1: меню Настроек сворачивается к строке так же, как выросло*/if(x.classList.contains('g7m')&&x.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){x.__out=1;x.style.pointerEvents='none';x.animate([{transform:'none',opacity:1},{transform:'scale(.88)',opacity:0}],{duration:300,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'}).onfinish=function(){x.remove()};return}x.remove()});SD.lp=null}/*vb7b-p1*/
  function pop(html,pos,o){o=o||{};closePop();var v=D.createElement('div');v.id='sd3veil';if(o.dim)v.className='dim';B.appendChild(v);
   var p=D.createElement('div');p.className='sd3pop '+(o.sty||SD.sty);p.innerHTML=html;B.appendChild(p);for(var k in pos)p.style[k]=pos[k];
   /* меню «вытекает» из точки привязки: 400 мс с отскоком ~4 % (как «…» шапки ChatGPT, spec §12) / пружина 0.30/0.8 у Claude (spec §8) */
@@ -388,7 +388,7 @@
   R.forEach(function(x){var key=k+':'+x.id;if(MC[key]||Date.now()-(MW.t[key]||0)<180e3||MW.q.some(function(q){return q.key==key}))return;MW.q.push({key:key,u:bs+'/sessions/'+encodeURIComponent(x.id)+'/messages'})});
   mcStep()}
  function mcStep(){if(MW.busy||!MW.q.length)return;var j=MW.q.shift();MW.t[j.key]=Date.now();MW.busy=1;
-  api(j.u).then(function(d){var M=(W.HC&&HC.fromHistory&&d&&d.m)?HC.fromHistory(d.m).filter(function(b){return b&&!b.live}).slice(-40):[];if(!M.length||MC[j.key])return;var js=JSON.stringify(M);
+  api(j.u).then(function(d){var M=(W.HC&&HC.fromHistory&&d&&d.m)?HC.fromHistory(d.m,null,1).filter(function(b){return b&&!b.live}).slice(-40):[];if(!M.length||MC[j.key])return;var js=JSON.stringify(M);
    while(js.length>40000&&M.length>1){M=M.slice(Math.ceil(M.length/4));js=JSON.stringify(M)}if(js.length>40000)return;
    MC[j.key]=js;MCo=MCo.filter(function(x){return x!=j.key});MCo.push(j.key);while(MCo.length>16)delete MC[MCo.shift()];if(!MCw)MCw=setTimeout(mcSave,1500)})
    .catch(function(){}).then(function(){MW.busy=0;if(SD.on)setTimeout(mcStep,150);else MW.q.length=0})}
@@ -439,7 +439,7 @@
  /* «Назад» Telegram в чате = боковое меню (как ☰), а не старый список; второе нажатие — закрыть */
  function tgBack(){if(SD.rc){rcClose();return}if($i('sd3set')&&$i('sd3set').classList.contains('on')){setClose();return}
   if(W.U&&U.page=='hcchat'&&main()){SD.on?close():open();return}if(typeof W.back=='function')W.back()}
- try{if(W.tg&&tg.BackButton&&tg.BackButton.offClick&&typeof W.back=='function'){tg.BackButton.offClick(W.back);tg.BackButton.onClick(tgBack)}}catch(e){}
+ try{if(W.tg&&tg.BackButton&&tg.BackButton.offClick&&typeof W.back=='function'){tg.BackButton.offClick(W.back);if(W._back86)tg.BackButton.offClick(W._back86);/*vb7b-3: база подписала исходный back, prj.js его обернул — снимать оба*/tg.BackButton.onClick(tgBack)}}catch(e){}
  W.SD3={goTab:goTab,newChat:newChat,pop:pop,mi:mi,user:user,ic:ic,agIc:agIc,api:api,sty:sty,folder:folder,goAgent:goAgent,lastOf:lastOf,entry:entStart,tgBack:tgBack,open:open,close:close,closeAll:closeAll,rcOpen:rcOpen,rcClose:rcClose,setOpen:setOpen,setClose:setClose,filterMenu:filterMenu,rowMenu:rowMenu,closePop:closePop,
   paint:paint,load:load,SD:SD,all:all,pinned:pinned,openChat:openChat,
   /* для сверки со стоп-кадром: позиция экрана в pt и мгновенная отрисовка */

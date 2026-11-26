@@ -115,7 +115,7 @@
   if(e.target.id=='g6sv'){e.stopPropagation();e.preventDefault();clClose(false);return}
   if(!sh.contains(e.target))return;var a=e.target.closest('[data-g6]'),h=e.target.closest('[data-hc]');
   if(a){e.stopPropagation();e.preventDefault();var g=a.dataset.g6;if(g=='x'){if(SH.stack.length>1)pop();else clClose(false)}else if(g=='eff')push(clEff(),'g6effp');else if(g=='more')push(clMore(),'g6morep');return}
-  if(h){var k=h.dataset.hc;setTimeout(function(){if(SH.el!==sh)return;
+  if(h){var k=h.dataset.hc;/*vb7a: клавиатура вернётся после выбора модели — фокус в самом касании (iOS не открывает клавиатуру из таймера)*/if((k=='mpick'||k=='mdef')&&SH.focus){var tf=$i('hcin');if(tf)try{tf.focus({preventScroll:true})}catch(x){tf.focus()}}setTimeout(function(){if(SH.el!==sh)return;
    if(k=='epick'){var p=SH.stack[SH.stack.length-1];if(p&&p.classList.contains('g6effp')){p.innerHTML=clEff();setTimeout(function(){if(SH.el===sh)pop()},160)}}
    else if(k=='mpick'||k=='mdef'){var m=sh.querySelector('.g6main');if(m)m.innerHTML=clMain();setTimeout(function(){if(SH.el===sh)clClose(false)},180)}},0)}},false);
 

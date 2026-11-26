@@ -3,17 +3,24 @@
    Codex: в новом чате (ни одного хода) модель первого хода выбирается; в начатом — только видна (Codex Desktop держит её сам). */
 (function(){var W=window,D=document;
  function st(){return W.HC&&HC.st}
- var CXM={},INF={};
+ var CXM={},INF={};try{var C0=JSON.parse(localStorage.getItem('hc_vb7cxm')||'{}');for(var q in C0){CXM[q]=C0[q];CXM[q].ls=1}}catch(e){}
+ function cxSave(id,d){try{var C0=JSON.parse(localStorage.getItem('hc_vb7cxm')||'{}');delete C0[id];C0[id]={model:d.model,effort:d.effort||'',fresh:!!d.fresh};var k=Object.keys(C0);while(k.length>60)delete C0[k.shift()];localStorage.setItem('hc_vb7cxm',JSON.stringify(C0))}catch(e){}}
  function api(){return (typeof API=='string'?API:'').replace(/\/$/,'')}
- function cxm(s){var id=s.sid;if(!id||INF[id])return CXM[id];var c=CXM[id];if(c&&!(c.fresh&&!HC.cxFresh()))return c;INF[id]=1;
-  fetch(api()+'/api/hc/cx/sessions/'+encodeURIComponent(id)+'/model',{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){return r.json()}).then(function(d){INF[id]=0;if(d&&typeof d.model=='string'){CXM[id]=d;hd()}}).catch(function(){INF[id]=0;CXM[id]={model:'',effort:'',fresh:false,err:1}});return c}
+ function cxm(s){var id=s.sid;if(!id||INF[id])return CXM[id];var c=CXM[id];if(c&&!c.ls&&!(c.fresh&&!HC.cxFresh()))return c;if(c&&c.ls)c.ls=0;INF[id]=1;
+  fetch(api()+'/api/hc/cx/sessions/'+encodeURIComponent(id)+'/model',{headers:{'X-Init-Data':W.tg?tg.initData:''}}).then(function(r){return r.json()}).then(function(d){INF[id]=0;if(d&&typeof d.model=='string'){CXM[id]=d;if(d.model)cxSave(id,d);hd()}}).catch(function(){INF[id]=0;if(!(CXM[id]&&CXM[id].model))CXM[id]={model:'',effort:'',fresh:false,err:1}});return c}
  function nm(m){return W.G6M&&G6M.name?G6M.name(m):HC.pretty(m)}
+ /* vb7a П8: шапка сразу с моделью из кэша (чата — LS vb7cxm, агента — LS vb7am_<агент>), без «Codex»/«Модель»;
+    новый чат Codex с выбранной моделью до первого ответа показывает выбранную (не модель ПК по умолчанию — видео 467, 675 с) */
+ function am(k,v){try{if(v){if(localStorage.getItem('hc_vb7am_'+k)!==v)localStorage.setItem('hc_vb7am_'+k,v);return v}return localStorage.getItem('hc_vb7am_'+k)||''}catch(e){return ''}}
  function info(){var s=st();if(!s||!s.sid&&s.kind!='hermes')return null;if(s.kind!='codex'&&s.kind!='hermes')return null;
-  if(s.kind=='hermes')return {t:HC.chipTxt?HC.chipTxt():'Hermes',can:true};
-  if(s.rw)return {t:HC.chipTxt?HC.chipTxt():'Codex',can:true};          /* чат панели (app-server): модель меняется всегда */
-  var fr=HC.cxFresh&&HC.cxFresh(),sel=s.msel&&s.msel.m,c=cxm(s);
-  if(fr)return {t:sel?nm(sel):(c&&c.model?nm(c.model):(s.models&&s.models.cur?nm(s.models.cur.model):'Codex')),can:true};
-  return {t:c&&c.model?nm(c.model):'Codex',can:false}}
+  var ct=HC.chipTxt?HC.chipTxt():'',real=ct&&ct!='Модель';if(real&&(s.kind=='hermes'||s.rw))am(s.kind,ct);
+  if(s.kind=='hermes')return {t:real?ct:(am('hermes')||'Hermes'),can:true};
+  if(s.rw)return {t:real?ct:(am('codex')||'Codex'),can:true};          /* чат панели (app-server): модель меняется всегда */
+  var fr=HC.cxFresh&&HC.cxFresh(),sel=s.msel&&s.msel.m,c=cxm(s),cur=s.models&&s.models.cur&&s.models.cur.model;if(cur)am('codex',nm(cur));
+  var ans=(s.msgs||[]).some(function(b){return b&&b.k=='a'});
+  if(fr)return {t:sel?nm(sel):(c&&c.model?nm(c.model):(cur?nm(cur):(am('codex')||'Codex'))),can:true};
+  if(sel&&!ans)return {t:nm(sel),can:false};
+  return {t:c&&c.model?nm(c.model):(sel?nm(sel):(am('codex')||'Codex')),can:false}}
  var CHV='<svg class="g8chv" width="11" height="7" viewBox="0 0 11 7" aria-hidden="true"><path d="M1.2 1.3 5.5 5.6 9.8 1.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
  function hd(){var sp=D.querySelector('#g3hd .g3sp');if(!sp)return;var i=info(),el=sp.querySelector('.g8mt');
   if(!i){if(el)el.remove();return}

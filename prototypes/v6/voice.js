@@ -63,7 +63,7 @@ function vcStart(){
     cbDiag('voice',{rec:ms,stt:Date.now()-VC.tb,ok:err?0:1,err:err?String(err.message||err).slice(0,50):'',ch:d&&d.text?d.text.length:0,sw:(VC.sid&&window.HC&&HC.st&&HC.st.sid&&HC.st.sid!=VC.sid)?1:0});
     if(err){toast('Не удалось распознать: '+esc(String(err.message||err).slice(0,80)));return}
     var t=((d&&d.text)||'').trim();if(!t){vcSet('');toast('Речь не распознана');return}
-    if(VC.sid&&window.HC&&HC.st&&HC.st.sid&&HC.st.sid!=VC.sid){vcStash(VC.sid,t);return}vcSet(t);var ta2=document.getElementById('hcin');if(ta2)ta2.focus();toast('<b>'+IC('check')+'</b> Текст готов, проверь и отправь')})};
+    if(VC.sid&&window.HC&&HC.st&&HC.st.sid&&HC.st.sid!=VC.sid&&!/^s4new-/.test(VC.sid)){vcStash(VC.sid,t);return}vcSet(t);var ta2=document.getElementById('hcin');/*vb7a П1-в: на телефоне без программного фокуса — клавиатура не мигает, лента не прыгает*/if(ta2&&!(window.matchMedia&&matchMedia('(pointer:coarse)').matches)&&!(window.G3&&G3.G&&G3.G.sendAfter)&&!(window.CL3&&CL3.G&&CL3.G.sendAfter))ta2.focus();toast('<b>'+IC('check')+'</b> Текст готов, проверь и отправь')})};
   r.start(500);vcUi();VC.lp=0;VC.tick=setInterval(function(){vcTime();vcPartial()},100);VC.timer=setTimeout(vcStop,600000);
  }).catch(function(e){var n=e&&e.name||'';toast(n=='NotAllowedError'||n=='SecurityError'?'Нет доступа к микрофону. Разреши его в настройках iOS для Telegram или диктуй с клавиатуры':'Микрофон недоступен: '+esc(n||'ошибка'))})}
 document.addEventListener('click',function(ev){var el=ev.target.closest('[data-hc=mic]');if(!el)return;ev.stopPropagation();if(VC.busy)return;if(VC.rec)vcStop();else vcStart()},true);
