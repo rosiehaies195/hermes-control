@@ -139,7 +139,7 @@
   var lu=-1;R.L.forEach(function(t,k){if(t.u)lu=k});var opened=false;
   R.L.forEach(function(t,k){var last=k==R.L.length-1;
    if(k==lu){h+='<div class="g3lt" id="g3lt"'+(G.ltH?' style="min-height:'+G.ltH+'px"':'')+'>';opened=true}
-   if(t.u){h+='<div class="g3um" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="g3ub">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+'</div>';
+   if(t.u){h+='<div class="g3um" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="g3ub">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+(t.u.dl&&HC.dlHtml?HC.dlHtml(t.u):'')/*s5-dlv*/+'</div>';
     if(last&&lv)h+='<div class="g3ta2 g3last">'+thinking({a:[]})+'</div>';return}
    h+=turnA(t,last&&lv,last)});
   (s.pend||[]).forEach(function(p,i){h+=pendHtml(p,i)});

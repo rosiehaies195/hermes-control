@@ -2660,6 +2660,10 @@ html[data-theme=light] .gp .g7hb,html[data-theme=light] .gp .g7cap{background:rg
 /* vb5-Б9: подсказка «i» в Расходе — поповер над листом */
 .g7tipb{padding:12px 14px;font-size:14px;line-height:19px;white-space:normal;color:inherit;opacity:.92}
 
+/* s5-dlv (этап 5, п.2): подпись статуса под своим сообщением в чате ПК (как «Доставлено» в iMessage) */
+.s5dl{font-size:12px;line-height:16px;color:currentColor;opacity:.5;text-align:right;margin:5px 4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s5dl.ok{opacity:.4}
+
 </style>
 </head>
 <body>
@@ -2958,7 +2962,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=116;
+var VER=117;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -3518,14 +3522,14 @@ function fromHistory(m,out0){var out=(out0||[]).filter(function(b){return !b.lp}
    Локальный пузырь снимается, как только в истории появилось новое сообщение пользователя (или тот же текст). */
 function nrm(t){return String(t||'').replace(/\s+/g,' ').trim().slice(0,60)}
 function withLocal(out){out=withFail(out);var L=st.lp;if(!L||!L.length)return out;var now=Date.now()/1000,nu=out.filter(function(b){return b.k=='u'&&!b.lp}).length;
- st.lp=L.filter(function(p){if(now-p.ts>180)return false;if(p.sid!=st.sid)return true;
+ st.lp=L.filter(function(p){if(now-p.ts>dlvLife(p))return false;if(p.sid!=st.sid)return true;
   var got=nu>p.nu||out.some(function(b){return b.k=='u'&&!b.lp&&nrm(b.t)==nrm(p.t)&&nrm(p.t)});
   if(got){window.cbDiag&&cbDiag('desk_feed',{ag:p.k,ms:Date.now()-p.t0,via:st.hwSeen>p.t0?'watch':'poll'});return false}
-  out.push({k:'u',t:p.t,im:p.im,ts:p.ts,lp:1});return true});return out}
+  out.push({k:'u',t:p.t,im:p.im,ts:p.ts,lp:1,dl:p.st||'',dt0:p.t0});return true});dlvSave();return out}
 /* s4a-wf: неотправленные сообщения этого чата — в конец ленты; ушли иначе (история вернула тот же текст позже) — убираем */
 function withFail(out){var F=failLoad().filter(function(f){return f.sid==st.sid});if(!F.length)return out;var ch=0;
  F.forEach(function(f){if(out.some(function(b){return b.k=='u'&&!b.lp&&b.ts>=f.ts-5&&nrm(b.t)==nrm(f.t)&&nrm(f.t)})){st.fl=st.fl.filter(function(x){return x!==f});ch=1;return}
-  out.push({k:'u',t:f.t,im:f.im,ts:f.ts,lp:1,fail:f.err||'',ft:f.t0})});if(ch)failSave();return out}
+  out.push({k:'u',t:f.t,im:f.im,ts:f.ts,lp:1,fail:f.err||'',ft:f.t0,unc:f.unc?1:0})});if(ch)failSave();return out}
 
 /* ---------- отрисовка ---------- */
 function shell(){return '<div id="hcroot"></div>'}
@@ -3789,10 +3793,10 @@ function ccSend(){var t=(st.draft||'').trim();if((!t&&!st.imgs.length)||!live())
   deskPost(o,k,t,imgs,b,T0);return}
  ccSay()}
 function deskPost(o,k,t,imgs,b,T0){st.dsq=st.dsq||{};st.dsq[o]=1;paint();
- J(KB(k)+'/sessions/'+encodeURIComponent(o)+'/desk',{method:'POST',body:b}).then(function(d){delete st.dsq[o];
+ J(KB(k)+'/sessions/'+encodeURIComponent(o)+'/desk',{method:'POST',body:b}).then(function(d){delete st.dsq[o];dlvSet(T0,d);
    var ns=d&&d.sid&&d.sid!=o?d.sid:'';if(ns){var ms=loadSel(o);if(ms)saveSel(ns,ms,1)}/*s4a-model: выбор модели переезжает в настоящий чат*/
    if(st.dstop==o){st.dstop=0;deskStopId(ns||o,k)}
-   if(st.sid!=o){paint();return}st.stick=true;if(d&&(d.queued||d.now))toast(d.text||'В очереди: уйдёт после текущего ответа');haptic('success');paint();if(ns&&st.kind==k){(st.lp||[]).forEach(function(q){if(q.sid==o){q.sid=ns;q.nu=0}});st.sid=ns;st.ccoff=null;st.ccsz=0;st.msgs=withLocal([]);st.sessions=null;paint()}
+   if(st.sid!=o){paint();return}st.stick=true;st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}));/*s5-dlv: «В очереди» подписью под сообщением, не тостом*/haptic('success');paint();if(ns&&st.kind==k){(st.lp||[]).forEach(function(q){if(q.sid==o){q.sid=ns;q.nu=0}});st.sid=ns;st.ccoff=null;st.ccsz=0;st.msgs=withLocal([]);st.sessions=null;paint()}
    /* s2-1: живой канал (watch) на iPhone молчал — ответ появлялся только после повторного открытия чата. Если за 3,5 с от него нет событий хода, опрашиваем историю. */
    if(k=='hermes'){if(DWS[st.src]&&(!hwOn||hwSid!=o))hWatch(o);/*s3-1a-send*/hPoll(o,0);/*s3-1d: опрос сразу, он сам уступает живому каналу*/setTimeout(function(){if(st.sid==o&&hwOn&&hwSid==o&&!(st.hwSeen>T0))window.cbDiag&&cbDiag('watch_silent',{})},3500)}else ccPoll(false)})
    .catch(function(e){delete st.dsq[o];if(st.dstop==o)st.dstop=0;var raw=String(e&&e.message||''),msg=humanErr(raw,k);st.lp=(st.lp||[]).filter(function(p){return p.t0!=T0});
@@ -3809,7 +3813,24 @@ function failLoad(){if(!st.fl){var a=LS.get('hcfail4',[]);st.fl=Array.isArray(a)
 function failSave(){try{LS.set('hcfail4',(st.fl||[]).slice(-30))}catch(e){}}
 function failAdd(f,imgs){failLoad();st.fl=st.fl.filter(function(x){return x.t0!=f.t0});st.fl.push(f);if(imgs&&imgs.length)FLIMG[f.t0]=imgs;failSave()}
 function failDel(t0){failLoad();st.fl=st.fl.filter(function(x){return String(x.t0)!=String(t0)});failSave()}
-function failHtml(b){return '<div class="s4fl"><div class="s4flt">'+IC('info')+'<span>Не отправлено'+(b.fail?': '+E(b.fail):'')+'</span></div><div class="s4fla"><i data-s4f="retry" data-t0="'+E(b.ft)+'" role="button">Повторить</i><i data-s4f="edit" data-t0="'+E(b.ft)+'" role="button">Изменить</i></div></div>'}
+/* s5-dlv (этап 5, п.2): статус отправленного в чат ПК — по тем же признакам, что бот (tv_dlv.py: мод Claude, task_started Codex,
+   user-строка Hermes). 202 → подпись под сообщением «В очереди» / «Отправлено · ждём подтверждения» вместо тоста; опрос /dlv раз в 5 с →
+   «Доставлено» или «Не подтверждено · Повторить / Изменить» (сами не повторяем). Ждущие переживают закрытие панели (LS hclp5, до 3 ч). */
+function dlvLife(p){return p.st=='queued'?3*3600+120:p.st=='wait'?720:p.st=='ok'?600:180}
+function dlvSet(T0,d){(st.lp||[]).forEach(function(p){if(p.t0==T0)p.st=d&&(d.queued||d.now)?(/не подтвердил/i.test(d.text||'')?'wait':'queued'):'sent'});dlvSave()}
+function dlvSave(){try{var a=(st.lp||[]).filter(function(p){return p.st=='queued'||p.st=='wait'||p.st=='ok'}).map(function(p){return {sid:p.sid,k:p.k,t:p.t,im:p.im,ts:p.ts,t0:p.t0,st:p.st}}),j=JSON.stringify(a);if(j!=st.dlj){st.dlj=j;LS.set('hclp5',a)}}catch(e){}}
+function dlvLoad(){try{var a=LS.get('hclp5',[]),now=Date.now()/1000;if(!Array.isArray(a))return;st.lp=(st.lp||[]).concat(a.filter(function(p){return p&&p.sid&&p.t0&&now-p.ts<dlvLife(p)&&!(st.lp||[]).some(function(q){return q.t0==p.t0})}).map(function(p){p.nu=1e9;return p}))}catch(e){}}
+var DLV={busy:0};
+function dlvTick(){if(DLV.busy||document.hidden)return;var now=Date.now(),L=(st.lp||[]).filter(function(p){return (p.st=='queued'||p.st=='wait')&&now-p.t0>4000});if(!L.length)return;DLV.busy=1;
+ Promise.all(L.map(function(p){return J('/dlv?k='+p.k+'&sid='+encodeURIComponent(p.sid)+'&t='+(p.t0/1000)+'&now='+(Date.now()/1000)).then(function(r){return [p,r]}).catch(function(){return [p,null]})})).then(function(R){DLV.busy=0;var ch=0;
+  R.forEach(function(x){var p=x[0],r=x[1];if(!r||!r.st)return;
+   if(r.st=='ok'&&p.st!='ok'){p.st='ok';ch=1}
+   else if(r.st=='queued'&&p.st=='wait'){p.st='queued';ch=1}
+   else if(r.st=='bad'){st.lp=st.lp.filter(function(q){return q!==p});failAdd({sid:p.sid,k:p.k,t:p.t||'',im:p.im,ts:p.ts,t0:p.t0,unc:1,err:r.why=='timeout'?'агент не начал этот ход за '+Math.max(1,Math.round((r.age||0)/60))+' мин':'агент не взял сообщение'});ch=1}});
+  if(ch){dlvSave();if(st.view=='chat'){st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}));paint()}}}).catch(function(){DLV.busy=0})}
+dlvLoad();setInterval(dlvTick,5000);
+function dlHtml(b){var t=b.dl=='queued'?'В очереди · уйдёт после текущего ответа':b.dl=='wait'?'Отправлено · ждём подтверждения':b.dl=='ok'?'Доставлено':'';return t?'<div class="s5dl'+(b.dl=='ok'?' ok':'')+'">'+t+'</div>':''}
+function failHtml(b){return '<div class="s4fl"><div class="s4flt">'+IC('info')+'<span>'+(b.unc?'Не подтверждено':'Не отправлено')+(b.fail?': '+E(b.fail):'')+'</span></div><div class="s4fla"><i data-s4f="retry" data-t0="'+E(b.ft)+'" role="button">Повторить</i><i data-s4f="edit" data-t0="'+E(b.ft)+'" role="button">Изменить</i></div></div>'}
 function phantom(k,x){return !!(x&&x.new&&!(st.sid==x.id&&st.kind==k)&&!failLoad().some(function(f){return f.sid==x.id})&&!(st.dsq&&st.dsq[x.id]))}/*s4a-ph: пустой «Новый чат», не созданный на ПК, в списках не показываем (как у родных)*/
 function s4retry(t0,edit){var f=failLoad().filter(function(x){return String(x.t0)==String(t0)})[0];if(!f)return;var ta=document.getElementById('hcin');
  if(edit){failDel(t0);var v=(ta&&ta.value||'').trim();st.draft=v?v+' '+f.t:f.t;if(FLIMG[t0])st.imgs=(st.imgs||[]).concat(FLIMG[t0]);if(ta){ta.value=st.draft;grow(ta);ta.dispatchEvent(new Event('input',{bubbles:true}))}st.msgs=withLocal(st.msgs.filter(function(b){return !b.lp}));paint();return}
@@ -3949,7 +3970,7 @@ function fwdGo(k,id,isNew){var f=st.fwdSrc;if(!f)return;unsheet();st.fwdSrc=null
  if(st.kind!=k){ccStop();st.kind=k;LS.set('hckind',k);st.models=null;st.msel=null;st.mprov=''}
  st.sessions=(st.fwdL[k]||[]).map(function(x){if(k!='hermes')x.cc=true;return x});st.fwdDraft=f.q;
  openSess(id)}
-return {newChat:newChat,msgMenu:msgMenu,fwdStart:fwdStart,copyText:copyText,open:function(id){if(st.kind!='hermes'){st.kind='hermes';LS.set('hckind','hermes')}return openSess(id)},pretty:pretty,cxFresh:cxFresh,chipTxt:chipTxt,st:st,/*vb5m*/shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint,failHtml:failHtml,phantom:phantom/*s4a-exp*/}
+return {newChat:newChat,msgMenu:msgMenu,fwdStart:fwdStart,copyText:copyText,open:function(id){if(st.kind!='hermes'){st.kind='hermes';LS.set('hckind','hermes')}return openSess(id)},pretty:pretty,cxFresh:cxFresh,chipTxt:chipTxt,st:st,/*vb5m*/shell:shell,after:after,mounted:mounted,leave:leave,md:md,fromHistory:fromHistory,onEv:onEv,paint:paint,failHtml:failHtml,dlHtml:dlHtml,phantom:phantom/*s4a-exp*/}
 })();
 
 /* v6.6: поиск везде — файлы мозга, журнал панели, чаты Hermes. Переопределяет grep()/grepView() из v5 (последнее объявление выигрывает). */
@@ -4993,7 +5014,7 @@ window.G3V={side:[20.0,12.0,"M1.73 11.00C1.55 10.97 1.49 10.93 1.29 10.71C1.09 1
   var lu=-1;R.L.forEach(function(t,k){if(t.u)lu=k});var opened=false;
   R.L.forEach(function(t,k){var last=k==R.L.length-1;
    if(k==lu){h+='<div class="g3lt" id="g3lt"'+(G.ltH?' style="min-height:'+G.ltH+'px"':'')+'>';opened=true}
-   if(t.u){h+='<div class="g3um" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="g3ub">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+'</div>';
+   if(t.u){h+='<div class="g3um" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="g3ub">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+(t.u.dl&&HC.dlHtml?HC.dlHtml(t.u):'')/*s5-dlv*/+'</div>';
     if(last&&lv)h+='<div class="g3ta2 g3last">'+thinking({a:[]})+'</div>';return}
    h+=turnA(t,last&&lv,last)});
   (s.pend||[]).forEach(function(p,i){h+=pendHtml(p,i)});
@@ -5434,7 +5455,7 @@ window.CLV={side:[20.0,18.0,"M1.52 16.96C1.35 16.89 1.04 16.52 1.01 16.36C0.98 1
   var lu=-1;R.L.forEach(function(t,k){if(t.u)lu=k});var opened=false;
   R.L.forEach(function(t,k){var last=k==R.L.length-1;
    if(k==lu){h+='<div class="cllt" id="cllt"'+(G.ltH?' style="min-height:'+G.ltH+'px"':'')+'>';opened=true}
-   if(t.u){h+='<div class="clum" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="club">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+'</div>';
+   if(t.u){h+='<div class="clum" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="club">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+(t.u.dl&&HC.dlHtml?HC.dlHtml(t.u):'')/*s5-dlv*/+'</div>';
     if(last&&lv)h+='<div class="clta cllast">'+thinking(null,-1)+'</div>';return}
    h+=turnA(t,last&&lv,last)});
   /* свёрнутая карточка вопроса/разрешения — строкой статуса (✕ на карточке) */
@@ -7127,6 +7148,41 @@ document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.targ
   var r=ta.getBoundingClientRect(),hid=r.bottom>vv.offsetTop+vv.height+4;if(!hid){DG.kb=0;return}if(!DG.kb){DG.kb=Date.now();return}
   if(DG.kb>0&&Date.now()-DG.kb>250){dg('kb_hidden',{k:s.kind,bot:Math.round(r.bottom),vvh:Math.round(vv.height),vvt:Math.round(vv.offsetTop),ih:innerHeight,ms:Date.now()-DG.kb});DG.kb=-1}},100);
  W.G8={hd:hd,info:info,cxm:CXM,bio:BIO};
+})();
+
+/* s5-open (этап 5, п.1): «Открыть панель» из бота сразу на нужном чате.
+   Бот кладёт в хэш c=<агент>:<id чата> (агент = claude|codex|hermes), панель открывается на вкладке «Чат» в этом чате.
+   Пока чат ищется в списке, экран «Чат» прикрыт (body.sd3ent, как при обычном входе), Пульт не мелькает.
+   Не нашли за 6 с — открываем по id (Claude/Codex читают историю по id; Hermes-чаты из бота живут на ПК → src local). */
+(function(){var W=window,D=document;
+ var c=(W.HP&&HP.get('c'))||'',i=c.indexOf(':'),k=i>0?c.slice(0,i):'',id=i>0?c.slice(i+1):'';
+ if(!id||['claude','codex','hermes'].indexOf(k)<0)return;
+ var NM={claude:'Claude',codex:'Codex',hermes:'Hermes'},t0=Date.now(),asked=0,opened=0;
+ W.S5O={k:k,id:id,st:'wait'};
+ try{LS.set('sd3last',{k:k,id:id})}catch(e){}/* обычный вход (entStart) тоже выберет этот чат */
+ try{U.tab='hc';U.page=null}catch(e){}
+ try{if(W.HC&&HC.st.kind!=k){HC.st.kind=k;LS.set('hckind',k);HC.st.sessions=null;HC.st.models=null}}catch(e){}
+ function cover(on){if(D.body)D.body.classList.toggle('sd3ent',on)}
+ cover(true);
+ function done(ok,why){W.S5O.st=ok?'ok':'fail';W.S5O.why=why||'';W.S5O.ms=Date.now()-t0;cover(false)}
+ function inL(){var L=W.SD3&&SD3.SD.L[k];return !!(L&&L.some(function(x){return x.id==id}))}
+ function put(row){var L=(SD3.SD.L[k]||[]).filter(function(x){return x.id!=id});row.k=k;L.unshift(row);SD3.SD.L[k]=L}
+ function at(){var s=W.HC&&HC.st;return !!(s&&s.view=='chat'&&s.kind==k&&s.sid==id)}
+ function go(){
+  if(at()){done(true,opened?'':'entry');return}
+  if(Date.now()-t0>15000){done(false,'timeout');return}
+  if(W.LOADING||!W.SD3||!W.HC||!W.U||!SD3.SD){setTimeout(go,100);return}
+  if(opened){setTimeout(go,150);return}
+  if(inL()){opened=1;SD3.openChat(k,id);setTimeout(go,150);return}
+  /* в кэше списка нет (чат новее кэша) — открываем сразу по id: Claude/Codex читают историю по id, чаты Hermes из бота
+     живут на ПК (src local → пишем через владельца). Название подтянется, когда придёт свежий список (tsync). */
+  put({id:id,t:NM[k],ts:Date.now()/1000|0,src:k=='hermes'?'local':k,rw:false,dw:true,cc:k!='hermes'});W.S5O.fb=1;opened=1;SD3.openChat(k,id);
+  if(k=='hermes')/* чаты Hermes с ПК есть только в полном списке (?all=1), меню по умолчанию грузит «Панель» */
+   SD3.api('/sessions?all=1&limit=100').then(function(d){var x=(d.s||[]).filter(function(y){return y.id==id})[0],s=HC.st;
+    if(x&&s.sid==id&&s.kind==k){if(x.t&&x.t!=s.title){s.title=x.t;try{HC.paint()}catch(e){}}if(x.src)s.src=x.src}}).catch(function(){});
+  else SD3.load(true);
+  setTimeout(go,150)}
+ setTimeout(go,0);
 })();
 
 </script>
