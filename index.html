@@ -2962,7 +2962,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=117;
+var VER=118;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -3821,8 +3821,8 @@ function dlvSet(T0,d){(st.lp||[]).forEach(function(p){if(p.t0==T0)p.st=d&&(d.que
 function dlvSave(){try{var a=(st.lp||[]).filter(function(p){return p.st=='queued'||p.st=='wait'||p.st=='ok'}).map(function(p){return {sid:p.sid,k:p.k,t:p.t,im:p.im,ts:p.ts,t0:p.t0,st:p.st}}),j=JSON.stringify(a);if(j!=st.dlj){st.dlj=j;LS.set('hclp5',a)}}catch(e){}}
 function dlvLoad(){try{var a=LS.get('hclp5',[]),now=Date.now()/1000;if(!Array.isArray(a))return;st.lp=(st.lp||[]).concat(a.filter(function(p){return p&&p.sid&&p.t0&&now-p.ts<dlvLife(p)&&!(st.lp||[]).some(function(q){return q.t0==p.t0})}).map(function(p){p.nu=1e9;return p}))}catch(e){}}
 var DLV={busy:0};
-function dlvTick(){if(DLV.busy||document.hidden)return;var now=Date.now(),L=(st.lp||[]).filter(function(p){return (p.st=='queued'||p.st=='wait')&&now-p.t0>4000});if(!L.length)return;DLV.busy=1;
- Promise.all(L.map(function(p){return J('/dlv?k='+p.k+'&sid='+encodeURIComponent(p.sid)+'&t='+(p.t0/1000)+'&now='+(Date.now()/1000)).then(function(r){return [p,r]}).catch(function(){return [p,null]})})).then(function(R){DLV.busy=0;var ch=0;
+function dlvTick(){if(DLV.busy||document.hidden||!API)return;/*s5-dlvfix: связи нет — не спрашиваем (hq бросал бы, busy залипал навсегда)*/var now=Date.now(),L=(st.lp||[]).filter(function(p){return (p.st=='queued'||p.st=='wait')&&now-p.t0>4000});if(!L.length)return;DLV.busy=1;
+ var PR;try{PR=L.map(function(p){return J('/dlv?k='+p.k+'&sid='+encodeURIComponent(p.sid)+'&t='+(p.t0/1000)+'&now='+(Date.now()/1000)).then(function(r){return [p,r]}).catch(function(){return [p,null]})})}catch(e){DLV.busy=0;return}Promise.all(PR).then(function(R){DLV.busy=0;var ch=0;
   R.forEach(function(x){var p=x[0],r=x[1];if(!r||!r.st)return;
    if(r.st=='ok'&&p.st!='ok'){p.st='ok';ch=1}
    else if(r.st=='queued'&&p.st=='wait'){p.st='queued';ch=1}
