@@ -143,6 +143,7 @@
     if(last&&lv)h+='<div class="g3ta2 g3last">'+thinking({a:[]})+'</div>';return}
    h+=turnA(t,last&&lv,last)});
   (s.pend||[]).forEach(function(p,i){h+=pendHtml(p,i)});
+  if(W.S5Q)h+=S5Q.html(s);/*s5-cxq: очередь Codex*/
   if(s.err)h+='<div class="g3err">'+E(s.err)+'</div>';
   if(opened)h+='</div>';
   if(s.loadingMsgs&&!s.msgs.length&&!(s.creating&&s.creating==s.sid)/*vb5a6: создаётся = обычный пустой чат*/)h+='<div class="g3think g3load"><span>Загружаю</span></div>';

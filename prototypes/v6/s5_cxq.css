@@ -1,0 +1,8 @@
+/* s5-cxq (этап 5, п.3): очередь Codex в чате (облик ChatGPT: тихий блок в конце ленты, строки в одну линию) */
+.s5q{margin:6px 16px 10px;border-radius:18px;border:1px solid rgba(127,127,127,.22);padding:4px 0}
+.s5qh{font-size:13px;line-height:18px;opacity:.55;padding:6px 14px 2px}
+.s5qr{display:flex;align-items:center;gap:10px;min-height:40px;padding:0 14px}
+.s5qr+.s5qr{border-top:1px solid rgba(127,127,127,.14)}
+.s5qr>span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px;line-height:20px}
+.s5qr>i,.s5qx{font-style:normal;font-size:14px;color:#ff6b6b;cursor:pointer;flex:none}
+.s5qx{font-size:12px}
