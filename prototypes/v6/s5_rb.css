@@ -1,0 +1,31 @@
+/* s5-rb: откат файлов — только то, чего нет у родных строк .g3wk/.clwk и списков .g3to/.clto */
+.s5rr{max-width:100%;min-width:0}
+.s5rr .s5rt{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.g3wk.s5rr{margin:8px 0 12px}
+.g3wk.s5rr>svg:last-child{flex:none}
+.clwk.s5rr{margin:4px 0 16px}
+.clwk.s5rr .clv-chev{margin-left:4px;flex:none}
+/* +N −M — зелёный/красный, как счётчики изменений в Codex и Claude Code */
+.s5ra{color:#40c977}.s5rd{color:#ff6b6b}
+.s5rl{align-self:stretch;margin:-6px 0 14px}
+.s5rl .s5rf{display:flex;align-items:baseline;gap:6px}
+.s5rl .s5rf>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;opacity:.75}
+.s5rl .s5rf>i{font-style:normal;flex:none}
+.s5rl .s5a{color:var(--g3fg,#fff);cursor:pointer}
+.s5rl .s5a.bad{color:#ff6b6b}
+.cltl.s5rl .s5a.bad{color:#ff6b6b}
+html[data-theme=light] .s5rl .s5a{color:#000}
+html[data-theme=light] .s5ra{color:#1a9e4b}html[data-theme=light] .s5rd{color:#d93636}
+/* ChatGPT: вопрос-подтверждение в меню по центру снизу, как «Удалить чат?» */
+.s5rpop{left:16px;right:16px;bottom:calc(24px + env(safe-area-inset-bottom));transform-origin:50% 100%}
+.s5rpop .s5rq{-webkit-line-clamp:4;padding-top:12px;padding-bottom:10px}
+/* Claude: лист */
+.s5rsh .clsr.s5rf{height:46px;font-size:16px}
+.s5rsh .clsr.s5rf span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s5rsh .clsr.s5rf em{font-style:normal;font-size:14px;color:#8e8c86;margin-left:10px;flex:none}
+.s5rsh .s5rgo{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;margin:6px 16px 18px;border-radius:24px;background:#f9f9f7;color:#141413;font-size:17px;font-weight:500;cursor:pointer}
+.s5rsh .s5rgo .clv{color:#141413;fill:currentColor}
+.s5rsh .s5rgo:active{opacity:.8}
+/* лист «Вернуть файлы» — высота по содержимому (у базового листа 440 px под «Добавить в сессию»), длинный список прокручивается */
+.clsh.s5rsh{height:auto;max-height:80vh;display:flex;flex-direction:column}
+.clsh.s5rsh .s5cb{overflow-y:auto;min-height:0}

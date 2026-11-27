@@ -113,6 +113,7 @@
   tx.forEach(function(x){h+='<div class="g3a">'+md(x)+'</div>'});
   var lp=lastA.parts||[];
   if(lv&&(!tx.length||lp.length&&lp[lp.length-1].p=='tool'))h+=thinking(t);
+  if(W.S5R)h+=S5R.html(s,t,lv);/*s5-rb: откат файлов*/
   if(!lv&&tx.length){var fb=G.fb[s.sid+':'+ti]||'';li=ti;
    h+='<div class="g3act"><i data-hc="copy" data-b="'+li+'" data-g3c="1" role="button" aria-label="Копировать">'+ic('copy')+'</i>'+
     '<i data-g3="fb" data-v="up" data-i="'+li+'" class="'+(fb=='up'?'on':'')+'" role="button" aria-label="Хороший ответ">'+ic('like')+'</i>'+

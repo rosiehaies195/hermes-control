@@ -74,6 +74,7 @@
   tx.forEach(function(x){h+='<div class="cla">'+md(x)+'</div>'});
   var lp=lastA.parts||[];
   if(lv&&(!tx.length||lp.length&&lp[lp.length-1].p=='tool'))h+=thinking(lp.length&&lp[lp.length-1].p=='tool'?lp[lp.length-1]:null,li);
+  if(W.S5R)h+=S5R.html(s,t,lv);/*s5-rb: откат файлов*/
   if(!lv&&tx.length){var fb=G.fb[s.sid+':'+ti]||'';li=ti;
    /* Copy · Share(Переслать) · Play(Вслух) · 👍 · 👎 (кадр 3213_0131.50; «Повторить» — только у Hermes) */
    h+='<div class="clact"><i data-hc="copy" data-b="'+li+'" data-clc="1" role="button" aria-label="Копировать">'+ic('copy')+'</i>'+
