@@ -1,34 +1,44 @@
-/* s5-side (этап 5, п.4б): side-чаты Codex и «Спросить в сторону» Hermes */
-.s5di{width:20px;height:20px;flex:none}
-.g3mi .s5di{width:22px;height:22px}
-#sheet .btn .s5di{margin-right:8px;vertical-align:-4px}
-#sheet:has(.s5dl) .hcsh b,#sheet:has(#s5dta) .hcsh b{text-transform:none!important;color:#fff!important;letter-spacing:normal!important;font-size:17px;font-weight:600}
-html[data-theme=light] #sheet:has(.s5dl) .hcsh b,html[data-theme=light] #sheet:has(#s5dta) .hcsh b{color:#000!important}
-.s5dh{font-size:13px;line-height:18px;opacity:.6;text-align:center;padding:0 8px 10px}
-.s5dl{margin:0 0 10px;border-radius:20px;overflow:hidden;background:rgba(127,127,127,.12)}
-#sheet.g6set .s5dl{background:#1e1e1e}
-html[data-theme=light] #sheet.g6set .s5dl{background:#fff}
-.s5dr{display:flex;align-items:center;min-height:52px;padding:6px 16px;cursor:pointer}
-.s5dr+.s5dr{border-top:1px solid rgba(127,127,127,.16)}
-.s5dt{flex:1;min-width:0;display:flex;flex-direction:column}
-.s5dt>b{font-weight:400;font-size:15px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.s5dt>span{font-size:13px;line-height:18px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.s5de{text-align:center;opacity:.5;font-size:14px;padding:16px}
-.s5da{max-height:42vh;overflow:auto;margin:0 0 10px}
-.s5dq{margin:0 0 12px}
-.s5dqq{margin-left:auto;max-width:85%;width:fit-content;background:rgba(127,127,127,.2);border-radius:18px;padding:8px 14px;font-size:15px;line-height:21px;white-space:pre-wrap;word-break:break-word}
-.s5dqa{margin-top:6px;font-size:15px;line-height:22px;word-break:break-word;padding:0 4px}
-.s5dqa p{margin:0 0 8px}.s5dqa.bad{color:#ff6b6b}
-.s5dw{opacity:.55;animation:s5sp 1.4s ease-in-out infinite}
-@keyframes s5sp{50%{opacity:.25}}
-.s5dtx{width:100%;box-sizing:border-box;resize:none;min-height:64px;font:inherit;font-size:16px;line-height:22px}
-body.s5dro #g3c{display:none!important}
-#s5dnote{position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:40;text-align:center;font-size:13px;line-height:18px;padding:10px 14px;border-radius:18px;background:rgba(127,127,127,.18);color:inherit;opacity:.85}
-#sheet .s5dr,#sheet .s5dt,#sheet .s5dt>b,#sheet .s5dt>span{text-align:left!important;align-items:flex-start}
-#sheet .s5dt>b{color:#fff!important;opacity:1!important}
-html[data-theme=light] #sheet .s5dt>b{color:#000!important}
-#g3sg .s5dsg{display:flex;gap:12px;align-items:flex-start;padding:0 20px;font-size:15px;line-height:21px;opacity:.75;pointer-events:none}
-#g3sg .s5dsg .s5di{margin-top:1px}
-#sheet .s5dl{opacity:1!important}
-#g3sg .s5dsg{height:auto!important;min-height:0!important;white-space:normal!important;overflow:visible!important}
-#g3sg .s5dsg span{white-space:normal!important;overflow:visible!important}
+/* s5-side v2: side-чаты в облике приложения — только добавки к родным классам ChatGPT (.g3*) и Claude (.cl*) */
+/* ChatGPT «⋯»: «Side-чаты ›» раскрывается в меню, как «Add to project ⌄» (3214_0276.21): строка поднята, остальное приглушено */
+.g3mi.s5more>.g3i:last-child,.g3mi.s5more>svg:last-child{margin-left:auto;width:15px;height:15px;color:var(--g3sub,#8e8e8e);transition:transform .25s}
+.g3mi.s5more.s5hl>svg:last-child{transform:rotate(90deg)}
+.g3pop.s5exp .g3mi:not(.s5hl):not(.s5sub){opacity:.32}
+.g3mi.s5hl{background:rgba(255,255,255,.09);border-radius:16px;margin:2px 8px;padding-left:21.7px;padding-right:12px}
+.g3mi.s5sub{padding-left:29.7px}
+.g3mi.s5sub span,.g3mi.s5more span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.g3mi.s5dim{color:var(--g3sub,#8e8e8e)}
+html[data-theme=light] .g3mi.s5hl{background:rgba(0,0,0,.06)}
+/* Claude: лист «Side-чаты» = лист «Добавить в сессию»; подпись под группой — как сноска iOS */
+.s5csh .clsr span{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.s5csh .clsr em{flex:none}
+.s5cap{font-size:13px;line-height:18px;color:#8e8c86;padding:0 20px 14px;margin-top:-6px}
+.s5cb{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 18px)}
+/* только чтение: без поля ввода, подпись мелким шрифтом приложения */
+body.s5ro #g3c,body.s5ro #clc,body.s5ro #g3sg,body.s5ro #clth2{display:none!important}
+/* без поля ввода последнему ходу не нужен запас высоты под новый ответ — лента как у открытого старого чата */
+body.s5ro #cllt,body.s5ro #g3lt{min-height:0!important}
+.s5ron{position:absolute;left:24px;right:24px;bottom:calc(var(--g3b,0px) + 18px);z-index:6;text-align:center;pointer-events:none}
+.s5ron.gp{font-size:13px;line-height:18px;color:var(--g3sub,#8e8e8e);letter-spacing:-.1px}
+.s5ron.cl{font-size:12px;line-height:16px;color:#8b8b85}
+/* ChatGPT: пустой side-чат — заставка временного чата (3214_0032.53) */
+body.s5emp #g3sg{display:none!important}
+#s5emp,.s5te{position:absolute;left:32px;right:32px;top:38%;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;pointer-events:none}
+#s5emp b,.s5te b{font-size:17px;line-height:22px;font-weight:600;color:var(--g3fg,#fff);letter-spacing:-.4px}
+#s5emp span,.s5te span{margin-top:4px;font-size:15px;line-height:20px;color:var(--g3sub,#8e8e8e);letter-spacing:-.2px;max-width:310px}
+/* Claude: под «Side-чат» (приветствие) — строка тем же серым, что подписи Claude */
+#clhi .s5hs{margin-top:8px;font-size:15px;line-height:20px;color:#8e8c86;max-width:290px;text-align:center;letter-spacing:-.2px}
+/* Hermes: «Вопрос в сторону» — экран временного чата ChatGPT поверх чата */
+.s5tmp{position:absolute;inset:0;z-index:45;background:var(--g3bg,#000)}
+.s5tmp .g3hd{display:flex;align-items:center}
+.s5tmp .s5tt{font-size:17px;line-height:22px;font-weight:600;color:var(--g3fg,#fff);letter-spacing:-.4px;white-space:nowrap}
+.s5tmp .s5ph{visibility:hidden}
+.s5tmp:not(.s5e) .s5te{display:none}
+.s5tmp .g3f{padding-bottom:110px}
+.s5tmp .g3a.s5bad{color:#ff6b6b}
+.s5tmp .s5tc{position:absolute;left:12px;right:12px;bottom:calc(var(--g3b,0px) + 12px);z-index:5;min-height:48px;display:flex;flex-direction:column;justify-content:center}
+.s5tmp .s5tc .g3row{display:flex;align-items:flex-end;padding:0 8px 8px 18px;gap:8px}
+.s5tmp .s5tc textarea{flex:1;width:100%;border:0;outline:0;background:none;resize:none;color:var(--g3fg,#fff);font:inherit;font-size:17px;line-height:22px;padding:5px 0 0;max-height:140px}
+.s5tmp .s5tc textarea::placeholder{color:var(--g3ph,#9b9b9b)}
+.s5tmp .s5go{flex:none}
+.s5tmp .s5go:not(.on){background:#2f2f2f;color:#7a7a7a}
+body.s5ro #cll,body.s5ro #g3l{padding-bottom:calc(var(--g3b,0px) + 64px)!important}
