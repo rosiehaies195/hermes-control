@@ -52,9 +52,9 @@
    var dir=String(x.cwd||x.dir||x.p||x.prj||'').split(/[\\\/]/).filter(Boolean).pop()||'',lab=[dir,hm(x.ts)].filter(Boolean).join(' · ');if(!lab)return;
    b.setAttribute('data-vb7t',t);var s=D.createElement('small');s.className='vb7dup';s.textContent=lab;b.appendChild(s)})}}
  /* ---------- тосты в чате — над полем ввода (не на первой строке пузыря) ---------- */
- function toastPos(){var t=D.getElementById('toast');if(!t)return;var B=D.body;if(!(B.classList.contains('g3on')||B.classList.contains('cl3on'))||!t.classList.contains('on')){t.classList.remove('vb7tb');return}
+ function toastPos(){var t=D.getElementById('toast');if(!t)return;var B=D.body;if(!(B.classList.contains('g3on')||B.classList.contains('cl3on'))||!t.classList.contains('on')){if(t.classList.contains('vb7tb'))t.classList.remove('vb7tb');return}/*vb8-a7: remove() без класса всё равно пишет атрибут → мутация → наш же наблюдатель → вечный цикл каждый кадр (чат перерисовывался 60 раз/с и тянул ленту вниз под пальцем)*/
   var c=D.querySelector('#g3c,#clc');if(!c)return;var r=c.getBoundingClientRect();if(!r.height)return;var h=t.offsetHeight||36,top=Math.max(60,Math.round(r.top-h-12));
-  t.classList.add('vb7tb');t.style.setProperty('top',top+'px','important')}
+  if(!t.classList.contains('vb7tb'))t.classList.add('vb7tb');if(t.style.getPropertyValue('top')!=top+'px')t.style.setProperty('top',top+'px','important')}
  var MO=0;function tick(){MO=0;try{aload()}catch(e){}try{inst()}catch(e){}try{dups()}catch(e){}try{toastPos()}catch(e){}}
  try{new MutationObserver(function(){if(!MO)MO=requestAnimationFrame(tick)}).observe(D.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}catch(e){}
  W.VB7D={tick:tick,acctName:acctName}})();

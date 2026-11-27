@@ -18,7 +18,7 @@
   function cv(t,p1,p2){return ((a(p1,p2)*t+b(p1,p2))*t+c(p1))*t}function sl(t,p1,p2){return 3*a(p1,p2)*t*t+2*b(p1,p2)*t+c(p1)}
   return function(x){if(x<=0)return 0;if(x>=1)return 1;var t=x;for(var i=0;i<8;i++){var s=sl(t,x1,x2);if(Math.abs(s)<1e-6)break;t-=(cv(t,x1,x2)-x)/s}return cv(t,y1,y2)}}
  var EASE=bez(.38,.7,.125,1),OPEN_MS=330,CLOSE_MS=260;
- var K={on:false,H0:0,kb:0,cur:0,to:0,raf:0,offT:0,closing:0,ev:0};
+ var K={on:false,H0:0,kb:0,cur:0,to:0,raf:0,offT:0,closing:0,ev:0,fiT:0};
  function bodyCls(c,v){var b=D.body;if(b&&b.classList.contains(c)!=!!v){b.classList.toggle(c,!!v);if(c=='vb7kbw'&&!v)try{W.dispatchEvent(new Event('vb7kbw'))}catch(e){}}}
  function relayout(){try{W.G3&&G3.relayout&&G3.relayout()}catch(e){}try{W.CL3&&CL3.relayout&&CL3.relayout()}catch(e){}
   try{W.dispatchEvent(new Event('vb7kb'))}catch(e){}}
@@ -42,7 +42,7 @@
  function sub(){var t=T();if(!t||!t.onEvent)return false;try{t.onEvent('viewportChanged',onVC)}catch(e){return false}return true}
  /* ---------- ждём клавиатуру: пилюля Claude раскрывается не по фокусу, а когда клавиатура пошла ---------- */
  var WT=0,IH=0;
- D.addEventListener('focusin',function(e){if(!edit(e.target))return;IH=innerHeight;
+ D.addEventListener('focusin',function(e){if(!edit(e.target))return;IH=innerHeight;K.fiT=Date.now();
   if(e.target.id=='hcin'&&ios()&&!K.on){bodyCls('vb7kbw',true);clearTimeout(WT);WT=setTimeout(function(){bodyCls('vb7kbw',false)},650)}},true);
  W.addEventListener('resize',function(){if(D.body&&D.body.classList.contains('vb7kbw')&&innerHeight<IH-40){clearTimeout(WT);bodyCls('vb7kbw',false)}});
  if(W.visualViewport)visualViewport.addEventListener('resize',function(){var v=visualViewport;if(D.body&&D.body.classList.contains('vb7kbw')&&innerHeight-v.height>40){clearTimeout(WT);bodyCls('vb7kbw',false)}});
@@ -77,7 +77,12 @@
  var ok=sub();if(!ok){var n=0,iv=setInterval(function(){if(sub()||++n>20)clearInterval(iv)},250)}
  W.VB7KB={on:function(){return K.on},kb:function(){return K.on?K.cur:0},
   /* сколько px поднять то, что прибито к низу ОКНА (поиск ☰): до уменьшения окна = текущая высота клавиатуры, после — 0 */
-  off:function(){return K.on?Math.max(0,K.cur+innerHeight-K.H0):0},H0:function(){return K.H0},_vc:onVC,_K:K};
+  off:function(){return K.on?Math.max(0,K.cur+innerHeight-K.H0):0},H0:function(){return K.H0},_vc:onVC,_K:K,
+  /* vb8-a1: Telegram iOS уже сказал «клавиатуры нет» (последнее viewportChanged — полная высота и оно пришло после последнего
+     фокуса поля), а visualViewport ещё 0,3–1 с показывает старую маленькую высоту (окно Mini App не уменьшалось, diag kb_t
+     ih1=720 vv1=392). Тогда S4VV не должен поднимать экран по visualViewport — это и был «призрак» поля после закрытия. */
+  tgClosed:function(){if(K.on||!K.ev||!ios())return false;var t=T(),vh=t?+t.viewportHeight||0:0;if(!vh||vh<innerHeight-44)return false;
+   return !edit(D.activeElement)||K.ev>=K.fiT}};
 })();
 /* vb7a А-2: клавиатура не уходит сама после ↑ (видео 94, 467, 484 с). Общий render() переписывает #scr целиком, и #hcin
    с фокусом удаляется — iOS прячет клавиатуру (новый чат создан, пока поле в фокусе / ↑ во время создания). Если открыт

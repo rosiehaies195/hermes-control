@@ -3128,7 +3128,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=125;
+var VER=126;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -5304,7 +5304,7 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  function pad(){var c=$i('g3c'),l=$i('g3l'),f=$i('g3f');if(!c||!l)return;var top=cTop(c),bot=rb(),tr=$i('g3tr'),h=Math.round(bot-top+(tr&&tr.classList.contains('on')?tr.offsetHeight+8:0)+63),keep=G.atB!==false;
   /* s4b-4: был внизу — держим низ и когда меняется только высота экрана (клавиатура открылась/закрылась, видео 109, 243, 499);
      высоту последнего хода (ltFit) пересчитываем при любой смене высоты ленты, не только отступа */
-  var near=keep||f.scrollHeight-f.scrollTop-f.clientHeight<60;if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();
+  var hold=!!(W.VB8&&VB8.hold());/*vb8-a7: палец на ленте — не тянем её вниз*/var near=!hold&&(keep||f.scrollHeight-f.scrollTop-f.clientHeight<60);if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();
   if(near&&f.scrollHeight-f.scrollTop-f.clientHeight>1)f.scrollTop=f.scrollHeight;
   var dn=$i('g3dn');if(dn)dn.style.bottom=(bot-top+15)+'px';
   var sg=$i('g3sg');if(sg)sg.style.bottom=(bot-top+13.6)+'px';
@@ -5521,12 +5521,14 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
   /* s4b-3d: лист (напр. «Новый проект») с клавиатурой не прыгает рывком, а въезжает (видео 159) */
   if(shT!=null&&Math.abs(t-shT)>24&&s.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)s.animate([{transform:'translateY('+Math.round(shT-t)+'px)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.32,.72,0,1)'});shT=t}
  function upd(){var v=W.visualViewport,t=0,k=0;if(v&&!(v.scale&&Math.abs(v.scale-1)>.01)){t=Math.max(0,Math.round(v.offsetTop||0));k=Math.round(innerHeight-v.height-t);if(k<40)k=0}/*при щипке-зуме не трогаем*/
+  try{if(k&&W.VB7KB&&VB7KB.tgClosed&&VB7KB.tgClosed())k=0}catch(e){}/*vb8-a1: Telegram сказал «закрыта» — старый visualViewport не поднимает поле*/
   if(chat()&&(W.scrollY||W.scrollX))W.scrollTo(0,0);
   if(t!==vt||k!==kb){vt=t;kb=k;R.style.setProperty('--s4vt',t+'px');R.style.setProperty('--s4kb',k+'px');if(R.classList.contains('s4kbv')!=(k>0||t>0))R.classList.toggle('s4kbv',k>0||t>0);
    try{W.G3&&G3.relayout()}catch(e){}try{W.CL3&&CL3.relayout&&CL3.relayout()}catch(e){}}
   sheetFlip()}
  if(W.visualViewport){visualViewport.addEventListener('resize',upd);visualViewport.addEventListener('scroll',upd)}
  W.addEventListener('resize',upd);
+ W.addEventListener('vb7kb',function(){if(!(W.VB7KB&&VB7KB.on()))upd()});/*vb8-a1: раскладка vb7a снята (клавиатура закрыта) — пересчитать сразу, а не ждать resize visualViewport*/
  W.addEventListener('scroll',function(){if(chat()&&(W.scrollY||W.scrollX)){W.scrollTo(0,0);upd()}},{passive:true});
  D.addEventListener('focusin',function(){var s=D.querySelector('#sheet.on');shT=s?s.offsetTop:null;setTimeout(upd,0)},true);
  D.addEventListener('focusout',function(){setTimeout(upd,60)},true);
@@ -5743,7 +5745,7 @@ window.CLV={side:[20.0,18.0,"M1.52 16.96C1.35 16.89 1.04 16.52 1.01 16.36C0.98 1
   /* поле на максимуме: видна последняя строка, в 31 pt над чипом (3212_0130.78) — прокрутка вниз, когда не в фокусе (в фокусе — каретка) */
   if(ta.style.height!=h+'px')ta.style.height=h+'px';if(card&&sh>mx&&D.activeElement!=ta)ta.scrollTop=ta.scrollHeight}
  function pad(){var c=$i('clc'),l=$i('cll'),f=$i('clf');if(!c||!l)return;var top=cTop(c),bot=rb(),keep=G.atB!==false,/* низ ленты: без клавиатуры дисклеймер в 5 pt над полем (3213_0131.50), с клавиатурой в 39 pt (3213_0135.68) */h=Math.round(bot-top+0.4+(B.classList.contains('hckb')?30.7:c.classList.contains('clrec')?34.3:0));/* при диктовке без клавиатуры — 39 pt (3213_0053.62) */
-  var near=keep||f.scrollHeight-f.scrollTop-f.clientHeight<60;if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();/*s4b-4: ltFit при любой смене высоты*/
+  var hold=!!(W.VB8&&VB8.hold());/*vb8-a7*/var near=!hold&&(keep||f.scrollHeight-f.scrollTop-f.clientHeight<60);if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();/*s4b-4: ltFit при любой смене высоты*/
   if(near&&f.scrollHeight-f.scrollTop-f.clientHeight>1)f.scrollTop=f.scrollHeight;
   var dn=$i('cldn');if(dn)dn.style.bottom=(bot-top+20)+'px';
   var bf=$i('clbf');if(bf)bf.style.height=Math.max(0,Math.round(bot-top+30))+'px';/*s4b-1*/dnUpd()}
@@ -7310,7 +7312,7 @@ function rgPh(d){return !!(d&&(d.pend||d.error=='no-file'))}
 function rgPct(d){return d&&d.win>0&&d.used!=null?100*d.used/d.win:+(d&&d.pct)||0}
 function rgFetch(s,cb){var sig=s.kind+':'+s.sid,p='ctx?k='+s.kind+'&id='+encodeURIComponent(s.sid);RG.t=Date.now();delete C[p];
  get(p,function(d){if(RG.sig!=sig)return;if(d&&d.error&&!rgPh(d)&&d.error!='unsupported'&&d.error!='no-window'&&RG.d&&RG.d.win&&!RG.d.ph){}else RG.d=d;RG.ph=false;rgPut(sig,d);ringTick();cb&&cb()})}
-function ringTick(){var s=st();if(!s||s.view!='chat'||!s.sid||(s.kind!='claude'&&s.kind!='codex'&&s.kind!='hermes')||!pf('ring')){D.querySelectorAll('.g7ring').forEach(function(x){x.remove()});B.classList.remove('g7rg');return}
+function ringTick(){var s=st();if(!s||s.view!='chat'||!s.sid||(s.kind!='claude'&&s.kind!='codex'&&s.kind!='hermes')||!pf('ring')){D.querySelectorAll('.g7ring').forEach(function(x){x.remove()});if(B.classList.contains('g7rg'))B.classList.remove('g7rg');/*vb8-a7: без лишней мутации body — она будит перерисовку чата*/return}
   var cl=s.kind=='claude',hd=cl?$i('clhd'):$i('g3hd');if(!hd)return;var cap=cl?hd.querySelector('.clpill'):hd.querySelector('.g3cap');if(!cap)return;
   var sig=s.kind+':'+s.sid,busy=rgBusy(s);
   if(sig!=RG.sig){RG.sig=sig;RG.d=RGC[sig]||null;RG.ph=!RG.d;RG.t=0;RG.b=busy}if(RG.b&&!busy)RG.t=0;RG.b=busy;
@@ -7520,6 +7522,8 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
  function mineL(s){return (s.lp||[]).filter(function(p){return p.sid==s.sid})}
  function match(t){var n=nrm(t);if(!n)return null;return Q.L.filter(function(x){return nrm(x.t)==n})[0]||null}
  Q.html=function(s){if(!on()||Q.tid!=s.sid)return '';var M=mineL(s).map(function(p){return nrm(p.t)});
+  /*vb8-b6: своё сообщение уже стоит пузырём в ленте (новый чат: Codex ещё 2–4 с держит его в очереди) — не дублировать блоком «В очереди»*/
+  (s.msgs||[]).slice(-6).forEach(function(b){if(b&&b.k=='u'&&b.t)M.push(nrm(b.t))});
   var L=Q.L.filter(function(x){return M.indexOf(nrm(x.t))<0});if(!L.length)return '';
   return '<div class="s5q"><div class="s5qh">В очереди Codex · '+L.length+'</div>'+L.map(function(x){
    return '<div class="s5qr"><span>'+E(x.t||(x.im?'Фото':'Сообщение'))+'</span><i data-s5q="del" data-id="'+E(x.id)+'" role="button">Убрать</i></div>'}).join('')+'</div>'};
@@ -7747,7 +7751,7 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
   function cv(t,p1,p2){return ((a(p1,p2)*t+b(p1,p2))*t+c(p1))*t}function sl(t,p1,p2){return 3*a(p1,p2)*t*t+2*b(p1,p2)*t+c(p1)}
   return function(x){if(x<=0)return 0;if(x>=1)return 1;var t=x;for(var i=0;i<8;i++){var s=sl(t,x1,x2);if(Math.abs(s)<1e-6)break;t-=(cv(t,x1,x2)-x)/s}return cv(t,y1,y2)}}
  var EASE=bez(.38,.7,.125,1),OPEN_MS=330,CLOSE_MS=260;
- var K={on:false,H0:0,kb:0,cur:0,to:0,raf:0,offT:0,closing:0,ev:0};
+ var K={on:false,H0:0,kb:0,cur:0,to:0,raf:0,offT:0,closing:0,ev:0,fiT:0};
  function bodyCls(c,v){var b=D.body;if(b&&b.classList.contains(c)!=!!v){b.classList.toggle(c,!!v);if(c=='vb7kbw'&&!v)try{W.dispatchEvent(new Event('vb7kbw'))}catch(e){}}}
  function relayout(){try{W.G3&&G3.relayout&&G3.relayout()}catch(e){}try{W.CL3&&CL3.relayout&&CL3.relayout()}catch(e){}
   try{W.dispatchEvent(new Event('vb7kb'))}catch(e){}}
@@ -7771,7 +7775,7 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
  function sub(){var t=T();if(!t||!t.onEvent)return false;try{t.onEvent('viewportChanged',onVC)}catch(e){return false}return true}
  /* ---------- ждём клавиатуру: пилюля Claude раскрывается не по фокусу, а когда клавиатура пошла ---------- */
  var WT=0,IH=0;
- D.addEventListener('focusin',function(e){if(!edit(e.target))return;IH=innerHeight;
+ D.addEventListener('focusin',function(e){if(!edit(e.target))return;IH=innerHeight;K.fiT=Date.now();
   if(e.target.id=='hcin'&&ios()&&!K.on){bodyCls('vb7kbw',true);clearTimeout(WT);WT=setTimeout(function(){bodyCls('vb7kbw',false)},650)}},true);
  W.addEventListener('resize',function(){if(D.body&&D.body.classList.contains('vb7kbw')&&innerHeight<IH-40){clearTimeout(WT);bodyCls('vb7kbw',false)}});
  if(W.visualViewport)visualViewport.addEventListener('resize',function(){var v=visualViewport;if(D.body&&D.body.classList.contains('vb7kbw')&&innerHeight-v.height>40){clearTimeout(WT);bodyCls('vb7kbw',false)}});
@@ -7806,7 +7810,12 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
  var ok=sub();if(!ok){var n=0,iv=setInterval(function(){if(sub()||++n>20)clearInterval(iv)},250)}
  W.VB7KB={on:function(){return K.on},kb:function(){return K.on?K.cur:0},
   /* сколько px поднять то, что прибито к низу ОКНА (поиск ☰): до уменьшения окна = текущая высота клавиатуры, после — 0 */
-  off:function(){return K.on?Math.max(0,K.cur+innerHeight-K.H0):0},H0:function(){return K.H0},_vc:onVC,_K:K};
+  off:function(){return K.on?Math.max(0,K.cur+innerHeight-K.H0):0},H0:function(){return K.H0},_vc:onVC,_K:K,
+  /* vb8-a1: Telegram iOS уже сказал «клавиатуры нет» (последнее viewportChanged — полная высота и оно пришло после последнего
+     фокуса поля), а visualViewport ещё 0,3–1 с показывает старую маленькую высоту (окно Mini App не уменьшалось, diag kb_t
+     ih1=720 vv1=392). Тогда S4VV не должен поднимать экран по visualViewport — это и был «призрак» поля после закрытия. */
+  tgClosed:function(){if(K.on||!K.ev||!ios())return false;var t=T(),vh=t?+t.viewportHeight||0:0;if(!vh||vh<innerHeight-44)return false;
+   return !edit(D.activeElement)||K.ev>=K.fiT}};
 })();
 /* vb7a А-2: клавиатура не уходит сама после ↑ (видео 94, 467, 484 с). Общий render() переписывает #scr целиком, и #hcin
    с фокусом удаляется — iOS прячет клавиатуру (новый чат создан, пока поле в фокусе / ↑ во время создания). Если открыт
@@ -7873,9 +7882,9 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
    var dir=String(x.cwd||x.dir||x.p||x.prj||'').split(/[\\\/]/).filter(Boolean).pop()||'',lab=[dir,hm(x.ts)].filter(Boolean).join(' · ');if(!lab)return;
    b.setAttribute('data-vb7t',t);var s=D.createElement('small');s.className='vb7dup';s.textContent=lab;b.appendChild(s)})}}
  /* ---------- тосты в чате — над полем ввода (не на первой строке пузыря) ---------- */
- function toastPos(){var t=D.getElementById('toast');if(!t)return;var B=D.body;if(!(B.classList.contains('g3on')||B.classList.contains('cl3on'))||!t.classList.contains('on')){t.classList.remove('vb7tb');return}
+ function toastPos(){var t=D.getElementById('toast');if(!t)return;var B=D.body;if(!(B.classList.contains('g3on')||B.classList.contains('cl3on'))||!t.classList.contains('on')){if(t.classList.contains('vb7tb'))t.classList.remove('vb7tb');return}/*vb8-a7: remove() без класса всё равно пишет атрибут → мутация → наш же наблюдатель → вечный цикл каждый кадр (чат перерисовывался 60 раз/с и тянул ленту вниз под пальцем)*/
   var c=D.querySelector('#g3c,#clc');if(!c)return;var r=c.getBoundingClientRect();if(!r.height)return;var h=t.offsetHeight||36,top=Math.max(60,Math.round(r.top-h-12));
-  t.classList.add('vb7tb');t.style.setProperty('top',top+'px','important')}
+  if(!t.classList.contains('vb7tb'))t.classList.add('vb7tb');if(t.style.getPropertyValue('top')!=top+'px')t.style.setProperty('top',top+'px','important')}
  var MO=0;function tick(){MO=0;try{aload()}catch(e){}try{inst()}catch(e){}try{dups()}catch(e){}try{toastPos()}catch(e){}}
  try{new MutationObserver(function(){if(!MO)MO=requestAnimationFrame(tick)}).observe(D.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}catch(e){}
  W.VB7D={tick:tick,acctName:acctName}})();
@@ -7955,6 +7964,37 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
   else if(a=='ask')ask(el);
   else if(a=='go')go(el);
   else if(a=='x'){try{G3.closePop()}catch(e){}}},true);
+})();
+
+/* vb8 А7 (жалоба 27.11: «при открытой клавиатуре тяну чат вверх — поле/экран прыгает вверх-вниз»). Три причины, все чинятся здесь
+   и в pad() чатов (g3_chat.js / g3_claude.js):
+   1) Страница Mini App на iOS — это UIScrollView: жест, который не забрал ни один прокручиваемый блок (лента у самого низа,
+      шапка, поле), двигает ВСЮ страницу (с клавиатурой — на её высоту, без неё — резиновой оттяжкой), а S4VV тут же
+      возвращает её scrollTo(0,0): экран дёргается вверх-вниз на каждом кадре жеста. Решение — как у нативного чата:
+      если в начале вертикального жеста ни один блок под пальцем не может ехать в эту сторону, отменяем touchmove
+      (страница не сдвигается). Только в чатах и когда открыта клавиатура; горизонтальные жесты (☰, код) не трогаем.
+   2) Пока палец на ленте (и пока она докатывается по инерции), pad() не тянет её к низу: раньше любая перерисовка чата
+      (а их было 60 в секунду из-за вечного цикла наблюдателей, см. g9_vb7d toastPos) возвращала ленту вниз под пальцем.
+   3) Вечный цикл наблюдателей убран в g9_vb7d.js (toastPos) и g7_s5.js (ringTick). */
+(function(){var W=window,D=document,R=D.documentElement;
+ function chat(){var b=D.body;return !!b&&(b.classList.contains('g3on')||b.classList.contains('cl3on'))}
+ function kb(){return R.classList.contains('vb7kb')||R.classList.contains('s4kbv')}
+ var T={on:false,x:0,y:0,dec:0,feed:null,end:0,sc:0};
+ function canY(n,d){var s=getComputedStyle(n);if(!/(auto|scroll)/.test(s.overflowY)||n.scrollHeight<=n.clientHeight+1)return false;return d>0?n.scrollTop>0:n.scrollTop+n.clientHeight<n.scrollHeight-1}
+ /* d — сдвиг пальца: > 0 палец вниз (содержимое к началу) */
+ function taker(t,d){for(var n=t;n&&n.nodeType==1&&n!==D.body&&n!==R;n=n.parentElement)if(canY(n,d))return n;return null}
+ D.addEventListener('touchstart',function(e){var t=e.touches&&e.touches[0];if(!t||e.touches.length>1){T.on=false;return}
+  T.on=true;T.x=t.clientX;T.y=t.clientY;T.dec=0;T.feed=e.target&&e.target.closest?e.target.closest('#g3f,#clf'):null},{capture:true,passive:true});
+ D.addEventListener('touchmove',function(e){if(!T.on)return;var t=e.touches&&e.touches[0];if(!t)return;
+  if(!T.dec){var dx=t.clientX-T.x,dy=t.clientY-T.y;if(Math.abs(dy)<1&&Math.abs(dx)<1)return;
+   if(Math.abs(dx)>Math.abs(dy)){T.dec=1;return}
+   T.dec=(chat()||kb())&&!taker(e.target,dy)?2:1}
+  if(T.dec==2&&e.cancelable)e.preventDefault()},{capture:true,passive:false});
+ function fin(){if(!T.on)return;T.on=false;T.end=Date.now()}
+ D.addEventListener('touchend',fin,true);D.addEventListener('touchcancel',fin,true);
+ D.addEventListener('scroll',function(e){var t=e.target;if(t&&(t.id=='g3f'||t.id=='clf'))T.sc=Date.now()},true);
+ /* hold(): палец на ленте или лента ещё катится по инерции (scroll был < 250 мс назад, не дольше 3 с после отпускания) */
+ W.VB8={hold:function(){if(!T.feed)return false;if(T.on)return true;var n=Date.now();return n-T.end<3000&&n-Math.max(T.end,T.sc)<250},_T:T};
 })();
 
 </script>

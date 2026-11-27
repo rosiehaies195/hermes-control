@@ -292,7 +292,7 @@ function rgPh(d){return !!(d&&(d.pend||d.error=='no-file'))}
 function rgPct(d){return d&&d.win>0&&d.used!=null?100*d.used/d.win:+(d&&d.pct)||0}
 function rgFetch(s,cb){var sig=s.kind+':'+s.sid,p='ctx?k='+s.kind+'&id='+encodeURIComponent(s.sid);RG.t=Date.now();delete C[p];
  get(p,function(d){if(RG.sig!=sig)return;if(d&&d.error&&!rgPh(d)&&d.error!='unsupported'&&d.error!='no-window'&&RG.d&&RG.d.win&&!RG.d.ph){}else RG.d=d;RG.ph=false;rgPut(sig,d);ringTick();cb&&cb()})}
-function ringTick(){var s=st();if(!s||s.view!='chat'||!s.sid||(s.kind!='claude'&&s.kind!='codex'&&s.kind!='hermes')||!pf('ring')){D.querySelectorAll('.g7ring').forEach(function(x){x.remove()});B.classList.remove('g7rg');return}
+function ringTick(){var s=st();if(!s||s.view!='chat'||!s.sid||(s.kind!='claude'&&s.kind!='codex'&&s.kind!='hermes')||!pf('ring')){D.querySelectorAll('.g7ring').forEach(function(x){x.remove()});if(B.classList.contains('g7rg'))B.classList.remove('g7rg');/*vb8-a7: без лишней мутации body — она будит перерисовку чата*/return}
   var cl=s.kind=='claude',hd=cl?$i('clhd'):$i('g3hd');if(!hd)return;var cap=cl?hd.querySelector('.clpill'):hd.querySelector('.g3cap');if(!cap)return;
   var sig=s.kind+':'+s.sid,busy=rgBusy(s);
   if(sig!=RG.sig){RG.sig=sig;RG.d=RGC[sig]||null;RG.ph=!RG.d;RG.t=0;RG.b=busy}if(RG.b&&!busy)RG.t=0;RG.b=busy;

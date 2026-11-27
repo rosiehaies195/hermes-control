@@ -187,7 +187,7 @@
   /* поле на максимуме: видна последняя строка, в 31 pt над чипом (3212_0130.78) — прокрутка вниз, когда не в фокусе (в фокусе — каретка) */
   if(ta.style.height!=h+'px')ta.style.height=h+'px';if(card&&sh>mx&&D.activeElement!=ta)ta.scrollTop=ta.scrollHeight}
  function pad(){var c=$i('clc'),l=$i('cll'),f=$i('clf');if(!c||!l)return;var top=cTop(c),bot=rb(),keep=G.atB!==false,/* низ ленты: без клавиатуры дисклеймер в 5 pt над полем (3213_0131.50), с клавиатурой в 39 pt (3213_0135.68) */h=Math.round(bot-top+0.4+(B.classList.contains('hckb')?30.7:c.classList.contains('clrec')?34.3:0));/* при диктовке без клавиатуры — 39 pt (3213_0053.62) */
-  var near=keep||f.scrollHeight-f.scrollTop-f.clientHeight<60;if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();/*s4b-4: ltFit при любой смене высоты*/
+  var hold=!!(W.VB8&&VB8.hold());/*vb8-a7*/var near=!hold&&(keep||f.scrollHeight-f.scrollTop-f.clientHeight<60);if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();/*s4b-4: ltFit при любой смене высоты*/
   if(near&&f.scrollHeight-f.scrollTop-f.clientHeight>1)f.scrollTop=f.scrollHeight;
   var dn=$i('cldn');if(dn)dn.style.bottom=(bot-top+20)+'px';
   var bf=$i('clbf');if(bf)bf.style.height=Math.max(0,Math.round(bot-top+30))+'px';/*s4b-1*/dnUpd()}

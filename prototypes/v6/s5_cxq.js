@@ -11,6 +11,8 @@
  function mineL(s){return (s.lp||[]).filter(function(p){return p.sid==s.sid})}
  function match(t){var n=nrm(t);if(!n)return null;return Q.L.filter(function(x){return nrm(x.t)==n})[0]||null}
  Q.html=function(s){if(!on()||Q.tid!=s.sid)return '';var M=mineL(s).map(function(p){return nrm(p.t)});
+  /*vb8-b6: своё сообщение уже стоит пузырём в ленте (новый чат: Codex ещё 2–4 с держит его в очереди) — не дублировать блоком «В очереди»*/
+  (s.msgs||[]).slice(-6).forEach(function(b){if(b&&b.k=='u'&&b.t)M.push(nrm(b.t))});
   var L=Q.L.filter(function(x){return M.indexOf(nrm(x.t))<0});if(!L.length)return '';
   return '<div class="s5q"><div class="s5qh">В очереди Codex · '+L.length+'</div>'+L.map(function(x){
    return '<div class="s5qr"><span>'+E(x.t||(x.im?'Фото':'Сообщение'))+'</span><i data-s5q="del" data-id="'+E(x.id)+'" role="button">Убрать</i></div>'}).join('')+'</div>'};

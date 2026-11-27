@@ -244,7 +244,7 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
  function pad(){var c=$i('g3c'),l=$i('g3l'),f=$i('g3f');if(!c||!l)return;var top=cTop(c),bot=rb(),tr=$i('g3tr'),h=Math.round(bot-top+(tr&&tr.classList.contains('on')?tr.offsetHeight+8:0)+63),keep=G.atB!==false;
   /* s4b-4: был внизу — держим низ и когда меняется только высота экрана (клавиатура открылась/закрылась, видео 109, 243, 499);
      высоту последнего хода (ltFit) пересчитываем при любой смене высоты ленты, не только отступа */
-  var near=keep||f.scrollHeight-f.scrollTop-f.clientHeight<60;if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();
+  var hold=!!(W.VB8&&VB8.hold());/*vb8-a7: палец на ленте — не тянем её вниз*/var near=!hold&&(keep||f.scrollHeight-f.scrollTop-f.clientHeight<60);if(l.style.paddingBottom!=h+'px')l.style.paddingBottom=h+'px';ltFit();
   if(near&&f.scrollHeight-f.scrollTop-f.clientHeight>1)f.scrollTop=f.scrollHeight;
   var dn=$i('g3dn');if(dn)dn.style.bottom=(bot-top+15)+'px';
   var sg=$i('g3sg');if(sg)sg.style.bottom=(bot-top+13.6)+'px';
@@ -461,12 +461,14 @@ function ltFit(){var lt=$i('g3lt'),f=$i('g3f'),l=$i('g3l');if(!lt||!f)return;var
   /* s4b-3d: лист (напр. «Новый проект») с клавиатурой не прыгает рывком, а въезжает (видео 159) */
   if(shT!=null&&Math.abs(t-shT)>24&&s.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)s.animate([{transform:'translateY('+Math.round(shT-t)+'px)'},{transform:'none'}],{duration:340,easing:'cubic-bezier(.32,.72,0,1)'});shT=t}
  function upd(){var v=W.visualViewport,t=0,k=0;if(v&&!(v.scale&&Math.abs(v.scale-1)>.01)){t=Math.max(0,Math.round(v.offsetTop||0));k=Math.round(innerHeight-v.height-t);if(k<40)k=0}/*при щипке-зуме не трогаем*/
+  try{if(k&&W.VB7KB&&VB7KB.tgClosed&&VB7KB.tgClosed())k=0}catch(e){}/*vb8-a1: Telegram сказал «закрыта» — старый visualViewport не поднимает поле*/
   if(chat()&&(W.scrollY||W.scrollX))W.scrollTo(0,0);
   if(t!==vt||k!==kb){vt=t;kb=k;R.style.setProperty('--s4vt',t+'px');R.style.setProperty('--s4kb',k+'px');if(R.classList.contains('s4kbv')!=(k>0||t>0))R.classList.toggle('s4kbv',k>0||t>0);
    try{W.G3&&G3.relayout()}catch(e){}try{W.CL3&&CL3.relayout&&CL3.relayout()}catch(e){}}
   sheetFlip()}
  if(W.visualViewport){visualViewport.addEventListener('resize',upd);visualViewport.addEventListener('scroll',upd)}
  W.addEventListener('resize',upd);
+ W.addEventListener('vb7kb',function(){if(!(W.VB7KB&&VB7KB.on()))upd()});/*vb8-a1: раскладка vb7a снята (клавиатура закрыта) — пересчитать сразу, а не ждать resize visualViewport*/
  W.addEventListener('scroll',function(){if(chat()&&(W.scrollY||W.scrollX)){W.scrollTo(0,0);upd()}},{passive:true});
  D.addEventListener('focusin',function(){var s=D.querySelector('#sheet.on');shT=s?s.offsetTop:null;setTimeout(upd,0)},true);
  D.addEventListener('focusout',function(){setTimeout(upd,60)},true);
