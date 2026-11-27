@@ -2826,6 +2826,9 @@ html[data-theme=light] .s5ra{color:#1a9e4b}html[data-theme=light] .s5rd{color:#d
 .s5rsh .s5rgo{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;margin:6px 16px 18px;border-radius:24px;background:#f9f9f7;color:#141413;font-size:17px;font-weight:500;cursor:pointer}
 .s5rsh .s5rgo .clv{color:#141413;fill:currentColor}
 .s5rsh .s5rgo:active{opacity:.8}
+/* лист «Вернуть файлы» — высота по содержимому (у базового листа 440 px под «Добавить в сессию»), длинный список прокручивается */
+.clsh.s5rsh{height:auto;max-height:80vh;display:flex;flex-direction:column}
+.clsh.s5rsh .s5cb{overflow-y:auto;min-height:0}
 
 </style>
 </head>
