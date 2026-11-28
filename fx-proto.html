@@ -8523,7 +8523,7 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
  /* категория строки: по проекту (pid/имя); нет проекта — null (видна всегда) */
  function catOfPid(pid,name){var P=S.prj||[];for(var i=0;i<P.length;i++)if(P[i].id==pid||(!pid&&name&&P[i].n==name))return P[i].cat||'own';
   var H=S.prj_hid||[];for(i=0;i<H.length;i++)if(H[i].id==pid)return 'test';return null}
- function rcat(r){return catOfPid(r.pid,r.sub)}
+ function rcat(r){return catOfPid(r.pid,String(r.sub||'').split(' · ')[0])} /* у ответов «Тебе: …» pid нет — проект первым словом подписи (бэкенд: добавить pid в fin, п.5) */
  function inCat(k){return function(r){var c=r.pid!=null||r.n?catOfPid(r.pid,r.n):rcat(r);return c==k}}
  function prjOf(k){return k=='test'?(S.prj_hid||[]):(S.prj||[]).filter(function(p){return (p.cat||'own')==k})}
  function stat(k){var N=(S.need||[]).filter(function(r){return rcat(r)==k}),red=N.filter(function(r){return r.lvl=='red'}).length,
