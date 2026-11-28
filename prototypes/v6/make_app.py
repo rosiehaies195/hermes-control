@@ -72,5 +72,12 @@ rep(">в тексте файлов</span>", ">везде: файлы, журна
 rep("</style>\n</head>", css + "\n</style>\n</head>")
 rep("</script>\n</body>", "</script>\n<script>\n" + js + "\n</script>\n</body>")
 out = Path(sys.argv[1]) if len(sys.argv) > 1 else R / "prototypes/v6-app.html"
+if out.name in ("v6-app.html", "index.html", "beta.html"):      # палочка: основную сборку делает только ведущая сессия (HP_BATON)
+    sys.path.insert(0, "C:/Users/Peter/hermes-brain/tools")
+    try:
+        import baton
+        baton.guard_or_exit("panel")
+    except ImportError:
+        pass
 out.write_text(src, encoding="utf-8")
 print("built", out, len(src))
