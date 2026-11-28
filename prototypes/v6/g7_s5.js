@@ -282,7 +282,7 @@ function setPop(){var r=setEl();if(!r)return;var old=curPg(r);SS.stack.pop();var
   SD3.pop(h,{top:(r.bottom+8)+'px',right:(innerWidth-r.right)+'px'},{origin:'top right'})}
  /* ---------- 3. кольцо контекста (Claude iOS, кадр B1 94.5: в капсуле [32 | •••] вместо ✎, Ø≈22 pt, серый трек, дуга #5698D4, число внутри) ---------- */
  var RG={sig:'',d:null,t:0};var RGC=lsg('g7rgc',null)||{};/*vb5a-4: последнее кольцо по чату — сразу при открытии*/
- function rgPut(sig,d){if(!d||d.error||!d.win||d.pend)return;RGC[sig]={pct:d.pct,win:d.win,used:d.used,ts:Date.now()};var ks=Object.keys(RGC);if(ks.length>40){ks.sort(function(a,b){return RGC[a].ts-RGC[b].ts});delete RGC[ks[0]]}try{localStorage.setItem('g7rgc',JSON.stringify(RGC))}catch(e){}}
+ function rgPut(sig,d){if(!d||d.error||!d.win||d.pend)return;RGC[sig]={pct:d.pct,win:d.win,used:d.used,ts:Date.now()};var ks=Object.keys(RGC);if(ks.length>40){ks.sort(function(a,b){return RGC[a].ts-RGC[b].ts});delete RGC[ks[0]]}lss('g7rgc',RGC)/*vb8c-b8: читаем через LS (hc_g7rgc) — и пишем туда же*/}
  function ringHtml(p){p=Math.max(0,Math.min(100,+p||0));var R=13.6,L=2*Math.PI*R,w=p>=90?' crit':p>=70?' warn':'';
   return '<svg width="31" height="31" viewBox="0 0 31 31" aria-hidden="true"><circle cx="15.5" cy="15.5" r="'+R+'" fill="none" class="trk" stroke-width="2.6"/><circle class="arc'+w+'" cx="15.5" cy="15.5" r="'+R+'" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+(L*Math.max(p,1.5)/100).toFixed(2)+' '+L.toFixed(2)+'" transform="rotate(-90 15.5 15.5)"/></svg><b>'+Math.round(p)+'</b>'}
  /* vb7c-2 (Ц1, Ц5): кольцо и у Hermes (state.db _usage_anchor); «ещё нет ответа» ({pend} / no-file у нового чата) — пустое кольцо и опрос каждые 4–8 с,
@@ -300,8 +300,9 @@ function ringTick(){var s=st();if(!s||s.view!='chat'||!s.sid||(s.kind!='claude'&
   var d=RG.d,el=hd.querySelector('.g7ring');if(!d&&RG.ph||rgPh(d))d={pct:0,win:1,ph:1};/*vb5a-4: пока нет данных — пустое кольцо на своём месте*/if(!d||d.error||!d.win){if(el)el.remove();B.classList.remove('g7rg');return}
   if(!el){el=D.createElement(cl?'i':'div');el.className='g7ring'+(cl?' in':' g3gl');el.dataset.g7='ctx';el.setAttribute('role','button');el.setAttribute('aria-label','Контекст');
    if(cl)cap.insertBefore(el,cap.firstChild);else cap.parentNode.insertBefore(el,cap)}
-  B.classList.toggle('g7rg',cl);need('usage',function(){});/*vb7c-3: сохранённый на телефоне (t:0) — сразу свежий*/var hh=d.ph?ringHtml(0).replace(/<circle class="arc[^>]*>/,'').replace(/<b>[^<]*<\/b>/,'<b></b>'):ringHtml(rgPct(d));if(el.__h!=hh){el.innerHTML=hh;el.__h=hh}}
- setInterval(function(){try{ringTick()}catch(e){}},400);/*vb5a-4: было 1500 — кольцо появлялось через 0,6–1,5 с после открытия*/
+  B.classList.toggle('g7rg',cl);need('usage',function(){});/*vb7c-3: сохранённый на телефоне (t:0) — сразу свежий*/var nw=d.ph&&!(s.msgs||[]).some(function(b){return b&&b.k=='a'})&&!s.loadingMsgs;/*vb8c-b8: новый чат — «0», а не пустой круг*/var hh=d.ph&&!nw?ringHtml(0).replace(/<circle class="arc[^>]*>/,'').replace(/<b>[^<]*<\/b>/,'<b></b>'):ringHtml(d.ph?0:rgPct(d));if(el.__h!=hh){el.innerHTML=hh;el.__h=hh}}
+ setInterval(function(){try{ringTick()}catch(e){}},400);
+ /*vb8c-b8: шапку перерисовали (возврат в чат, лист закрыт) — кольцо в том же кадре, а не через тик*/var RGF=0;try{new MutationObserver(function(){if(RGF||!pf('ring'))return;var hd=$i('g3hd')||$i('clhd');if(!hd||hd.querySelector('.g7ring'))return;RGF=requestAnimationFrame(function(){RGF=0;try{ringTick()}catch(e){}});try{ringTick()}catch(e){}}).observe(B,{childList:true,subtree:true})}catch(e){}/*vb5a-4: было 1500 — кольцо появлялось через 0,6–1,5 с после открытия*/
  function fmtK(n){n=+n||0;var f=function(x){return String(x).replace(/\.0$/,'').replace('.',',')};/*vb6h: «475 тыс.», не «475,0 тыс.»*/return n>=1e6?f((n/1e6).toFixed(n%1e6?1:0))+' млн':n>=1e3?f((n/1e3).toFixed(1))+' тыс.':String(n)}/*vb5b-14*/
  function verS(){var v=+(W.VER||0);return v>=100?'10.'+(v-100):v?(v/10).toFixed(1):''}
  /* лист «Расход» из кольца (B1 101.5): плавающий, ✕ | Расход | [⟳ | i]; «Контекст» → «Окно контекста 8 % занято», полоса, «83.1K из 1M токенов»; ниже лимит тарифа */

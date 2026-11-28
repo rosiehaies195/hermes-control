@@ -63,7 +63,7 @@
    cur.a.push(b);cur.ai.push(i)}
   return {L:L,from:from}}
  function label(p){var n=(p&&p.n)||'';return !p?'Думаю…':/AskUser|question/i.test(n)?'Задаю вопрос':/Bash|terminal|command/i.test(n)?'Выполняю команду':/Grep|Glob|search/i.test(n)?'Ищу':/Read|file/i.test(n)?'Читаю файлы':/Edit|Write/i.test(n)?'Правлю файлы':/Web|browser|fetch/i.test(n)?'Смотрю в сети':/Task|agent/i.test(n)?'Работает помощник':'Работаю'}
- function thinking(last,k){var q=last&&/AskUser|question/i.test(last.n||'');return '<div class="clth" data-cl="worked" data-i="'+k+'"><div class="cldots"><i></i><i></i><i></i></div><span>'+E(label(last))+'</span>'+(q?ic('clock'):'')+(last?ic('chev'):'')+'</div>'}
+ function thinking(last,k,lab){var q=last&&/AskUser|question/i.test(last.n||'');return '<div class="clth" data-cl="worked" data-i="'+k+'"><div class="cldots"><i></i><i></i><i></i></div><span>'+E(lab||label(last))+'</span>'+(q?ic('clock'):'')+(last?ic('chev'):'')+'</div>'}
  function turnA(t,lv,lastTurn){var s=st(),h='',tools=[],tx=[],ti=-1,lastTool=null;
   t.a.forEach(function(b,k){(b.parts||[]).forEach(function(p){if(p.p=='tool'){tools.push(p);lastTool=p}else if(p.p=='t'&&p.t&&p.t.trim()){tx.push(p.t);ti=t.ai[k]}})});
   var lastA=t.a[t.a.length-1],li=t.ai[t.ai.length-1];
@@ -94,7 +94,7 @@
   R.L.forEach(function(t,k){var last=k==R.L.length-1;
    if(k==lu){h+='<div class="cllt" id="cllt"'+(G.ltH?' style="min-height:'+G.ltH+'px"':'')+'>';opened=true}
    if(t.u){h+='<div class="clum" data-mi="'+t.i+'">'+imgsOf(t.u)+(t.u.t?'<div class="club">'+md(t.u.t)+'</div>':'')+(t.u.fail!=null&&HC.failHtml?HC.failHtml(t.u):'')/*s4a-fl*/+(t.u.dl&&HC.dlHtml?HC.dlHtml(t.u):'')/*s5-dlv*/+'</div>';
-    if(last&&lv)h+='<div class="clta cllast">'+thinking(null,-1)+'</div>';return}
+    if(last&&lv)h+='<div class="clta cllast">'+thinking(null,-1,t.u.lp&&!s.msgs.some(function(b){return b&&b.k=='a'})?'Открываю Claude на ПК…':'')+'</div>';return}/*vb8c-b7*/
    h+=turnA(t,last&&lv,last)});
   /* свёрнутая карточка вопроса/разрешения — строкой статуса (✕ на карточке) */
   (s.pend||[]).forEach(function(p,i){if(G.qmin[p.id||i])h+='<div class="clth" data-cl="qopen" data-i="'+i+'"><div class="cldots"><i></i><i></i><i></i></div><span>'+(p.kind=='clarify'?'Задаю вопрос':'Жду разрешения')+'</span>'+ic('clock')+ic('chev')+'</div>'});
