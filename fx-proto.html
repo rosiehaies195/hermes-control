@@ -2948,6 +2948,21 @@ html[data-theme=light] .s5bpop .s5rq b{color:#000}
 .fx6rest:active{opacity:.6}
 .fx6q .fx21calm{margin-top:28px}
 
+/* focus-ui: плитки категорий во вкладке «Проекты» (fx_prj.js) — в стиле карточек вкладки */
+.fxp-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 16px 14px}
+.fxp-tile{background:var(--g4card,#1c1c1e);border-radius:16px;padding:12px 14px 13px;display:flex;flex-direction:column;gap:2px;cursor:pointer;min-height:100px;box-shadow:inset 0 0 0 1px var(--g4edge,rgba(255,255,255,.06))}
+.fxp-tile.red{box-shadow:inset 0 0 0 1.5px var(--g4red,#ff453a)}
+.fxp-tile b{font-size:17px;font-weight:600}
+.fxp-tile span{font-size:14px;color:var(--g4sub,#8e8e93)}
+.fxp-tile em{font-style:normal;font-size:14px;color:var(--g4sub,#8e8e93)}
+.fxp-tile em.fxp-r{color:var(--g4red,#ff453a)}.fxp-tile em.fxp-g{color:var(--g4ok,#30d158)}
+.fxp-tile small{font-size:12.5px;line-height:16px;color:var(--g4sub,#8e8e93);margin-top:4px;opacity:.85;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.fxp-tile:active{opacity:.7}
+.fxp-back{color:var(--g4blue,#0a84ff);font-size:17px;padding:10px 16px 0;cursor:pointer}
+.fxp-title{font-size:28px;font-weight:700;padding:2px 16px 8px}
+.fxp-hint{color:var(--g4sub,#8e8e93);font-size:14px;padding:0 16px 6px}
+.fxp-all .sh a,.sec .sh a[data-a=fxpedit]{cursor:pointer}
+
 </style>
 </head>
 <body>
@@ -8384,7 +8399,7 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
   if(k=='claude'){var v=W.CLV&&CLV.spark;return v?'<svg class="g4ai g4ai-c" viewBox="0 0 '+v[0]+' '+v[1]+'" aria-hidden="true"><path d="'+v[2]+'"/></svg>':'<i class="g4ai"></i>'}
   if(k=='codex')return '<svg class="g4ai g4ai-x" viewBox="0 0 24 24" aria-hidden="true"><path d="'+OAI+'"/></svg>';
   return '<span class="g4ai g4ai-s">'+(W.IC?IC('activity'):'')+'</span>'}
- function srcIc(r){if(r.src=='ob')return ai('hermes');
+ function srcIc(r){if(r.src=='ob'||r.src=='cj')return ai('hermes');
   if(r.src=='health'||r.src=='stop')return ai('');return ai(r.ag||'hermes')}
  function sec(t,n,r){return '<div class="g4sh fx21sh">'+t+(n!=null?'<span>'+n+'</span>':'')+(r||'')+'</div>'}
  function pl(a,t,ds,cls){var h='';for(var k in ds||{})if(ds[k]!=null)h+=' data-'+k+'="'+E(ds[k])+'"';
@@ -8420,7 +8435,11 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
   P.forEach(function(x){if(!x||!x.id||hid[x.pid])return;var id='q:'+x.id;if(have[id]){q.push(have[id]);return}
    var pn=((S.prj||[]).filter(function(p){return p.id==x.pid})[0]||{}).n||String(x.s||'').split(' · ')[0],a=x.ag||'claude',tx=String(x.q||'').slice(0,120);
    q.push({id:id,lvl:'red',src:x.perm?'perm':'q',t:(x.perm?'Разреши или запрети: ':'Ответь на вопрос: «')+tx+(x.perm?'':'»'),pid:x.pid,ag:a,sub:[pn,ag[a]||a].filter(Boolean).join(' · '),act:[]})});
-  return q.concat((S.need||[]).filter(function(r){return r.src!='q'&&r.src!='perm'}))}
+  /* упавшие cron-задачи (раньше «Сбой задачи» в блоке «Сбои»): бэкенд tv_need их не отдаёт — строка на клиенте */
+  var jb=(S.cj||[]).filter(function(j){return j.on&&!j.ok}),jr=[];
+  if(jb.length){var jn=function(j){try{return W.cronName86?cronName86(j):(j.n||j.name||'задача')}catch(e){return j.n||'задача'}};
+   jr.push({id:'cj',lvl:'red',src:'cj',ag:'hermes',t:'Посмотри сбой задачи: '+jn(jb[0])+(jb.length>1?' и ещё '+(jb.length-1):''),sub:'По расписанию',act:[{l:'Открыть «Систему»',a:'sys'}]})}
+  return q.concat((S.need||[]).filter(function(r){return r.src!='q'&&r.src!='perm'}),jr)}
  function need(flt,title,lim){var L=needAll().filter(function(r){return hit(r.t+' '+r.sub)&&(!flt||flt(r))}),n=L.length;if(!n&&flt)return '';
   var more=lim&&!FS.needAll&&!FS.q&&n>lim+1?n-lim:0;if(more)L=L.slice(0,lim);
   if(!n)return FS.q?'':sec('Нужно тебе')+'<div class="g4calm fx21calm">'+(W.G4V&&G4V.cc_done?'<svg class="g4v" width="'+G4V.cc_done[0]+'" height="'+G4V.cc_done[1]+'" viewBox="0 0 '+G4V.cc_done[0]+' '+G4V.cc_done[1]+'"><path d="'+G4V.cc_done[2]+'"/></svg>':'')+
@@ -8490,6 +8509,43 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
  D.addEventListener('input',function(ev){var t=ev.target;if(!t.dataset||t.dataset.fx21!='q')return;FS.q=t.value;var pos=t.selectionStart;render(true);
   var n=D.querySelector('[data-fx21=q]');if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}},true);
  W.FX21={rest:rest,st:FS,needAll:needAll,E:E,ai:ai,sec:sec,pl:pl,hit:hit,need:need,going:going,projects:projects,prow:prow,srchBox:srchBox,CATS:CATS,catN:catN,dot:dot,stLine:stLine,banners:banners21};
+})();
+
+/* focus-ui (решение владельца 28.11): плитки категорий — во вкладке «Проекты», не на Пульте (Пульт = только «Нужно тебе»).
+   Сверху вкладки — плитки «Работа / Свои / Обвязка» (сколько проектов, ждёт ли что-то, имена) и строка «Тесты».
+   Тап по плитке — тот же список вкладки (группы «Требуют тебя / Работают / Свободны», фильтр агентов) только по этой категории;
+   «‹ Все проекты» — назад. «Разложить» — перенос проекта в другую категорию (кнопка у строки, бэкенд pcat).
+   Подключается после g5_prj.js и fx_home.js (берёт помощники FX21). */
+(function(){
+ var W=window,D=document,F=W.FX21;if(!F||typeof W.prjTab86!='function')return;
+ var E=F.E,CATS=[['work','Работа'],['own','Свои'],['rig','Обвязка']],P0=W.prjTab86,PJ=W.proj8,ST={cat:null,edit:0};
+ function nProj(n){return n+' '+(n%10==1&&n%100!=11?'проект':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'проекта':'проектов')}
+ function of(k){return (S.prj||[]).filter(function(p){return (p.cat||'own')==k})}
+ function waits(p){return p.st=='wait'||p.st=='bad'||(p.wait&&/^(q|perm|bad|card|end)$/.test(p.wait.k))}
+ function tile(c){var L=of(c[0]);if(!L.length)return '';var w=L.filter(waits).length,go=L.filter(function(p){return p.st=='work'}).length;
+  var st=w?'<em class="fxp-r">● '+w+' '+(w==1?'ждёт тебя':'ждут тебя')+'</em>':go?'<em class="fxp-g">▶ '+go+' работает</em>':'<em>всё тихо</em>';
+  return '<div class="fxp-tile tap'+(w?' red':'')+'" data-a="fxpcat" data-k="'+c[0]+'"><b>'+c[1]+'</b><span>'+nProj(L.length)+'</span>'+st+
+   '<small>'+E(L.slice(0,3).map(function(p){return p.n}).join(', ')+(L.length>3?' и ещё '+(L.length-3):''))+'</small></div>'}
+ function tiles(){var h=CATS.map(tile).join(''),T=S.prj_hid||[];
+  return '<div class="fxp-tiles">'+h+'</div>'+(T.length?'<div class="sec"><div class="grp"><div class="rw86 tap" data-a="fxpcat" data-k="test"><div class="t2"><div class="n2">Тесты</div><div class="d2">'+T.length+' тестовых папок · скрыты</div></div><i class="g4ch">›</i></div></div></div>':'')}
+ function edit(){return '<div class="sec"><div class="sh"><span>Разложить по категориям</span><a data-a="fxpedit">Готово</a></div><div class="fxp-hint">Тапни по метке — проект переедет в следующую категорию.</div></div>'+
+  '<div class="sec"><div class="grp">'+(S.prj||[]).map(function(p){return '<div class="rw86"><div class="t2"><div class="n2">'+E(p.n)+'</div></div>'+
+   F.pl('fx21cat',F.catN(p.cat||'own')+' ▾',{x:p.id,c:p.cat||'own'},'fx21cp')+'</div>'}).join('')+'</div></div>'}
+ W.prjTab86=function(){
+  if(ST.edit)return hd()+edit();
+  var k=ST.cat;if(k&&k!='test'&&!of(k).length)k=ST.cat=null;
+  if(!k)return P0().replace(/(<div class="chp5">)/,tiles()+'<div class="sec fxp-all"><div class="sh"><span>Все проекты</span><a data-a="fxpedit">Разложить</a></div></div>$1');
+  var nm=k=='test'?'Тесты':F.catN(k),head='<div class="fxp-back tap" data-a="fxpback">‹ Все проекты</div><div class="fxp-title">'+E(nm)+'</div>';
+  if(k=='test')return hd()+head+'<div class="sec"><div class="grp">'+(S.prj_hid||[]).map(function(p){return '<div class="rw86 tap" data-a="po86" data-x="'+E(p.id)+'"><div class="t2"><div class="n2">'+E(p.n)+'</div><div class="d2">тестовая папка</div></div></div>'}).join('')+'</div></div>';
+  var ids={};of(k).forEach(function(p){ids[p.id]=1});
+  W.proj8=function(){return PJ().filter(function(p){return ids[p.id]})};try{return hd()+head+agStrip86()+listA2()}finally{W.proj8=PJ}};
+ D.addEventListener('click',function(ev){var t=ev.target.closest&&ev.target.closest('[data-a]');if(!t||!/^fxp/.test(t.dataset.a))return;
+  ev.stopPropagation();ev.preventDefault();var a=t.dataset.a;if(W.haptic)haptic('sel');
+  if(a=='fxpcat'){ST.cat=t.dataset.k;U.pf='all'}else if(a=='fxpback'){ST.cat=null}else if(a=='fxpedit'){ST.edit=!ST.edit}
+  render(true);window.scrollTo(0,0)},true);
+ /* нижняя вкладка «Проекты» повторным тапом — к плиткам */
+ D.addEventListener('click',function(ev){var t=ev.target.closest&&ev.target.closest('[data-a=tab][data-x=prj]');if(t&&U.tab=='prj'){ST.cat=null;ST.edit=0}},true);
+ W.FXP={st:ST};
 })();
 
 /* только прототип fx на телефоне (в боевую сборку не входит): кнопки нового Пульта, которых ещё нет на сервере
