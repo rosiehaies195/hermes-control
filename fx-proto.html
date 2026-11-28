@@ -2939,6 +2939,45 @@ html[data-theme=light] .s5bpop .s5rq b{color:#000}
 .fx21none{padding:6px 32px 12px;color:var(--g4sub);font-size:15px}
 .fx21p .g4dot.wait,.fx21home .g4dot.wait{background:#f5a524}
 .fx21p .g4dot.work,.fx21home .g4dot.work{background:var(--g4ok)}
+.fx21more .g4rt{padding-left:16px}
+.fx21more .g4rt b{color:var(--g4blue)}
+.fx21more .g4ch{margin-right:14px}
+
+/* focus-ui п.4б — навигация по категориям (fx_nav.js) */
+.fxn-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16.3px 12px}
+.fxn-tile{background:var(--g4card);border-radius:16px;padding:12px 14px 13px;display:flex;flex-direction:column;gap:2px;cursor:pointer;min-height:104px;box-shadow:inset 0 0 0 1px var(--g4edge)}
+.fxn-tile.red{box-shadow:inset 0 0 0 1.5px var(--g4red)}
+.fxn-tile b{font-size:17px;font-weight:600}
+.fxn-tile span{font-size:14px;color:var(--g4sub)}
+.fxn-tile small{font-size:12.5px;line-height:16px;color:var(--g4sub);margin-top:4px;opacity:.85}
+.fxn-tile em,.fxn-ah em{font-style:normal;font-size:14px;color:var(--g4sub)}
+em.fxn-r{color:var(--g4red)}em.fxn-r.y{color:#f5a524}em.fxn-g{color:var(--g4ok)}
+.fxn-back{color:var(--g4blue);font-size:17px;padding:10px 16.3px 0;cursor:pointer}
+.fxn-title{font-size:28px;font-weight:700;padding:2px 16.3px 8px}
+.fxn-chips{display:flex;gap:8px;overflow-x:auto;padding:4px 16.3px 12px;scrollbar-width:none}
+.fxn-chips::-webkit-scrollbar{display:none}
+.fxn-chip{flex:none;position:relative;height:34px;line-height:34px;border-radius:17px;padding:0 14px;font-size:15px;font-weight:500;background:var(--g4pl);color:var(--g4plt);cursor:pointer;white-space:nowrap}
+.fxn-chip span{margin-left:6px;opacity:.6;font-weight:400}
+.fxn-chip.on{background:var(--g4blue);color:#fff}
+.fxn-chip.on span{opacity:.8}
+.fxn-dot{display:inline-block;width:7px;height:7px;border-radius:4px;background:var(--g4red);margin-left:6px;vertical-align:1px}
+.fxn-dot.y{background:#f5a524}
+.fxn-chip .fxn-dot{position:absolute;top:3px;right:3px;margin:0;box-shadow:0 0 0 2px var(--g4bg,#000)}
+.fxn-sticky{position:sticky;top:calc(var(--g3t,0px) + 48px);z-index:3;background:var(--g4bg,#000);padding-top:6px;margin-top:-6px}
+.fxn-hint{margin:0 16.3px 12px;padding:10px 14px;border-radius:14px;background:var(--g4card);font-size:15px;color:var(--g4fg);cursor:pointer;box-shadow:inset 0 0 0 1px var(--g4edge)}
+.fxn-hint .fxn-dot{margin:0 8px 0 0}
+.fxn-acc .fxn-ah .g4rt{padding-left:16px}
+.fxn-ah .g4rt b{font-size:17px}
+.fxn-n{font-weight:400;color:var(--g4sub);margin-left:4px}
+.fxn-ah .g4ch{transition:transform .2s;margin-right:14px}
+.fxn-ah .g4ch.fx21up{transform:rotate(90deg)}
+.fxn-in{background:rgba(127,127,127,.06)}
+.fxn-in .fx21p .g4rt b{font-size:16px}
+.fxn-go{margin-top:10px}
+.fxn-go .fxn-gd{margin:0 12px 0 18px;background:var(--g4ok)}
+.fxn-go .g4ch{margin-right:14px}
+.fxn-tt .g4rt{padding-left:16px}
+.fxn-tt .g4ch{margin-right:14px}
 
 </style>
 </head>
@@ -8404,11 +8443,13 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
   else b.push(pl('fx21qx','Ответить',{x:q.id},'w'));
   return '<div class="g4r fx21r fx21red" data-fxid="'+E(r.id)+'"><i class="fx21lv"></i>'+srcIc(r)+'<div class="g4rt"><b data-a="fx21qx" data-x="'+E(q.id)+'">'+E(r.t)+'</b>'+(r.sub?'<span>'+E(r.sub)+'</span>':'')+
    '<div class="fx21bt">'+b.join('')+'</div></div></div>'}
- function need(flt,title){var L=(S.need||[]).filter(function(r){return hit(r.t+' '+r.sub)&&(!flt||flt(r))}),n=L.length;if(!n&&flt)return '';
+ function need(flt,title,lim){var L=(S.need||[]).filter(function(r){return hit(r.t+' '+r.sub)&&(!flt||flt(r))}),n=L.length;if(!n&&flt)return '';
+  var more=lim&&!FS.needAll&&!FS.q&&n>lim+1?n-lim:0;if(more)L=L.slice(0,lim);
   if(!n)return FS.q?'':sec('Нужно тебе')+'<div class="g4calm fx21calm">'+(W.G4V&&G4V.cc_done?'<svg class="g4v" width="'+G4V.cc_done[0]+'" height="'+G4V.cc_done[1]+'" viewBox="0 0 '+G4V.cc_done[0]+' '+G4V.cc_done[1]+'"><path d="'+G4V.cc_done[2]+'"/></svg>':'')+
    '<div><b>Ничего не ждёт тебя</b><span>Вопросов, решений и сбоев нет. Всё, что идёт само, — ниже.</span></div></div>';
   var h='',run=[];function flush(){if(run.length)h+='<div class="g4card fx21need">'+run.join('')+'</div>';run=[]}
-  L.forEach(function(r){var x=(r.src=='q'||r.src=='perm')?qRow(r):needRow(r);if(x&&x.card){flush();h+='<div class="g4qs fx21qs">'+x.card+'</div>'}else run.push(x)});flush();
+  L.forEach(function(r){var x=(r.src=='q'||r.src=='perm')?qRow(r):needRow(r);if(x&&x.card){flush();h+='<div class="g4qs fx21qs">'+x.card+'</div>'}else run.push(x)});
+  if(more)run.push('<div class="g4r tap fx21more" data-a="fx21more"><div class="g4rt"><b>Ещё '+more+'</b><span>менее срочное ниже по списку</span></div><i class="g4ch">›</i></div>');flush();
   return sec(title||'Нужно тебе',n)+h}
  function going(flt){var L=(S.going||[]).filter(function(g){return hit(g.n+' '+g.t)&&(!flt||flt(g))});if(!L.length)return '';
   return sec('Идёт само',L.length)+'<div class="g4card">'+L.map(function(g){return '<div class="g4r tap" data-a="po86" data-x="'+E(g.pid)+'">'+
@@ -8458,6 +8499,7 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
   if(a=='fx21cat'){var o=['work','own','rig','test'],i=(o.indexOf(ds.c)+1)%o.length,nc=o[i];send({a:'pcat',pid:ds.x,cat:nc},true);
    (S.prj||[]).forEach(function(p){if(p.id==ds.x)p.cat=nc});if(nc=='test'){S.prj=S.prj.filter(function(p){if(p.id==ds.x){(S.prj_hid=S.prj_hid||[]).push(p);return false}return true})}
    toast21('«'+catN(nc)+'»');render(true);return}
+  if(a=='fx21more'){FS.needAll=1;render(true);return}
   if(a=='fx21clr'){FS.q='';render(true);return}
   if(a=='fx21grep'){U.tab='br';U.page=null;U.bq=FS.q.trim();U.bfull=1;if(W.grep)grep();render();return}
  },true);
@@ -8465,6 +8507,95 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
  D.addEventListener('input',function(ev){var t=ev.target;if(!t.dataset||t.dataset.fx21!='q')return;FS.q=t.value;var pos=t.selectionStart;render(true);
   var n=D.querySelector('[data-fx21=q]');if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}},true);
  W.FX21={st:FS,E:E,ai:ai,sec:sec,pl:pl,hit:hit,need:need,going:going,projects:projects,prow:prow,srchBox:srchBox,CATS:CATS,catN:catN,dot:dot,stLine:stLine,banners:banners21};
+})();
+
+/* focus-ui п.4б — навигация по категориям. Три варианта поверх fx_home.js (по умолчанию B; ?fxv=A — список fx_home, C/D — для сравнения):
+   B «Плитки»: Пульт = Нужно тебе + Идёт само + плитки категорий; тап по плитке — экран категории с кнопками-переключателями соседних.
+   C «Фокус»: переключатель категорий наверху Пульта фильтрует ВЕСЬ экран; срочное из других категорий — одной строкой-подсказкой.
+   D «Свёрнутые»: проекты на Пульте, но каждая категория — одна строка-сводка; раскрывается тапом (где ждёт тебя — раскрыта сама).
+   Правило для всех: строки без проекта (сбои системы, чаты «Без проекта») видны всегда. */
+(function(){
+ var W=window,D=document,F=W.FX21;if(!F)return;
+ var V=(String(location.search).match(/[?&]fxv=([ABCD])/)||[])[1]||'B';if(V=='A')return; /* выбрано владельцем 28.11: Б «Плитки» по умолчанию; ?fxv=A — старый список, C/D — отвергнутые варианты (для сравнения) */
+ var E=F.E,FS=F.st,sec=F.sec,pl=F.pl,ai=F.ai,hit=F.hit;
+ var CATS=[['work','Работа'],['own','Свои'],['rig','Обвязка']];
+ var NV={cat:null,open:{}};try{NV.focus=localStorage.getItem('fxnav_focus')||'all'}catch(e){NV.focus='all'}
+ /* категория строки: по проекту (pid/имя); нет проекта — null (видна всегда) */
+ function catOfPid(pid,name){var P=S.prj||[];for(var i=0;i<P.length;i++)if(P[i].id==pid||(!pid&&name&&P[i].n==name))return P[i].cat||'own';
+  var H=S.prj_hid||[];for(i=0;i<H.length;i++)if(H[i].id==pid)return 'test';return null}
+ function rcat(r){return catOfPid(r.pid,r.sub)}
+ function inCat(k){return function(r){var c=r.pid!=null||r.n?catOfPid(r.pid,r.n):rcat(r);return c==k}}
+ function prjOf(k){return k=='test'?(S.prj_hid||[]):(S.prj||[]).filter(function(p){return (p.cat||'own')==k})}
+ function stat(k){var N=(S.need||[]).filter(function(r){return rcat(r)==k}),red=N.filter(function(r){return r.lvl=='red'}).length,
+   G=(S.going||[]).filter(function(g){return catOfPid(g.pid,g.n)==k}).length;return {need:N.length,red:red,go:G}}
+ function statLine(st){return st.need?'<em class="fxn-r'+(st.red?'':' y')+'">● '+st.need+' '+(st.need==1?'ждёт тебя':'ждут тебя')+'</em>':
+   st.go?'<em class="fxn-g">▶ '+st.go+' идёт само</em>':'<em>всё тихо</em>'}
+ function plist(L,hid){return L.length?'<div class="g4card">'+L.map(function(p){return F.prow(p,hid)}).join('')+'</div>':'<div class="fx21none">Пусто</div>'}
+ function nProj(n){return n+' '+(n%10==1&&n%100!=11?'проект':n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'проекта':'проектов')}
+ function names(L){var s=L.slice(0,3).map(function(p){return p.n}).join(', ');return s+(L.length>3?' и ещё '+(L.length-3):'')}
+ function found(){var L=(S.prj||[]).filter(function(p){return hit(p.n+' '+F.stLine(p))});
+  var h='<div class="fx21ch"><b>Найдено</b><span>'+L.length+'</span></div>'+(L.length?plist(L):'<div class="fx21none">В проектах «'+E(FS.q)+'» нет</div>');
+  if(FS.q.trim().length>1)h+='<div class="g4card"><div class="g4r tap" data-a="fx21grep">'+ai('')+'<div class="g4rt"><b>Искать «'+E(FS.q.trim())+'» везде</b><span>мозг, журнал, чаты Hermes</span></div><i class="g4ch">›</i></div></div>';
+  return h}
+ function chips(cur,all){var h='<div class="fxn-chips">'+(all?'<b class="fxn-chip'+(cur=='all'?' on':'')+'" data-a="fxnchip" data-k="all">Всё</b>':'');
+  CATS.concat(all?[]:[['test','Тесты']]).forEach(function(c){var st=stat(c[0]),n=prjOf(c[0]).length;if(!n&&c[0]!=cur)return;
+   h+='<b class="fxn-chip'+(cur==c[0]?' on':'')+'" data-a="fxnchip" data-k="'+c[0]+'">'+c[1]+'<span>'+n+'</span>'+(st.red?'<i class="fxn-dot"></i>':st.need?'<i class="fxn-dot y"></i>':'')+'</b>'});
+  return h+'</div>'}
+ function top0(){var f=D.getElementById('g4f');if(f)f.scrollTop=0;else W.scrollTo(0,0)}
+ var cname=function(k){return k=='test'?'Тесты':F.catN(k)};
+ /* «Идёт само» одной строкой (тап — раскрыть): в Б и Г это видно и по категориям */
+ function goingShort(){var G=(S.going||[]).filter(function(g){return hit(g.n+' '+g.t)});if(!G.length)return '';if(NV.goAll||G.length<2)return F.going();
+  return '<div class="g4card fxn-go"><div class="g4r tap" data-a="fxngo"><i class="g4dot work fxn-gd"></i><div class="g4rt"><b>Идёт само · '+G.length+'</b><span>'+E(names(G.map(function(g){return {n:g.n}})))+'</span></div><i class="g4ch">›</i></div></div>'}
+ /* ---------- B: плитки ---------- */
+ function homeB(){if(NV.cat)return catPage(NV.cat);
+  var h=F.banners()+F.need(null,null,3)+goingShort(),L=S.prj||[];
+  h+=sec('Проекты',L.length,'<em class="fx21ed" data-a="fx21edit">'+(FS.edit?'Готово':'Разложить')+'</em>')+F.srchBox('Поиск по всем проектам');
+  if(FS.q)return '<div class="g4home fx21home">'+h+found()+'</div>';
+  if(FS.edit)return '<div class="g4home fx21home">'+h+'<div class="fx21none">Тапни по кнопке категории у проекта — он переедет.</div>'+plist(L)+'</div>';
+  h+='<div class="fxn-tiles">';CATS.forEach(function(c){var P=prjOf(c[0]);if(!P.length)return;var st=stat(c[0]);
+   h+='<div class="fxn-tile tap'+(st.red?' red':'')+'" data-a="fxncat" data-k="'+c[0]+'"><b>'+c[1]+'</b><span>'+nProj(P.length)+'</span>'+statLine(st)+'<small>'+E(names(P))+'</small></div>'});
+  h+='</div>';var T=prjOf('test');if(T.length)h+='<div class="g4card fxn-tt"><div class="g4r tap" data-a="fxncat" data-k="test"><div class="g4rt"><b>Тесты</b><span>'+T.length+' тестовых папок · скрыты с Пульта</span></div><i class="g4ch">›</i></div></div>';
+  return '<div class="g4home fx21home">'+h+'</div>'}
+ function catPage(k){var P=prjOf(k).filter(function(p){return hit(p.n+' '+F.stLine(p))}),f=inCat(k);
+  var h='<div class="fxn-back tap" data-a="fxnback">‹ Пульт</div><div class="fxn-title">'+cname(k)+'</div>'+chips(k,false)+F.srchBox('Поиск в «'+cname(k)+'»');
+  h+=F.need(function(r){return rcat(r)==k},'Нужно тебе здесь')+F.going(f);
+  h+=sec('Проекты',P.length,k=='test'?'':'<em class="fx21ed" data-a="fx21edit">'+(FS.edit?'Готово':'Разложить')+'</em>')+(P.length?plist(P,k=='test'):'<div class="fx21none">'+(FS.q?'Ничего не нашлось':'Пусто')+'</div>');
+  var other=(S.need||[]).filter(function(r){var c=rcat(r);return r.lvl=='red'&&c!=k}).length;
+  if(other)h+='<div class="fxn-hint tap" data-a="fxnback">Ещё '+other+' срочн. в других категориях — на Пульте ›</div>';
+  return '<div class="g4home fx21home fxn-page">'+h+'</div>'}
+ /* ---------- C: фокус ---------- */
+ function homeC(){var k=NV.focus;if(k!='all'&&!prjOf(k).length)k='all';
+  var h=F.banners()+'<div class="fxn-sticky">'+chips(k,true)+'</div>';
+  if(k=='all')return '<div class="g4home fx21home">'+h+F.need(null,null,3)+F.going()+F.projects()+'</div>';
+  var mine=function(r){var c=rcat(r);return c==k||c==null};
+  h+=F.need(mine,null,3)||sec('Нужно тебе')+'<div class="g4calm fx21calm"><div><b>В «'+cname(k)+'» ничего не ждёт тебя</b><span>Срочное из других категорий — строкой ниже, если появится.</span></div></div>';
+  var O={};(S.need||[]).forEach(function(r){var c=rcat(r);if(r.lvl=='red'&&c&&c!=k)O[c]=(O[c]||0)+1});
+  Object.keys(O).forEach(function(c){h+='<div class="fxn-hint tap" data-a="fxnchip" data-k="'+c+'"><i class="fxn-dot"></i>'+O[c]+' срочн. в «'+cname(c)+'» — перейти ›</div>'});
+  h+=F.going(inCat(k));var P=prjOf(k).filter(function(p){return hit(p.n+' '+F.stLine(p))});
+  h+=sec('Проекты',P.length,'<em class="fx21ed" data-a="fx21edit">'+(FS.edit?'Готово':'Разложить')+'</em>')+F.srchBox('Поиск в «'+cname(k)+'»')+plist(P);
+  return '<div class="g4home fx21home">'+h+'</div>'}
+ /* ---------- D: свёрнутые ---------- */
+ function homeD(){var h=F.banners()+F.need(null,null,3)+goingShort(),L=S.prj||[];
+  h+=sec('Проекты',L.length,'<em class="fx21ed" data-a="fx21edit">'+(FS.edit?'Готово':'Разложить')+'</em>')+F.srchBox();
+  if(FS.q)return '<div class="g4home fx21home">'+h+found()+'</div>';
+  h+='<div class="g4card fxn-acc">';CATS.concat([['test','Тесты']]).forEach(function(c){var P=prjOf(c[0]);if(!P.length)return;var st=stat(c[0]),
+   op=NV.open[c[0]]!=null?NV.open[c[0]]:(st.red>0||FS.edit&&c[0]!='test');
+   h+='<div class="g4r tap fxn-ah" data-a="fxnacc" data-k="'+c[0]+'"><div class="g4rt"><b>'+c[1]+' <span class="fxn-n">'+P.length+'</span></b>'+(c[0]=='test'?'<span>скрыты с Пульта</span>':'<span>'+statLine(st)+'</span>')+'</div><i class="g4ch'+(op?' fx21up':'')+'">›</i></div>';
+   if(op)h+='<div class="fxn-in">'+P.map(function(p){return F.prow(p,c[0]=='test')}).join('')+'</div>'});
+  return '<div class="g4home fx21home">'+h+'</div></div>'}
+ var homeF=V=='B'?homeB:V=='C'?homeC:homeD;
+ home=function(){return homeF()};
+ D.addEventListener('click',function(ev){var t=ev.target.closest&&ev.target.closest('[data-a]');if(!t||!/^fxn/.test(t.dataset.a))return;
+  ev.stopPropagation();ev.preventDefault();var a=t.dataset.a,k=t.dataset.k;if(W.haptic)haptic('sel');
+  if(a=='fxncat'){NV.cat=k;FS.q='';render(true);top0();return}
+  if(a=='fxnback'){NV.cat=null;FS.q='';render(true);top0();return}
+  if(a=='fxnchip'){if(V=='B'){NV.cat=k;FS.q=''}else{NV.focus=k;FS.q='';try{localStorage.setItem('fxnav_focus',k)}catch(e){}}render(true);top0();return}
+  if(a=='fxngo'){NV.goAll=1;render(true);return}
+  if(a=='fxnacc'){var st=stat(k),cur=NV.open[k]!=null?NV.open[k]:st.red>0;NV.open[k]=!cur;render(true);return}
+ },true);
+ /* нижняя вкладка «Пульт» из экрана категории — назад на Пульт */
+ D.addEventListener('click',function(ev){var t=ev.target.closest&&ev.target.closest('[data-tab],[data-a=tab]');if(t&&NV.cat&&V=='B'){NV.cat=null}},true);
+ W.FXN={st:NV,v:V};
 })();
 
 /* только прототип fx на телефоне (в боевую сборку не входит): кнопки нового Пульта, которых ещё нет на сервере
