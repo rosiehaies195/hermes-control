@@ -2798,6 +2798,38 @@ html.vb7kb #sheet.on,html.vb7kb.s4kbv #sheet.on{bottom:calc(100% - var(--vb7H,10
 /* тост в чате над полем ввода */
 body.g3on .toast.vb7tb,body.cl3on .toast.vb7tb{bottom:auto!important}
 
+/* s5-rb: откат файлов — только то, чего нет у родных строк .g3wk/.clwk и списков .g3to/.clto */
+.s5rr{max-width:100%;min-width:0}
+.s5rr .s5rt{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.g3wk.s5rr{margin:8px 0 12px}
+.g3wk.s5rr>svg:last-child{flex:none}
+.clwk.s5rr{margin:4px 0 16px}
+.clwk.s5rr .clv-chev{margin-left:4px;flex:none}
+/* +N −M — зелёный/красный, как счётчики изменений в Codex и Claude Code */
+.s5ra{color:#40c977}.s5rd{color:#ff6b6b}
+.s5rl{align-self:stretch;margin:-6px 0 14px}
+.s5rl .s5rf{display:flex;align-items:baseline;gap:6px}
+.s5rl .s5rf>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;opacity:.75}
+.s5rl .s5rf>i{font-style:normal;flex:none}
+.s5rl .s5a{color:var(--g3fg,#fff);cursor:pointer}
+.s5rl .s5a.bad{color:#ff6b6b}
+.cltl.s5rl .s5a.bad{color:#ff6b6b}
+html[data-theme=light] .s5rl .s5a{color:#000}
+html[data-theme=light] .s5ra{color:#1a9e4b}html[data-theme=light] .s5rd{color:#d93636}
+/* ChatGPT: вопрос-подтверждение в меню по центру снизу, как «Удалить чат?» */
+.s5rpop{left:16px;right:16px;bottom:calc(24px + env(safe-area-inset-bottom));transform-origin:50% 100%}
+.s5rpop .s5rq{-webkit-line-clamp:4;padding-top:12px;padding-bottom:10px}
+/* Claude: лист */
+.s5rsh .clsr.s5rf{height:46px;font-size:16px}
+.s5rsh .clsr.s5rf span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s5rsh .clsr.s5rf em{font-style:normal;font-size:14px;color:#8e8c86;margin-left:10px;flex:none}
+.s5rsh .s5rgo{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;margin:6px 16px 18px;border-radius:24px;background:#f9f9f7;color:#141413;font-size:17px;font-weight:500;cursor:pointer}
+.s5rsh .s5rgo .clv{color:#141413;fill:currentColor}
+.s5rsh .s5rgo:active{opacity:.8}
+/* лист «Вернуть файлы» — высота по содержимому (у базового листа 440 px под «Добавить в сессию»), длинный список прокручивается */
+.clsh.s5rsh{height:auto;max-height:80vh;display:flex;flex-direction:column}
+.clsh.s5rsh .s5cb{overflow-y:auto;min-height:0}
+
 </style>
 </head>
 <body>
@@ -3096,7 +3128,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=124;
+var VER=127;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -3991,14 +4023,18 @@ function s4retry(t0,edit){var f=failLoad().filter(function(x){return String(x.t0
 document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.target.closest('[data-s4f]');if(!el)return;ev.preventDefault();ev.stopPropagation();s4retry(el.dataset.t0,el.dataset.s4f=='edit')},true);
 (function(){var s=document.createElement('style');s.textContent='.s4fl{margin:6px 0 2px auto;max-width:86%;text-align:right;font-size:13px;line-height:1.35;color:#d4483b}.s4flt{display:inline-flex;gap:5px;align-items:flex-start;justify-content:flex-end}.s4flt svg{width:15px;height:15px;flex:none;margin-top:1px}.s4fla{display:flex;gap:16px;justify-content:flex-end;margin-top:4px}.s4fla i{font-style:normal;font-weight:600;cursor:pointer;color:inherit;padding:4px 0}';document.head.appendChild(s)})();
 function hLive(){var a=st.cur;if(!a||!a.live){a={k:'a',parts:[],live:true,ts:Date.now()/1000};st.cur=a;st.msgs.push(a)}return a}
+/* vb8-b1: живой канал оборвался посреди ответа (turn.complete не пришёл) — st.cur оставался «живым»: ■ висел, а следующий turn.start
+   дописывал новый ход в старый пузырь, и под новым вопросом стояла копия прошлого ответа. Старый живой пузырь снимаем: ход закончился
+   (watch.ready running:false) или начался новый (turn.start). Полный ответ берём из истории. */
+function hDrop(){var a=st.cur;if(a&&a.live){a.live=false;st.msgs=st.msgs.filter(function(b){return b!==a})}st.cur=null}
 function hWatch(id){hwOn=true;hwSid=id;/*s3-1a-hw*/var tok=++hwTok;if(hwAc){try{hwAc.abort()}catch(e){}}hwAc=window.AbortController?new AbortController():null;
  function again(){if(tok!=hwTok)return;/*s3-1b*/hwOn=false;if(tok==hwTok&&st.sid==id&&st.kind=='hermes'&&!st.rw&&st.view=='chat'&&U.tab=='hc'&&mounted())setTimeout(function(){if(tok==hwTok&&!hwOn)hWatch(id)},400)}
  function ok(){return tok==hwTok&&st.sid==id}
  function fin(a){if(a){a.live=false}st.cur=null;setTimeout(function(){if(!ok())return;reload()},350)}
  hq(base()+'/sessions/'+encodeURIComponent(id)+'/watch',{signal:hwAc?hwAc.signal:undefined}).then(function(r){if(!r.ok)throw new Error('watch '+r.status);
   return sse(r,function(n,d){if(!ok())return;if(n!='ping'&&n!='watch.ready')st.hwSeen=Date.now();
-   if(n=='watch.ready'){if(d.running){hLive();st.stick=true;paint()}}
-   else if(n=='turn.start'){hLive();st.stick=true;reload().then(function(){if(ok()&&st.cur&&st.msgs.indexOf(st.cur)<0){st.msgs.push(st.cur);paint()}})}
+   if(n=='watch.ready'){if(d.running){hLive();st.stick=true;paint()}else if(st.cur&&st.cur.live){hDrop();paint();reload()}/*vb8-b1*/}
+   else if(n=='turn.start'){hDrop();/*vb8-b1*/hLive();st.stick=true;reload().then(function(){if(ok()&&st.cur&&st.msgs.indexOf(st.cur)<0){st.msgs.push(st.cur);paint()}})}
    else if(n=='assistant.delta'||n=='tool.started'||n=='tool.completed'){var a=hLive();onEv(n,d);st.stick=true}
    else if(n=='turn.complete'){fin(st.cur);paint()}
   })}).then(again,again)}
@@ -5141,6 +5177,7 @@ window.G3V={side:[20.0,12.0,"M1.73 11.00C1.55 10.97 1.49 10.93 1.29 10.71C1.09 1
   tx.forEach(function(x){h+='<div class="g3a">'+md(x)+'</div>'});
   var lp=lastA.parts||[];
   if(lv&&(!tx.length||lp.length&&lp[lp.length-1].p=='tool'))h+=thinking(t);
+  if(W.S5R)h+=S5R.html(s,t,lv);/*s5-rb: откат файлов*/
   if(!lv&&tx.length){var fb=G.fb[s.sid+':'+ti]||'';li=ti;
    h+='<div class="g3act"><i data-hc="copy" data-b="'+li+'" data-g3c="1" role="button" aria-label="Копировать">'+ic('copy')+'</i>'+
     '<i data-g3="fb" data-v="up" data-i="'+li+'" class="'+(fb=='up'?'on':'')+'" role="button" aria-label="Хороший ответ">'+ic('like')+'</i>'+
@@ -5599,6 +5636,7 @@ window.CLV={side:[20.0,18.0,"M1.52 16.96C1.35 16.89 1.04 16.52 1.01 16.36C0.98 1
   tx.forEach(function(x){h+='<div class="cla">'+md(x)+'</div>'});
   var lp=lastA.parts||[];
   if(lv&&(!tx.length||lp.length&&lp[lp.length-1].p=='tool'))h+=thinking(lp.length&&lp[lp.length-1].p=='tool'?lp[lp.length-1]:null,li);
+  if(W.S5R)h+=S5R.html(s,t,lv);/*s5-rb: откат файлов*/
   if(!lv&&tx.length){var fb=G.fb[s.sid+':'+ti]||'';li=ti;
    /* Copy · Share(Переслать) · Play(Вслух) · 👍 · 👎 (кадр 3213_0131.50; «Повторить» — только у Hermes) */
    h+='<div class="clact"><i data-hc="copy" data-b="'+li+'" data-clc="1" role="button" aria-label="Копировать">'+ic('copy')+'</i>'+
@@ -7854,6 +7892,83 @@ W.G7={nav:nav,setHtml:setHtml,setOpened:setOpened,setPush:setPush,setPop:setPop,
  var MO=0;function tick(){MO=0;try{aload()}catch(e){}try{inst()}catch(e){}try{dups()}catch(e){}try{toastPos()}catch(e){}}
  try{new MutationObserver(function(){if(!MO)MO=requestAnimationFrame(tick)}).observe(D.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}catch(e){}
  W.VB7D={tick:tick,acctName:acctName}})();
+
+/* s5-rb (этап 5, п.5): откат файлов к моменту до сообщения — только родными элементами приложения.
+   Под ходом, в котором агент менял файлы, строка как «Работал N с ›» (ChatGPT: .g3wk) / «◷ N шагов ›» (Claude: .clwk)
+   со значком ↺: «Изменено 2 файла · +14 −3 ›». Тап — раскрытие на месте списком файлов (.g3tl/.g3to, .cltl/.clto)
+   и строкой «Вернуть как было до этого сообщения».
+   Подтверждение: ChatGPT (Hermes) — меню-подтверждение как «Удалить чат?» (.g3pop: .g3mh вопрос, .g3mi.bad действие, Отмена);
+   Claude — лист Claude (#clsh, как «Добавить в сессию»): файлы группой .clgrp/.clsr, действие красной строкой, ✕ = отмена.
+   Переписку откат не трогает. Codex — не рисуем (хранимых снимков нет). Источник /api/hc/rb (tv_rb.py). */
+(function(){var W=window,D=document,B=D.body;
+ var S={k:'',sid:'',P:[],on:false,t:0,busy:0,open:{},j:''};W.S5R=S;
+ function st(){return W.HC&&HC.st}
+ function E(t){var d=D.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
+ function T(m){try{toast(m)}catch(e){}}
+ function $i(id){return D.getElementById(id)}
+ function gi(n){try{return G3.ic(n)}catch(e){return ''}}
+ function ci(n){try{return CL3.ic(n)}catch(e){return ''}}
+ function on(){var s=st();return !!(s&&W.U&&U.tab=='hc'&&s.view=='chat'&&s.sid&&/^(claude|hermes)$/.test(s.kind)&&!(W.S5D&&S5D.ro&&S5D.ro()))}
+ function files(n){var m=n%10,c=n%100;return n+' '+(m==1&&c!=11?'файл':m>=2&&m<=4&&(c<12||c>14)?'файла':'файлов')}
+ function changed(n){var m=n%10,c=n%100;return (m==1&&c!=11?'Изменён ':'Изменено ')+files(n)}
+ function pm(a,d){return '<span class="s5ra">+'+a+'</span> <span class="s5rd">−'+d+'</span>'}
+ function base(p){var x=String(p||'').split('/');return x[x.length-1]||p}
+ /* точка относится к ходу, если её время между сообщением пользователя и последним ответом хода */
+ function pointOf(t){if(!t||!t.a||!t.a.length)return null;var a=t.ts0||0,z=(t.a[t.a.length-1].ts||a)+5;
+  for(var i=S.P.length-1;i>=0;i--){var p=S.P[i];if(p.ts>=a-5&&p.ts<=z)return p}return null}
+ S.html=function(s,t,lv){if(lv||!on()||S.sid!=s.sid||S.k!=s.kind||!S.P.length)return '';var p=pointOf(t);if(!p)return '';
+  var cl=s.kind=='claude',A=0,Dd=0;p.files.forEach(function(f){A+=f.a;Dd+=f.d});var o=!!S.open[p.id];
+  var tl='<span class="s5rt">'+changed(p.files.length)+' · '+pm(A,Dd)+'</span>';
+  var row=cl?'<div class="clwk s5rr'+(o?' on':'')+'" data-s5r="tog" data-id="'+E(p.id)+'">'+ci('retry')+tl+ci('chev')+'</div>'
+            :'<div class="g3wk s5rr'+(o?' on':'')+'" data-s5r="tog" data-id="'+E(p.id)+'">'+tl+gi('chev')+'</div>';
+  if(!o)return row;var to=cl?'clto':'g3to';
+  var L=p.files.slice(0,12).map(function(f){return '<div class="'+to+' s5rf"><b>'+E(base(f.p))+'</b> <span>'+E(f.p!=base(f.p)?f.p:'')+'</span><i>'+pm(f.a,f.d)+'</i></div>'}).join('')+
+   (p.files.length>12?'<div class="'+to+'">и ещё '+(p.files.length-12)+'</div>':'')+
+   '<div class="'+to+' s5a bad" data-s5r="ask" data-id="'+E(p.id)+'">Вернуть как было до этого сообщения</div>';
+  return row+'<div class="'+(cl?'cltl':'g3tl')+' s5rl">'+L+'</div>'};
+ function paint(){try{HC.paint()}catch(e){}var k=(st()||{}).kind;try{if(k=='claude'&&W.CL3&&CL3.draw)CL3.draw();else if(W.G3&&G3.draw)G3.draw()}catch(e){}}
+ function load(force){var s=st();if(!on()){S.sid='';return}
+  var key=s.kind+':'+s.sid;if(key!=S.k+':'+S.sid){S.k=s.kind;S.sid=s.sid;S.P=[];S.open={};S.j='';S.t=0}
+  var busyChat=!!(s.busy||s.cclive||(s.cur&&s.cur.live));
+  var per=S.k=='hermes'?30000:15000;if(!force&&Date.now()-S.t<per&&!(S.wasBusy&&!busyChat))return;S.wasBusy=busyChat;
+  if(S.busy||!W.API)return;S.busy=1;S.t=Date.now();
+  try{SD3.api('/rb?k='+S.k+'&sid='+encodeURIComponent(S.sid)).then(function(d){S.busy=0;if(st().sid!=S.sid)return;S.P=(d.p||[]);S.on=!!d.on;var j=JSON.stringify(S.P);if(j!=S.j){S.j=j;paint()}})
+   .catch(function(){S.busy=0})}catch(e){S.busy=0}}
+ setInterval(function(){try{load()}catch(e){S.busy=0}},2000);
+ function find(id){return S.P.filter(function(p){return p.id==id})[0]}
+ /* ---------- подтверждение ---------- */
+ function sum(F){var a=0,d=0;F.forEach(function(f){a+=f.a;d+=f.d});return {a:a,d:d}}
+ function later(p,F){return F.length>p.files.length||F.some(function(f){return !p.files.some(function(x){return x.p==f.p})})}
+ function gConfirm(p,d){try{G3.closePop()}catch(e){}var F=d.files||[];
+  var v=D.createElement('div');v.id='g3veil';B.appendChild(v);var x=D.createElement('div');x.id='g3pop';x.className='g3pop s5rpop';
+  x.innerHTML='<div class="g3mh s5rq">'+(F.length?'Вернуть '+files(F.length)+' как было до этого сообщения?'+(later(p,F)?' Изменения следующих ходов тоже отменятся.':'')+' Переписка не изменится.':'Файлы уже такие, как до этого сообщения.')+'</div>'+
+   (F.length?'<div class="g3mi bad" data-s5r="go" data-id="'+E(p.id)+'">'+gi('retry')+'<span>Вернуть файлы</span></div>':'')+
+   '<div class="g3mi" data-s5r="x">'+gi('x')+'<span>Отмена</span></div>';
+  B.appendChild(x);if(x.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)x.animate([{transform:'scale(.6,.5)',opacity:.4},{transform:'none',opacity:1}],{duration:400,easing:'cubic-bezier(.32,.72,0,1)'});
+  v.addEventListener('click',function(){try{G3.closePop()}catch(e){}})}
+ function cConfirm(p,d){try{CL3.sheetClose()}catch(e){}var F=d.files||[];
+  var v=D.createElement('div');v.id='clsv';B.appendChild(v);var sh=D.createElement('div');sh.id='clsh';sh.className='clsh s5csh s5rsh';
+  var rows=F.slice(0,20).map(function(f){return '<div class="clsr s5rf"><span>'+E(base(f.p))+'</span><em>'+(f.st=='del'?'удалится':f.st=='new'?'появится':pm(f.a,f.d))+'</em></div>'}).join('');
+  sh.innerHTML='<div class="clgrab"></div><div class="clshh"><div class="clqx" data-cl="shx" role="button" aria-label="Закрыть">'+ci('x')+'</div><b>Вернуть файлы</b><label></label></div><div class="s5cb">'+
+   '<div class="s5cap">'+(F.length?'Файлы вернутся к тому, какими были до этого сообщения'+(later(p,F)?', вместе с изменениями следующих ходов':'')+'. Переписка не изменится.':'Файлы уже такие, как до этого сообщения.')+'</div>'+
+   (F.length?'<div class="clgrp">'+rows+(F.length>20?'<div class="clsr"><span>и ещё '+(F.length-20)+'</span></div>':'')+'</div>'+
+   '<div class="s5rgo" data-s5r="go" data-id="'+E(p.id)+'" role="button">'+ci('retry')+'<span>Вернуть '+files(F.length)+'</span></div>':'')+'</div>';
+  B.appendChild(sh);if(sh.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)sh.animate([{transform:'translateY(105%)'},{transform:'none'}],{duration:500,easing:'cubic-bezier(.32,.72,0,1)'});
+  v.addEventListener('click',function(){try{CL3.sheetClose()}catch(e){}})}
+ function ask(el){var p=find(el.dataset.id),s=st();if(!p||el.dataset.busy)return;el.dataset.busy=1;var t0=el.textContent;el.textContent='Проверяю…';
+  SD3.api('/rb/diff?k='+S.k+'&sid='+encodeURIComponent(S.sid)+'&id='+encodeURIComponent(p.id)).then(function(d){delete el.dataset.busy;el.textContent=t0;
+    if(st().sid!=S.sid)return;(s.kind=='claude'?cConfirm:gConfirm)(p,d)})
+   .catch(function(e){delete el.dataset.busy;el.textContent=t0;T('Не проверил файлы: '+E(e.message))})}
+ function go(el){var p=find(el.dataset.id);if(!p||el.dataset.busy)return;el.dataset.busy=1;var sp=el.querySelector('span');if(sp)sp.textContent='Возвращаю…';
+  SD3.api('/rb/restore',{method:'POST',body:{k:S.k,sid:S.sid,id:p.id}}).then(function(r){try{G3.closePop()}catch(e){}try{CL3.sheetClose()}catch(e){}
+    T(r.ok?'Файлы возвращены · '+files(r.n||0):'Вернул '+files(r.n||0)+', не вышло: '+(r.bad||[]).length);S.open={};load(true)})
+   .catch(function(e){delete el.dataset.busy;if(sp)sp.textContent='Вернуть файлы';T(E(e.message))})}
+ D.addEventListener('click',function(ev){var el=ev.target.closest&&ev.target.closest('[data-s5r]');if(!el)return;ev.stopPropagation();ev.preventDefault();var a=el.dataset.s5r;
+  if(a=='tog'){S.open[el.dataset.id]=!S.open[el.dataset.id];paint()}
+  else if(a=='ask')ask(el);
+  else if(a=='go')go(el);
+  else if(a=='x'){try{G3.closePop()}catch(e){}}},true);
+})();
 
 /* vb8 А7 (жалоба 27.11: «при открытой клавиатуре тяну чат вверх — поле/экран прыгает вверх-вниз»). Три причины, все чинятся здесь
    и в pad() чатов (g3_chat.js / g3_claude.js):
