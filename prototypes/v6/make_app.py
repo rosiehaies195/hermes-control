@@ -4,9 +4,9 @@ import sys
 from pathlib import Path
 R = Path("C:/Users/Peter/hermes-control")
 src = (R / "index.v5.1.html.bak").read_text(encoding="utf-8")
-css = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.css", "multi.css", "prj.css", "glass.css", "glassui.css", "cx.css", "qfull.css", "voicefix.css", "sw35.css", "g3_chat.css", "g3_claude.css", "g3_side.css", "g4_home.css", "g5_prj.css", "g6_chat.css", "g7_s5.css", "g8_vb5.css", "s5_dlv.css", "s5_cxq.css", "s5_sub.css", "s5_side.css", "g9_vb7a.css", "g9_vb7d.css", "s5_rb.css"))
-js = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc_p5.js", "search.js", "ms.js", "voice.js", "design8.js", "stale.js", "rc.js", "multi.js", "prj.js", "glass.js", "glassui.js", "cx.js", "qfull.js", "auto.js", "s3.js", "sw35.js", "g3_icons.js", "g3_chat.js", "g3_cl_icons.js", "g3_claude.js", "g3_sd_icons.js", "g3_side.js", "g4_icons.js", "g4_home.js", "g5_prj.js", "g6_model.js", "g6_menu.js", "g6_dict.js", "g7_s5.js", "g8_vb5.js", "s5_open.js", "s5_cxq.js", "s5_sub.js", "s5_side.js", "g9_vb7a.js", "g9_vb7d.js", "s5_rb.js", "g9_vb8a.js"))
-VER = 127
+css = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc.css", "multi.css", "prj.css", "glass.css", "glassui.css", "cx.css", "qfull.css", "voicefix.css", "sw35.css", "g3_chat.css", "g3_claude.css", "g3_side.css", "g4_home.css", "g5_prj.css", "g6_chat.css", "g7_s5.css", "g8_vb5.css", "s5_dlv.css", "s5_cxq.css", "s5_sub.css", "s5_side.css", "g9_vb7a.css", "g9_vb7d.css", "s5_rb.css", "s5_wd.css"))
+js = "\n".join((R / ("prototypes/v6/" + n)).read_text(encoding="utf-8") for n in ("hc_p5.js", "search.js", "ms.js", "voice.js", "design8.js", "stale.js", "rc.js", "multi.js", "prj.js", "glass.js", "glassui.js", "cx.js", "qfull.js", "auto.js", "s3.js", "sw35.js", "g3_icons.js", "g3_chat.js", "g3_cl_icons.js", "g3_claude.js", "g3_sd_icons.js", "g3_side.js", "g4_icons.js", "g4_home.js", "g5_prj.js", "g6_model.js", "g6_menu.js", "g6_dict.js", "g7_s5.js", "g8_vb5.js", "s5_open.js", "s5_cxq.js", "s5_sub.js", "s5_side.js", "g9_vb7a.js", "g9_vb7d.js", "s5_rb.js", "g9_vb8a.js", "s5_wd.js"))
+VER = 128
 # extra files for prototypes: python make_app.py <out> [file.js|file.css ...] (paths relative to hermes-control)
 for _x in sys.argv[2:]:
     _t = (R / _x).read_text(encoding="utf-8")

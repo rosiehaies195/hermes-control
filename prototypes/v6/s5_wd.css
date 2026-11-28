@@ -1,0 +1,45 @@
+/* s5-wd: «Что делаешь?» — только то, чего нет у родных элементов (.s5tmp/.g3*/.clsh берутся как есть) */
+/* ChatGPT: строка «Работает 3 мин · 12 шагов ›» — как «Worked for» (.g3wk), без значка */
+.g3wk.s5wk{margin:10px 0 8px;max-width:100%;min-width:0}
+.g3wk.s5wk>span{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.g3wk.s5wk>svg:last-child{flex:none;transition:transform .25s}
+.g3wk.s5wk.on>svg:last-child{transform:rotate(90deg)}
+.g3tl.s5wl{margin:-2px 0 10px}
+.g3tl.s5wl .g3to{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.g3tl.s5wl .g3to b{font-weight:600;color:var(--g3fg,#fff)}
+html[data-theme=light] .g3tl.s5wl .g3to b{color:#000}
+/* подсказка «Спросить подробнее» — строка подсказок пустого чата ChatGPT (.g3sg div), но в ленте */
+.s5wsg{margin:2px -4px 14px}
+.s5wsg div{display:flex;align-items:center;height:46.7px;color:#c8c8c8;cursor:pointer}
+.s5wsg .g3i{width:24.4px;height:24.4px;margin:0 12.4px 0 4px;flex:none}
+.s5wsg span{font-size:17px;letter-spacing:-.4px}
+html[data-theme=light] .s5wsg div{color:#5d5d5d}
+.s5wd .g3a{margin-bottom:6px}
+/* Claude: лист «Что делает Claude» — маленький экран Claude: родные .clth/.clwk/.cltl/.clqa/.cla/.clum/.club, тут только отступы листа */
+.clsh.s5wsh .s5cb{padding:4px 20px 8px;flex:1 1 auto}
+.s5wsh .clth.s5wnow{margin:6px 0 14px;height:auto;min-height:24px}
+.s5wsh .clth.s5wnow span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.s5wsh .s5widle{display:flex;align-items:center;gap:10px;margin:6px 0 14px;color:var(--clsub);font-size:16px;letter-spacing:-.3px}
+.s5wsh .s5widle .clv{color:var(--clacc);flex:none}
+.s5wsh .clwk.s5wk{margin:0 0 14px;padding-left:0;max-width:100%}
+.s5wsh .clwk.s5wk span{margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.s5wsh .cltl.s5wl{margin:-4px 0 16px}
+.s5wsh .clqa.s5wtask{margin:0 0 16px;background:var(--clcard)}
+.s5wsh .clqa.s5wtask b{margin-bottom:2px}
+.s5wsh .cla.s5wsay,.s5wsh .cla.s5wa{margin:0 0 18px}
+.s5wsh .clum.s5wum{margin:4px 0 18px}
+.s5wsh .clth.s5wth{margin:0 0 18px}
+.s5wsh .s5bad{color:var(--clred)}
+/* низ листа: белая капсула (как «Add Files») или поле Claude «Спросить ещё…» с оранжевой ↑ */
+.s5wsh .s5wft{flex:none;padding:6px 16px calc(env(safe-area-inset-bottom,0px) + 14px)}
+.s5wsh .s5wft .s5wgo{margin:0}
+.s5wsh .s5wft.s5dim{opacity:.45;pointer-events:none}
+.s5wcmp{display:flex;align-items:flex-end;min-height:52px;border-radius:26px;background:linear-gradient(#333 0,var(--clcomp) 2px);padding:8px 8px 8px 18px;box-sizing:border-box}
+.s5wcmp textarea{flex:1;min-width:0;border:0;outline:0;background:none;resize:none;color:var(--clfg);font:inherit;font-size:17px;line-height:22px;padding:7px 0;max-height:110px}
+.s5wcmp textarea::placeholder{color:var(--clph)}
+.s5wcmp .s5wup:not(.on){background:var(--clbtn);color:#8b8b85}
+html[data-theme=light] .s5wcmp{background:var(--clcomp);box-shadow:0 0 0 1px #e5e3da}
+/* строка проекта: кнопка не съедает имя — подпись режется многоточием */
+.row2 .s5wb{flex:none;margin-left:8px;white-space:nowrap}
+.row2 .d2{min-width:0}
+.s5wps .row2{align-items:center}
