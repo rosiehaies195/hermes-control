@@ -3128,7 +3128,7 @@ function saySheet(ag){U.say.ag=ag||'claude';var ss=ag=='claude'?sessState().name
  '<div class="btn pri'+(U.say.t.trim()?'':' dis')+'" data-a="say" id="saybtn">Отправить</div><div class="btn" data-a="unsheet">Отмена</div>')}
 
 /* ---------- v4: главный экран ---------- */
-var VER=126;
+var VER=127;
 function updBanner(){if(!S.pv||S.pv<=VER)return '';return '<div class="alert warn tap" data-a="upd"><div class="k">'+IC('arrow-up')+' Вышла новая версия панели<span class="tm" style="color:var(--warn)">обновить ›</span></div><div class="q">Telegram держит старую страницу в кэше. Нажми — перезагружу свежую.</div></div>'}
 function netBanner(){
  if(U.cached&&!API)return '<div class="alert warn"><div class="k">'+IC('triangle-alert')+' ПК недоступен · показаны данные '+(S.ts?ago(S.ts):'')+' из кэша</div><div class="q">Действия не дойдут. Запасной путь — кнопка «Панель» внизу чата.</div></div>';
@@ -4023,14 +4023,18 @@ function s4retry(t0,edit){var f=failLoad().filter(function(x){return String(x.t0
 document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.target.closest('[data-s4f]');if(!el)return;ev.preventDefault();ev.stopPropagation();s4retry(el.dataset.t0,el.dataset.s4f=='edit')},true);
 (function(){var s=document.createElement('style');s.textContent='.s4fl{margin:6px 0 2px auto;max-width:86%;text-align:right;font-size:13px;line-height:1.35;color:#d4483b}.s4flt{display:inline-flex;gap:5px;align-items:flex-start;justify-content:flex-end}.s4flt svg{width:15px;height:15px;flex:none;margin-top:1px}.s4fla{display:flex;gap:16px;justify-content:flex-end;margin-top:4px}.s4fla i{font-style:normal;font-weight:600;cursor:pointer;color:inherit;padding:4px 0}';document.head.appendChild(s)})();
 function hLive(){var a=st.cur;if(!a||!a.live){a={k:'a',parts:[],live:true,ts:Date.now()/1000};st.cur=a;st.msgs.push(a)}return a}
+/* vb8-b1: живой канал оборвался посреди ответа (turn.complete не пришёл) — st.cur оставался «живым»: ■ висел, а следующий turn.start
+   дописывал новый ход в старый пузырь, и под новым вопросом стояла копия прошлого ответа. Старый живой пузырь снимаем: ход закончился
+   (watch.ready running:false) или начался новый (turn.start). Полный ответ берём из истории. */
+function hDrop(){var a=st.cur;if(a&&a.live){a.live=false;st.msgs=st.msgs.filter(function(b){return b!==a})}st.cur=null}
 function hWatch(id){hwOn=true;hwSid=id;/*s3-1a-hw*/var tok=++hwTok;if(hwAc){try{hwAc.abort()}catch(e){}}hwAc=window.AbortController?new AbortController():null;
  function again(){if(tok!=hwTok)return;/*s3-1b*/hwOn=false;if(tok==hwTok&&st.sid==id&&st.kind=='hermes'&&!st.rw&&st.view=='chat'&&U.tab=='hc'&&mounted())setTimeout(function(){if(tok==hwTok&&!hwOn)hWatch(id)},400)}
  function ok(){return tok==hwTok&&st.sid==id}
  function fin(a){if(a){a.live=false}st.cur=null;setTimeout(function(){if(!ok())return;reload()},350)}
  hq(base()+'/sessions/'+encodeURIComponent(id)+'/watch',{signal:hwAc?hwAc.signal:undefined}).then(function(r){if(!r.ok)throw new Error('watch '+r.status);
   return sse(r,function(n,d){if(!ok())return;if(n!='ping'&&n!='watch.ready')st.hwSeen=Date.now();
-   if(n=='watch.ready'){if(d.running){hLive();st.stick=true;paint()}}
-   else if(n=='turn.start'){hLive();st.stick=true;reload().then(function(){if(ok()&&st.cur&&st.msgs.indexOf(st.cur)<0){st.msgs.push(st.cur);paint()}})}
+   if(n=='watch.ready'){if(d.running){hLive();st.stick=true;paint()}else if(st.cur&&st.cur.live){hDrop();paint();reload()}/*vb8-b1*/}
+   else if(n=='turn.start'){hDrop();/*vb8-b1*/hLive();st.stick=true;reload().then(function(){if(ok()&&st.cur&&st.msgs.indexOf(st.cur)<0){st.msgs.push(st.cur);paint()}})}
    else if(n=='assistant.delta'||n=='tool.started'||n=='tool.completed'){var a=hLive();onEv(n,d);st.stick=true}
    else if(n=='turn.complete'){fin(st.cur);paint()}
   })}).then(again,again)}
